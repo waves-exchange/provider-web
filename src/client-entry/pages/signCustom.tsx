@@ -1,26 +1,26 @@
-import React = require("react");
 import { AddressAvatar } from '@waves/react-uikit';
 
+import React = require('react');
 
-export default function <T>(props: IProps<T>) {
+export default function<T>(props: IProps<T>) {
     return (
-        <div >
-            <div  onClick={props.onCancel}/>
-            <div className="logo"/>
-            <div >{props.title}</div>
+        <div>
+            <div onClick={props.onCancel} />
+            <div className="logo" />
+            <div>{props.title}</div>
 
-            <div >
-                <span >Sign from</span>
-                <span >
+            <div>
+                <span>Sign from</span>
+                <span>
                     <AddressAvatar address={props.sender} />
                 </span>
             </div>
 
             {props.data}
 
-            <div >
-                <button onClick={props.onCancel} >Cancel</button>
-                <button onClick={props.onConfirm} >Ok</button>
+            <div>
+                <button onClick={props.onCancel}>Cancel</button>
+                <button onClick={props.onConfirm}>Ok</button>
             </div>
         </div>
     );

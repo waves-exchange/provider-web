@@ -5,11 +5,11 @@ import { libs } from '@waves/waves-transactions';
 import { IUserData } from '@waves/waves-js/src/interface';
 import { hasUsers } from '../services/userService';
 import CreateAccount from '../pages/login/CreateAccount';
-
-import React = require('react');
+import { IUser } from '../../interface';
+import React from 'react';
 
 export default function(state: IState) {
-    return (): Promise<IUserData> => {
+    return async (): Promise<IUserData> => {
         if (state.user != null) {
             return Promise.resolve({
                 address: state.user.address,
@@ -22,10 +22,10 @@ export default function(state: IState) {
                 renderPage(
                     <Page
                         networkByte={state.networkByte}
-                        onCancel={() => {
+                        onCancel={(): void => {
                             reject('User rejection!');
                         }}
-                        onConfirm={(user) => {
+                        onConfirm={(user: IUser): void => {
                             state.user = user;
                             resolve({
                                 address: user.address,
