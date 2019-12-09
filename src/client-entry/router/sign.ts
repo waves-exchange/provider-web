@@ -1,6 +1,10 @@
 import { IState } from '../index';
 import renderPage from '../utils/renderPage';
-import { TLong, TRANSACTION_TYPE_MAP, TTransactionParamWithType } from '@waves/waves-js/dist/src/interface';
+import {
+    TLong,
+    TRANSACTION_TYPE_MAP,
+    TTransactionParamWithType,
+} from '@waves/waves-js/dist/src/interface';
 import issuePage from '../pages/transactions/issue';
 import transferPage from '../pages/transactions/transfer';
 import reissuePage from '../pages/transactions/reissue';
@@ -22,8 +26,7 @@ import { prepareTransactions } from '../utils';
 import { libs, signTx } from '@waves/waves-transactions';
 import { ISignTxProps, IUser } from '../../interface';
 import loader from '../components/loader';
-const React = require('react');
-
+import React from 'react';
 
 const getPageByType = (type: keyof TRANSACTION_TYPE_MAP) => {
     switch (type) {
@@ -36,23 +39,23 @@ const getPageByType = (type: keyof TRANSACTION_TYPE_MAP) => {
         case NAME_MAP.burn:
             return burnPage;
         case NAME_MAP.exchange:
-        // return exchangePage; TODO
+            throw new Error('Unsupported type!'); // TODO
         case NAME_MAP.lease:
-        // return leasePage; TODO
+            throw new Error('Unsupported type!'); // TODO
         case NAME_MAP.cancelLease:
-        // return cancelLeasePage; TODO
+            throw new Error('Unsupported type!'); // TODO
         case NAME_MAP.alias:
-        // return aliasPage; TODO
+            throw new Error('Unsupported type!'); // TODO
         case NAME_MAP.massTransfer:
-        // return massTransferPage; TODO
+            throw new Error('Unsupported type!'); // TODO
         case NAME_MAP.data:
             return dataPage;
         case NAME_MAP.setScript:
-        // return setScriptPage; TODO
+            throw new Error('Unsupported type!'); // TODO
         case NAME_MAP.sponsorship:
-        // return sponsorshipPage; TODO
+            throw new Error('Unsupported type!'); // TODO
         case NAME_MAP.setAssetScript:
-        // return setAssetScriptPage; TODO
+            throw new Error('Unsupported type!'); // TODO
         case NAME_MAP.invoke:
             return invokePage;
         default:
@@ -60,35 +63,48 @@ const getPageByType = (type: keyof TRANSACTION_TYPE_MAP) => {
     }
 };
 
-export default function (list: Array<TTransactionParamWithType>, state: IState<IUser>): Promise<Array<TTransactionWithProofs<TLong> & IWithId>> {
+export default function(
+    list: Array<TTransactionParamWithType>,
+    state: IState<IUser>
+): Promise<Array<TTransactionWithProofs<TLong> & IWithId>> {
     renderPage(React.createElement(loader, {}));
 
     console.log('Trololo');
 
-    return prepareTransactions(state, list).then(transactions => {
-
+    return prepareTransactions(state, list).then((transactions) => {
         if (transactions.length !== 1) {
             return batch(transactions, state);
         }
 
         const [tx] = transactions;
+
         return new Promise((resolve, reject) => {
-            renderPage(React.createElement(getPageByType(tx.origin.type) as any, {
-                networkByte: state.networkByte,
-                assets: tx.assets,
-                user: {
-                    address: state.user.address,
-                    publicKey: libs.crypto.publicKey(state.user.seed)
-                },
-                tx: tx,
-                availableFee: tx.feeList,
-                onConfirm: (transaction) => {
-                    resolve(signTx(transaction as any, state.user.seed) as any);
-                },
-                onCancel: () => {
-                    reject(new Error('User rejection!'));
-                }
-            } as ISignTxProps<any>));
+            renderPage(
+                React.createElement(
+                    getPageByType(tx.origin.type) as any,
+                    {
+                        networkByte: state.networkByte,
+                        assets: tx.assets,
+                        user: {
+                            address: state.user.address,
+                            publicKey: libs.crypto.publicKey(state.user.seed),
+                        },
+                        tx: tx,
+                        availableFee: tx.feeList,
+                        onConfirm: (transaction) => {
+                            resolve(
+                                signTx(
+                                    transaction as any,
+                                    state.user.seed
+                                ) as any
+                            );
+                        },
+                        onCancel: () => {
+                            reject(new Error('User rejection!'));
+                        },
+                    } as ISignTxProps<any>
+                )
+            );
         });
     });
 }

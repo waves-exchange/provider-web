@@ -1,10 +1,9 @@
 import { IState } from '../index';
 
-
-export default function (state: IState) {
+export default function(state: IState) {
     return () => {
-        if (state.user) {
-            return state.user = null;
+        if (state.user != null) {
+            return (state.user = null);
         }
     };
 }

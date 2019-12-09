@@ -3,13 +3,18 @@ import {
     ITypedData,
     IUserData,
     TLong,
-    TTransactionParamWithType
+    TTransactionParamWithType,
 } from '@waves/waves-js/dist/src/interface';
-import { IWithId, TTransaction, TTransactionMap, TTransactionWithProofs } from '@waves/ts-types';
+import {
+    IWithId,
+    TTransaction,
+    TTransactionMap,
+    TTransactionWithProofs,
+} from '@waves/ts-types';
 import { TFeeInfo } from '@waves/blockchain-api/dist/cjs/api-node/transactions';
 import { TAssetDetails } from '@waves/blockchain-api/dist/cjs/api-node/assets';
 
-
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type TBusHandlers = {
     login: () => Promise<IUserData>;
     logout: () => void;
@@ -18,24 +23,26 @@ export type TBusHandlers = {
     'sign-message': (data: string | number) => Promise<string>;
     'sign-typed-data': (data: Array<ITypedData>) => Promise<string>;
 
-    sign(list: Array<TTransactionParamWithType>): Promise<Array<TTransactionWithProofs<TLong> & IWithId>>;
-}
+    sign(
+        list: Array<TTransactionParamWithType>
+    ): Promise<Array<TTransactionWithProofs<TLong> & IWithId>>;
+};
 
 export interface IBusEvents {
-    'connect': IConnectOptions;
-    'ready': void;
+    connect: IConnectOptions;
+    ready: void;
 }
 
 export interface ISignTxProps<T extends TTransactionParamWithType> {
     networkByte: number;
-    assets: Record<string, TAssetDetails<TLong>>
+    assets: Record<string, TAssetDetails<TLong>>;
     user: {
         address: string;
         publicKey: string;
-    }
+    };
     tx: {
-        origin: T,
-        extended: TTransactionMap<TLong>[T['type']] & IWithId
+        origin: T;
+        extended: TTransactionMap<TLong>[T['type']] & IWithId;
     };
     availableFee: Array<TFeeInfo>;
     onConfirm: (tx: TTransaction<TLong>) => void;

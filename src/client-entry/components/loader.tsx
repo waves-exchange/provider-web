@@ -1,6 +1,5 @@
-import React = require("react");
+import React = require('react');
 
-
-export default function () {
-    return (<div>Loading...</div>)
+export default function() {
+    return <div>Loading...</div>;
 }
