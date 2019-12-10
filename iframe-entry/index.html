@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        html, body, #root, #overlay {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        #overlay {
+            position: fixed;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+<div id="overlay"></div>
+<div id="root"></div>
+<script src="../dist/provider-client.js"></script>
+</body>
+</html>

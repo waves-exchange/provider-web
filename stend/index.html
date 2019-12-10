@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="style.css">
     <style>
-        html, body, #root, #overlay {
+        html,
+        body,
+        #root {
             position: relative;
             display: flex;
             justify-content: center;
@@ -21,16 +23,23 @@
         * {
             box-sizing: border-box;
         }
-
-        #overlay {
-            position: fixed;
-            z-index: -1;
-        }
     </style>
+    <script src="../node_modules/@waves/waves-js/dist/waves-js.js"></script>
+    <script src="../dist/storage-provider.js"></script>
+    <script>
+
+        var provider = new storageProvider.StorageProvider('http://localhost:8081/iframe-entry', true, true);
+        var waves = new wavesJs.Waves({ NODE_URL: 'https://nodes-testnet.wavesnodes.com' })
+        waves.setProvider(provider);
+
+    </script>
 </head>
+
 <body>
-<div id="overlay"></div>
-<div id="root"></div>
-<script src="../dist/provider-client.js"></script>
+
+    <button onclick="waves.login();">Login</button>
+    <button onclick="waves.transfer({amount: 1, recipient: 'merry'}).broadcast();">Transfer to merry, 0.00000001 WAVES</button>
+
 </body>
+
 </html>
