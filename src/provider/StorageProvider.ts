@@ -16,41 +16,41 @@ type TLong = string | number;
 export class StorageProvider implements IProvider {
     private readonly _transport: ITransport;
 
-    constructor(clientOrigin: string, cacheKill?: boolean, logs?: boolean) {
+    constructor(clientOrigin: string, logs?: boolean) {
         const Transport = TransportIframe.canUse()
             ? TransportIframe
             : TransportWindow;
 
-        this._transport = new Transport(clientOrigin, Boolean(cacheKill));
+        this._transport = new Transport(clientOrigin, 3);
         if (logs != null) {
             config.console.logLevel = config.console.LOG_LEVEL.VERBOSE;
         }
     }
 
-    public connect(options: IConnectOptions): Promise<void> {
+    public async connect(options: IConnectOptions): Promise<void> {
         return Promise.resolve(
-            this._transport.sendMessage((bus) =>
+            this._transport.event((bus) =>
                 bus.dispatchEvent('connect', options)
             )
         );
     }
 
     public logout(): Promise<void> {
-        return this._transport.showDialog((bus) => bus.request('logout'));
+        return this._transport.dialog((bus) => bus.request('logout'));
     }
 
     public login(): Promise<IUserData> {
-        return this._transport.showDialog((bus) => bus.request('login'));
+        return this._transport.dialog((bus) => bus.request('login'));
     }
 
     public signMessage(data: string | number): Promise<string> {
-        return this._transport.showDialog((bus) =>
+        return this._transport.dialog((bus) =>
             bus.request('sign-message', data)
         );
     }
 
     public signTypedData(data: Array<ITypedData>): Promise<string> {
-        return this._transport.showDialog((bus) =>
+        return this._transport.dialog((bus) =>
             bus.request('sign-typed-data', data)
         );
     }
@@ -58,6 +58,6 @@ export class StorageProvider implements IProvider {
     public sign(
         list: Array<TTransactionParamWithType>
     ): Promise<Array<TTransactionWithProofs<TLong> & IWithId>> {
-        return this._transport.showDialog((bus) => bus.request('sign', list));
+        return this._transport.dialog((bus) => bus.request('sign', list));
     }
 }

@@ -1,8 +1,7 @@
 import { AddressAvatar } from '@waves/react-uikit';
+import React from 'react';
 
-import React = require('react');
-
-export default function<T>(props: IProps<T>) {
+export default function<T>(props: IProps<T>): React.ReactElement {
     return (
         <div>
             <div onClick={props.onCancel} />

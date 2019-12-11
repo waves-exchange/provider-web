@@ -69,8 +69,6 @@ export default function(
 ): Promise<Array<TTransactionWithProofs<TLong> & IWithId>> {
     renderPage(React.createElement(loader, {}));
 
-    console.log('Trololo');
-
     return prepareTransactions(state, list).then((transactions) => {
         if (transactions.length !== 1) {
             return batch(transactions, state);

@@ -1,14 +1,15 @@
-import { ITransport } from './interface';
-import { IBusEvents, TBusHandlers } from '../interface';
+import { Transport } from './Transport';
+import { TBus } from './interface';
 import { Bus, WindowAdapter } from '@waves/waves-browser-bus';
 
-export class TransportIframe implements ITransport {
-    private readonly _ready: Promise<Bus<IBusEvents, TBusHandlers>>;
-    private readonly _iframe: HTMLIFrameElement;
+export class TransportIframe extends Transport {
     private static _timer: ReturnType<typeof setTimeout> | null = null;
+    private readonly _ready: Promise<TBus>;
+    private readonly _iframe: HTMLIFrameElement;
 
-    constructor(url: string, cacheKill: boolean) {
-        this._iframe = TransportIframe._createIframe(url, cacheKill);
+    constructor(url: string, queueLength: number) {
+        super(queueLength);
+        this._iframe = TransportIframe._createIframe(url);
         this._ready = WindowAdapter.createSimpleWindowAdapter(
             this._iframe
         ).then((adapter) => {
@@ -17,33 +18,6 @@ export class TransportIframe implements ITransport {
             return new Bus(adapter, -1);
         });
         this._addIframeToDom();
-    }
-
-    public sendMessage<T>(
-        callback: (bus: Bus<IBusEvents, TBusHandlers>) => Promise<T>
-    ): Promise<T> {
-        return this._ready.then((bus) => callback(bus));
-    }
-
-    public showDialog<T>(
-        callback: (bus: Bus<IBusEvents, TBusHandlers>) => Promise<T>
-    ): Promise<T> {
-        return this._ready
-            .then((bus) => {
-                this._showIframe();
-
-                return callback(bus);
-            })
-            .then((data) => {
-                this._hideIframe();
-
-                return data;
-            })
-            .catch((e) => {
-                this._hideIframe();
-
-                return Promise.reject(e);
-            });
     }
 
     public static canUse(): boolean {
@@ -55,6 +29,36 @@ export class TransportIframe implements ITransport {
             /iPad|iPhone|iPod/.test(navigator.platform);
 
         return !(iOS || isSafari);
+    }
+
+    private static _createIframe(url: string): HTMLIFrameElement {
+        const iframe = document.createElement('iframe');
+
+        iframe.style.transition = 'opacity .2s';
+        iframe.style.position = 'absolute';
+        iframe.style.opacity = '0';
+        iframe.src = url;
+
+        return iframe;
+    }
+
+    public event(callback: (bus: TBus) => void): void {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
+        this._ready.then((bus) => {
+            callback(bus);
+        });
+    }
+
+    protected async getBus(): Promise<TBus> {
+        return this._ready;
+    }
+
+    protected beforeShow(): void {
+        this._showIframe();
+    }
+
+    protected afterShow(): void {
+        this._hideIframe();
     }
 
     private _addIframeToDom(): void {
@@ -76,8 +80,8 @@ export class TransportIframe implements ITransport {
             border: 'none',
             position: 'fixed',
             display: 'block',
-            opacity: 0,
-            zIndex: 99999999,
+            opacity: '0',
+            zIndex: '99999999',
         };
 
         this._applyStyle(shownStyles);
@@ -85,13 +89,13 @@ export class TransportIframe implements ITransport {
             clearTimeout(TransportIframe._timer);
         }
         TransportIframe._timer = setTimeout(() => {
-            this._applyStyle({ opacity: 1 });
+            this._applyStyle({ opacity: '1' });
         }, 0);
     }
 
-    private _hideIframe() {
+    private _hideIframe(): void {
         const hiddenStyle = {
-            opacity: 0,
+            opacity: '0',
         };
 
         this._applyStyle(hiddenStyle);
@@ -105,30 +109,37 @@ export class TransportIframe implements ITransport {
                 left: '-100px',
                 top: '-100px',
                 position: 'absolute',
-                opacity: 0,
-                zIndex: 0,
+                opacity: '0',
+                zIndex: '0',
                 display: 'none',
             });
         }, 200);
     }
 
-    private _applyStyle(styles: object) {
-        Object.keys(styles).forEach((name: string) => {
-            const value = String(styles[name]);
-
-            this._iframe.style[name as any] = value; // TODO Fix any
+    private _applyStyle(styles: TWritableCSSStyleDeclaration): void {
+        Object.entries(styles).forEach(([name, value]) => {
+            if (value != null) {
+                this._iframe.style[name] = value;
+            }
         });
     }
-
-    private static _createIframe(
-        url: string,
-        cacheKill: boolean
-    ): HTMLIFrameElement {
-        const iframe = document.createElement('iframe');
-
-        iframe.style.transition = 'opacity .2s';
-        iframe.src = new URL(cacheKill ? `?${Date.now()}` : '', url).toString();
-
-        return iframe;
-    }
 }
+
+type TWritableCSSStyleDeclaration = Partial<
+    Pick<
+        TFilterFunctions<TFilterNumberKeys<CSSStyleDeclaration>>,
+        Exclude<keyof CSSStyleDeclaration, 'length' | 'parentRule'>
+    >
+>;
+
+type TFilterNumberKeys<T extends Record<keyof unknown, unknown>> = {
+    [Key in keyof T]: Key extends number ? never : T[Key];
+};
+
+type TNotFunction<T> = T extends (...args: Array<unknown>) => unknown
+    ? never
+    : T;
+
+type TFilterFunctions<T extends Record<keyof unknown, unknown>> = {
+    [Key in keyof T]: TNotFunction<T[Key]>;
+};

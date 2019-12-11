@@ -53,3 +53,8 @@ export interface IUser {
     address: string;
     seed: string;
 }
+
+// eslint-disable-next-line prettier/prettier
+export type TFunction<Params extends Array<any>, Return> = (
+    ...args: Params
+) => Return;

@@ -1,55 +1,60 @@
-import { ITransport } from './interface';
-import { IBusEvents, TBusHandlers } from '../interface';
+import { Transport } from './Transport';
+import { TBus } from './interface';
 import { Bus, WindowAdapter } from '@waves/waves-browser-bus';
 
-export class TransportWindow implements ITransport {
+export class TransportWindow extends Transport {
     private readonly _url: string;
-    private _messageCallback:
-        | undefined
-        | ((bus: Bus<IBusEvents, TBusHandlers>) => unknown);
+    private _messageCallback: undefined | ((bus: TBus) => unknown);
+    private _active: { win: Window; bus: TBus } | undefined;
 
-    constructor(url: string, cacheKill: boolean) {
-        this._url = new URL(cacheKill ? `?${Date.now()}` : '', url).toString();
+    constructor(url: string, queueLength: number) {
+        super(queueLength);
+        this._url = url;
     }
 
-    public sendMessage(callback: TDialogCallback<unknown>): void {
+    public event(callback: (bus: TBus) => void): void {
         this._messageCallback = callback;
     }
 
-    public async showDialog<T>(callback: TDialogCallback<T>): Promise<T> {
-        const win = window.open(this._url);
-        const origin = new URL('', this._url).origin;
+    protected beforeShow(): void {
+        return void 0;
+    }
 
-        if (win == null) {
-            throw new Error(
-                'Browser is block open new window! Try repeat in user click event!'
-            );
+    protected afterShow(): void {
+        if (this._active != null) {
+            this._active.win.close();
+            this._active.bus.destroy();
+        }
+        this._active = undefined;
+    }
+
+    protected async getBus(): Promise<TBus> {
+        if (this._active != null) {
+            return Promise.resolve(this._active.bus);
         }
 
-        return WindowAdapter.createSimpleWindowAdapter(win, {
-            origins: origin,
-        }).then((adapter) => {
-            return new Promise((resolve) => {
-                const bus = new Bus(adapter, -1);
+        const win = window.open(this._url);
+        const origins = new URL('', this._url).origin;
 
-                bus.once('ready', () => {
-                    const ready =
-                        this._messageCallback != null
-                            ? Promise.resolve(this._messageCallback(bus))
-                            : Promise.resolve();
+        if (win == null) {
+            throw new Error('Method must be called in user event!');
+        }
 
-                    return ready
-                        .then(() => callback(bus))
-                        .then((response) => {
-                            win.close();
+        const adapter = await WindowAdapter.createSimpleWindowAdapter(win, {
+            origins,
+        });
 
-                            return response;
-                        })
-                        .then(resolve);
-                });
+        const bus = new Bus(adapter, -1);
+
+        this._active = { win, bus };
+
+        return new Promise((resolve) => {
+            bus.once('ready', () => {
+                if (this._messageCallback != null) {
+                    this._messageCallback(bus);
+                }
+                resolve();
             });
         });
     }
 }
-
-type TDialogCallback<T> = (bus: Bus<IBusEvents, TBusHandlers>) => Promise<T>;
