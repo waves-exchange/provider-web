@@ -2,17 +2,15 @@
 import { libs, seedUtils } from '@waves/waves-transactions';
 import { Modal } from '../../components/Modal';
 import { Component, Fragment } from 'react';
-import { Box, CloseIcon, Logo, Text, Flex, Button } from '@waves.exchange/react-uikit';
+import { Box, Text, Flex, Button } from '@waves.exchange/react-uikit';
 import { withTheme } from 'emotion-theming';
 import React from 'react';
-import { TDefaultTheme } from '@waves.exchange/react-uikit/dist/typings/interface';
 import { IUser } from '../../../interface';
 
 interface TProps {
     networkByte: number;
     onConfirm: (user: IUser) => void;
     onCancel: () => void;
-    theme: TDefaultTheme;
 }
 interface TState {
     activeUser: string;
@@ -50,10 +48,10 @@ export default withTheme(
                         right="20px"
                         top="20px"
                     >
-                        <CloseIcon />
+                        close
                     </Box>
                     <Flex mb="20px" justifyContent="center">
-                        <Logo />
+                        logo
                     </Flex>
                     <Flex justifyContent="center" mb="10px">
                         <Text
