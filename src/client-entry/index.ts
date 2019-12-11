@@ -8,19 +8,27 @@ import { IBusEvents, TBusHandlers, IUser } from '../interface';
 import { IConnectOptions } from '@waves/waves-js/dist/src/interface';
 import sign from './router/sign';
 import { defaultTheme } from '@waves.exchange/react-uikit';
+import renderPage from './utils/renderPage';
+import React from 'react';
+import Preload from './pages/Preload';
+import { Queue } from '../utils/Queue';
 
 config.console.logLevel = config.console.LOG_LEVEL.VERBOSE;
 
+const queue = new Queue(3);
 const overlay = document.getElementById('overlay')!;
+const preload = (): void => {
+    renderPage(React.createElement(Preload));
+};
+
+preload();
 
 overlay.style.background = defaultTheme.colors.standard.$1000;
 overlay.style.opacity = '.6';
 
 WindowAdapter.createSimpleWindowAdapter()
     .then((adapter) => {
-        const bus = ((window as any).bus = new Bus<IBusEvents, TBusHandlers>(
-            adapter
-        ));
+        const bus = new Bus<IBusEvents, TBusHandlers>(adapter);
 
         const state: IState = {
             user: null,
@@ -39,19 +47,22 @@ WindowAdapter.createSimpleWindowAdapter()
         const wrapLogin = <T, R>(
             handler: (data: T, state: IState<IUser>) => Promise<R>
         ): ((data: T) => Promise<R>) => {
-            return (data) => {
-                const run = () => {
-                    try {
-                        return handler(data, state as IState<IUser>);
-                    } catch (e) {
-                        return Promise.reject(e);
+            return async (data): Promise<R> => {
+                const action = async (): Promise<R> => {
+                    const apply = async (): Promise<R> =>
+                        handler(data, state as IState<IUser>);
+
+                    if (state.user != null) {
+                        return apply();
+                    } else {
+                        return login(state)().then(apply);
                     }
                 };
 
-                if (state.user != null) {
-                    return run();
+                if (queue.canPush()) {
+                    return queue.push(action);
                 } else {
-                    return login(state)().then(run);
+                    return Promise.reject(new Error('Queue is full!'));
                 }
             };
         };

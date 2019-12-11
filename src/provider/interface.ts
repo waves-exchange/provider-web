@@ -1,9 +1,8 @@
 import { IBusEvents, TBusHandlers } from '../interface';
 import { Bus } from '@waves/waves-browser-bus';
 
+export type TBus = Bus<IBusEvents, TBusHandlers>;
 export interface ITransport {
-    sendMessage(callback: (bus: Bus<IBusEvents, TBusHandlers>) => any): void;
-    showDialog<T>(
-        callback: (bus: Bus<IBusEvents, TBusHandlers>) => Promise<T>
-    ): Promise<T>;
+    dialog<T>(callback: (bus: TBus) => Promise<T>): Promise<T>;
+    event(callback: (bus: TBus) => unknown): void;
 }
