@@ -4,11 +4,11 @@ import { Recipient } from '../../components/Recipient';
 import {
     AddressAvatar,
     Box,
+    Icon,
     Flex,
     Text,
     Button,
     iconClose,
-    Icon,
 } from '@waves.exchange/react-uikit';
 import { ISignTxProps } from '../../../interface';
 import { ITransferWithType } from '@waves/waves-js/dist/src/interface';

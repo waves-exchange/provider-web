@@ -74,7 +74,6 @@ const CreateAccount: FC<IProps> = ({
 
     return (
         <CreateAccountComponent
-            showTerms={true}
             inputPasswordId={inputPasswordId}
             inputPasswordConfirmId={inputPasswordConfirmId}
             checkboxPrivacyId={checkboxPrivacyId}

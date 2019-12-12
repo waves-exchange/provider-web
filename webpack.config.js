@@ -40,7 +40,7 @@ const build = (entry, minimize, name, library) => ({
         libraryTarget: "umd",
         globalObject: "this",
         filename: name,
-        path: resolve(__dirname, 'dist'),
+        path: resolve(__dirname, './dist'),
     }
 });
 
