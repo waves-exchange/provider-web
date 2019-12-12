@@ -7,6 +7,8 @@ import {
     Flex,
     Text,
     Button,
+    iconClose,
+    Icon,
 } from '@waves.exchange/react-uikit';
 import { ISignTxProps } from '../../../interface';
 import { ITransferWithType } from '@waves/waves-js/dist/src/interface';
@@ -37,7 +39,7 @@ export default withTheme(
                         right="20px"
                         top="20px"
                     >
-                        Close
+                        <Icon icon={iconClose} />
                     </Box>
                     <Row
                         keyData={'Sign from'}

@@ -54,8 +54,14 @@ export function hasUsers(): boolean {
     return localStorage.getItem('multiAccountData') != null;
 }
 
-export function noTerms(): boolean {
-    return localStorage.getItem('termsAccepted') !== 'true';
+export function isTermsAccepted(): boolean {
+    try {
+        const termsAccepted = localStorage.getItem('termsAccepted');
+
+        return termsAccepted ? JSON.parse(termsAccepted) : false;
+    } catch (e) {
+        return false;
+    }
 }
 
 export function saveTerms(accepted: boolean): void {
