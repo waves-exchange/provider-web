@@ -1,7 +1,6 @@
 import { Component } from 'react';
-import { Modal } from '../../components/Modal';
-import { Box, Text, Flex, Help, Button } from '@waves.exchange/react-uikit';
-import { addUser, noTerms, saveTerms } from '../../services/userService';
+import { libs } from '@waves/waves-transactions';
+import { addUser, termsAccepted, saveTerms } from '../../services/userService';
 import React from 'react';
 import { IUser } from '../../../interface';
 import { withTheme } from 'emotion-theming';
@@ -26,8 +25,8 @@ export default withTheme(
             password: '',
             confirm: '',
             wrongConfirm: false,
-            terms1: !noTerms(),
-            terms2: !noTerms(),
+            terms1: !termsAccepted(),
+            terms2: !termsAccepted(),
         };
 
         private readonly onChangePass = (e: any) => {
@@ -48,12 +47,25 @@ export default withTheme(
             });
         };
 
-        private readonly onContinue = () => {
+        private readonly onContinue = (): void => {
             if (this.state.password === this.state.confirm) {
                 saveTerms(true);
-                this.props.onConfirm(
-                    addUser(this.state.password, this.props.networkByte)
+
+                const user = addUser(
+                    libs.crypto.randomSeed(15),
+                    this.state.password,
+                    this.props.networkByte
                 );
+
+                this.props.onConfirm({
+                    address: libs.crypto.address(
+                        {
+                            publicKey: user.publicKey,
+                        },
+                        user.networkByte
+                    ),
+                    seed: user.seed as string,
+                });
             } else {
                 this.setState({ wrongConfirm: true });
             }

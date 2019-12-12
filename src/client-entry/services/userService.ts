@@ -1,63 +1,70 @@
-import { libs, seedUtils } from '@waves/waves-transactions';
-import { IUser } from '../../interface';
+import { libs } from '@waves/waves-transactions';
+import propEq from 'ramda/es/propEq';
+import {
+    decryptMultiAccountData,
+    getUserId,
+    craeteMultiAccountHash,
+} from './userUtils/userUtils';
+import { storage } from './storage';
+
+export function getUsers(
+    password: string,
+    networkByte: number
+): Array<TPrivateUserData> {
+    return Object.values(
+        decryptMultiAccountData(
+            storage.get('multiAccountData'),
+            storage.get('multiAccountHash'),
+            password,
+            5000
+        )
+    ).filter(propEq('networkByte', networkByte));
+}
 
 export function addUser(
+    seed: string,
     password: string,
-    networkByte: number,
-    rounds?: number
-): IUser {
-    console.log(networkByte, String.fromCharCode(networkByte));
-    const seed =
-        'merry help cycle scrub adult element initial old devote moon waste inside steel version post'; //libs.crypto.randomSeed(15);
-    const address = libs.crypto.address(seed, networkByte);
-    const publicKey = libs.crypto.publicKey(seed);
-    const userType = 'seed';
-
-    const id = libs.crypto.base58Encode(
-        libs.crypto.blake2b(libs.crypto.base58Decode(networkByte + publicKey))
-    );
-
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-    const users = JSON.parse(localStorage.getItem('multiAccountData') || '{}');
-    const json = JSON.stringify({
-        ...users,
-        [id]: { seed, publicKey, networkByte: networkByte, userType },
-    });
-    const multiAccountHash = libs.crypto.base58Encode(
-        libs.crypto.blake2b(libs.crypto.stringToBytes(json))
-    );
-    const multiAccountData = seedUtils.encryptSeed(
-        json,
+    networkByte: number
+): TPrivateUserData {
+    const users = decryptMultiAccountData(
+        storage.get('multiAccountData'),
+        storage.get('multiAccountHash'),
         password,
-        // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-        rounds || 5000
+        5000
     );
-    const multiAccountUsers = {
-        // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-        ...JSON.parse(localStorage.getItem('multiAccountData') || '{}'),
-        [id]: {
-            name: 'dApp User',
-        },
+    const user: TPrivateUserData = {
+        networkByte,
+        publicKey: libs.crypto.privateKey(seed),
+        seed,
+        userType: 'seed',
     };
 
-    localStorage.setItem(
-        'multiAccountUsers',
-        JSON.stringify(multiAccountUsers)
-    );
-    localStorage.setItem('multiAccountHash', multiAccountHash);
-    localStorage.setItem('multiAccountData', multiAccountData);
+    const id = getUserId(networkByte, user.publicKey);
+    const json = JSON.stringify({ ...users, [id]: user });
+    const hash = craeteMultiAccountHash(json);
 
-    return { seed, address };
+    storage.set('multiAccountHash', hash);
+    storage.set('multiAccountData', json);
+
+    return user;
 }
 
-export function hasUsers(): boolean {
-    return localStorage.getItem('multiAccountData') != null;
+export function hasMultiaccount(): boolean {
+    return storage.get('multiAccountHash') !== '';
 }
 
-export function noTerms(): boolean {
-    return localStorage.getItem('termsAccepted') !== 'true';
+export function termsAccepted(): boolean {
+    return storage.get('termsAccepted');
 }
 
 export function saveTerms(accepted: boolean): void {
-    return localStorage.setItem('termsAccepted', String(accepted));
+    return storage.set('termsAccepted', accepted);
+}
+
+export type TPrivateMultiaccountData = Record<string, TPrivateUserData>;
+export interface TPrivateUserData {
+    networkByte: number;
+    publicKey: string;
+    seed?: string;
+    userType: 'seed' | 'keeper' | 'ledger';
 }
