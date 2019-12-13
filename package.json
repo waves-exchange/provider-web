@@ -1,6 +1,6 @@
 {
   "name": "@waves.exchange/storage-provider",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "main": "dist/storage-provider.js",
   "types": "dist/storage-provider/src/provider/index.d.ts",
   "scripts": {
