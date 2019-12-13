@@ -4,7 +4,6 @@ import { Recipient } from '../../components/Recipient';
 import {
     AddressAvatar,
     Box,
-    CloseIcon,
     Flex,
     Text,
     Button,
@@ -38,7 +37,7 @@ export default withTheme(
                         right="20px"
                         top="20px"
                     >
-                        <CloseIcon />
+                        Close
                     </Box>
                     <Row
                         keyData={'Sign from'}
