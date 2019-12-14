@@ -1,7 +1,7 @@
 import React from 'react';
 import { Flex } from '@waves.exchange/react-uikit';
 import { withTheme } from 'emotion-theming';
-import { TDefaultTheme } from '@waves.exchange/react-uikit/dist/typings/interface';
+import { TDefaultTheme } from '@waves.exchange/react-uikit/dist/cjs/interface';
 
 export const Modal = withTheme((({ children, theme }) => (
     <Flex

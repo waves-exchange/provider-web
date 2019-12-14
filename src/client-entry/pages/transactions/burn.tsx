@@ -15,7 +15,7 @@ export default function(props: ISignTxProps<IBurnWithType>) {
             <div>
                 <span>Sign from</span>
                 <span>
-                    <AddressAvatar address={props.user.address} size={30} />
+                    <AddressAvatar address={props.user.address} />
                 </span>
             </div>
             <div>

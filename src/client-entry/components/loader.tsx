@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box } from '@waves/react-uikit';
+import { Box } from '@waves.exchange/react-uikit';
 
 export default function(): React.ReactElement {
     return (
