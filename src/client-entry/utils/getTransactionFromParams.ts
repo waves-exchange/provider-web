@@ -11,10 +11,12 @@ import { IUser } from '../../interface';
 import curry from 'ramda/es/curry';
 
 const fixParams = (
-    state: IState<unknown>,
+    networkByte: number,
     tx: TTransactionParamWithType
 ): TTransactionParamWithType => {
-    const updateRecipent = fixRecipient(state);
+    const updateRecipent: <T extends { recipient: string }>(
+        data: T
+    ) => T = fixRecipient(networkByte);
 
     switch (tx.type) {
         case NAME_MAP.transfer:
@@ -30,13 +32,13 @@ const fixParams = (
 
 export const getTransactionFromParams = curry(
     (
-        state: IState<IUser>,
+        { networkByte, seed }: { networkByte: number; seed: string },
         tx: TTransactionParamWithType
     ): TTransaction<TLong> & IWithId => {
         return makeTx({
-            chainId: state.networkByte,
-            senderPublicKey: libs.crypto.publicKey(state.user.seed),
-            ...fixParams(state, tx),
+            chainId: networkByte,
+            senderPublicKey: libs.crypto.publicKey(seed),
+            ...fixParams(networkByte, tx),
         } as any) as any;
     }
 );

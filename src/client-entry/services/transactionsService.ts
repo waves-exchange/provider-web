@@ -12,6 +12,7 @@ import prop from 'ramda/es/prop';
 import map from 'ramda/es/map';
 import pipe from 'ramda/es/pipe';
 import flatten from 'ramda/es/flatten';
+import uniq from 'ramda/es/uniq';
 import {
     TFeeInfo,
     calculateFee,
@@ -59,19 +60,14 @@ const getAliasByTx = (tx: TTransaction<TLong> & IWithId): Array<string> => {
     }
 };
 
-const uniqString = (list: Array<string>): Array<string> =>
-    Object.keys(
-        list.reduce((acc, item) => Object.assign(acc, { [item]: true }), {})
-    );
-
 const loadAliases = (
-    state: IState<unknown>,
+    base: string,
     list: Array<string>
 ): Promise<Record<string, string>> =>
     Promise.all(
         list.map((alias) =>
             request<{ address: string }>({
-                base: state.nodeUrl,
+                base,
                 url: `/alias/by-alias/${alias}`,
             }).then((item) => ({ [alias]: item.address }))
         )
@@ -86,17 +82,21 @@ export const prepareTransactions = (
     state: IState<IUser>,
     list: Array<TTransactionParamWithType>
 ): Promise<Array<ITransactionInfo>> => {
-    const mekeTx = getTransactionFromParams(state);
-    const transactions = list.map(mekeTx);
+    const transactions = list.map(
+        getTransactionFromParams({
+            networkByte: state.networkByte,
+            seed: state.user.seed,
+        })
+    );
     const currentFee = getFee(state);
     const assetsIdList = getAssetIdListByTx(transactions);
     const transactionsWithFee = Promise.all(transactions.map(currentFee));
-    const aliases = pipe(map(getAliasByTx), flatten, uniqString)(transactions);
+    const aliases = pipe(map(getAliasByTx), flatten, uniq)(transactions);
 
     return Promise.all([
         details(state.nodeUrl, assetsIdList),
         transactionsWithFee,
-        loadAliases(state, aliases),
+        loadAliases(state.nodeUrl, aliases),
     ]).then(([assets, transactions, aliases]) =>
         transactions.map((tx, index) => ({
             meta: {
