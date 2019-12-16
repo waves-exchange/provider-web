@@ -29,7 +29,7 @@ export default withTheme(
 
         public render(): React.ReactElement {
             const props = this.props;
-            const tx = props.tx.extended;
+            const tx = props.txInfo.tx;
 
             return (
                 <Modal>
@@ -57,7 +57,11 @@ export default withTheme(
                         keyData={'Amount'}
                         value={
                             <Text color="#fff">
-                                {toFormat(tx.amount, tx.assetId, props.assets)}
+                                {toFormat(
+                                    tx.amount,
+                                    tx.assetId,
+                                    props.txInfo.meta.assets
+                                )}
                             </Text>
                         }
                     />
@@ -71,28 +75,30 @@ export default withTheme(
                     <Row
                         keyData={'Fee'}
                         value={
-                            this.props.availableFee.length === 1 ? (
+                            props.txInfo.meta.feeList.length === 1 ? (
                                 <Text color="#fff">
                                     {toFormat(
                                         tx.fee,
                                         tx.feeAssetId,
-                                        props.assets
+                                        props.txInfo.meta.assets
                                     )}
                                 </Text>
                             ) : (
                                 <select onChange={this.onChangeFee}>
-                                    {props.availableFee.map((fee, index) => (
-                                        <option
-                                            key={fee.feeAssetId ?? 'WAVES'}
-                                            value={index}
-                                        >
-                                            {toFormat(
-                                                fee.feeAmount,
-                                                fee.feeAssetId,
-                                                props.assets
-                                            )}
-                                        </option>
-                                    ))}
+                                    {props.txInfo.meta.feeList.map(
+                                        (fee, index) => (
+                                            <option
+                                                key={fee.feeAssetId ?? 'WAVES'}
+                                                value={index}
+                                            >
+                                                {toFormat(
+                                                    fee.feeAmount,
+                                                    fee.feeAssetId,
+                                                    props.txInfo.meta.assets
+                                                )}
+                                            </option>
+                                        )
+                                    )}
                                 </select>
                             )
                         }
@@ -105,10 +111,12 @@ export default withTheme(
         }
 
         private readonly onConfirm = (): void => {
-            const fee = this.props.availableFee[this.state.activeFeeItem];
+            const fee = this.props.txInfo.meta.feeList[
+                this.state.activeFeeItem
+            ];
 
             this.props.onConfirm({
-                ...this.props.tx.extended,
+                ...this.props.txInfo.tx,
                 fee: fee.feeAmount,
                 feeAssetId: fee.feeAssetId,
             });
