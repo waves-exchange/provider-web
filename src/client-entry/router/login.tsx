@@ -1,12 +1,16 @@
 import Login from '../pages/login/Login';
-import { IState } from '../index';
 import renderPage from '../utils/renderPage';
 import { libs } from '@waves/waves-transactions';
 import { IUserData } from '@waves/waves-js/src/interface';
-import { hasUsers, saveTerms, isTermsAccepted } from '../services/userService';
+import {
+    hasMultiaccount,
+    saveTerms,
+    isTermsAccepted,
+} from '../services/userService';
 import CreateAccount from '../pages/login/CreateAccount';
 import { IUser } from '../../interface';
 import React from 'react';
+import { IState } from '../interface';
 
 export default function(state: IState) {
     return async (): Promise<IUserData> => {
@@ -16,7 +20,7 @@ export default function(state: IState) {
                 publicKey: libs.crypto.publicKey(state.user.seed),
             });
         } else {
-            const Page = hasUsers() ? Login : CreateAccount;
+            const Page = hasMultiaccount() ? Login : CreateAccount;
             const termsAccepted = isTermsAccepted();
 
             return new Promise((resolve, reject) => {

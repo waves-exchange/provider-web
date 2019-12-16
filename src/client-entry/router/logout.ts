@@ -1,4 +1,4 @@
-import { IState } from '../index';
+import { IState } from '../interface';
 
 export default function(state: IState) {
     return () => {

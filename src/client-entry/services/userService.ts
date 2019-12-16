@@ -1,69 +1,72 @@
-import { libs, seedUtils } from '@waves/waves-transactions';
-import { IUser } from '../../interface';
+import propEq from 'ramda/es/propEq';
+import allPass from 'ramda/es/allPass';
+import { getUserId } from '../utils/getUserId';
+import { storage } from './storage';
+import { TCatchable } from '../utils/catchable';
+import { libs } from '@waves/waves-transactions';
+import { IPrivateSeedUserData, TPrivateUserData } from '../interface';
 
-export function addUser(
+export function getUsers(
     password: string,
-    networkByte: number,
-    rounds?: number
-): IUser {
-    console.log(networkByte, String.fromCharCode(networkByte));
-    const seed =
-        'merry help cycle scrub adult element initial old devote moon waste inside steel version post'; //libs.crypto.randomSeed(15);
-    const address = libs.crypto.address(seed, networkByte);
-    const publicKey = libs.crypto.publicKey(seed);
-    const userType = 'seed';
+    networkByte: number
+): TCatchable<Array<IPrivateSeedUserData>> {
+    const data = storage.getPrivateData(password);
 
-    const id = libs.crypto.base58Encode(
-        libs.crypto.blake2b(libs.crypto.base58Decode(networkByte + publicKey))
-    );
+    if (!data.ok) {
+        return data;
+    }
 
-    // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-    const users = JSON.parse(localStorage.getItem('multiAccountData') || '{}');
-    const json = JSON.stringify({
-        ...users,
-        [id]: { seed, publicKey, networkByte: networkByte, userType },
-    });
-    const multiAccountHash = libs.crypto.base58Encode(
-        libs.crypto.blake2b(libs.crypto.stringToBytes(json))
-    );
-    const multiAccountData = seedUtils.encryptSeed(
-        json,
-        password,
-        // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-        rounds || 5000
-    );
-    const multiAccountUsers = {
-        // eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
-        ...JSON.parse(localStorage.getItem('multiAccountData') || '{}'),
-        [id]: {
-            name: 'dApp User',
-        },
+    return {
+        ...data,
+        resolveData: Object.values(data.resolveData).filter(
+            allPass([
+                propEq('networkByte', networkByte),
+                propEq('userType', 'seed'),
+            ]) as (data: TPrivateUserData) => data is IPrivateSeedUserData
+        ),
     };
-
-    localStorage.setItem(
-        'multiAccountUsers',
-        JSON.stringify(multiAccountUsers)
-    );
-    localStorage.setItem('multiAccountHash', multiAccountHash);
-    localStorage.setItem('multiAccountData', multiAccountData);
-
-    return { seed, address };
 }
 
-export function hasUsers(): boolean {
-    return localStorage.getItem('multiAccountData') != null;
+export function addSeedUser(
+    seed: string,
+    password: string,
+    networkByte: number
+): TCatchable<IPrivateSeedUserData> {
+    const user: IPrivateSeedUserData = {
+        networkByte,
+        seed,
+        publicKey: libs.crypto.publicKey(seed),
+        userType: 'seed',
+    };
+
+    const data = storage.getPrivateData(password);
+
+    if (!data.ok) {
+        return data;
+    }
+
+    const userId = getUserId(networkByte, user.publicKey);
+    const users = {
+        ...data.resolveData,
+        [userId]: user,
+    };
+
+    storage.setPrivateData(users, password);
+
+    return {
+        ...data,
+        resolveData: user,
+    };
+}
+
+export function hasMultiaccount(): boolean {
+    return storage.hasPrivateData();
 }
 
 export function isTermsAccepted(): boolean {
-    try {
-        const termsAccepted = localStorage.getItem('termsAccepted');
-
-        return termsAccepted ? JSON.parse(termsAccepted) : false;
-    } catch (e) {
-        return false;
-    }
+    return storage.get('termsAccepted');
 }
 
 export function saveTerms(accepted: boolean): void {
-    return localStorage.setItem('termsAccepted', String(accepted));
+    return storage.set('termsAccepted', accepted);
 }

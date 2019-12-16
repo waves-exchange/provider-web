@@ -2,7 +2,8 @@ import { withTheme } from 'emotion-theming';
 import React, { FC, MouseEventHandler, useCallback, useState } from 'react';
 import { IUser } from '../../../interface';
 import { CreateAccount as CreateAccountComponent } from '../../components/CreateAccount';
-import { addUser } from '../../services/userService';
+import { addSeedUser } from '../../services/userService';
+import { libs } from '@waves/waves-transactions';
 
 interface IProps {
     networkByte: number;
@@ -63,7 +64,25 @@ const CreateAccount: FC<IProps> = ({
     const handleSubmit = useCallback<
         MouseEventHandler<HTMLButtonElement>
     >(() => {
-        onConfirm(addUser(password, networkByte));
+        const user = addSeedUser(
+            libs.crypto.randomSeed(15),
+            password,
+            networkByte
+        );
+
+        if (!user.ok) {
+            console.error(user.rejectData);
+
+            return void 0;
+        }
+
+        onConfirm({
+            address: libs.crypto.address(
+                user.resolveData.seed,
+                user.resolveData.networkByte
+            ),
+            seed: user.resolveData.seed,
+        });
     }, [networkByte, onConfirm, password]);
 
     const isSubmitEnabled =
