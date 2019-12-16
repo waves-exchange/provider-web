@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ISignTxProps } from '../../../interface';
 import { IBurnWithType } from '@waves/waves-js/dist/src/interface';
 import { toFormat } from '../../utils';

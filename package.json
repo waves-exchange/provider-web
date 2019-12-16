@@ -1,11 +1,10 @@
 {
   "name": "@waves.exchange/storage-provider",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "main": "dist/storage-provider.js",
   "types": "dist/storage-provider/src/provider/index.d.ts",
   "scripts": {
     "watch": "webpack --watch",
-    "prepare": "webpack -c ./webpack.config.js",
     "postversion": "npm publish",
     "prettier": "prettier --ignore-path .gitignore \"./src/**/*.+(ts|tsx)\"",
     "format": "npm run prettier -- --write",
@@ -33,7 +32,7 @@
     "@types/react": "^16.9.15",
     "@types/react-dom": "^16.9.4",
     "@types/styled-system": "^5.1.4",
-    "@waves.exchange/react-uikit": "^0.1.2",
+    "@waves.exchange/react-uikit": "^0.2.0",
     "@waves/bignumber": "0.0.1",
     "@waves/blockchain-api": "0.0.7",
     "@waves/ts-types": "^0.3.0",
@@ -44,6 +43,7 @@
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "styled-system": "^5.1.4",
+    "tslib": "^1.10.0",
     "typed-ts-events": "^1.0.5"
   },
   "devDependencies": {

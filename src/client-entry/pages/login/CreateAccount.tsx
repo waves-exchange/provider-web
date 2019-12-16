@@ -1,101 +1,116 @@
-import { Component } from 'react';
-import { libs } from '@waves/waves-transactions';
-import {
-    addSeedUser,
-    termsAccepted,
-    saveTerms,
-} from '../../services/userService';
-import React from 'react';
-import { IUser } from '../../../interface';
 import { withTheme } from 'emotion-theming';
+import React, { FC, MouseEventHandler, useCallback, useState } from 'react';
+import { IUser } from '../../../interface';
+import { CreateAccount as CreateAccountComponent } from '../../components/CreateAccount';
+import { addSeedUser } from '../../services/userService';
+import { libs } from '@waves/waves-transactions';
 
-interface TState {
-    password: string;
-    confirm: string;
-    wrongConfirm: boolean;
-    terms1: boolean;
-    terms2: boolean;
-}
-
-interface TProps {
+interface IProps {
     networkByte: number;
+    isPrivacyAccepted: boolean;
+    isTermsAccepted: boolean;
     onConfirm: (user: IUser) => void;
     onCancel: () => void;
 }
 
-export default withTheme(
-    class CreateAccount extends Component<TProps, TState> {
-        public state: TState = {
-            password: '',
-            confirm: '',
-            wrongConfirm: false,
-            terms1: !termsAccepted(),
-            terms2: !termsAccepted(),
-        };
+const CreateAccount: FC<IProps> = ({
+    networkByte,
+    onConfirm,
+    onCancel,
+    isPrivacyAccepted: isPrivacyAcceptedProp,
+    isTermsAccepted: isTermsAcceptedProp,
+}) => {
+    const [isPrivacyAccepted, setPrivacyAccepted] = useState<boolean>(
+        isPrivacyAcceptedProp
+    );
+    const [isTermsAccepted, setTermsAccepted] = useState<boolean>(
+        isTermsAcceptedProp
+    );
+    const [password, setPassword] = useState<string>('');
+    const [passwordConfirm, setPasswordConfirm] = useState<string>('');
 
-        private readonly onChangePass = (e: any) => {
-            const input = e.target as HTMLInputElement;
+    const inputPasswordId = 'password';
+    const inputPasswordConfirmId = 'password-confirm';
+    const checkboxPrivacyId = 'privacy';
+    const checkboxTermsId = 'terms';
 
-            this.setState({
-                password: input.value,
-                wrongConfirm: false,
-            });
-        };
-
-        private readonly onChangeConfirm = (e: any) => {
-            const input = e.target as HTMLInputElement;
-
-            this.setState({
-                confirm: input.value,
-                wrongConfirm: false,
-            });
-        };
-
-        private readonly onContinue = (): void => {
-            if (this.state.password === this.state.confirm) {
-                saveTerms(true);
-
-                const user = addSeedUser(
-                    libs.crypto.randomSeed(15),
-                    this.state.password,
-                    this.props.networkByte
-                );
-
-                if (!user.ok) {
-                    console.error("Can't save data");
-
-                    return void 0;
-                }
-
-                this.props.onConfirm({
-                    address: libs.crypto.address(
-                        {
-                            publicKey: user.resolveData.publicKey,
-                        },
-                        user.resolveData.networkByte
-                    ),
-                    seed: user.resolveData.seed,
-                });
-            } else {
-                this.setState({ wrongConfirm: true });
+    const handleInputChange = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>): void => {
+            switch (event.target.id) {
+                case inputPasswordId:
+                    setPassword(event.target.value);
+                    break;
+                case inputPasswordConfirmId:
+                    setPasswordConfirm(event.target.value);
+                    break;
+                case checkboxPrivacyId:
+                    setPrivacyAccepted(!isPrivacyAccepted);
+                    break;
+                case checkboxTermsId:
+                    setTermsAccepted(!isTermsAccepted);
+                    break;
+                default:
+                    break;
             }
-        };
+        },
+        [isPrivacyAccepted, isTermsAccepted]
+    );
 
-        public render() {
-            const hasTerms = this.state.terms1 && this.state.terms2;
-            const disabled = !(
-                this.state.password.length !== 0 &&
-                this.state.password === this.state.confirm &&
-                hasTerms
-            );
+    const handleClose = useCallback<MouseEventHandler<HTMLButtonElement>>(
+        () => onCancel(),
+        [onCancel]
+    );
 
-            return <p>modal</p>;
+    const handleSubmit = useCallback<
+        MouseEventHandler<HTMLButtonElement>
+    >(() => {
+        const user = addSeedUser(
+            libs.crypto.randomSeed(15),
+            password,
+            networkByte
+        );
+
+        if (!user.ok) {
+            console.error(user.rejectData);
+
+            return void 0;
         }
 
-        private createAcceptTermsHander(field: 'terms1' | 'terms2') {
-            return (event: React.ChangeEvent<HTMLInputElement>) => {
-                this.setState({ [field]: event.currentTarget!.checked } as any);
-            };
-        }
-    }
-);
+        onConfirm({
+            address: libs.crypto.address(
+                user.resolveData.seed,
+                user.resolveData.networkByte
+            ),
+            seed: user.resolveData.seed,
+        });
+    }, [networkByte, onConfirm, password]);
+
+    const isSubmitEnabled =
+        password.length > 0 &&
+        password === passwordConfirm &&
+        isPrivacyAccepted &&
+        isTermsAccepted;
+
+    return (
+        <CreateAccountComponent
+            inputPasswordId={inputPasswordId}
+            inputPasswordConfirmId={inputPasswordConfirmId}
+            checkboxPrivacyId={checkboxPrivacyId}
+            checkboxTermsId={checkboxTermsId}
+            onClose={handleClose}
+            onSubmit={handleSubmit}
+            password={password}
+            passwordConfirm={passwordConfirm}
+            isPrivacyAccepted={isPrivacyAccepted}
+            isTermsAccepted={isTermsAccepted}
+            onPrivacyAcceptedChange={handleInputChange}
+            onTermsAcceptedChange={handleInputChange}
+            onPasswordChange={handleInputChange}
+            onPasswordConfirmChange={handleInputChange}
+            isSubmitDisabled={!isSubmitEnabled}
+            showTerms={!isPrivacyAcceptedProp && !isTermsAcceptedProp}
+        />
+    );
+};
+
+export default withTheme(CreateAccount);

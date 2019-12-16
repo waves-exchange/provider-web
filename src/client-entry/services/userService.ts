@@ -63,7 +63,7 @@ export function hasMultiaccount(): boolean {
     return storage.hasPrivateData();
 }
 
-export function termsAccepted(): boolean {
+export function isTermsAccepted(): boolean {
     return storage.get('termsAccepted');
 }
 
