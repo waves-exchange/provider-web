@@ -2,15 +2,11 @@ import Login from '../pages/login/Login';
 import renderPage from '../utils/renderPage';
 import { libs } from '@waves/waves-transactions';
 import { IUserData } from '@waves/waves-js/src/interface';
-<<<<<<< HEAD
 import {
     hasMultiaccount,
     saveTerms,
     isTermsAccepted,
 } from '../services/userService';
-=======
-import { hasMultiaccount } from '../services/userService';
->>>>>>> Refactor
 import CreateAccount from '../pages/login/CreateAccount';
 import { IUser } from '../../interface';
 import React from 'react';
