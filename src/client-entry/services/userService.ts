@@ -60,11 +60,3 @@ export function termsAccepted(): boolean {
 export function saveTerms(accepted: boolean): void {
     return storage.set('termsAccepted', accepted);
 }
-
-export type TPrivateMultiaccountData = Record<string, TPrivateUserData>;
-export interface TPrivateUserData {
-    networkByte: number;
-    publicKey: string;
-    seed?: string;
-    userType: 'seed' | 'keeper' | 'ledger';
-}
