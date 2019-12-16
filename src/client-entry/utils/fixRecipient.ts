@@ -1,5 +1,5 @@
 import { MAX_ALIAS_LENGTH } from '../../constants';
-import { IState } from '../index';
+import { IState } from '../interface';
 
 export function fixRecipient(
     state: IState<unknown>

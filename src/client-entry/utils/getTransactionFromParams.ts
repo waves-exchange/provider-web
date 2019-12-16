@@ -1,6 +1,9 @@
-import { TTransactionParamWithType, TLong } from '@waves/waves-js/dist/src/interface';
+import {
+    TTransactionParamWithType,
+    TLong,
+} from '@waves/waves-js/dist/src/interface';
 import { TTransaction, IWithId } from '@waves/ts-types';
-import { IState } from '../index';
+import { IState } from '../interface';
 import { fixRecipient } from './fixRecipient';
 import { NAME_MAP } from '../../constants';
 import { makeTx, libs } from '@waves/waves-transactions';
@@ -25,13 +28,15 @@ const fixParams = (
     }
 };
 
-export const getTransactionFromParams = curry((
-    state: IState<IUser>,
-    tx: TTransactionParamWithType
-): TTransaction<TLong> & IWithId => {
-    return makeTx({
-        chainId: state.networkByte,
-        senderPublicKey: libs.crypto.publicKey(state.user.seed),
-        ...fixParams(state, tx),
-    } as any) as any;
-});
+export const getTransactionFromParams = curry(
+    (
+        state: IState<IUser>,
+        tx: TTransactionParamWithType
+    ): TTransaction<TLong> & IWithId => {
+        return makeTx({
+            chainId: state.networkByte,
+            senderPublicKey: libs.crypto.publicKey(state.user.seed),
+            ...fixParams(state, tx),
+        } as any) as any;
+    }
+);

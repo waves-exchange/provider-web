@@ -1,9 +1,9 @@
-import { IState } from '../interface';
 import renderPage from '../utils/renderPage';
 import { customData, libs } from '@waves/waves-transactions';
 import signCustom from '../pages/signCustom';
 import React from 'react';
 import { IUser } from '../../interface';
+import { IState } from '../interface';
 
 export default function(
     data: string | number,

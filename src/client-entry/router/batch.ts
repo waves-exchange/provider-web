@@ -4,11 +4,11 @@ import { TLong } from '@waves/waves-js/dist/src/interface';
 import batchPage from '../pages/batch';
 import { IWithId, TTransactionWithProofs } from '@waves/ts-types';
 import { libs, signTx } from '@waves/waves-transactions';
-import { TTransactionData } from '../utils';
 import { IUser } from '../../interface';
+import { ITransactionInfo } from '../services/transactionsService';
 
 export default function(
-    list: Array<TTransactionData>,
+    list: Array<ITransactionInfo>,
     state: IState<IUser>
 ): Promise<Array<TTransactionWithProofs<TLong> & IWithId>> {
     return new Promise((resolve, reject) => {
@@ -24,7 +24,7 @@ export default function(
                 onConfirm: () => {
                     resolve(
                         list.map((item) =>
-                            signTx(item.extended as any, state.user.seed)
+                            signTx(item.tx as any, state.user.seed)
                         ) as any
                     ); // TODO Fix types
                 },
