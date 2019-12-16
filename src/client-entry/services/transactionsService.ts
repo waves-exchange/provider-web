@@ -71,8 +71,8 @@ const loadAliases = (
                 url: `/alias/by-alias/${alias}`,
             }).then((item) => ({ [alias]: item.address }))
         )
-    ).then((list) =>
-        list.reduce(
+    ).then((addressInfo) =>
+        addressInfo.reduce(
             (acc, item) => Object.assign(acc, item),
             Object.create(null)
         )
