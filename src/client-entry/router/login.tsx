@@ -1,10 +1,10 @@
-import Login from '../pages/login/Login';
 import { IState } from '../index';
 import renderPage from '../utils/renderPage';
 import { libs } from '@waves/waves-transactions';
 import { IUserData } from '@waves/waves-js/src/interface';
 import { hasUsers, saveTerms, isTermsAccepted } from '../services/userService';
-import CreateAccount from '../pages/login/CreateAccount';
+import { CreateAccount } from '../pages/CreateAccount/container';
+import { Login } from '../pages/Login/container';
 import { IUser } from '../../interface';
 import React from 'react';
 

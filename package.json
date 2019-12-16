@@ -38,6 +38,7 @@
     "@waves/waves-browser-bus": "^0.2.3",
     "@waves/waves-transactions": "^3.20.2",
     "emotion-theming": "^10.0.19",
+    "ramda": "^0.26.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "styled-system": "^5.1.4",
