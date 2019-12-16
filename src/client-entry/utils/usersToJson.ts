@@ -1,4 +1,4 @@
-import { TPrivateMultiaccountData } from '../services/storage';
+import { TPrivateMultiaccountData } from '../interface';
 
 const serializeUsers = JSON.stringify.bind(JSON);
 

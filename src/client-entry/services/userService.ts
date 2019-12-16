@@ -1,6 +1,6 @@
 import propEq from 'ramda/es/propEq';
 import allPass from 'ramda/es/allPass';
-import getUserId from '../utils/getUserId';
+import { getUserId } from '../utils/getUserId';
 import { storage } from './storage';
 import { TCatchable } from '../utils/catchable';
 import { libs } from '@waves/waves-transactions';

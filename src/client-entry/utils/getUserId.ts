@@ -1,7 +1,7 @@
 import pipe from 'ramda/es/pipe';
 import { libs } from '@waves/waves-transactions';
 
-export default (networkByte: number, publicKey: string): string => {
+export const getUserId = (networkByte: number, publicKey: string): string => {
     return pipe(
         libs.crypto.base58Decode,
         libs.crypto.blake2b,

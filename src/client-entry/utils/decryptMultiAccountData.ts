@@ -1,8 +1,8 @@
-import { TPrivateMultiaccountData } from '../services/storage';
+import { TPrivateMultiaccountData } from '../interface';
 import { libs } from '@waves/waves-transactions';
 import isValidUsersDataJSON from './isValidUsersDataJSON';
 
-export default (
+export const decryptMultiAccountData = (
     users: string,
     hash: string,
     passowrd: string,

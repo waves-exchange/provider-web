@@ -1,8 +1,8 @@
 import isNil from 'ramda/es/isNil';
 import { catchable, TCatchable } from '../utils/catchable';
-import craeteMultiAccountHash from '../utils/craeteMultiAccountHash';
-import decryptMultiAccountData from '../utils/decryptMultiAccountData';
-import encryptMultiAccountData from '../utils/encryptMultiAccountData';
+import { craeteMultiAccountHash } from '../utils/craeteMultiAccountHash';
+import { decryptMultiAccountData } from '../utils/decryptMultiAccountData';
+import { encryptMultiAccountData } from '../utils/encryptMultiAccountData';
 import { IUserStorageInfo, TPrivateMultiaccountData } from '../interface';
 
 class StorageService {

@@ -1,4 +1,4 @@
-import { IState } from '../index';
+import { IState } from '../interface';
 import renderPage from '../utils/renderPage';
 import {
     TLong,

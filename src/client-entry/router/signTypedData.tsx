@@ -1,4 +1,4 @@
-import { IState } from '../index';
+import { IState } from '../interface';
 import renderPage from '../utils/renderPage';
 import signCustom from '../pages/signCustom';
 import { customData } from '@waves/waves-transactions';

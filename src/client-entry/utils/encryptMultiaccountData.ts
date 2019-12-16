@@ -1,8 +1,8 @@
-import { TPrivateMultiaccountData } from '../services/storage';
+import { TPrivateMultiaccountData } from '../interface';
 import { libs } from '@waves/waves-transactions';
 import usersToJson from './usersToJson';
 
-export default (
+export const encryptMultiAccountData = (
     users: TPrivateMultiaccountData,
     passowrd: string,
     rounds = 5000

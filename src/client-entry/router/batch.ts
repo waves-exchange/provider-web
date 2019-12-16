@@ -1,4 +1,4 @@
-import { IState } from '../index';
+import { IState } from '../interface';
 import renderPage from '../utils/renderPage';
 import { TLong } from '@waves/waves-js/dist/src/interface';
 import batchPage from '../pages/batch';
