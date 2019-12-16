@@ -11,8 +11,6 @@ import {
     TTransactionMap,
     TTransactionWithProofs,
 } from '@waves/ts-types';
-import { TFeeInfo } from '@waves/blockchain-api/dist/cjs/api-node/transactions';
-import { TAssetDetails } from '@waves/blockchain-api/dist/cjs/api-node/assets';
 import { TMeta } from './client-entry/services/transactionsService';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions

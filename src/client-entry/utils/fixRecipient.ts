@@ -1,6 +1,5 @@
 import { MAX_ALIAS_LENGTH } from '../../constants';
 import curry from 'ramda/es/curry';
-import { IState } from '../interface';
 
 export const fixRecipient = curry(
     <T extends { recipient: string }>(networkByte: number, data: T): T => {

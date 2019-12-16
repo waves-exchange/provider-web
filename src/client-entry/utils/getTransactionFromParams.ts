@@ -3,11 +3,9 @@ import {
     TLong,
 } from '@waves/waves-js/dist/src/interface';
 import { TTransaction, IWithId } from '@waves/ts-types';
-import { IState } from '../interface';
 import { fixRecipient } from './fixRecipient';
 import { NAME_MAP } from '../../constants';
 import { makeTx, libs } from '@waves/waves-transactions';
-import { IUser } from '../../interface';
 import curry from 'ramda/es/curry';
 
 const fixParams = (

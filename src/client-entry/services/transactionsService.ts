@@ -2,63 +2,25 @@ import {
     TTransactionParamWithType,
     TLong,
 } from '@waves/waves-js/dist/src/interface';
-import { SPONSORED_TYPES, NAME_MAP } from '../../constants';
+import { loadFeeByTransaction } from '../utils/loadFeeByTransaction';
+import { getAliasByTx } from '../utils/getAliasByTx';
 import { TTransaction, IWithId } from '@waves/ts-types';
 import { getTransactionFromParams } from '../utils/getTransactionFromParams';
 import { IUser } from '../../interface';
-import curry from 'ramda/es/curry';
 import indexBy from 'ramda/es/indexBy';
 import prop from 'ramda/es/prop';
 import map from 'ramda/es/map';
 import pipe from 'ramda/es/pipe';
 import flatten from 'ramda/es/flatten';
 import uniq from 'ramda/es/uniq';
-import {
-    TFeeInfo,
-    calculateFee,
-} from '@waves/blockchain-api/dist/cjs/api-node/transactions';
+import { TFeeInfo } from '@waves/blockchain-api/dist/cjs/api-node/transactions';
 import getAssetIdListByTx from '@waves/blockchain-api/dist/cjs/tools/adresses/getAssetIdListByTx';
 import {
     details,
     TAssetDetails,
 } from '@waves/blockchain-api/dist/cjs/api-node/assets';
-import { isAddress } from '../utils/isAddress';
 import request from '@waves/blockchain-api/dist/cjs/tools/request';
 import { IState } from '../interface';
-import { alias } from '@waves/waves-transactions';
-
-const canBeSponsored = (tx: TTransaction<TLong> & IWithId): boolean =>
-    SPONSORED_TYPES.includes(tx.type);
-
-const getFee = curry(
-    (
-        state: IState<IUser>,
-        tx: TTransaction<TLong> & IWithId
-    ): Promise<TTransaction<TLong> & IWithId> =>
-        canBeSponsored(tx)
-            ? calculateFee(state.nodeUrl, tx)
-                  .then((info) => ({ ...tx, fee: info.feeAmount }))
-                  .catch(() => ({ ...tx }))
-            : Promise.resolve({ ...tx })
-);
-
-const getAliasByTx = (tx: TTransaction<TLong> & IWithId): Array<string> => {
-    switch (tx.type) {
-        case NAME_MAP.transfer:
-        case NAME_MAP.lease:
-            return isAddress(tx.recipient) ? [] : [tx.recipient];
-        case NAME_MAP.massTransfer:
-            return tx.transfers.reduce<Array<string>>((acc, transfer) => {
-                if (!isAddress(transfer.recipient)) {
-                    acc.push(transfer.recipient);
-                }
-
-                return acc;
-            }, []);
-        default:
-            return [];
-    }
-};
 
 const loadAliases = (
     base: string,
@@ -88,16 +50,17 @@ export const prepareTransactions = (
             seed: state.user.seed,
         })
     );
-    const currentFee = getFee(state);
     const assetsIdList = getAssetIdListByTx(transactions);
-    const transactionsWithFee = Promise.all(transactions.map(currentFee));
+    const transactionsWithFee = Promise.all(
+        transactions.map(loadFeeByTransaction(state.nodeUrl))
+    );
     const aliases = pipe(map(getAliasByTx), flatten, uniq)(transactions);
 
     return Promise.all([
-        details(state.nodeUrl, assetsIdList),
         transactionsWithFee,
+        details(state.nodeUrl, assetsIdList),
         loadAliases(state.nodeUrl, aliases),
-    ]).then(([assets, transactions, aliases]) =>
+    ]).then(([transactions, assets, aliases]) =>
         transactions.map((tx, index) => ({
             meta: {
                 feeList: [],
