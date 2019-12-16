@@ -137,10 +137,7 @@ export const CreateAccount: FC<IProps> = ({
                                     I have read and agree with the&nbsp;
                                 </Text>
                             </Checkbox>
-                            <ExternalLink
-                                href="https://waves.exchange/files/Privacy_Policy_Waves.Exchange.pdf"
-                                variant="body2"
-                            >
+                            <ExternalLink href="#" variant="body2">
                                 Privacy policy
                             </ExternalLink>
                         </Flex>
@@ -156,10 +153,7 @@ export const CreateAccount: FC<IProps> = ({
                                     I have read and agree with the&nbsp;
                                 </Text>
                             </Checkbox>
-                            <ExternalLink
-                                href="https://waves.exchange/files/Terms_Of_Use_Waves.Exchange.pdf"
-                                variant="body2"
-                            >
+                            <ExternalLink href="#" variant="body2">
                                 Terms and Conditions
                             </ExternalLink>
                         </Flex>
