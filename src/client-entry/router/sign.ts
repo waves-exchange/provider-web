@@ -1,4 +1,3 @@
-import { IState } from '../interface';
 import renderPage from '../utils/renderPage';
 import {
     TLong,
@@ -22,11 +21,12 @@ import invokePage from '../pages/transactions/invoke';
 import { IWithId, TTransactionWithProofs } from '@waves/ts-types';
 import { NAME_MAP } from '../../constants';
 import batch from './batch';
-import { prepareTransactions } from '../utils';
 import { libs, signTx } from '@waves/waves-transactions';
 import { ISignTxProps, IUser } from '../../interface';
 import loader from '../components/loader';
+import { prepareTransactions } from '../services/transactionsService';
 import React from 'react';
+import { IState } from '../interface';
 
 const getPageByType = (type: keyof TRANSACTION_TYPE_MAP) => {
     switch (type) {
@@ -79,16 +79,14 @@ export default function(
         return new Promise((resolve, reject) => {
             renderPage(
                 React.createElement(
-                    getPageByType(tx.origin.type) as any,
+                    getPageByType(tx.params.type) as any,
                     {
                         networkByte: state.networkByte,
-                        assets: tx.assets,
                         user: {
                             address: state.user.address,
                             publicKey: libs.crypto.publicKey(state.user.seed),
                         },
-                        tx: tx,
-                        availableFee: tx.feeList,
+                        txInfo: tx as any, // TODO Fix types
                         onConfirm: (transaction) => {
                             resolve(
                                 signTx(

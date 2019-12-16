@@ -5,7 +5,7 @@ import { IReissueWithType } from '@waves/waves-js/dist/src/interface';
 import { toFormat } from '../../utils';
 
 export default function(props: ISignTxProps<IReissueWithType>) {
-    const tx = props.tx.extended;
+    const tx = props.txInfo.tx;
 
     return (
         <div>
@@ -40,7 +40,7 @@ export default function(props: ISignTxProps<IReissueWithType>) {
             </div>
             <div>
                 <span>Fee</span>
-                <span>{toFormat(tx.fee, null, props.assets)}</span>
+                <span>{toFormat(tx.fee, null, props.txInfo.meta.assets)}</span>
             </div>
             <div>
                 <button onClick={props.onCancel}>Cancel</button>

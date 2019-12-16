@@ -6,7 +6,7 @@ import React from 'react';
 import { AddressAvatar } from '@waves.exchange/react-uikit';
 
 export default function(props: ISignTxProps<IBurnWithType>) {
-    const tx = props.tx.extended;
+    const tx = props.txInfo.tx;
 
     return (
         <div>
@@ -33,7 +33,13 @@ export default function(props: ISignTxProps<IBurnWithType>) {
             </div>
             <div>
                 <span>Quantity</span>
-                <span>{toFormat(tx.quantity, tx.assetId, props.assets)}</span>
+                <span>
+                    {toFormat(
+                        tx.quantity,
+                        tx.assetId,
+                        props.txInfo.meta.assets
+                    )}
+                </span>
             </div>
             <div>
                 <span>Fee</span>

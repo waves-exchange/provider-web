@@ -11,8 +11,7 @@ import {
     TTransactionMap,
     TTransactionWithProofs,
 } from '@waves/ts-types';
-import { TFeeInfo } from '@waves/blockchain-api/dist/cjs/api-node/transactions';
-import { TAssetDetails } from '@waves/blockchain-api/dist/cjs/api-node/assets';
+import { TMeta } from './client-entry/services/transactionsService';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type TBusHandlers = {
@@ -35,16 +34,15 @@ export interface IBusEvents {
 
 export interface ISignTxProps<T extends TTransactionParamWithType> {
     networkByte: number;
-    assets: Record<string, TAssetDetails<TLong>>;
     user: {
         address: string;
         publicKey: string;
     };
-    tx: {
-        origin: T;
-        extended: TTransactionMap<TLong>[T['type']] & IWithId;
+    txInfo: {
+        meta: TMeta;
+        prams: T;
+        tx: TTransactionMap<TLong>[T['type']] & IWithId;
     };
-    availableFee: Array<TFeeInfo>;
     onConfirm: (tx: TTransaction<TLong>) => void;
     onCancel: () => void;
 }
