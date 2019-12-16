@@ -5,6 +5,7 @@ import signTypedData from './router/signTypedData';
 import signMessage from './router/signMessage';
 import signBytes from './router/signBytes';
 import { IBusEvents, TBusHandlers, IUser } from '../interface';
+import { IState } from './interface';
 import { IConnectOptions } from '@waves/waves-js/dist/src/interface';
 import sign from './router/sign';
 import { defaultTheme } from '@waves.exchange/react-uikit';
@@ -83,11 +84,3 @@ WindowAdapter.createSimpleWindowAdapter()
         bus.dispatchEvent('ready', void 0);
     })
     .catch(console.error);
-
-export interface IState<USER = IUser | null> {
-    user: USER;
-    needConfirm: boolean;
-    networkByte: number;
-    nodeUrl: string;
-    matcherUrl: string;
-}

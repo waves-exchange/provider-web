@@ -1,6 +1,10 @@
 import { Component } from 'react';
 import { libs } from '@waves/waves-transactions';
-import { addUser, termsAccepted, saveTerms } from '../../services/userService';
+import {
+    addSeedUser,
+    termsAccepted,
+    saveTerms,
+} from '../../services/userService';
 import React from 'react';
 import { IUser } from '../../../interface';
 import { withTheme } from 'emotion-theming';
@@ -51,20 +55,26 @@ export default withTheme(
             if (this.state.password === this.state.confirm) {
                 saveTerms(true);
 
-                const user = addUser(
+                const user = addSeedUser(
                     libs.crypto.randomSeed(15),
                     this.state.password,
                     this.props.networkByte
                 );
 
+                if (!user.ok) {
+                    console.error("Can't save data");
+
+                    return void 0;
+                }
+
                 this.props.onConfirm({
                     address: libs.crypto.address(
                         {
-                            publicKey: user.publicKey,
+                            publicKey: user.resolveData.publicKey,
                         },
-                        user.networkByte
+                        user.resolveData.networkByte
                     ),
-                    seed: user.seed as string,
+                    seed: user.resolveData.seed,
                 });
             } else {
                 this.setState({ wrongConfirm: true });

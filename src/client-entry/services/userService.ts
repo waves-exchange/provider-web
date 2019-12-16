@@ -1,56 +1,66 @@
-import { libs } from '@waves/waves-transactions';
 import propEq from 'ramda/es/propEq';
-import {
-    decryptMultiAccountData,
-    getUserId,
-    craeteMultiAccountHash,
-} from './userUtils/userUtils';
+import allPass from 'ramda/es/allPass';
+import getUserId from '../utils/getUserId';
 import { storage } from './storage';
+import { TCatchable } from '../utils/catchable';
+import { libs } from '@waves/waves-transactions';
+import { IPrivateSeedUserData, TPrivateUserData } from '../interface';
 
 export function getUsers(
     password: string,
     networkByte: number
-): Array<TPrivateUserData> {
-    return Object.values(
-        decryptMultiAccountData(
-            storage.get('multiAccountData'),
-            storage.get('multiAccountHash'),
-            password,
-            5000
-        )
-    ).filter(propEq('networkByte', networkByte));
+): TCatchable<Array<IPrivateSeedUserData>> {
+    const data = storage.getPrivateData(password);
+
+    if (!data.ok) {
+        return data;
+    }
+
+    return {
+        ...data,
+        resolveData: Object.values(data.resolveData).filter(
+            allPass([
+                propEq('networkByte', networkByte),
+                propEq('userType', 'seed'),
+            ]) as (data: TPrivateUserData) => data is IPrivateSeedUserData
+        ),
+    };
 }
 
-export function addUser(
+export function addSeedUser(
     seed: string,
     password: string,
     networkByte: number
-): TPrivateUserData {
-    const users = decryptMultiAccountData(
-        storage.get('multiAccountData'),
-        storage.get('multiAccountHash'),
-        password,
-        5000
-    );
-    const user: TPrivateUserData = {
+): TCatchable<IPrivateSeedUserData> {
+    const user: IPrivateSeedUserData = {
         networkByte,
-        publicKey: libs.crypto.privateKey(seed),
         seed,
+        publicKey: libs.crypto.publicKey(seed),
         userType: 'seed',
     };
 
-    const id = getUserId(networkByte, user.publicKey);
-    const json = JSON.stringify({ ...users, [id]: user });
-    const hash = craeteMultiAccountHash(json);
+    const data = storage.getPrivateData(password);
 
-    storage.set('multiAccountHash', hash);
-    storage.set('multiAccountData', json);
+    if (!data.ok) {
+        return data;
+    }
 
-    return user;
+    const userId = getUserId(networkByte, user.publicKey);
+    const users = {
+        ...data.resolveData,
+        [userId]: user,
+    };
+
+    storage.setPrivateData(users, password);
+
+    return {
+        ...data,
+        resolveData: user,
+    };
 }
 
 export function hasMultiaccount(): boolean {
-    return storage.get('multiAccountHash') !== '';
+    return storage.hasPrivateData();
 }
 
 export function termsAccepted(): boolean {
