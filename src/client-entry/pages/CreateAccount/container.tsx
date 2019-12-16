@@ -1,8 +1,7 @@
-import { withTheme } from 'emotion-theming';
 import React, { FC, MouseEventHandler, useCallback, useState } from 'react';
 import { IUser } from '../../../interface';
-import { CreateAccount as CreateAccountComponent } from '../../components/CreateAccount';
 import { addUser } from '../../services/userService';
+import { CreateAccount as CreateAccountComponent } from './component';
 
 interface IProps {
     networkByte: number;
@@ -12,7 +11,7 @@ interface IProps {
     onCancel: () => void;
 }
 
-const CreateAccount: FC<IProps> = ({
+export const CreateAccount: FC<IProps> = ({
     networkByte,
     onConfirm,
     onCancel,
@@ -93,5 +92,3 @@ const CreateAccount: FC<IProps> = ({
         />
     );
 };
-
-export default withTheme(CreateAccount);
