@@ -19,7 +19,6 @@ import {
     uniq,
 } from '@waves/blockchain-api/dist/cjs/tools/utils';
 import { libs, makeTx } from '@waves/waves-transactions';
-import { IState } from '../index';
 import { MAX_ALIAS_LENGTH, NAME_MAP, WAVES } from '../../constants';
 import { BigNumber } from '@waves/bignumber';
 import availableSponsoredBalances, {
@@ -27,6 +26,7 @@ import availableSponsoredBalances, {
 } from '@waves/blockchain-api/dist/cjs/tools/adresses/availableSponsoredBalances';
 import getAssetIdListByTx from '@waves/blockchain-api/dist/cjs/tools/adresses/getAssetIdListByTx';
 import { IUser } from '../../interface';
+import { IState } from '../interface';
 
 export const toArray = <T>(data: T | Array<T>): Array<T> =>
     Array.isArray(data) ? data : [data];
