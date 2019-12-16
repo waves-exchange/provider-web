@@ -2,7 +2,7 @@
 import { libs, seedUtils } from '@waves/waves-transactions';
 import { Modal } from '../../components/Modal';
 import { Component, Fragment } from 'react';
-import { Box, Text, Flex, Button } from '@waves.exchange/react-uikit';
+import { Box, Text, Flex, Button, Icon, iconClose } from '@waves.exchange/react-uikit';
 import { withTheme } from 'emotion-theming';
 import React from 'react';
 import { IUser } from '../../../interface';
@@ -48,7 +48,7 @@ export default withTheme(
                         right="20px"
                         top="20px"
                     >
-                        close
+                        <Icon icon={iconClose} />
                     </Box>
                     <Flex mb="20px" justifyContent="center">
                         logo

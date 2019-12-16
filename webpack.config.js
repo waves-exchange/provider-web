@@ -33,6 +33,7 @@ const build = (entry, minimize, name, library) => ({
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
+        modules: ['node_modules']
     },
     output: {
         library,
@@ -45,10 +46,10 @@ const build = (entry, minimize, name, library) => ({
 
 const main = (entry, name, library) => [
     build(entry, false, `${name}.js`, library),
-    // build(entry, true, `${name}.min.js`, library)
+    build(entry, true, `${name}.min.js`, library)
 ];
 
 module.exports = [
-    ...main('src/client-entry/index.ts', 'provider-client'),
-    ...main('src/provider/index.ts', 'storage-provider', 'storageProvider')
+    ...main('./src/client-entry/index.ts', 'provider-client'),
+    ...main('./src/provider/index.ts', 'storage-provider', 'storageProvider')
 ];
