@@ -13,8 +13,30 @@ import {
     ExternalLink,
     iconClose,
     iconLogo,
+    RadioGroup,
+    AddressAvatar,
+    RadioProps,
+    iconCheck,
+    Radio,
 } from '@waves.exchange/react-uikit';
 import { IUser } from '../../../interface';
+
+const RadioUser: FC<RadioProps> = ({ children, checked, ...rest }) => (
+    <Radio
+        customControlBox={true}
+        px="$5"
+        py="$10"
+        borderRadius="$4"
+        checked={checked}
+        cursor="pointer"
+        sx={{ ':hover': { bg: 'main.$600' } }}
+        {...rest}
+    >
+        <Box flex={1}>{children}</Box>
+
+        {checked && <Icon icon={iconCheck} color="primary.$300" size="20px" />}
+    </Radio>
+);
 
 interface IProps {
     title: string;
@@ -104,7 +126,26 @@ export const Login: FC<IProps> = ({
 
                 {users ? (
                     <>
-                        <p>account selection</p>
+                        <RadioGroup
+                            direction="column"
+                            px="$10"
+                            bg="basic.$900"
+                            maxHeight="180px"
+                            overflow="auto"
+                            value={users[0].address}
+                        >
+                            {users.map((user) => (
+                                <RadioUser
+                                    key={user.address}
+                                    value={user.address}
+                                >
+                                    <AddressAvatar
+                                        address={user.address}
+                                    ></AddressAvatar>
+                                </RadioUser>
+                            ))}
+                        </RadioGroup>
+
                         <Button
                             type="submit"
                             variant="primary"
