@@ -22,22 +22,17 @@ import dataPage from '../pages/transactions/data';
 import invokePage from '../pages/transactions/invoke';
 import issuePage from '../pages/transactions/issue';
 import reissuePage from '../pages/transactions/reissue';
-import transferPage from '../pages/transactions/transfer';
 import { prepareTransactions } from '../services/transactionsService';
 import renderPage from '../utils/renderPage';
 import batch from './batch';
 import omit from 'ramda/es/omit';
+import loader from '../components/loader';
+import { SignTransfer } from '../pages/SignTransfer/container';
 
 const getPageByType = (type: keyof TRANSACTION_TYPE_MAP) => {
     switch (type) {
-        case NAME_MAP.issue:
-            return issuePage;
         case NAME_MAP.transfer:
-            return transferPage;
-        case NAME_MAP.reissue:
-            return reissuePage;
-        case NAME_MAP.burn:
-            return burnPage;
+            return SignTransfer;
         case NAME_MAP.exchange:
             throw new Error('Unsupported type!'); // TODO
         case NAME_MAP.lease:
@@ -48,16 +43,12 @@ const getPageByType = (type: keyof TRANSACTION_TYPE_MAP) => {
             throw new Error('Unsupported type!'); // TODO
         case NAME_MAP.massTransfer:
             throw new Error('Unsupported type!'); // TODO
-        case NAME_MAP.data:
-            return dataPage;
         case NAME_MAP.setScript:
             throw new Error('Unsupported type!'); // TODO
         case NAME_MAP.sponsorship:
             throw new Error('Unsupported type!'); // TODO
         case NAME_MAP.setAssetScript:
             throw new Error('Unsupported type!'); // TODO
-        case NAME_MAP.invoke:
-            return invokePage;
         default:
             throw new Error('Unsupported transaction!');
     }
