@@ -5,69 +5,81 @@ import { IInvokeScriptTransaction } from '@waves/waves-transactions';
 import { ISignTxProps } from '../../../interface';
 import { IInvokeWithType } from '@waves/waves-js/dist/src/interface';
 import { toFormat } from '../../utils';
+import { Confirmation } from '../../components/Confirmation';
 
 export default function(props: ISignTxProps<IInvokeWithType>) {
     const tx = props.txInfo.tx;
 
     return (
-        <div>
-            <div onClick={props.onCancel} />
-            <div className="logo" />
-            <div>Confirm TX</div>
+        <Confirmation
+            address={props.user.address}
+            name="Name"
+            balance="123"
+            onReject={props.onCancel}
+            onSubmit={() => props.onConfirm(tx)}
+        >
             <div>
-                <span>Sign from</span>
-                <span>
-                    <AddressAvatar address={props.user.address} />
-                </span>
+                <div onClick={props.onCancel} />
+                <div className="logo" />
+                <div>Confirm TX</div>
+                <div>
+                    <span>Sign from</span>
+                    <span>
+                        <AddressAvatar address={props.user.address} />
+                    </span>
+                </div>
+                <div>
+                    <span>Type</span>
+                    <span>Invoke Script</span>
+                </div>
+                <div>
+                    <span>Id</span>
+                    <span>{tx.id}</span>
+                </div>
+                <div>
+                    <span>dApp address</span>
+                    <span>
+                        {tx.dApp} <AddressAvatar address={tx.dApp} />
+                    </span>
+                </div>
+                <div>
+                    <span>dApp function</span>
+                    <span>{tx.call?.function ?? 'default'}</span>
+                </div>
+                <div>
+                    <span>Function Arguments</span>
+                    <span>
+                        {tx.call?.args?.map((item) => (
+                            <span>{item.value}</span>
+                        )) ?? 'No arguments'}
+                    </span>
+                </div>
+                <div>
+                    <span>Payments</span>
+                    <span>
+                        {tx.payment?.map((item) => (
+                            <span>
+                                {toFormat(
+                                    item.amount,
+                                    item.assetId,
+                                    props.txInfo.meta.assets
+                                )}
+                            </span>
+                        ))}
+                    </span>
+                </div>
+                <div>
+                    <span>Fee</span>
+                    <span>
+                        {toFormat(tx.fee, null, props.txInfo.meta.assets)}
+                    </span>
+                </div>
+                <div>
+                    <button onClick={props.onCancel}>Cancel</button>
+                    <button onClick={() => props.onConfirm(tx)}>Ok</button>
+                </div>
             </div>
-            <div>
-                <span>Type</span>
-                <span>Invoke Script</span>
-            </div>
-            <div>
-                <span>Id</span>
-                <span>{tx.id}</span>
-            </div>
-            <div>
-                <span>dApp address</span>
-                <span>
-                    {tx.dApp} <AddressAvatar address={tx.dApp} />
-                </span>
-            </div>
-            <div>
-                <span>dApp function</span>
-                <span>{tx.call?.function ?? 'default'}</span>
-            </div>
-            <div>
-                <span>Function Arguments</span>
-                <span>
-                    {tx.call?.args?.map((item) => <span>{item.value}</span>) ??
-                        'No arguments'}
-                </span>
-            </div>
-            <div>
-                <span>Payments</span>
-                <span>
-                    {tx.payment?.map((item) => (
-                        <span>
-                            {toFormat(
-                                item.amount,
-                                item.assetId,
-                                props.txInfo.meta.assets
-                            )}
-                        </span>
-                    ))}
-                </span>
-            </div>
-            <div>
-                <span>Fee</span>
-                <span>{toFormat(tx.fee, null, props.txInfo.meta.assets)}</span>
-            </div>
-            <div>
-                <button onClick={props.onCancel}>Cancel</button>
-                <button onClick={() => props.onConfirm(tx)}>Ok</button>
-            </div>
-        </div>
+        </Confirmation>
     );
 }
 
