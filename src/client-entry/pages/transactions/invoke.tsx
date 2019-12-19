@@ -18,7 +18,7 @@ export default function(
             name="Name"
             balance="123"
             onReject={props.onCancel}
-            onSubmit={(): void => props.onConfirm(tx)}
+            onConfirm={(): void => props.onConfirm(tx)}
         >
             <div>
                 <div onClick={props.onCancel} />

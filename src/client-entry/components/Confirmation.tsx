@@ -14,7 +14,7 @@ type IConfirmationProps = TFlexProps & {
     name: string;
     balance: string;
     onReject: MouseEventHandler<HTMLButtonElement>;
-    onSubmit: MouseEventHandler<HTMLButtonElement>;
+    onConfirm: MouseEventHandler<HTMLButtonElement>;
 };
 
 export const Confirmation: FC<IConfirmationProps> = ({
@@ -23,7 +23,7 @@ export const Confirmation: FC<IConfirmationProps> = ({
     balance,
     children,
     onReject,
-    onSubmit,
+    onConfirm,
     ...rest
 }) => {
     return (
@@ -35,7 +35,14 @@ export const Confirmation: FC<IConfirmationProps> = ({
             borderRadius="$6"
             {...rest}
         >
-            <Flex justifyContent="space-between" px="$40" py="15px">
+            <Flex
+                px="$40"
+                justifyContent="space-between"
+                alignItems="center"
+                height="65px"
+                borderBottom="1px solid"
+                borderBottomColor="basic.$1000"
+            >
                 <Box mr="$10">
                     <AddressAvatar
                         address={address}
@@ -56,26 +63,25 @@ export const Confirmation: FC<IConfirmationProps> = ({
                 {children}
             </Box>
             <Flex
-                justifyContent="space-between"
+                borderTop="1px solid"
                 borderTopColor="basic.$1000"
-                borderTopWidth="1px"
-                borderTopStyle="solid"
                 px="$40"
                 py="$20"
             >
                 <Button
+                    flexGrow={1}
                     variant="danger"
-                    variantSize="large"
-                    width="210px"
+                    variantSize="medium"
                     onClick={onReject}
                 >
                     Reject
                 </Button>
                 <Button
+                    ml="$20"
+                    flexGrow={1}
                     variant="primary"
-                    variantSize="large"
-                    width="210px"
-                    onClick={onSubmit}
+                    variantSize="medium"
+                    onClick={onConfirm}
                 >
                     Confirm
                 </Button>
