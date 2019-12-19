@@ -35,7 +35,7 @@ interface IProps {
     onSubmit: MouseEventHandler<HTMLButtonElement>;
 }
 
-export const CreateAccount: FC<IProps> = ({
+export const CreateAccountComponent: FC<IProps> = ({
     showTerms,
     isPrivacyAccepted,
     isTermsAccepted,

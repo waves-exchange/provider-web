@@ -1,6 +1,6 @@
 import React, { FC, MouseEventHandler, useCallback, useState } from 'react';
 import { IUser } from '../../../interface';
-import { CreateAccount as CreateAccountComponent } from '../../components/CreateAccount';
+import { CreateAccountComponent } from './CreateAccountComponent';
 import { addSeedUser } from '../../services/userService';
 import { libs } from '@waves/waves-transactions';
 
