@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* eslint-disable no-use-before-define */
 import { libs, seedUtils } from '@waves/waves-transactions';
 import { Modal } from '../../components/Modal';
