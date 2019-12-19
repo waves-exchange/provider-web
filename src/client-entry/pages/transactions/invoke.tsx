@@ -7,7 +7,9 @@ import { IInvokeWithType } from '@waves/waves-js/dist/src/interface';
 import { toFormat } from '../../utils';
 import { Confirmation } from '../../components/Confirmation';
 
-export default function(props: ISignTxProps<IInvokeWithType>) {
+export default function(
+    props: ISignTxProps<IInvokeWithType>
+): React.ReactElement {
     const tx = props.txInfo.tx;
 
     return (
@@ -16,7 +18,7 @@ export default function(props: ISignTxProps<IInvokeWithType>) {
             name="Name"
             balance="123"
             onReject={props.onCancel}
-            onSubmit={() => props.onConfirm(tx)}
+            onSubmit={(): void => props.onConfirm(tx)}
         >
             <div>
                 <div onClick={props.onCancel} />
@@ -76,7 +78,9 @@ export default function(props: ISignTxProps<IInvokeWithType>) {
                 </div>
                 <div>
                     <button onClick={props.onCancel}>Cancel</button>
-                    <button onClick={() => props.onConfirm(tx)}>Ok</button>
+                    <button onClick={(): void => props.onConfirm(tx)}>
+                        Ok
+                    </button>
                 </div>
             </div>
         </Confirmation>

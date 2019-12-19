@@ -53,6 +53,6 @@ export interface IUser {
 }
 
 // eslint-disable-next-line prettier/prettier
-export type TFunction<Params extends Array<any>, Return> = (
+export type TFunction<Params extends Array<unknown>, Return> = (
     ...args: Params
 ) => Return;
