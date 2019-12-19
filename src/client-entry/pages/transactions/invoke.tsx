@@ -10,7 +10,7 @@ import { Confirmation } from '../../components/Confirmation';
 export default function(
     props: ISignTxProps<IInvokeWithType>
 ): React.ReactElement {
-    const tx = props.txInfo.tx;
+    const tx = props.tx;
 
     return (
         <Confirmation
@@ -64,7 +64,7 @@ export default function(
                                 {toFormat(
                                     item.amount,
                                     item.assetId,
-                                    props.txInfo.meta.assets
+                                    props.meta.assets
                                 )}
                             </span>
                         ))}
@@ -72,9 +72,7 @@ export default function(
                 </div>
                 <div>
                     <span>Fee</span>
-                    <span>
-                        {toFormat(tx.fee, null, props.txInfo.meta.assets)}
-                    </span>
+                    <span>{toFormat(tx.fee, null, props.meta.assets)}</span>
                 </div>
                 <div>
                     <button onClick={props.onCancel}>Cancel</button>

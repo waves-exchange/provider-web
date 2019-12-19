@@ -15,6 +15,7 @@ import { ITransferWithType } from '@waves/waves-js/dist/src/interface';
 import { toFormat } from '../../utils';
 import { withTheme } from 'emotion-theming';
 import { Modal } from '../../components/Modal';
+import { TFeeInfo } from '@waves/node-api-js/es/api-node/transactions';
 
 const Row = ({ keyData, value }: { keyData: string; value: any }) => (
     <Flex pb="10px" flexDirection="row" justifyContent="space-between">
@@ -29,7 +30,7 @@ export default withTheme(
 
         public render(): React.ReactElement {
             const props = this.props;
-            const tx = props.txInfo.tx;
+            const tx = props.tx;
 
             return (
                 <Modal>
@@ -60,7 +61,7 @@ export default withTheme(
                                 {toFormat(
                                     tx.amount,
                                     tx.assetId,
-                                    props.txInfo.meta.assets
+                                    props.meta.assets
                                 )}
                             </Text>
                         }
@@ -75,18 +76,18 @@ export default withTheme(
                     <Row
                         keyData={'Fee'}
                         value={
-                            props.txInfo.meta.feeList.length === 1 ? (
+                            props.meta.feeList.length === 1 ? (
                                 <Text color="#fff">
                                     {toFormat(
                                         tx.fee,
                                         tx.feeAssetId,
-                                        props.txInfo.meta.assets
+                                        props.meta.assets
                                     )}
                                 </Text>
                             ) : (
                                 <select onChange={this.onChangeFee}>
-                                    {props.txInfo.meta.feeList.map(
-                                        (fee, index) => (
+                                    {props.meta.feeList.map(
+                                        (fee: TFeeInfo, index: number) => (
                                             <option
                                                 key={fee.feeAssetId ?? 'WAVES'}
                                                 value={index}
@@ -94,7 +95,7 @@ export default withTheme(
                                                 {toFormat(
                                                     fee.feeAmount,
                                                     fee.feeAssetId,
-                                                    props.txInfo.meta.assets
+                                                    props.meta.assets
                                                 )}
                                             </option>
                                         )
@@ -111,12 +112,10 @@ export default withTheme(
         }
 
         private readonly onConfirm = (): void => {
-            const fee = this.props.txInfo.meta.feeList[
-                this.state.activeFeeItem
-            ];
+            const fee = this.props.meta.feeList[this.state.activeFeeItem];
 
             this.props.onConfirm({
-                ...this.props.txInfo.tx,
+                ...this.props.tx,
                 fee: fee.feeAmount,
                 feeAssetId: fee.feeAssetId,
             });
