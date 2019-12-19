@@ -2,7 +2,10 @@ import { curry } from 'ramda';
 import { TTransaction, IWithId } from '@waves/ts-types';
 import { TLong } from '@waves/waves-js/dist/src/interface';
 import { SPONSORED_TYPES } from '../../constants';
-import { calculateFee } from '@waves/blockchain-api/dist/cjs/api-node/transactions';
+import {
+    fetchCalculateFee,
+    TFeeInfo,
+} from '@waves/node-api-js/es/api-node/transactions';
 
 const canBeSponsored = (tx: TTransaction<TLong> & IWithId): boolean =>
     SPONSORED_TYPES.includes(tx.type);
@@ -13,8 +16,8 @@ export const loadFeeByTransaction = curry(
         tx: TTransaction<TLong> & IWithId
     ): Promise<TTransaction<TLong> & IWithId> =>
         canBeSponsored(tx)
-            ? calculateFee(base, tx)
-                  .then((info) => ({ ...tx, fee: info.feeAmount }))
+            ? fetchCalculateFee(base, tx)
+                  .then((info: TFeeInfo) => ({ ...tx, fee: info.feeAmount }))
                   .catch(() => ({ ...tx }))
             : Promise.resolve({ ...tx })
 );

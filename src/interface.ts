@@ -11,7 +11,7 @@ import {
     TTransactionMap,
     TTransactionWithProofs,
 } from '@waves/ts-types';
-import { TMeta } from './client-entry/services/transactionsService';
+import { IMeta } from './client-entry/services/transactionsService';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type TBusHandlers = {
@@ -34,15 +34,9 @@ export interface IBusEvents {
 
 export interface ISignTxProps<T extends TTransactionParamWithType> {
     networkByte: number;
-    user: {
-        address: string;
-        publicKey: string;
-    };
-    txInfo: {
-        meta: TMeta;
-        prams: T;
-        tx: TTransactionMap<TLong>[T['type']] & IWithId;
-    };
+    user: Omit<IUserWithBalances, 'seed'> & { publicKey: string };
+    meta: IMeta<T>;
+    tx: TTransactionMap<TLong>[T['type']] & IWithId;
     onConfirm: (tx: TTransaction<TLong>) => void;
     onCancel: () => void;
 }
@@ -52,7 +46,12 @@ export interface IUser {
     seed: string;
 }
 
+export interface IUserWithBalances extends IUser {
+    aliases: Array<string>;
+    balance: TLong;
+}
+
 // eslint-disable-next-line prettier/prettier
-export type TFunction<Params extends Array<any>, Return> = (
+export type TFunction<Params extends Array<unknown>, Return> = (
     ...args: Params
 ) => Return;
