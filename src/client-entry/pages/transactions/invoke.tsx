@@ -6,6 +6,7 @@ import { ISignTxProps } from '../../../interface';
 import { IInvokeWithType } from '@waves/waves-js/dist/src/interface';
 import { toFormat } from '../../utils';
 import { Confirmation } from '../../components/Confirmation';
+import { InvokeFunction } from '../../components/InvokeFunction/InvokeFunction';
 
 export default function(
     props: ISignTxProps<IInvokeWithType>
@@ -51,9 +52,10 @@ export default function(
                 <div>
                     <span>Function Arguments</span>
                     <span>
-                        {tx.call?.args?.map((item) => (
-                            <span>{item.value}</span>
-                        )) ?? 'No arguments'}
+                        <InvokeFunction
+                            args={tx.call?.args ?? []}
+                            name={tx.call?.function ?? 'default'}
+                        />
                     </span>
                 </div>
                 <div>
