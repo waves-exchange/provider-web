@@ -1,12 +1,14 @@
-import renderPage from '../utils/renderPage';
+import { IWithId, TTransactionWithProofs } from '@waves/ts-types';
 import {
     TLong,
     TRANSACTION_TYPE_MAP,
     TTransactionParamWithType,
 } from '@waves/waves-js/dist/src/interface';
-import issuePage from '../pages/transactions/issue';
-import transferPage from '../pages/transactions/transfer';
-import reissuePage from '../pages/transactions/reissue';
+import { libs, signTx } from '@waves/waves-transactions';
+import React from 'react';
+import { NAME_MAP } from '../../constants';
+import { ISignTxProps, IUserWithBalances } from '../../interface';
+import { IState } from '../interface';
 import burnPage from '../pages/transactions/burn';
 // import exchangePage from '../pages/transactions/exchange';
 // import leasePage from '../pages/transactions/lease';
@@ -18,15 +20,13 @@ import dataPage from '../pages/transactions/data';
 // import sponsorshipPage from '../pages/transactions/sponsorship';
 // import setAssetScriptPage from '../pages/transactions/setAssetScript';
 import invokePage from '../pages/transactions/invoke';
-import { IWithId, TTransactionWithProofs } from '@waves/ts-types';
-import { NAME_MAP } from '../../constants';
-import batch from './batch';
-import { libs, signTx } from '@waves/waves-transactions';
-import { ISignTxProps, IUser } from '../../interface';
-import loader from '../components/loader';
+import issuePage from '../pages/transactions/issue';
+import reissuePage from '../pages/transactions/reissue';
+import transferPage from '../pages/transactions/transfer';
 import { prepareTransactions } from '../services/transactionsService';
-import React from 'react';
-import { IState } from '../interface';
+import renderPage from '../utils/renderPage';
+import batch from './batch';
+import omit from 'ramda/es/omit';
 
 const getPageByType = (type: keyof TRANSACTION_TYPE_MAP) => {
     switch (type) {
@@ -65,28 +65,26 @@ const getPageByType = (type: keyof TRANSACTION_TYPE_MAP) => {
 
 export default function(
     list: Array<TTransactionParamWithType>,
-    state: IState<IUser>
+    state: IState<IUserWithBalances>
 ): Promise<Array<TTransactionWithProofs<TLong> & IWithId>> {
-    renderPage(React.createElement(loader, {}));
-
     return prepareTransactions(state, list).then((transactions) => {
         if (transactions.length !== 1) {
             return batch(transactions, state);
         }
 
-        const [tx] = transactions;
+        const [info] = transactions;
 
         return new Promise((resolve, reject) => {
             renderPage(
                 React.createElement(
-                    getPageByType(tx.params.type) as any,
+                    getPageByType(info.tx.type) as any,
                     {
+                        ...info,
                         networkByte: state.networkByte,
                         user: {
-                            address: state.user.address,
+                            ...omit(['seed'], state.user),
                             publicKey: libs.crypto.publicKey(state.user.seed),
                         },
-                        txInfo: tx as any, // TODO Fix types
                         onConfirm: (transaction) => {
                             resolve(
                                 signTx(
@@ -98,7 +96,7 @@ export default function(
                         onCancel: () => {
                             reject(new Error('User rejection!'));
                         },
-                    } as ISignTxProps<any>
+                    } as ISignTxProps<TTransactionParamWithType>
                 )
             );
         });

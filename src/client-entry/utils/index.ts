@@ -1,5 +1,5 @@
 import { TLong } from '@waves/waves-js/dist/src/interface';
-import { TAssetDetails } from '@waves/blockchain-api/dist/cjs/api-node/assets';
+import { TAssetDetails } from '@waves/node-api-js/es/api-node/assets';
 import { WAVES } from '../../constants';
 import { BigNumber } from '@waves/bignumber';
 

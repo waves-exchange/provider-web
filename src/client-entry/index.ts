@@ -1,18 +1,16 @@
+import { defaultTheme } from '@waves.exchange/react-uikit';
 import { Bus, config, WindowAdapter } from '@waves/waves-browser-bus';
+import { IConnectOptions } from '@waves/waves-js/dist/src/interface';
+import React from 'react';
+import { IBusEvents, IUserWithBalances, TBusHandlers } from '../interface';
+import { Queue } from '../utils/Queue';
+import { IState } from './interface';
+import Preload from './pages/Preload';
 import login from './router/login';
 import logout from './router/logout';
-import signTypedData from './router/signTypedData';
-import signMessage from './router/signMessage';
-import signBytes from './router/signBytes';
-import { IBusEvents, TBusHandlers, IUser } from '../interface';
-import { IState } from './interface';
-import { IConnectOptions } from '@waves/waves-js/dist/src/interface';
 import sign from './router/sign';
-import { defaultTheme } from '@waves.exchange/react-uikit';
+import { fetchAliasses, fetchWavesBalance } from './services/userService';
 import renderPage from './utils/renderPage';
-import React from 'react';
-import Preload from './pages/Preload';
-import { Queue } from '../utils/Queue';
 
 config.console.logLevel = config.console.LOG_LEVEL.VERBOSE;
 
@@ -46,12 +44,32 @@ WindowAdapter.createSimpleWindowAdapter()
         });
 
         const wrapLogin = <T, R>(
-            handler: (data: T, state: IState<IUser>) => Promise<R>
+            handler: (data: T, state: IState<IUserWithBalances>) => Promise<R>
         ): ((data: T) => Promise<R>) => {
             return async (data): Promise<R> => {
                 const action = async (): Promise<R> => {
-                    const apply = async (): Promise<R> =>
-                        handler(data, state as IState<IUser>);
+                    const apply = async (): Promise<R> => {
+                        preload();
+
+                        return Promise.all([
+                            fetchAliasses(state.nodeUrl, state.user!.address),
+                            fetchWavesBalance(
+                                state.nodeUrl,
+                                state.user!.address
+                            ),
+                        ]).then(([aliases, balance]) => {
+                            const extendedState: IState<IUserWithBalances> = {
+                                ...state,
+                                user: {
+                                    ...state.user!,
+                                    aliases,
+                                    balance,
+                                },
+                            };
+
+                            return handler(data, extendedState);
+                        });
+                    };
 
                     if (state.user != null) {
                         return apply();
@@ -71,9 +89,9 @@ WindowAdapter.createSimpleWindowAdapter()
         bus.registerRequestHandler('login', login(state));
         bus.registerRequestHandler('logout', logout(state));
 
-        bus.registerRequestHandler('sign-custom-bytes', wrapLogin(signBytes));
-        bus.registerRequestHandler('sign-typed-data', wrapLogin(signTypedData));
-        bus.registerRequestHandler('sign-message', wrapLogin(signMessage));
+        // bus.registerRequestHandler('sign-custom-bytes', wrapLogin(signBytes));
+        // bus.registerRequestHandler('sign-typed-data', wrapLogin(signTypedData));
+        // bus.registerRequestHandler('sign-message', wrapLogin(signMessage));
 
         bus.registerRequestHandler('sign', wrapLogin(sign));
 

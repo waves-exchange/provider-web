@@ -1,26 +1,26 @@
 import {
-    TTransactionParamWithType,
+    fetchDetails,
+    TAssetDetails,
+} from '@waves/node-api-js/es/api-node/assets';
+import { fetchByAlias } from '@waves/node-api-js/es/api-node/alias';
+import { TFeeInfo } from '@waves/node-api-js/es/api-node/transactions';
+import getAssetIdListByTx from '@waves/node-api-js/es/tools/adresses/getAssetIdListByTx';
+import { IWithId, TTransaction, TTransactionMap } from '@waves/ts-types';
+import {
     TLong,
+    TTransactionParamWithType,
 } from '@waves/waves-js/dist/src/interface';
-import { loadFeeByTransaction } from '../utils/loadFeeByTransaction';
-import { getAliasByTx } from '../utils/getAliasByTx';
-import { TTransaction, IWithId } from '@waves/ts-types';
-import { getTransactionFromParams } from '../utils/getTransactionFromParams';
-import { IUser } from '../../interface';
+import flatten from 'ramda/es/flatten';
 import indexBy from 'ramda/es/indexBy';
-import prop from 'ramda/es/prop';
 import map from 'ramda/es/map';
 import pipe from 'ramda/es/pipe';
-import flatten from 'ramda/es/flatten';
+import prop from 'ramda/es/prop';
 import uniq from 'ramda/es/uniq';
-import { TFeeInfo } from '@waves/blockchain-api/dist/cjs/api-node/transactions';
-import getAssetIdListByTx from '@waves/blockchain-api/dist/cjs/tools/adresses/getAssetIdListByTx';
-import {
-    details,
-    TAssetDetails,
-} from '@waves/blockchain-api/dist/cjs/api-node/assets';
-import request from '@waves/blockchain-api/dist/cjs/tools/request';
+import { IUser } from '../../interface';
 import { IState } from '../interface';
+import { getAliasByTx } from '../utils/getAliasByTx';
+import { getTransactionFromParams } from '../utils/getTransactionFromParams';
+import { loadFeeByTransaction } from '../utils/loadFeeByTransaction';
 
 const loadAliases = (
     base: string,
@@ -28,22 +28,21 @@ const loadAliases = (
 ): Promise<Record<string, string>> =>
     Promise.all(
         list.map((alias) =>
-            request<{ address: string }>({
-                base,
-                url: `/alias/by-alias/${alias}`,
-            }).then((item) => ({ [alias]: item.address }))
+            fetchByAlias(base, alias.replace(/alias:.:/, '')).then((item) => ({
+                [alias]: item.address,
+            }))
         )
     ).then((addressInfo) =>
         addressInfo.reduce(
             (acc, item) => Object.assign(acc, item),
             Object.create(null)
         )
-    ); // TODO Replace to method from @waves/blockchain-api
+    );
 
 export const prepareTransactions = (
     state: IState<IUser>,
     list: Array<TTransactionParamWithType>
-): Promise<Array<ITransactionInfo>> => {
+): Promise<Array<ITransactionInfo<TTransactionParamWithType>>> => {
     const transactions = list.map(
         getTransactionFromParams({
             networkByte: state.networkByte,
@@ -58,7 +57,7 @@ export const prepareTransactions = (
 
     return Promise.all([
         transactionsWithFee,
-        details(state.nodeUrl, assetsIdList),
+        fetchDetails(state.nodeUrl, assetsIdList),
         loadAliases(state.nodeUrl, aliases),
     ]).then(([transactions, assets, aliases]) =>
         transactions.map((tx, index) => ({
@@ -66,21 +65,21 @@ export const prepareTransactions = (
                 feeList: [],
                 aliases,
                 assets: indexBy(prop('assetId'), assets),
+                params: list[index],
             },
             tx: { ...tx, fee: list[index].fee ?? tx.fee },
-            params: list[index],
         }))
     );
 };
 
-export interface TMeta {
+export interface IMeta<T extends TTransactionParamWithType> {
     feeList: Array<TFeeInfo>;
     aliases: Record<string, string>;
     assets: Record<string, TAssetDetails>;
+    params: T;
 }
 
-export interface ITransactionInfo {
-    meta: TMeta;
-    tx: TTransaction<TLong> & IWithId;
-    params: TTransactionParamWithType;
+export interface ITransactionInfo<T extends TTransactionParamWithType> {
+    meta: IMeta<T>;
+    tx: TTransactionMap<TLong>[T['type']] & IWithId;
 }

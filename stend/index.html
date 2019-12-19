@@ -40,6 +40,16 @@
     <button onclick="waves.login();">Login</button>
     <button onclick="waves.transfer({amount: 1, recipient: 'merry'}).broadcast();">Transfer to merry, 0.00000001 WAVES</button>
     <button onclick="waves.transfer({amount: 1, recipient: 'merry', assetId: 'DWgwcZTMhSvnyYCoWLRUXXSH1RSkzThXLJhww9gwkqdn', feeAssetId: 'BC2RVCn2NzoWM8s5MVr2Tns9EmcxL6guMgnDWy3Uj8nA'}).broadcast();">Transfer to merry, 0.00000001 WAVES</button>
+    <button onclick="waves.invoke({
+        dApp: '3MwW4Ng8oipLNbZ45KaAiXNEKEUHmbMExv4',
+        call: { function: 'test', args: [
+            { type: 'string', value: 'string' },
+            { type: 'integer', value: 123 },
+            { type: 'boolean', value: true },
+            { type: 'binary', value: 'base64:AAIDAAAAAAAAAAQIARIAAAAAAAAAAAEAAAABaQEAAAADZm9vAAAAAAkBAAAACFdyaXRlU2V0AAAAAQUAAAADbmlsAAAAACvwfcA=' }
+        ] },
+        fee: 1000
+    }).broadcast();">Invoke</button>
 
 </body>
 
