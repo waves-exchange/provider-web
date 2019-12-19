@@ -1,16 +1,22 @@
-import { AddressAvatar } from '@waves.exchange/react-uikit';
-import React from 'react';
+import {
+    AddressAvatar,
+    Icon,
+    Flex,
+    Text,
+    Heading,
+    Box,
+    iconInvoke,
+} from '@waves.exchange/react-uikit';
+import React, { FC } from 'react';
 import { WithId } from '@waves/waves-transactions/src/transactions';
 import { IInvokeScriptTransaction } from '@waves/waves-transactions';
 import { ISignTxProps } from '../../../interface';
 import { IInvokeWithType } from '@waves/waves-js/dist/src/interface';
-import { toFormat } from '../../utils';
+import { withTheme } from 'emotion-theming';
 import { Confirmation } from '../../components/Confirmation';
-import { InvokeFunction } from '../../components/InvokeFunction/InvokeFunction';
+import { AssetLogo } from '@waves.exchange/react-uikit/dist/esm/components/AssetLogo/AssetLogo';
 
-export default function(
-    props: ISignTxProps<IInvokeWithType>
-): React.ReactElement {
+const Invoke: FC<ISignTxProps<IInvokeWithType>> = (props) => {
     const tx = props.tx;
 
     return (
@@ -21,71 +27,78 @@ export default function(
             onReject={props.onCancel}
             onConfirm={(): void => props.onConfirm(tx)}
         >
-            <div>
-                <div onClick={props.onCancel} />
-                <div className="logo" />
-                <div>Confirm TX</div>
-                <div>
-                    <span>Sign from</span>
-                    <span>
-                        <AddressAvatar address={props.user.address} />
-                    </span>
-                </div>
-                <div>
-                    <span>Type</span>
-                    <span>Invoke Script</span>
-                </div>
-                <div>
-                    <span>Id</span>
-                    <span>{tx.id}</span>
-                </div>
-                <div>
-                    <span>dApp address</span>
-                    <span>
-                        {tx.dApp} <AddressAvatar address={tx.dApp} />
-                    </span>
-                </div>
-                <div>
-                    <span>dApp function</span>
-                    <span>{tx.call?.function ?? 'default'}</span>
-                </div>
-                <div>
-                    <span>Function Arguments</span>
-                    <span>
-                        <InvokeFunction
-                            args={tx.call?.args ?? []}
-                            name={tx.call?.function ?? 'default'}
-                        />
-                    </span>
-                </div>
-                <div>
-                    <span>Payments</span>
-                    <span>
-                        {tx.payment?.map((item) => (
-                            <span>
-                                {toFormat(
-                                    item.amount,
-                                    item.assetId,
-                                    props.meta.assets
-                                )}
-                            </span>
-                        ))}
-                    </span>
-                </div>
-                <div>
-                    <span>Fee</span>
-                    <span>{toFormat(tx.fee, null, props.meta.assets)}</span>
-                </div>
-                <div>
-                    <button onClick={props.onCancel}>Cancel</button>
-                    <button onClick={(): void => props.onConfirm(tx)}>
-                        Ok
-                    </button>
-                </div>
-            </div>
+            <Box px="$40">
+                <Flex mb="$20">
+                    <Flex
+                        borderRadius="circle"
+                        width="60px"
+                        height="60px"
+                        bg="rgba(255, 175, 0, 0.1)"
+                        justifyContent="center"
+                        alignItems="center"
+                        mr="$20"
+                    >
+                        <Icon size="40px" icon={iconInvoke} color="#FFAF00" />
+                    </Flex>
+                    {tx.payment && (
+                        <Flex justifyContent="center" flexDirection="column">
+                            <Text variant="body1" color="basic.$500" mb="$3">
+                                Sign Invoke Script TX
+                            </Text>
+                            <Heading variant="heading2" color="standard.$0">
+                                {tx.payment.length} Payments
+                            </Heading>
+                        </Flex>
+                    )}
+                </Flex>
+
+                <Box mb="$20">
+                    <Text variant="body2" color="basic.$500" mb="$3" as="div">
+                        Account
+                    </Text>
+                    <AddressAvatar address={tx.dApp} />
+                </Box>
+
+                {tx.payment && (
+                    <Box mb="$20">
+                        <Text variant="body2" color="basic.$500" as="div">
+                            Payments
+                        </Text>
+                        <Flex flexDirection="column">
+                            {tx.payment.map(({ assetId, amount }) => (
+                                <Flex key={assetId}>
+                                    <Box>
+                                        <AssetLogo
+                                            variant="large"
+                                            assetId={assetId}
+                                            name={'d'}
+                                        />
+                                    </Box>
+                                    <Box>{amount}</Box>
+                                    <Box>{assetId}</Box>
+                                </Flex>
+                            ))}
+                        </Flex>
+                    </Box>
+                )}
+
+                <Box mb="$20">
+                    <Text variant="body2" color="basic.$500" as="div">
+                        Call function
+                    </Text>
+                    <Text>{JSON.stringify(tx.call)}</Text>
+                </Box>
+
+                <Box mb="$30">
+                    <Text variant="body2" color="basic.$500" as="div">
+                        Fee
+                    </Text>
+                    <Text variant="body2">{tx.fee}</Text>
+                </Box>
+            </Box>
         </Confirmation>
     );
-}
+};
 
 export interface IProps {
     networkByte: number;
@@ -94,3 +107,5 @@ export interface IProps {
     onConfirm: () => void;
     onCancel: () => void;
 }
+
+export default withTheme(Invoke);
