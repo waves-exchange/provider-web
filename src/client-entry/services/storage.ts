@@ -47,16 +47,18 @@ class StorageService {
         const hash = craeteMultiAccountHash(json);
         const encrypted = encryptMultiAccountData(data, password, rounds);
 
-        localStorage.setItem('multiAccountHash', hash);
-        localStorage.setItem('multiAccountData', encrypted);
+        localStorage.setItem('multiAccountHash', `"${hash}"`);
+        localStorage.setItem('multiAccountData', `"${encrypted}"`);
     }
 
     public getPrivateData(
         password: string,
         rounds?: number
     ): TCatchable<TPrivateMultiaccountData> {
-        const encrypted = localStorage.getItem('multiAccountData');
-        const hash = localStorage.getItem('multiAccountHash');
+        const encrypted = JSON.parse(
+            localStorage.getItem('multiAccountData') || ''
+        );
+        const hash = JSON.parse(localStorage.getItem('multiAccountHash') || '');
 
         if (isNil(hash) || isNil(encrypted)) {
             return {
