@@ -1,11 +1,11 @@
+import { fetchByAlias } from '@waves/node-api-js/es/api-node/alias';
 import {
     fetchDetails,
     TAssetDetails,
 } from '@waves/node-api-js/es/api-node/assets';
-import { fetchByAlias } from '@waves/node-api-js/es/api-node/alias';
 import { TFeeInfo } from '@waves/node-api-js/es/api-node/transactions';
 import getAssetIdListByTx from '@waves/node-api-js/es/tools/adresses/getAssetIdListByTx';
-import { IWithId, TTransaction, TTransactionMap } from '@waves/ts-types';
+import { IWithId, TTransactionMap } from '@waves/ts-types';
 import {
     TLong,
     TTransactionParamWithType,
@@ -21,6 +21,7 @@ import { IState } from '../interface';
 import { getAliasByTx } from '../utils/getAliasByTx';
 import { getTransactionFromParams } from '../utils/getTransactionFromParams';
 import { loadFeeByTransaction } from '../utils/loadFeeByTransaction';
+import { loadLogoInfo } from '../utils/loadLogoInfo';
 
 const loadAliases = (
     base: string,
@@ -57,7 +58,9 @@ export const prepareTransactions = (
 
     return Promise.all([
         transactionsWithFee,
-        fetchDetails(state.nodeUrl, assetsIdList),
+        fetchDetails(state.nodeUrl, assetsIdList).then(
+            loadLogoInfo(state.nodeUrl, state.networkByte)
+        ),
         loadAliases(state.nodeUrl, aliases),
     ]).then(([transactions, assets, aliases]) =>
         transactions.map((tx, index) => ({
