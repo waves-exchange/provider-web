@@ -1,4 +1,4 @@
-import React, { FC, MouseEventHandler } from 'react';
+import React, { FC, MouseEventHandler, ChangeEventHandler } from 'react';
 
 import {
     Box,
@@ -27,15 +27,15 @@ interface IProps {
     isPrivacyAccepted: boolean;
     isTermsAccepted: boolean;
     isSubmitDisabled: boolean;
-    onClose(event: React.MouseEvent<HTMLButtonElement>): void;
-    onPasswordChange(event: React.ChangeEvent<HTMLInputElement>): void;
-    onPasswordConfirmChange(event: React.ChangeEvent<HTMLInputElement>): void;
-    onPrivacyAcceptedChange(event: React.ChangeEvent<HTMLInputElement>): void;
-    onTermsAcceptedChange(event: React.ChangeEvent<HTMLInputElement>): void;
-    onSubmit(event: React.MouseEvent<HTMLButtonElement>): void;
+    onClose: MouseEventHandler<HTMLButtonElement>;
+    onPasswordChange: ChangeEventHandler<HTMLInputElement>;
+    onPasswordConfirmChange: ChangeEventHandler<HTMLInputElement>;
+    onPrivacyAcceptedChange: ChangeEventHandler<HTMLInputElement>;
+    onTermsAcceptedChange: ChangeEventHandler<HTMLInputElement>;
+    onSubmit: MouseEventHandler<HTMLButtonElement>;
 }
 
-export const CreateAccount: FC<IProps> = ({
+export const CreateAccountComponent: FC<IProps> = ({
     showTerms,
     isPrivacyAccepted,
     isTermsAccepted,
@@ -171,7 +171,7 @@ export const CreateAccount: FC<IProps> = ({
                     variant="primary"
                     variantSize="medium"
                     mt="$30"
-                    onClick={onSubmit as MouseEventHandler<HTMLButtonElement>}
+                    onClick={onSubmit}
                     disabled={isSubmitDisabled}
                 >
                     Sign up

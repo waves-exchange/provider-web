@@ -1,18 +1,20 @@
+// @ts-nocheck
 import propEq from 'ramda/es/propEq';
 import allPass from 'ramda/es/allPass';
 import { getUserId } from '../utils/getUserId';
 import { storage } from './storage';
 import { TCatchable } from '../utils/catchable';
 import { libs } from '@waves/waves-transactions';
-import { IPrivateSeedUserData, TPrivateUserData } from '../interface';
+import { IPrivateSeedUserData } from '../interface';
 import { fetchBalance } from '@waves/node-api-js/es/api-node/addresses';
 import { fetchByAddress } from '@waves/node-api-js/es/api-node/alias';
 import { TLong } from '@waves/waves-js/dist/src/interface';
+import { IUser } from '../../interface';
 
 export function getUsers(
     password: string,
     networkByte: number
-): TCatchable<Array<IPrivateSeedUserData>> {
+): TCatchable<Array<IUser>> {
     const data = storage.getPrivateData(password);
 
     if (!data.ok) {
@@ -21,12 +23,17 @@ export function getUsers(
 
     return {
         ...data,
-        resolveData: Object.values(data.resolveData).filter(
-            allPass([
-                propEq('networkByte', networkByte),
-                propEq('userType', 'seed'),
-            ]) as (data: TPrivateUserData) => data is IPrivateSeedUserData
-        ),
+        resolveData: Object.values(data.resolveData)
+            .filter(
+                allPass([
+                    propEq('networkByte', networkByte),
+                    propEq('userType', 'seed'),
+                ])
+            )
+            .map((value) => ({
+                address: libs.crypto.address(value.seed, networkByte),
+                seed: value.seed,
+            })),
     };
 }
 
