@@ -11,7 +11,7 @@ export default function(): React.ReactElement {
             justifyContent="center"
             alignItems="center"
             borderRadius="$6"
-            height="639px"
+            height="584px"
         >
             <Spinner />
         </Flex>
