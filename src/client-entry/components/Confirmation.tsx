@@ -59,7 +59,7 @@ export const Confirmation: FC<IConfirmationProps> = ({
                     </Text>
                 </Flex>
             </Flex>
-            <Box maxHeight="432px" overflowY="auto">
+            <Box maxHeight="630px" overflowY="auto">
                 {children}
             </Box>
             <Flex
