@@ -29,7 +29,7 @@ export const Confirmation: FC<IConfirmationProps> = ({
     return (
         <Flex
             backgroundColor="main.$800"
-            maxWidth="520px"
+            width="520px"
             flexDirection="column"
             justifyContent="space-between"
             borderRadius="$6"

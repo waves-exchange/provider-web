@@ -11,7 +11,8 @@ import {
 import { Confirmation } from '../../components/Confirmation';
 import { ICall } from '@waves/waves-js/src/interface';
 import { IPayment } from './page';
-import { InvokePayment } from './InvokePayment';
+import { InvokePayment } from '../../components/InvokePayment/InvokePayment';
+import { InvokeFunction } from '../../components/InvokeFunction/InvokeFunction';
 
 export interface IProps {
     userAddress: string;
@@ -64,7 +65,8 @@ export const SignInvoke: FC<IProps> = ({
                                 Sign Invoke Script TX
                             </Text>
                             <Heading variant="heading2" color="standard.$0">
-                                {payment.length} Payments
+                                {payment.length > 0 ? payment.length : 'No'}{' '}
+                                Payments
                             </Heading>
                         </Flex>
                     )}
@@ -131,7 +133,10 @@ export const SignInvoke: FC<IProps> = ({
                             as="div"
                             overflowX="auto"
                         >
-                            {JSON.stringify(call, null, '\t')}
+                            <InvokeFunction
+                                args={call?.args ?? ([] as any)}
+                                name={call?.function ?? 'default'}
+                            />
                         </Text>
                     </Box>
 

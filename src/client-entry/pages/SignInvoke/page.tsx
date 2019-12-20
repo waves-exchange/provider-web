@@ -51,7 +51,7 @@ export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
         <SignInvokeComponent
             userAddress={user.address}
             userName={'userName'}
-            userBalance={'userBalance userBalanceAssetName'}
+            userBalance={'userBalance BalanceAssetName'}
             dApp={tx.dApp}
             fee={`${fee} ${getAssetName(txMeta.assets, tx.feeAssetId)}`}
             call={tx.call as ICall}
