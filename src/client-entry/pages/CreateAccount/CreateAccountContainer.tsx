@@ -1,8 +1,14 @@
-import React, { FC, MouseEventHandler, useCallback, useState } from 'react';
-import { IUser } from '../../../interface';
-import { CreateAccountComponent } from './CreateAccountComponent';
-import { addSeedUser } from '../../services/userService';
 import { libs } from '@waves/waves-transactions';
+import React, {
+    FC,
+    FocusEventHandler,
+    MouseEventHandler,
+    useCallback,
+    useState,
+} from 'react';
+import { IUser } from '../../../interface';
+import { addSeedUser } from '../../services/userService';
+import { CreateAccountComponent } from './CreateAccountComponent';
 
 interface IProps {
     networkByte: number;
@@ -12,6 +18,8 @@ interface IProps {
     onCancel: () => void;
 }
 
+const MIN_PASSWORD_LENGTH = 8;
+
 export const CreateAccount: FC<IProps> = ({
     networkByte,
     onConfirm,
@@ -19,6 +27,7 @@ export const CreateAccount: FC<IProps> = ({
     isPrivacyAccepted: isPrivacyAcceptedProp,
     isTermsAccepted: isTermsAcceptedProp,
 }) => {
+    const [error, setError] = useState<boolean>(false);
     const [isPrivacyAccepted, setPrivacyAccepted] = useState<boolean>(
         isPrivacyAcceptedProp
     );
@@ -38,9 +47,11 @@ export const CreateAccount: FC<IProps> = ({
             switch (event.target.id) {
                 case inputPasswordId:
                     setPassword(event.target.value);
+                    setError(false);
                     break;
                 case inputPasswordConfirmId:
                     setPasswordConfirm(event.target.value);
+                    setError(false);
                     break;
                 case checkboxPrivacyId:
                     setPrivacyAccepted(!isPrivacyAccepted);
@@ -84,8 +95,21 @@ export const CreateAccount: FC<IProps> = ({
         });
     }, [networkByte, onConfirm, password]);
 
+    const handlePasswordInputBlur = useCallback<
+        FocusEventHandler<HTMLInputElement>
+    >(() => {
+        if (
+            password.length > 0 &&
+            passwordConfirm.length > 0 &&
+            passwordConfirm !== password
+        ) {
+            setError(true);
+        }
+    }, [passwordConfirm, password]);
+
     const isSubmitEnabled =
-        password.length > 0 &&
+        password.length >= MIN_PASSWORD_LENGTH &&
+        passwordConfirm.length >= MIN_PASSWORD_LENGTH &&
         password === passwordConfirm &&
         isPrivacyAccepted &&
         isTermsAccepted;
@@ -106,8 +130,11 @@ export const CreateAccount: FC<IProps> = ({
             onTermsAcceptedChange={handleInputChange}
             onPasswordChange={handleInputChange}
             onPasswordConfirmChange={handleInputChange}
+            onPasswordInputBlur={handlePasswordInputBlur}
             isSubmitDisabled={!isSubmitEnabled}
             showTerms={!isPrivacyAcceptedProp && !isTermsAcceptedProp}
+            minPasswordLength={MIN_PASSWORD_LENGTH}
+            error={error}
         />
     );
 };
