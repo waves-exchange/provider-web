@@ -78,7 +78,7 @@ export const SignTransfer: FC<Props> = ({
                     Fee
                 </Text>
                 <Text mt="$5" variant="body2" color="standard.$0">
-                    Waves {transferFee} WAVES
+                    {transferFee}
                 </Text>
             </Flex>
         </Confirmation>

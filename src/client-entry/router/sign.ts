@@ -26,7 +26,6 @@ import { prepareTransactions } from '../services/transactionsService';
 import renderPage from '../utils/renderPage';
 import batch from './batch';
 import omit from 'ramda/es/omit';
-import loader from '../components/loader';
 import { SignTransfer } from '../pages/SignTransfer/container';
 
 const getPageByType = (type: keyof TRANSACTION_TYPE_MAP) => {

@@ -12,9 +12,7 @@ import { TAssetDetails } from '@waves/node-api-js/es/api-node/assets';
 const getAssetName = (
     assets: Record<string, TAssetDetails<TLong>>,
     assetId: string | null
-) => {
-    return assetId ? assets[assetId] : '';
-};
+): string => (assetId ? assets[assetId].name : WAVES.name);
 
 export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
     meta: txMeta,
@@ -25,6 +23,9 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
 }) => {
     const amountAsset = txMeta.assets[tx.assetId || ''] || WAVES;
     const feeAsset = txMeta.assets[tx.feeAssetId || ''] || WAVES;
+    const userBalance = BigNumber.toBigNumber(user.balance)
+        .div(Math.pow(10, WAVES.decimals))
+        .toFixed();
 
     const amount = BigNumber.toBigNumber(tx.amount)
         .roundTo(amountAsset.decimals)
@@ -51,7 +52,7 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
         <SignTransferComponent
             userAddress={user.address}
             userName={'userName'}
-            userBalance={'userBalance userBalanceAssetName'}
+            userBalance={`${userBalance} Waves`}
             transferAmount={`${amount} ${getAssetName(
                 txMeta.assets,
                 tx.assetId
