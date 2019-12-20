@@ -1,7 +1,7 @@
 FROM node:10-alpine as build
 COPY . .
 RUN npm ci
-RUN npm run build || exit 0
+RUN npm run build
 
 FROM nginx:1.17-alpine
 WORKDIR iframe-entry
