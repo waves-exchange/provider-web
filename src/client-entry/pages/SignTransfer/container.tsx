@@ -57,7 +57,7 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
                 txMeta.assets,
                 tx.assetId
             )}`}
-            transferFee={`${fee} ${getAssetName(txMeta.assets, tx.assetId)}`}
+            transferFee={`${fee} ${getAssetName(txMeta.assets, tx.feeAssetId)}`}
             recipientAddress={txMeta.aliases[tx.recipient] || tx.recipient}
             attachement={attachment}
             onReject={onCancel}

@@ -27,6 +27,10 @@ export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
     onConfirm,
     onCancel,
 }) => {
+    const userBalance = BigNumber.toBigNumber(user.balance)
+        .div(Math.pow(10, WAVES.decimals))
+        .toFixed();
+
     const feeAsset = txMeta.assets[tx.feeAssetId || ''] || WAVES;
 
     const fee = BigNumber.toBigNumber(tx.fee)
@@ -51,7 +55,7 @@ export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
         <SignInvokeComponent
             userAddress={user.address}
             userName={'userName'}
-            userBalance={'userBalance BalanceAssetName'}
+            userBalance={`${userBalance} Waves`}
             dApp={tx.dApp}
             fee={`${fee} ${getAssetName(txMeta.assets, tx.feeAssetId)}`}
             call={tx.call as ICall}
