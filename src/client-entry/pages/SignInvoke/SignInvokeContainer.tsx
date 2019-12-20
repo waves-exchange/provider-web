@@ -1,5 +1,5 @@
 import React, { FC, useCallback, MouseEventHandler } from 'react';
-import { SignInvoke as SignInvokeComponent } from './body';
+import { SignInvoke as SignInvokeComponent } from './SignInvokeComponent';
 import { ISignTxProps } from '../../../interface';
 import { IInvokeWithType, TLong } from '@waves/waves-js/dist/src/interface';
 import { BigNumber } from '@waves/bignumber';

@@ -25,7 +25,7 @@ import renderPage from '../utils/renderPage';
 import batch from './batch';
 import omit from 'ramda/es/omit';
 import { SignTransfer } from '../pages/SignTransfer/container';
-import { SignInvoke } from '../pages/SignInvoke/page';
+import { SignInvoke } from '../pages/SignInvoke/SignInvokeContainer';
 import { SignDataContainer } from '../pages/SignData/SignDataContainer';
 
 const getPageByType = (type: keyof TRANSACTION_TYPE_MAP): ReactNode => {
