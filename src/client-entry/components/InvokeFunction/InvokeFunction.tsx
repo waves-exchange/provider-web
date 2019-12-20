@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { TInvokeScriptCallArgument } from '@waves/ts-types';
 import { TLong } from '@waves/waves-js/dist/src/interface';
-import { Text, Flex } from '@waves.exchange/react-uikit';
+import { Text, Flex, Box } from '@waves.exchange/react-uikit';
 
-const PSEVDO_ELEMENTS_STYLE = {
+const PSEUDO_ELEMENTS_STYLE = {
     color: '#d4d4d4',
     fontSize: '$13',
     lineHeight: '$18',
@@ -12,11 +12,14 @@ const PSEVDO_ELEMENTS_STYLE = {
 };
 const WRAP_ARGS_STYLE = {
     ':before': {
-        ...PSEVDO_ELEMENTS_STYLE,
+        ...PSEUDO_ELEMENTS_STYLE,
         content: '"("',
     },
+};
+
+const WRAP_END_ARGS_STYLE = {
     ':after': {
-        ...PSEVDO_ELEMENTS_STYLE,
+        ...PSEUDO_ELEMENTS_STYLE,
         content: '")"',
     },
 };
@@ -26,6 +29,12 @@ const COLOR_MAP = {
     binary: '#cf9178',
     boolean: '#579cd6',
 };
+
+const ELLIPSIS_STYLE = {
+    overflowY: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+} as React.CSSProperties;
 
 const formatText = (text: string): string =>
     text.length > 5 ? `${text.slice(0, 4)}...` : text;
@@ -65,7 +74,7 @@ const getFunctionArgumet = (
     const isNotLast = index < array.length - 1;
     // НЕРАЗРЫВНЫЙ ПРОБЕЛ В content
     // eslint-disable-next-line no-irregular-whitespace
-    const style = { ...PSEVDO_ELEMENTS_STYLE, content: '", "' };
+    const style = { ...PSEUDO_ELEMENTS_STYLE, content: '", "' };
 
     return (
         <Text
@@ -78,9 +87,13 @@ const getFunctionArgumet = (
 };
 
 export const InvokeFunction: FC<IProps> = ({ args, name }) => (
-    <Flex width="100%">
-        <Text {...PSEVDO_ELEMENTS_STYLE}>{name}</Text>
-        <Flex sx={WRAP_ARGS_STYLE}>{args.map(getFunctionArgumet)}</Flex>
+    <Flex sx={WRAP_END_ARGS_STYLE}>
+        <Box style={ELLIPSIS_STYLE}>
+            <Text {...PSEUDO_ELEMENTS_STYLE}>{name}</Text>
+            <Box as="span" sx={WRAP_ARGS_STYLE}>
+                {args.map(getFunctionArgumet)}
+            </Box>
+        </Box>
     </Flex>
 );
 
