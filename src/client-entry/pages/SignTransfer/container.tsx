@@ -38,6 +38,7 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
         .toFixed();
 
     const amount = BigNumber.toBigNumber(tx.amount)
+        .div(Math.pow(10, amountAsset.decimals))
         .roundTo(amountAsset.decimals)
         .toFixed();
 
