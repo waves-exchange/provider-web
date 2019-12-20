@@ -5,9 +5,11 @@ import { ITransferWithType, TLong } from '@waves/waves-js/dist/src/interface';
 import { getIconType } from '../../components/IconTransfer/helpers';
 import { BigNumber } from '@waves/bignumber';
 import { libs } from '@waves/waves-transactions';
+import { catchable } from '../../utils/catchable';
 import compose from 'ramda/es/compose';
 import { WAVES } from '../../../constants';
 import { TAssetDetails } from '@waves/node-api-js/es/api-node/assets';
+import { getUserName } from '../../services/userService';
 
 const getAssetName = (
     assets: Record<string, TAssetDetails<TLong>>,
@@ -16,6 +18,7 @@ const getAssetName = (
 
 export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
     meta: txMeta,
+    networkByte,
     tx,
     user,
     onConfirm,
@@ -23,6 +26,7 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
 }) => {
     const amountAsset = txMeta.assets[tx.assetId || ''] || WAVES;
     const feeAsset = txMeta.assets[tx.feeAssetId || ''] || WAVES;
+    const userName = getUserName(networkByte, user.publicKey);
     const userBalance = BigNumber.toBigNumber(user.balance)
         .div(Math.pow(10, WAVES.decimals))
         .toFixed();
@@ -36,10 +40,8 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
         .roundTo(feeAsset.decimals)
         .toFixed();
 
-    const attachment = compose(
-        libs.crypto.base58Encode,
-        libs.crypto.blake2b,
-        libs.crypto.base58Decode
+    const attachment = catchable(
+        compose(libs.crypto.bytesToString, libs.crypto.base58Decode)
     )(tx.attachment);
 
     const handleConfirm = useCallback<
@@ -51,7 +53,7 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
     return (
         <SignTransferComponent
             userAddress={user.address}
-            userName={'userName'}
+            userName={userName}
             userBalance={`${userBalance} Waves`}
             transferAmount={`${amount} ${getAssetName(
                 txMeta.assets,
@@ -59,7 +61,7 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
             )}`}
             transferFee={`${fee} ${getAssetName(txMeta.assets, tx.feeAssetId)}`}
             recipientAddress={txMeta.aliases[tx.recipient] || tx.recipient}
-            attachement={attachment}
+            attachement={attachment.ok ? attachment.resolveData : ''}
             onReject={onCancel}
             onConfirm={handleConfirm}
             iconType={getIconType(tx, user, Object.keys(txMeta.aliases))}

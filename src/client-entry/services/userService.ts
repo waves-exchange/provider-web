@@ -60,13 +60,25 @@ export function addSeedUser(
         ...data.resolveData,
         [userId]: user,
     };
+    const name = 'Waves Account';
+    const usersData = storage.get('multiAccountUsers');
+
+    usersData[userId] = usersData[userId] ?? { name };
 
     storage.setPrivateData(users, password);
+    storage.set('multiAccountUsers', usersData);
 
     return {
         ...data,
         resolveData: user,
     };
+}
+
+export function getUserName(networkByte: number, publicKey: string): string {
+    const id = getUserId(networkByte, publicKey);
+    const userData = storage.get('multiAccountUsers');
+
+    return userData[id]?.name ?? 'Waves Acount';
 }
 
 export function hasMultiaccount(): boolean {
