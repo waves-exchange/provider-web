@@ -1,22 +1,22 @@
-import React, { FC, MouseEventHandler, ChangeEventHandler } from 'react';
 import {
+    AddressAvatar,
     Box,
-    Text,
-    Flex,
     Button,
-    IconButton,
-    Icon,
-    Heading,
-    Label,
-    InputPassword,
     ExternalLink,
+    Flex,
+    Heading,
+    Icon,
+    IconButton,
+    iconCheck,
     iconClose,
     iconLogo,
+    InputPassword,
+    Label,
     RadioButtonGroup,
-    AddressAvatar,
     RadioButtonProps,
-    iconCheck,
+    Text,
 } from '@waves.exchange/react-uikit';
+import React, { ChangeEventHandler, FC, MouseEventHandler } from 'react';
 import { IUser } from '../../../interface';
 
 const RadioUser: FC<RadioButtonProps<IUser>> = ({
@@ -204,7 +204,7 @@ export const LoginComponent: FC<IProps> = ({
                             href="https://waves.exchange/faq#25"
                             target="_blank"
                             mt="$30"
-                            variant="body1"
+                            variant="body2"
                         >
                             Forgot password
                         </ExternalLink>
