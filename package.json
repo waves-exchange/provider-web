@@ -9,7 +9,8 @@
     "prettier": "prettier --ignore-path .gitignore \"./src/**/*.+(ts|tsx)\"",
     "format": "npm run prettier -- --write",
     "check-format": "npm run prettier -- --list-different",
-    "start": "python -m SimpleHTTPServer 8081"
+    "start": "python -m SimpleHTTPServer 8081",
+    "build": "webpack"
   },
   "husky": {
     "hooks": {
