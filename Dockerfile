@@ -8,6 +8,5 @@ WORKDIR iframe-entry
 RUN mkdir signer
 RUN touch index.html
 COPY nginx/webkeeper.conf /etc/nginx/conf.d/webkeeper.conf
-COPY --from=build iframe-entry/* /app/signer/
-
+COPY --from=build iframe-entry/ /iframe-entry/signer/
 EXPOSE 80
