@@ -1,8 +1,8 @@
 {
   "name": "@waves.exchange/storage-provider",
   "version": "0.0.19",
-  "main": "dist/storage-provider.js",
-  "types": "dist/storage-provider/src/provider/index.d.ts",
+  "main": "dist/storage-provider.min.js",
+  "types": "dist/src/provider/index.d.ts",
   "scripts": {
     "watch": "webpack --watch",
     "postversion": "npm publish",
@@ -17,6 +17,11 @@
       "post-commit": "git update-index --again"
     }
   },
+  "files": [
+    "dist",
+    "stand",
+    "iframe-entry"
+  ],
   "lint-staged": {
     "src/**/*.ts?(x)": [
       "eslint --fix",
