@@ -1,7 +1,11 @@
 import renderPage from '../utils/renderPage';
 import { libs } from '@waves/waves-transactions';
 import { IUserData } from '@waves/waves-js/src/interface';
-import { hasMultiaccount, saveTerms, isTermsAccepted } from '../services/userService';
+import {
+    hasMultiaccount,
+    saveTerms,
+    isTermsAccepted,
+} from '../services/userService';
 import { CreateAccount } from '../pages/CreateAccount/CreateAccountContainer';
 import { Login } from '../pages/Login/LoginContainer';
 import { IUser } from '../../interface';

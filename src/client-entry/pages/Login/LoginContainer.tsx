@@ -1,8 +1,8 @@
-import { compose } from 'ramda';
 import React, { FC, MouseEventHandler, useCallback, useState } from 'react';
 import { IUser } from '../../../interface';
 import { LoginComponent } from './LoginComponent';
-import { getMultiaccountData, getUsers } from './helpers';
+import { getUsers, addSeedUser } from '../../services/userService';
+import { libs } from '@waves/waves-transactions';
 
 interface IProps {
     networkByte: number;
@@ -12,7 +12,7 @@ interface IProps {
 
 export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
     const [errorMessage, setErrorMessage] = useState<string>();
-    const [currentUser, setCurrentUser] = useState<IUser>()
+    const [currentUser, setCurrentUser] = useState<IUser>();
     const [users, setUsers] = useState<IUser[]>();
     const [password, setPassword] = useState<string>('');
 
@@ -34,38 +34,45 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
     const handleLogin = useCallback<
         MouseEventHandler<HTMLButtonElement>
     >(() => {
-        try {
-            const users = compose(
-                getUsers(networkByte),
-                getMultiaccountData
-            )(password);
+        const { resolveData: users } = getUsers(password, networkByte);
 
+        if (users) {
             if (users.length === 1) {
                 onConfirm(users[0]);
             } else if (users.length > 1) {
                 setUsers(users);
             } else {
-                setErrorMessage('Could not retreive users');
-            }
-        } catch (error) {
-            switch (error.message) {
-                case 'Could not decrypt data':
-                    setErrorMessage('Wrong password');
-                    break;
-                case 'Could not retreive users':
-                    setErrorMessage('Could not retreive users');
-                    break;
-                default:
-                    // TODO обработать json parse error
+                const user = addSeedUser(
+                    libs.crypto.randomSeed(15),
+                    password,
+                    networkByte
+                );
+
+                if (!user.ok) {
                     setErrorMessage('Unknown error');
-                    break;
+
+                    return;
+                }
+
+                onConfirm({
+                    address: libs.crypto.address(
+                        user.resolveData.seed,
+                        user.resolveData.networkByte
+                    ),
+                    seed: user.resolveData.seed,
+                });
             }
+        } else {
+            setErrorMessage('Wrong password');
         }
     }, [networkByte, onConfirm, password]);
 
-    const handleUserChange = useCallback((user: IUser): void => {
-        setCurrentUser(user);
-    }, [setCurrentUser]);
+    const handleUserChange = useCallback(
+        (user: IUser): void => {
+            setCurrentUser(user);
+        },
+        [setCurrentUser]
+    );
 
     const handleContinue = useCallback<
         MouseEventHandler<HTMLButtonElement>
