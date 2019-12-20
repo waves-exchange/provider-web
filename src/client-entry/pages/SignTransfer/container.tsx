@@ -24,9 +24,15 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
     onConfirm,
     onCancel,
 }) => {
-    const amountAsset = txMeta.assets[tx.assetId || ''] || WAVES;
-    const feeAsset = txMeta.assets[tx.feeAssetId || ''] || WAVES;
     const userName = getUserName(networkByte, user.publicKey);
+    const amountAsset = tx.assetId === null ? WAVES : txMeta.assets[tx.assetId];
+    const feeAsset =
+        tx.feeAssetId === null ? WAVES : txMeta.assets[tx.feeAssetId];
+
+    if (!amountAsset || !feeAsset) {
+        throw new Error('Amount of fee asstet not found'); // TODO ?
+    }
+
     const userBalance = BigNumber.toBigNumber(user.balance)
         .div(Math.pow(10, WAVES.decimals))
         .toFixed();
@@ -60,7 +66,7 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
                 tx.assetId
             )}`}
             transferFee={`${fee} ${getAssetName(txMeta.assets, tx.feeAssetId)}`}
-            recipientAddress={txMeta.aliases[tx.recipient] || tx.recipient}
+            recipientAddress={txMeta.aliases[tx.recipient] ?? tx.recipient}
             attachement={attachment.ok ? attachment.resolveData : ''}
             onReject={onCancel}
             onConfirm={handleConfirm}
