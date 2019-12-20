@@ -5,7 +5,9 @@ export const GlobalCSS: FC = () => {
     return (
         <Global
             styles={css`
-                @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap&subset=cyrillic');
+                @import url('/iframe-entry/fonts/roboto7.woff2');
+                @import url('/iframe-entry/fonts/roboto-medium7.woff2');
+                @import url('/iframe-entry/fonts/roboto-light7.woff2');
                 body {
                     font-family: 'Roboto', sans-serif;
                     margin: 0;
