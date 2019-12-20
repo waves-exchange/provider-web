@@ -16,7 +16,8 @@ type TLong = string | number;
 export class StorageProvider implements IProvider {
     private readonly _transport: ITransport;
 
-    constructor(clientOrigin: string, logs?: boolean) {
+    constructor(clientOrigin?: string, logs?: boolean) {
+        clientOrigin = clientOrigin || 'https://waves.exchange/signer';
         const Transport = TransportIframe.canUse()
             ? TransportIframe
             : TransportWindow;
