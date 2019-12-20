@@ -142,12 +142,12 @@ export const LoginComponent: FC<IProps> = ({
                             direction="column"
                             px="$10"
                             bg="basic.$900"
-                            border="1pzx solid"
+                            border="1px solid"
                             borderColor="main.$600"
                             borderRadius="$4"
                             maxHeight="180px"
                             overflow="auto"
-                            value={users[0].address}
+                            value={users[0]}
                             onChange={onUserChange as (value: unknown) => void}
                         >
                             {users.map((user) => (
