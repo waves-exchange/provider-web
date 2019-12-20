@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { AssetLogo } from '@waves.exchange/react-uikit/dist/esm/components/AssetLogo/AssetLogo';
 import { Flex, Text } from '@waves.exchange/react-uikit';
-import { IPayment } from '../../pages/SignInvoke/page';
+import { IPayment } from '../../pages/SignInvoke/SignInvokeContainer';
 
 type TProps = IPayment & { isLast: boolean };
 

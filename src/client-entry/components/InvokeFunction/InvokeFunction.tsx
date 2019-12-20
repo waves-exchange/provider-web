@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { TInvokeScriptCallArgument } from '@waves/ts-types';
 import { TLong } from '@waves/waves-js/dist/src/interface';
-import { Text, Flex, Box } from '@waves.exchange/react-uikit';
+import { Text, Flex } from '@waves.exchange/react-uikit';
 
 const PSEUDO_ELEMENTS_STYLE = {
     color: '#d4d4d4',
@@ -29,12 +29,6 @@ const COLOR_MAP = {
     binary: '#cf9178',
     boolean: '#579cd6',
 };
-
-const ELLIPSIS_STYLE = {
-    overflowY: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-} as React.CSSProperties;
 
 const formatText = (text: string): string =>
     text.length > 5 ? `${text.slice(0, 4)}...` : text;
@@ -88,12 +82,10 @@ const getFunctionArgumet = (
 
 export const InvokeFunction: FC<IProps> = ({ args, name }) => (
     <Flex sx={WRAP_END_ARGS_STYLE}>
-        <Box style={ELLIPSIS_STYLE}>
+        <Text isTruncated>
             <Text {...PSEUDO_ELEMENTS_STYLE}>{name}</Text>
-            <Box as="span" sx={WRAP_ARGS_STYLE}>
-                {args.map(getFunctionArgumet)}
-            </Box>
-        </Box>
+            <Text sx={WRAP_ARGS_STYLE}>{args.map(getFunctionArgumet)}</Text>
+        </Text>
     </Flex>
 );
 
