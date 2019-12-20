@@ -19,7 +19,6 @@ import dataPage from '../pages/transactions/data';
 // import setScriptPage from '../pages/transactions/setScript';
 // import sponsorshipPage from '../pages/transactions/sponsorship';
 // import setAssetScriptPage from '../pages/transactions/setAssetScript';
-import invokePage from '../pages/transactions/invoke';
 import issuePage from '../pages/transactions/issue';
 import reissuePage from '../pages/transactions/reissue';
 import { prepareTransactions } from '../services/transactionsService';
@@ -27,11 +26,14 @@ import renderPage from '../utils/renderPage';
 import batch from './batch';
 import omit from 'ramda/es/omit';
 import { SignTransfer } from '../pages/SignTransfer/container';
+import { SignInvoke } from '../pages/SignInvoke/page';
 
 const getPageByType = (type: keyof TRANSACTION_TYPE_MAP) => {
     switch (type) {
         case NAME_MAP.transfer:
             return SignTransfer;
+        case NAME_MAP.invoke:
+            return SignInvoke;
         case NAME_MAP.exchange:
             throw new Error('Unsupported type!'); // TODO
         case NAME_MAP.lease:

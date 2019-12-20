@@ -29,7 +29,7 @@
     <script>
 
         var provider = new storageProvider.StorageProvider('http://localhost:8081/iframe-entry', true, true);
-        var waves = new wavesJs.Waves({ NODE_URL: 'https://nodes-testnet.wavesnodes.com' })
+        var waves = new wavesJs.Waves({ NODE_URL: 'https://nodes-testnet.wavesnodes.com' });
         waves.setProvider(provider);
 
     </script>
@@ -43,6 +43,10 @@
     <button onclick="waves.transfer({amount: 1, recipient: 'merry', assetId: '2CjLFYkp4W4sEAxCjFG9oD3smfhvV6yQnNmiJyexbLdu', feeAssetId: 'BC2RVCn2NzoWM8s5MVr2Tns9EmcxL6guMgnDWy3Uj8nA'}).broadcast();">Transfer to merry, 0.00000001 WAVES</button>
     <button onclick="waves.invoke({
         dApp: '3MwW4Ng8oipLNbZ45KaAiXNEKEUHmbMExv4',
+        payment: [
+            { assetId: 'DWgwcZTMhSvnyYCoWLRUXXSH1RSkzThXLJhww9gwkqdn', amount: 1},
+            { assetId: 'BrmjyAWT5jjr3Wpsiyivyvg5vDuzoX2s93WgiexXetB3', amount: 2}
+        ],
         call: { function: 'test', args: [
             { type: 'string', value: 'string' },
             { type: 'integer', value: 123 },
