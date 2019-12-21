@@ -28,7 +28,7 @@
     <script src="../dist/storage-provider.js"></script>
     <script>
 
-        var provider = new storageProvider.StorageProvider('http://localhost:8081/iframe-entry', true, true);
+        var provider = new storageProvider.StorageProvider('http://localhost:8081/iframe-entry');
         var waves = new wavesJs.Waves({ NODE_URL: 'https://nodes-testnet.wavesnodes.com' });
         waves.setProvider(provider);
 
