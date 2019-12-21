@@ -56,9 +56,11 @@ class StorageService {
         rounds?: number
     ): TCatchable<TPrivateMultiaccountData> {
         const encrypted = JSON.parse(
-            localStorage.getItem('multiAccountData') || ''
+            localStorage.getItem('multiAccountData') || 'null'
         );
-        const hash = JSON.parse(localStorage.getItem('multiAccountHash') || '');
+        const hash = JSON.parse(
+            localStorage.getItem('multiAccountHash') || 'null'
+        );
 
         if (isNil(hash) || isNil(encrypted)) {
             return {
