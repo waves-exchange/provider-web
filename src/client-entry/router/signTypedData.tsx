@@ -3,7 +3,7 @@ import renderPage from '../utils/renderPage';
 import signCustom from '../pages/signCustom';
 import { customData } from '@waves/waves-transactions';
 import DataEntryList from '../components/dataEntryList';
-import { ITypedData } from '@waves/waves-js/src/interface';
+import { ITypedData } from '@waves/waves-js';
 import React from 'react';
 import { IUser } from '../../interface';
 

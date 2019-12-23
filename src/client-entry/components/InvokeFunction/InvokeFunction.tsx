@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { TInvokeScriptCallArgument } from '@waves/ts-types';
-import { TLong } from '@waves/waves-js/dist/src/interface';
+import { TLong } from '@waves/waves-js';
 import { Text, Flex } from '@waves.exchange/react-uikit';
 
 const PSEUDO_ELEMENTS_STYLE = {

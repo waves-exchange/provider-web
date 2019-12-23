@@ -1,7 +1,7 @@
 import React, { FC, useCallback, MouseEventHandler } from 'react';
 import { SignTransfer as SignTransferComponent } from './component';
 import { ISignTxProps } from '../../../interface';
-import { ITransferWithType, TLong } from '@waves/waves-js/dist/src/interface';
+import { ITransferWithType, TLong } from '@waves/waves-js';
 import { getIconType } from '../../components/IconTransfer/helpers';
 import { BigNumber } from '@waves/bignumber';
 import { libs } from '@waves/waves-transactions';
