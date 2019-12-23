@@ -1,47 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Title</title>
+        <style>
+            html,
+            body,
+            #root {
+                position: relative;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                width: 100%;
+                overflow: hidden;
+                -webkit-overflow-scrolling: touch;
+            }
 
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <style>
-        html,
-        body,
-        #root {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            width: 100%;
-            overflow: hidden;
-            -webkit-overflow-scrolling: touch;
-        }
+            * {
+                box-sizing: border-box;
+            }
+        </style>
+        <script src="../node_modules/@waves/waves-js/dist/waves-js.js"></script>
+        <script src="../dist/storage-provider.js"></script>
+        <script>
+            var provider = new storageProvider.StorageProvider(
+                'http://localhost:8081/iframe-entry'
+            );
+            var waves = new wavesJs.Waves({
+                NODE_URL: 'https://nodes-testnet.wavesnodes.com',
+            });
+            waves.setProvider(provider);
 
-        * {
-            box-sizing: border-box;
-        }
-    </style>
-    <script src="../node_modules/@waves/waves-js/dist/waves-js.js"></script>
-    <script src="../dist/storage-provider.js"></script>
-    <script>
+            var getByElement = function(element, key, defaultValue) {
+                return element.getAttribute(`data-${key}`) || defaultValue;
+            };
 
-        var provider = new storageProvider.StorageProvider('http://localhost:8081/iframe-entry');
-        var waves = new wavesJs.Waves({ NODE_URL: 'https://nodes-testnet.wavesnodes.com' });
-        waves.setProvider(provider);
+            /**
+             * @param {HTMLElement} element
+             */
+            window.transfer = function(element) {
+                return waves
+                    .transfer({
+                        amount: getByElement(element, 'amount', 1),
+                        recipient: getByElement(element, 'recipient', 'merry'),
+                        assetId: getByElement(element, 'assetId', null),
+                        feeAssetId: getByElement(element, 'feeAssetId', null),
+                        fee: getByElement(element, 'fee', undefined),
+                        attachment: getByElement(element, 'attachment', ''),
+                    })
+                    .broadcast();
+            };
+        </script>
+    </head>
 
-    </script>
-</head>
-
-<body>
-
-    <button onclick="waves.login();">Login</button>
-    <button onclick="waves.transfer({amount: 1, recipient: 'merry'}).broadcast();">Transfer to merry, 0.00000001 WAVES</button>
-    <button onclick="waves.transfer({amount: 1, recipient: 'merry', assetId: 'DWgwcZTMhSvnyYCoWLRUXXSH1RSkzThXLJhww9gwkqdn', feeAssetId: 'BC2RVCn2NzoWM8s5MVr2Tns9EmcxL6guMgnDWy3Uj8nA'}).broadcast();">Transfer to merry, 0.00000001 WAVES</button>
-    <button onclick="waves.transfer({amount: 1, recipient: 'merry', assetId: '2CjLFYkp4W4sEAxCjFG9oD3smfhvV6yQnNmiJyexbLdu', feeAssetId: 'BC2RVCn2NzoWM8s5MVr2Tns9EmcxL6guMgnDWy3Uj8nA'}).broadcast();">Transfer to merry, 0.00000001 WAVES</button>
-    <button onclick="waves.invoke({
+    <body>
+        <div>
+            <h1>Login</h1>
+            <button onclick="waves.login();">Login</button>
+        </div>
+        <div style="display: flex; flex-direction: column;">
+            <h2>
+                Transfer
+            </h2>
+            <button
+                onclick="transfer(this);"
+                data-amount="10000000"
+                data-recipient="merry"
+            >
+                Transfer 1 Waves to Merry
+            </button>
+            <button
+                onclick="transfer(this);"
+                data-amount="10000000"
+                data-recipient="merry"
+                data-feeAssetId="DWgwcZTMhSvnyYCoWLRUXXSH1RSkzThXLJhww9gwkqdn"
+            >
+                Transfer 1 Waves to Merry with custom Fee
+            </button>
+            <button
+                onclick="transfer(this);"
+                data-amount="10000000"
+                data-recipient="3PCAB4sHXgvtu5NPoen6EXR5yaNbvsEA8Fj"
+            >
+                Transfer 1 Waves to Merry by address with custom Fee
+            </button>
+            <button
+                onclick="transfer(this);"
+                data-amount="10000000"
+                data-recipient="3PCAB4sHXgvtu5NPoen6EXR5yaNbvsEA8Fj"
+                data-attachment="72k1xXWG59fYdzSNoA"
+            >
+                Transfer 1 Waves to Merry by address with custom Fee With short
+                attachment
+            </button>
+        </div>
+        <div>
+            <h2>Invoke</h2>
+            <button
+                onclick="waves.invoke({
         dApp: '3MwW4Ng8oipLNbZ45KaAiXNEKEUHmbMExv4',
         payment: [
             { assetId: 'DWgwcZTMhSvnyYCoWLRUXXSH1RSkzThXLJhww9gwkqdn', amount: 1},
@@ -57,13 +117,24 @@
             { amount: 1, assetId: 'DWgwcZTMhSvnyYCoWLRUXXSH1RSkzThXLJhww9gwkqdn' }
         ],
         fee: 1000
-    }).broadcast();">Invoke</button>
-    <button onclick="waves.data({
+    }).broadcast();"
+            >
+                Invoke
+            </button>
+        </div>
+        <div>
+            <h2>
+                Data
+            </h2>
+            <button
+                onclick="waves.data({
         data: [
             { key: 'hello', value: 'world', type: 'string' }
         ]
-    }).broadcast();">Data</button>
-
-</body>
-
+    }).broadcast();"
+            >
+                Data
+            </button>
+        </div>
+    </body>
 </html>
