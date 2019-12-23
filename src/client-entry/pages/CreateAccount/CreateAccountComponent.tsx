@@ -65,7 +65,7 @@ export const CreateAccountComponent: FC<IProps> = ({
     onPasswordInputBlur,
 }) => {
     const errorFontSize = '13px';
-    const errorLineHeight = '13px';
+    const errorLineHeight = '15px';
 
     return (
         <Box bg="main.$800" width={520} borderRadius="$6">

@@ -63,7 +63,7 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
                 });
             }
         } else {
-            setErrorMessage('Wrong password');
+            setErrorMessage('Incorrect password');
         }
     }, [networkByte, onConfirm, password]);
 

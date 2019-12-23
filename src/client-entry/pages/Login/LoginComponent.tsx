@@ -77,6 +77,9 @@ export const LoginComponent: FC<IProps> = ({
     errorMessage,
     onUserChange,
 }) => {
+    const errorFontSize = '13px';
+    const errorLineHeight = '15px';
+
     return (
         <Box bg="main.$800" width={520} borderRadius="$6">
             <Flex height={65}>
@@ -180,20 +183,32 @@ export const LoginComponent: FC<IProps> = ({
                             Password
                         </Label>
                         <InputPassword
+                            mb="$10"
                             id={inputPasswordId}
                             value={password}
                             onChange={onPasswordChange}
                         />
-                        {errorMessage && (
-                            <Text mt="$10" fontSize="13px" color="danger.$300">
-                                {errorMessage}
-                            </Text>
-                        )}
+                        <Text
+                            sx={{
+                                maxHeight: errorMessage
+                                    ? errorLineHeight
+                                    : '0px',
+                                overflow: 'hidden',
+                                transition: 'all 0.2s ease',
+                                transformOrigin: 'top',
+                                willChange: 'transform',
+                            }}
+                            fontSize={errorFontSize}
+                            lineHeight={errorLineHeight}
+                            color="danger.$300"
+                        >
+                            {errorMessage || <span>&nbsp;</span>}
+                        </Text>
                         <Button
                             type="submit"
                             variant="primary"
                             variantSize="medium"
-                            mt="$30"
+                            mt="$20"
                             onClick={onLogin}
                         >
                             Log In
