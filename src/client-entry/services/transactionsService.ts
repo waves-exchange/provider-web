@@ -1,8 +1,5 @@
 import { fetchByAlias } from '@waves/node-api-js/es/api-node/alias';
-import {
-    fetchDetails,
-    TAssetDetails,
-} from '@waves/node-api-js/es/api-node/assets';
+import { fetchDetails } from '@waves/node-api-js/es/api-node/assets';
 import { TFeeInfo } from '@waves/node-api-js/es/api-node/transactions';
 import getAssetIdListByTx from '@waves/node-api-js/es/tools/adresses/getAssetIdListByTx';
 import { IWithId, TTransactionMap } from '@waves/ts-types';
@@ -47,7 +44,7 @@ export const prepareTransactions = (
     const transactions = list.map(
         getTransactionFromParams({
             networkByte: state.networkByte,
-            seed: state.user.seed,
+            privateKey: state.user.privateKey,
         })
     );
     const assetsIdList = getAssetIdListByTx(transactions);
