@@ -9,6 +9,7 @@ export const InvokePayment: FC<TProps> = ({
     assetId,
     amount,
     name,
+    logo,
     isLast,
 }) => (
     <Flex
@@ -19,7 +20,13 @@ export const InvokePayment: FC<TProps> = ({
         borderBottomColor="main.$500"
         borderBottomStyle="dashed"
     >
-        <AssetLogo mr="$10" variant="small" assetId={assetId} name={name} />
+        <AssetLogo
+            mr="$10"
+            variant="small"
+            logo={logo}
+            assetId={assetId}
+            name={name}
+        />
         <Text variant="body2">{name}</Text>
         <Text variant="body2" flex="2" textAlign="right">
             {amount}

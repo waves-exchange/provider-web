@@ -21,7 +21,7 @@ import { IState } from '../interface';
 import { getAliasByTx } from '../utils/getAliasByTx';
 import { getTransactionFromParams } from '../utils/getTransactionFromParams';
 import { loadFeeByTransaction } from '../utils/loadFeeByTransaction';
-import { loadLogoInfo } from '../utils/loadLogoInfo';
+import { loadLogoInfo, DetailsWithLogo } from '../utils/loadLogoInfo';
 
 const loadAliases = (
     base: string,
@@ -78,7 +78,7 @@ export const prepareTransactions = (
 export interface IMeta<T extends TTransactionParamWithType> {
     feeList: Array<TFeeInfo>;
     aliases: Record<string, string>;
-    assets: Record<string, TAssetDetails>;
+    assets: Record<string, DetailsWithLogo>;
     params: T;
 }
 

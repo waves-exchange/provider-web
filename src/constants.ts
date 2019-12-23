@@ -3,6 +3,7 @@ import {
     TRANSACTION_TYPE_MAP,
 } from '@waves/waves-js/dist/src/interface';
 import { TTransactionType } from '@waves/ts-types';
+import BigNumber from '@waves/bignumber';
 
 export const TYPE_MAP: TRANSACTION_TYPE_MAP = {
     3: 'issue',
@@ -40,15 +41,20 @@ export const NAME_MAP: TRANSACTION_NAME_MAP = {
 
 export const WAVES = {
     ticker: 'WAVES',
-    id: 'WAVES',
+    assetId: 'WAVES',
     name: 'Waves',
     decimals: 8,
     description: '',
-    height: 0,
-    timestamp: '2016-04-11T21:00:00.000Z',
+    issueHeight: 0,
+    issueTimestamp: new Date('2016-04-11T21:00:00.000Z').getTime(),
     reissuable: false,
-    hasScript: false,
+    scripted: false,
     minSponsoredFee: null,
+    quantity: BigNumber.toBigNumber(100000000)
+        .mul(Math.pow(10, 8))
+        .toFixed(),
+    issuer: 'WAVES',
+    minSponsoredAssetFee: null,
 };
 
 export const MAX_ALIAS_LENGTH = 30;

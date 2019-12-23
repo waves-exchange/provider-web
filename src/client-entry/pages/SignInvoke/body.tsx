@@ -103,12 +103,10 @@ export const SignInvoke: FC<IProps> = ({
                                 maxHeight="165px"
                                 overflowY="auto"
                             >
-                                {payment.map(({ assetId, amount, name }, i) => (
+                                {payment.map((pay, i) => (
                                     <InvokePayment
-                                        key={assetId || i}
-                                        assetId={assetId}
-                                        amount={amount}
-                                        name={name}
+                                        key={pay.assetId || 'WAVES'}
+                                        {...pay}
                                         isLast={i === payment.length - 1}
                                     />
                                 ))}
