@@ -1,11 +1,9 @@
-// @ts-nocheck
 import propEq from 'ramda/es/propEq';
-import allPass from 'ramda/es/allPass';
 import { getUserId } from '../utils/getUserId';
 import { storage } from './storage';
 import { TCatchable } from '../utils/catchable';
 import { libs } from '@waves/waves-transactions';
-import { IPrivateSeedUserData } from '../interface';
+import { IPrivateSeedUserData, IPrivateKeyUserData } from '../interface';
 import { fetchBalance } from '@waves/node-api-js/es/api-node/addresses';
 import { fetchByAddress } from '@waves/node-api-js/es/api-node/alias';
 import { TLong } from '@waves/waves-js/dist/src/interface';
@@ -20,20 +18,40 @@ export function getUsers(
     if (!data.ok) {
         return data;
     }
+    const candidates = Object.values(data.resolveData).filter(
+        propEq('networkByte', networkByte)
+    );
+
+    const privateKeyStorageUsers = candidates.filter(
+        propEq('userType', 'privateKey')
+    ) as IPrivateKeyUserData[];
+
+    const seedStorageUsers = candidates.filter(
+        propEq('userType', 'seed')
+    ) as IPrivateSeedUserData[];
+
+    const privateKeyUsers = privateKeyStorageUsers.map(({ privateKey }) => ({
+        address: libs.crypto.address(
+            { publicKey: libs.crypto.publicKey({ privateKey }) },
+            networkByte
+        ),
+        privateKey,
+    }));
+
+    const seedUsers = seedStorageUsers.map(({ seed: storageSeed }) => {
+        const seed = storageSeed.startsWith('base58:')
+            ? libs.crypto.base58Decode(storageSeed.replace('base58:', ''))
+            : storageSeed;
+
+        return {
+            privateKey: libs.crypto.privateKey(seed),
+            address: libs.crypto.address(seed, networkByte),
+        };
+    });
 
     return {
         ...data,
-        resolveData: Object.values(data.resolveData)
-            .filter(
-                allPass([
-                    propEq('networkByte', networkByte),
-                    propEq('userType', 'seed'),
-                ])
-            )
-            .map((value) => ({
-                address: libs.crypto.address(value.seed, networkByte),
-                seed: value.seed,
-            })),
+        resolveData: [...privateKeyUsers, ...seedUsers],
     };
 }
 

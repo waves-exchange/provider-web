@@ -76,15 +76,16 @@ export default function(
                         ...info,
                         networkByte: state.networkByte,
                         user: {
-                            ...omit(['seed'], state.user),
-                            publicKey: libs.crypto.publicKey(state.user.seed),
+                            ...omit(['privateKey'], state.user),
+                            publicKey: libs.crypto.publicKey({
+                                privateKey: state.user.privateKey,
+                            }),
                         },
                         onConfirm: (transaction) => {
                             resolve(
-                                signTx(
-                                    transaction as any,
-                                    state.user.seed
-                                ) as any
+                                signTx(transaction as any, {
+                                    privateKey: state.user.privateKey,
+                                }) as any
                             );
                         },
                         onCancel: () => {

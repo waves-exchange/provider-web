@@ -91,7 +91,7 @@ export const CreateAccount: FC<IProps> = ({
                 user.resolveData.seed,
                 user.resolveData.networkByte
             ),
-            seed: user.resolveData.seed,
+            privateKey: libs.crypto.privateKey(user.resolveData.seed),
         });
     }, [networkByte, onConfirm, password]);
 

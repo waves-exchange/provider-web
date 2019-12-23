@@ -21,13 +21,17 @@ export default function(
                 sender: state.user.address,
                 user: {
                     address: state.user.address,
-                    publicKey: libs.crypto.publicKey(state.user.seed),
+                    publicKey: libs.crypto.publicKey({
+                        privateKey: state.user.privateKey,
+                    }),
                 },
                 list,
                 onConfirm: () => {
                     resolve(
                         list.map((item) =>
-                            signTx(item.tx as any, state.user.seed)
+                            signTx(item.tx as any, {
+                                privateKey: state.user.privateKey,
+                            })
                         ) as any
                     ); // TODO Fix types
                 },

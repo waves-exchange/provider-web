@@ -17,7 +17,9 @@ export default function(state: IState) {
         if (state.user != null) {
             return Promise.resolve({
                 address: state.user.address,
-                publicKey: libs.crypto.publicKey(state.user.seed),
+                publicKey: libs.crypto.publicKey({
+                    privateKey: state.user.privateKey,
+                }),
             });
         } else {
             const Page = hasMultiaccount() ? Login : CreateAccount;
@@ -37,7 +39,9 @@ export default function(state: IState) {
                             saveTerms(true);
                             resolve({
                                 address: user.address,
-                                publicKey: libs.crypto.publicKey(user.seed),
+                                publicKey: libs.crypto.publicKey({
+                                    privateKey: user.privateKey,
+                                }),
                             });
                         }}
                     />
