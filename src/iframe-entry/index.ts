@@ -1,8 +1,14 @@
 import { defaultTheme } from '@waves.exchange/react-uikit';
 import { Bus, config, WindowAdapter } from '@waves/waves-browser-bus';
-import { IConnectOptions } from '@waves/waves-js';
+import { IConnectOptions, IUserData } from '@waves/waves-js';
+import { libs } from '@waves/waves-transactions';
 import React from 'react';
-import { IBusEvents, IUserWithBalances, TBusHandlers } from '../interface';
+import {
+    IBusEvents,
+    IUserWithBalances,
+    TBusHandlers,
+    IUser,
+} from '../interface';
 import { Queue } from '../utils/Queue';
 import { IState } from './interface';
 import Preload from './pages/Preload';
@@ -11,7 +17,13 @@ import logout from './router/logout';
 import sign from './router/sign';
 import { fetchAliasses, fetchWavesBalance } from './services/userService';
 import renderPage from './utils/renderPage';
+import { analytics } from './utils/analytics';
 
+config.console.logLevel = config.console.LOG_LEVEL.VERBOSE;
+
+const {
+    crypto: { base64Encode, blake2b, stringToBytes },
+} = libs;
 const queue = new Queue(3);
 const overlay = document.getElementById('overlay')!;
 const preload = (): void => {
@@ -22,6 +34,15 @@ preload();
 
 overlay.style.background = defaultTheme.colors.standard.$1000;
 overlay.style.opacity = '.6';
+
+analytics.addApi({
+    // apiToken: config._isProduction() ? 'UA-152433785-1' : 'UA-75283398-21',
+    apiToken: 'UA-152433785-1',
+    libraryUrl: 'https://waves.exchange/googleAnalytics.js', // TODO ???
+    initializeMethod: 'gaInit',
+    sendMethod: 'gaPushEvent',
+    type: 'ui',
+});
 
 WindowAdapter.createSimpleWindowAdapter()
     .then((adapter) => {
@@ -35,11 +56,40 @@ WindowAdapter.createSimpleWindowAdapter()
             matcherUrl: 'https://nodes.wavesplatform.com/matcher',
         };
 
+        analytics.init({
+            platform: 'web',
+            networkByte: state.networkByte,
+            userType: 'unknown',
+            referrer: document.referrer,
+        });
+
+        analytics.activate();
+
         bus.on('connect', (options: IConnectOptions) => {
             state.networkByte = options.NETWORK_BYTE;
             state.nodeUrl = options.NODE_URL;
             state.networkByte = options.NETWORK_BYTE;
+
+            analytics.send({
+                name: 'Signer_Connect',
+                params: {
+                    Network_Byte: options.NETWORK_BYTE, // eslint-disable-line @typescript-eslint/camelcase
+                    Node_Url: options.NODE_URL, // eslint-disable-line @typescript-eslint/camelcase
+                },
+            });
         });
+
+        const loginWithAnalytics = (handler: typeof login) => (
+            state: IState<IUser | null>
+        ) => async (): Promise<IUserData> => {
+            return handler(state)().then((user) => {
+                analytics.addDefaultParams({
+                    auuid: base64Encode(blake2b(stringToBytes(user.address))),
+                });
+
+                return user;
+            });
+        };
 
         const wrapLogin = <T, R>(
             handler: (data: T, state: IState<IUserWithBalances>) => Promise<R>
@@ -72,7 +122,7 @@ WindowAdapter.createSimpleWindowAdapter()
                     if (state.user != null) {
                         return apply();
                     } else {
-                        return login(state)().then(apply);
+                        return loginWithAnalytics(login)(state)().then(apply);
                     }
                 };
 
@@ -84,7 +134,7 @@ WindowAdapter.createSimpleWindowAdapter()
             };
         };
 
-        bus.registerRequestHandler('login', login(state));
+        bus.registerRequestHandler('login', loginWithAnalytics(login)(state));
         bus.registerRequestHandler('logout', logout(state));
 
         // bus.registerRequestHandler('sign-custom-bytes', wrapLogin(signBytes));
