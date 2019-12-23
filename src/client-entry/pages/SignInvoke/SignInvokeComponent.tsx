@@ -10,7 +10,7 @@ import {
 } from '@waves.exchange/react-uikit';
 import { Confirmation } from '../../components/Confirmation';
 import { ICall } from '@waves/waves-js/src/interface';
-import { IPayment } from './page';
+import { IPayment } from './SignInvokeContainer';
 import { InvokePayment } from '../../components/InvokePayment/InvokePayment';
 import { InvokeFunction } from '../../components/InvokeFunction/InvokeFunction';
 
