@@ -65,7 +65,7 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
                         user.resolveData.seed,
                         user.resolveData.networkByte
                     ),
-                    seed: user.resolveData.seed,
+                    privateKey: libs.crypto.privateKey(user.resolveData.seed),
                 });
             }
         } else {

@@ -43,7 +43,7 @@ export interface ISignTxProps<T extends TTransactionParamWithType> {
 
 export interface IUser {
     address: string;
-    seed: string;
+    privateKey: string;
 }
 
 export interface IUserWithBalances extends IUser {

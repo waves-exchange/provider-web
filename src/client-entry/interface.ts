@@ -9,10 +9,12 @@ export interface IState<USER = IUser | null> {
 }
 
 export type TPrivateMultiaccountData = Record<string, TPrivateUserData>;
-export type TPrivateUserData =
+
+type TPrivateUserData =
     | IPrivateSeedUserData
     | IPrivateKeeperUserData
-    | IPrivateLedgerUserData;
+    | IPrivateLedgerUserData
+    | IPrivateKeyUserData;
 
 export interface IPrivateUserDataBase {
     networkByte: number;
@@ -30,6 +32,11 @@ export interface IPrivateKeeperUserData extends IPrivateUserDataBase {
 
 export interface IPrivateLedgerUserData extends IPrivateUserDataBase {
     userType: 'ledger';
+}
+
+export interface IPrivateKeyUserData extends IPrivateUserDataBase {
+    userType: 'privateKey';
+    privateKey: string;
 }
 
 export interface IUserStorageInfo {

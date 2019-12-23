@@ -28,14 +28,16 @@ const fixParams = (
     }
 };
 
-export const getTransactionFromParams = curry(
-    (
-        { networkByte, seed }: { networkByte: number; seed: string },
-        tx: TTransactionParamWithType
-    ): TTransaction<TLong> & IWithId => {
+type GetTransactionFromParams = (
+    options: { networkByte: number; privateKey: string },
+    tx: TTransactionParamWithType
+) => TTransaction<TLong> & IWithId;
+
+export const getTransactionFromParams = curry<GetTransactionFromParams>(
+    ({ networkByte, privateKey }, tx): TTransaction<TLong> & IWithId => {
         return makeTx({
             chainId: networkByte,
-            senderPublicKey: libs.crypto.publicKey(seed),
+            senderPublicKey: libs.crypto.publicKey({ privateKey }),
             ...fixParams(networkByte, tx),
         } as any) as any;
     }
