@@ -1,4 +1,10 @@
-import React, { FC, MouseEventHandler, useCallback, useState } from 'react';
+import React, {
+    FC,
+    MouseEventHandler,
+    useCallback,
+    useState,
+    useEffect,
+} from 'react';
 import { IUser } from '../../../interface';
 import { LoginComponent } from './LoginComponent';
 import { getUsers, addSeedUser } from '../../services/userService';
@@ -80,6 +86,12 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
         currentUser && onConfirm(currentUser);
     }, [currentUser, onConfirm]);
 
+    useEffect(() => {
+        if (!currentUser && Array.isArray(users) && users.length > 0) {
+            handleUserChange(users[0]);
+        }
+    }, [currentUser, handleUserChange, users]);
+
     const hasMultipleUsers = users && users.length > 1;
 
     const title = hasMultipleUsers ? 'Account Selection' : 'Log in';
@@ -101,6 +113,7 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
             onPasswordChange={handlePasswordChange}
             onUserChange={handleUserChange}
             users={hasMultipleUsers ? users : undefined}
+            currentUser={currentUser}
         />
     );
 };
