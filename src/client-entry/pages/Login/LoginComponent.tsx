@@ -22,27 +22,27 @@ import { IUser } from '../../../interface';
 const RadioUser: FC<RadioButtonProps<IUser>> = ({
     children,
     checked,
-    value,
+    value: _value,
     ...rest
 }) => (
     <Button
         aria-checked={checked}
         cursor="pointer"
         bg="transparent"
-        sx={{ ':hover': { bg: 'main.$600' } }}
+        p="0"
+        sx={{ outline: 0, ':hover': { bg: 'main.$600' } }}
         {...rest}
     >
         <Flex
             display="flex"
             alignItems="center"
             height="50px"
-            pl="8px"
-            pr="16px"
+            px="8px"
             borderRadius="$4"
         >
             <Box flex={1}>{children}</Box>
             {checked && (
-                <Icon icon={iconCheck} color="primary.$300" size="18px" />
+                <Icon icon={iconCheck} color="primary.$300" size="24px" />
             )}
         </Flex>
     </Button>
@@ -60,6 +60,7 @@ interface IProps {
     onPasswordChange: ChangeEventHandler<HTMLInputElement>;
     onLogin: MouseEventHandler<HTMLButtonElement>;
     onContinue: MouseEventHandler<HTMLButtonElement>;
+    currentUser?: IUser;
     onUserChange?: (value: IUser) => void;
 }
 
@@ -75,6 +76,7 @@ export const LoginComponent: FC<IProps> = ({
     subTitle,
     showNotification,
     errorMessage,
+    currentUser,
     onUserChange,
 }) => {
     const errorFontSize = '13px';
@@ -143,14 +145,14 @@ export const LoginComponent: FC<IProps> = ({
                     <>
                         <RadioButtonGroup
                             direction="column"
-                            px="$10"
+                            px="8px"
                             bg="basic.$900"
                             border="1px solid"
                             borderColor="main.$600"
                             borderRadius="$4"
                             maxHeight="180px"
                             overflow="auto"
-                            value={users[0]}
+                            value={currentUser}
                             onChange={onUserChange as (value: unknown) => void}
                         >
                             {users.map((user) => (
@@ -187,6 +189,7 @@ export const LoginComponent: FC<IProps> = ({
                             id={inputPasswordId}
                             value={password}
                             onChange={onPasswordChange}
+                            autoFocus={true}
                         />
                         <Text
                             sx={{
