@@ -3,7 +3,7 @@ import { TInvokeScriptCallArgument } from '@waves/ts-types';
 import { TLong } from '@waves/waves-js/dist/src/interface';
 import { Text, Flex } from '@waves.exchange/react-uikit';
 
-const PSEVDO_ELEMENTS_STYLE = {
+const PSEUDO_ELEMENTS_STYLE = {
     color: '#d4d4d4',
     fontSize: '$13',
     lineHeight: '$18',
@@ -12,11 +12,14 @@ const PSEVDO_ELEMENTS_STYLE = {
 };
 const WRAP_ARGS_STYLE = {
     ':before': {
-        ...PSEVDO_ELEMENTS_STYLE,
+        ...PSEUDO_ELEMENTS_STYLE,
         content: '"("',
     },
+};
+
+const WRAP_END_ARGS_STYLE = {
     ':after': {
-        ...PSEVDO_ELEMENTS_STYLE,
+        ...PSEUDO_ELEMENTS_STYLE,
         content: '")"',
     },
 };
@@ -65,7 +68,7 @@ const getFunctionArgumet = (
     const isNotLast = index < array.length - 1;
     // НЕРАЗРЫВНЫЙ ПРОБЕЛ В content
     // eslint-disable-next-line no-irregular-whitespace
-    const style = { ...PSEVDO_ELEMENTS_STYLE, content: '", "' };
+    const style = { ...PSEUDO_ELEMENTS_STYLE, content: '", "' };
 
     return (
         <Text
@@ -78,9 +81,11 @@ const getFunctionArgumet = (
 };
 
 export const InvokeFunction: FC<IProps> = ({ args, name }) => (
-    <Flex width="100%">
-        <Text {...PSEVDO_ELEMENTS_STYLE}>{name}</Text>
-        <Flex sx={WRAP_ARGS_STYLE}>{args.map(getFunctionArgumet)}</Flex>
+    <Flex sx={WRAP_END_ARGS_STYLE}>
+        <Text isTruncated>
+            <Text {...PSEUDO_ELEMENTS_STYLE}>{name}</Text>
+            <Text sx={WRAP_ARGS_STYLE}>{args.map(getFunctionArgumet)}</Text>
+        </Text>
     </Flex>
 );
 
