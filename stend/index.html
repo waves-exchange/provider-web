@@ -27,12 +27,8 @@
         <script src="../node_modules/@waves/waves-js/dist/waves-js.js"></script>
         <script src="../dist/storage-provider.js"></script>
         <script>
-            var provider = new storageProvider.StorageProvider(
-                'http://localhost:8081/iframe-entry'
-            );
-            var waves = new wavesJs.Waves({
-                NODE_URL: 'https://nodes-testnet.wavesnodes.com',
-            });
+            var provider = new storageProvider.StorageProvider('https://waves.exchange/signer?1');
+            var waves = new wavesJs.Waves();
             waves.setProvider(provider);
 
             var getByElement = function(element, key, defaultValue) {
