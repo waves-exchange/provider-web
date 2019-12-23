@@ -5,9 +5,27 @@ export const GlobalCSS: FC = () => {
     return (
         <Global
             styles={css`
-                @import url('./fonts/roboto7.woff2');
-                @import url('./fonts/roboto-medium7.woff2');
-                @import url('./fonts/roboto-light7.woff2');
+                @font-face {
+                    font-family: 'Roboto';
+                    font-style: normal;
+                    font-weight: 300;
+                    font-display: swap;
+                    src: url(./fonts/roboto-light7.woff2) format('woff2');
+                }
+                @font-face {
+                    font-family: 'Roboto';
+                    font-style: normal;
+                    font-weight: 400;
+                    font-display: swap;
+                    src: url('./fonts/roboto7.woff2') format('woff2');
+                }
+                @font-face {
+                    font-family: 'Roboto';
+                    font-style: normal;
+                    font-weight: 700;
+                    font-display: swap;
+                    src: url('./fonts/roboto-medium7.woff2') format('woff2');
+                }
                 body {
                     font-family: 'Roboto', sans-serif;
                     margin: 0;
