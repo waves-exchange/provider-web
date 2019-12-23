@@ -23,6 +23,10 @@ export const SignDataContainer: FC<ISignTxProps<IDataWithType>> = ({
         .roundTo(WAVES.decimals)
         .toFixed();
 
+    const userBalance = BigNumber.toBigNumber(user.balance)
+        .div(Math.pow(10, WAVES.decimals))
+        .toFixed();
+
     const handleConfirm = useCallback<
         MouseEventHandler<HTMLButtonElement>
     >(() => {
@@ -33,7 +37,7 @@ export const SignDataContainer: FC<ISignTxProps<IDataWithType>> = ({
         <SignDataComponent
             userAddress={user.address}
             userName={userName}
-            userBalance={`${balance} userBalanceAssetName`}
+            userBalance={`${userBalance} WAVES`}
             data={tx.data}
             fee={`${fee} WAVES`}
             onConfirm={handleConfirm}
