@@ -97,6 +97,7 @@ export const CreateAccountComponent: FC<IProps> = ({
                     textAlign="center"
                     mt="$20"
                     color="standard.$0"
+                    fontWeight={500}
                 >
                     Create Account
                 </Heading>
