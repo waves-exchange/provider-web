@@ -4,7 +4,7 @@ import {
     IUserData,
     TLong,
     TTransactionParamWithType,
-} from '@waves/waves-js/dist/src/interface';
+} from '@waves/waves-js';
 import {
     IWithId,
     TTransaction,

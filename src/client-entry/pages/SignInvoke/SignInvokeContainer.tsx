@@ -1,11 +1,11 @@
 import React, { FC, useCallback, MouseEventHandler } from 'react';
 import { SignInvoke as SignInvokeComponent } from './SignInvokeComponent';
 import { ISignTxProps } from '../../../interface';
-import { IInvokeWithType, TLong } from '@waves/waves-js/dist/src/interface';
+import { IInvokeWithType, TLong } from '@waves/waves-js';
 import { BigNumber } from '@waves/bignumber';
 import { WAVES } from '../../../constants';
 import { TAssetDetails } from '@waves/node-api-js/es/api-node/assets';
-import { ICall, IMoney } from '@waves/waves-js/src/interface';
+import { ICall, IMoney } from '@waves/waves-js';
 import { getUserName } from '../../services/userService';
 import { DetailsWithLogo } from '../../utils/loadLogoInfo';
 import isNil from 'ramda/es/isNil';

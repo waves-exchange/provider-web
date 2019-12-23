@@ -4,7 +4,7 @@ import {
     ITypedData,
     IUserData,
     TTransactionParamWithType,
-} from '@waves/waves-js/dist/src/interface';
+} from '@waves/waves-js';
 import { IWithId, TTransactionWithProofs } from '@waves/ts-types';
 import { ITransport } from './interface';
 import { TransportIframe } from './TransportIframe';

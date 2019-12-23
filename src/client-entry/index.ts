@@ -1,6 +1,6 @@
 import { defaultTheme } from '@waves.exchange/react-uikit';
 import { Bus, config, WindowAdapter } from '@waves/waves-browser-bus';
-import { IConnectOptions } from '@waves/waves-js/dist/src/interface';
+import { IConnectOptions } from '@waves/waves-js';
 import React from 'react';
 import { IBusEvents, IUserWithBalances, TBusHandlers } from '../interface';
 import { Queue } from '../utils/Queue';

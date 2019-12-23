@@ -3,13 +3,12 @@ import {
     TLong,
     TRANSACTION_TYPE_MAP,
     TTransactionParamWithType,
-} from '@waves/waves-js/dist/src/interface';
+} from '@waves/waves-js';
 import { libs, signTx } from '@waves/waves-transactions';
 import React, { ReactNode } from 'react';
 import { NAME_MAP } from '../../constants';
 import { ISignTxProps, IUserWithBalances } from '../../interface';
 import { IState } from '../interface';
-import burnPage from '../pages/transactions/burn';
 // import exchangePage from '../pages/transactions/exchange';
 // import leasePage from '../pages/transactions/lease';
 // import cancelLeasePage from '../pages/transactions/cancelLease';
@@ -18,8 +17,6 @@ import burnPage from '../pages/transactions/burn';
 // import setScriptPage from '../pages/transactions/setScript';
 // import sponsorshipPage from '../pages/transactions/sponsorship';
 // import setAssetScriptPage from '../pages/transactions/setAssetScript';
-import issuePage from '../pages/transactions/issue';
-import reissuePage from '../pages/transactions/reissue';
 import { prepareTransactions } from '../services/transactionsService';
 import renderPage from '../utils/renderPage';
 import batch from './batch';
