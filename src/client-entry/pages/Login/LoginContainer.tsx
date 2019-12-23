@@ -96,8 +96,8 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
 
     const title = hasMultipleUsers ? 'Account Selection' : 'Log in';
     const subTitle = hasMultipleUsers
-        ? 'Enter your Waves.Exchange password.'
-        : 'Choose one of your Waves.Exchange accounts.';
+        ? 'Choose one of your Waves.Exchange accounts.'
+        : 'Enter your Waves.Exchange password.';
 
     return (
         <LoginComponent

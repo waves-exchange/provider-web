@@ -1,6 +1,7 @@
 import { Box, Flex, Text } from '@waves.exchange/react-uikit';
 import { IData } from '@waves/waves-js';
 import React, { FC } from 'react';
+import { overflow } from 'styled-system';
 
 type DataEntryProps = {
     data: IData['data'];
@@ -25,7 +26,25 @@ export const DataEntry: FC<DataEntryProps> = ({ data }) => (
                 </Text>
             </Box>
         </Flex>
-        <Box>
+        <Box maxHeight="165px"
+             overflow="hidden"
+             overflowY="auto"
+             pr="5px"
+             mr="-5px"
+             sx={{
+                '::-webkit-scrollbar-thumb': {
+                    backgroundColor: 'basic.$500',
+                    width: 3,
+                    borderRadius: 4
+                },
+                '::-webkit-scrollbar': {
+                    width: 3,
+                },
+                '::-webkit-scrollbar-track-piece': {
+                    mb: 5,
+                    mt: 5,
+                }
+            }}>
             {data.map((item, i) => (
                 <Flex
                     key={item.key}

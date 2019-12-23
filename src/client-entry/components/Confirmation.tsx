@@ -33,6 +33,7 @@ export const Confirmation: FC<IConfirmationProps> = ({
             flexDirection="column"
             justifyContent="space-between"
             borderRadius="$6"
+            boxShadow="0 0 30px rgba(0, 0, 0, 0.15)"
             {...rest}
         >
             <Flex

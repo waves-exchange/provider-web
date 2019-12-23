@@ -107,6 +107,7 @@ export const LoginComponent: FC<IProps> = ({
                     textAlign="center"
                     mt="$20"
                     color="standard.$0"
+                    fontWeight={500}
                 >
                     {title}
                 </Heading>
@@ -115,7 +116,6 @@ export const LoginComponent: FC<IProps> = ({
                     <Text
                         variant="body1"
                         mt="$10"
-                        mb="$20"
                         textAlign="center"
                         color="basic.$500"
                     >
@@ -133,11 +133,11 @@ export const LoginComponent: FC<IProps> = ({
                         borderColor="main.$500"
                         borderRadius="$4"
                         my="$20"
-                        textAlign="center"
+                        textAlign="left"
                     >
-                        Don't worry! The dApp won't have access to your tokens,
-                        seed phrases or passwords. They are stored locally
-                        within your browser.
+                        Don't worry! The dApp does not have access to your
+                        tokens, seed phrases or passwords. These are stored
+                        locally within your browser.
                     </Text>
                 )}
 
@@ -153,6 +153,20 @@ export const LoginComponent: FC<IProps> = ({
                             maxHeight="180px"
                             overflow="auto"
                             value={currentUser}
+                            sx={{
+                                '::-webkit-scrollbar-thumb': {
+                                    backgroundColor: 'basic.$500',
+                                    width: 3,
+                                    borderRadius: 4
+                                },
+                                '::-webkit-scrollbar': {
+                                    width: 3,
+                                },
+                                '::-webkit-scrollbar-track-piece': {
+                                    mb: 5,
+                                    mt: 5,
+                                }
+                            }}
                             onChange={onUserChange as (value: unknown) => void}
                         >
                             {users.map((user) => (
@@ -225,7 +239,7 @@ export const LoginComponent: FC<IProps> = ({
                             mt="$30"
                             variant="body2"
                         >
-                            Forgot password
+                            Forgot your password?
                         </ExternalLink>
                     </>
                 )}

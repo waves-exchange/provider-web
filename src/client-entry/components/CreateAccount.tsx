@@ -1,51 +1,40 @@
+import React, { FC, MouseEventHandler } from 'react';
 import {
     Box,
+    Text,
+    Flex,
     Button,
+    IconButton,
+    Icon,
+    Heading,
+    Label,
+    InputPassword,
     Checkbox,
     ExternalLink,
-    Flex,
-    Heading,
-    Icon,
-    IconButton,
     iconClose,
     iconLogo,
-    InputPassword,
-    Label,
-    PasswordComplexityIndicator,
-    Text,
 } from '@waves.exchange/react-uikit';
-import React, {
-    ChangeEventHandler,
-    FC,
-    FocusEventHandler,
-    MouseEventHandler,
-} from 'react';
 
 interface IProps {
     inputPasswordId: string;
     inputPasswordConfirmId: string;
     checkboxPrivacyId: string;
     checkboxTermsId: string;
-    error: boolean;
-    minPasswordLength: number;
     password: string;
     passwordConfirm: string;
     showTerms: boolean;
     isPrivacyAccepted: boolean;
     isTermsAccepted: boolean;
     isSubmitDisabled: boolean;
-    onClose: MouseEventHandler<HTMLButtonElement>;
-    onPasswordChange: ChangeEventHandler<HTMLInputElement>;
-    onPasswordConfirmChange: ChangeEventHandler<HTMLInputElement>;
-    onPrivacyAcceptedChange: ChangeEventHandler<HTMLInputElement>;
-    onTermsAcceptedChange: ChangeEventHandler<HTMLInputElement>;
-    onSubmit: MouseEventHandler<HTMLButtonElement>;
-    onPasswordInputBlur: FocusEventHandler<HTMLInputElement>;
+    onClose(event: React.MouseEvent<HTMLButtonElement>): void;
+    onPasswordChange(event: React.ChangeEvent<HTMLInputElement>): void;
+    onPasswordConfirmChange(event: React.ChangeEvent<HTMLInputElement>): void;
+    onPrivacyAcceptedChange(event: React.ChangeEvent<HTMLInputElement>): void;
+    onTermsAcceptedChange(event: React.ChangeEvent<HTMLInputElement>): void;
+    onSubmit(event: React.MouseEvent<HTMLButtonElement>): void;
 }
 
-export const CreateAccountComponent: FC<IProps> = ({
-    error,
-    minPasswordLength,
+export const CreateAccount: FC<IProps> = ({
     showTerms,
     isPrivacyAccepted,
     isTermsAccepted,
@@ -62,11 +51,7 @@ export const CreateAccountComponent: FC<IProps> = ({
     onPasswordChange,
     onPasswordConfirmChange,
     isSubmitDisabled,
-    onPasswordInputBlur,
 }) => {
-    const errorFontSize = '13px';
-    const errorLineHeight = '15px';
-
     return (
         <Box bg="main.$800" width={520} borderRadius="$6" boxShadow="0 0 30px rgba(0, 0, 0, 0.15)">
             <Flex height={65}>
@@ -92,6 +77,7 @@ export const CreateAccountComponent: FC<IProps> = ({
                     textAlign="center"
                     mt="$20"
                     color="standard.$0"
+                    fontWeight={500}
                 >
                     Create Account
                 </Heading>
@@ -121,17 +107,11 @@ export const CreateAccountComponent: FC<IProps> = ({
                     id={inputPasswordId}
                     value={password}
                     onChange={onPasswordChange}
-                    onBlur={onPasswordInputBlur}
-                />
-                <PasswordComplexityIndicator
-                    mt="$5"
-                    password={password}
-                    minPasswordLength={minPasswordLength}
                 />
 
                 <Label
                     htmlFor={inputPasswordConfirmId}
-                    mt="$10"
+                    mt={27}
                     pb="$5"
                     variant="body2"
                     color="standard.$0"
@@ -139,27 +119,10 @@ export const CreateAccountComponent: FC<IProps> = ({
                     Confirm password
                 </Label>
                 <InputPassword
-                    mb="$10"
                     id={inputPasswordConfirmId}
                     value={passwordConfirm}
-                    aria-invalid={Boolean(error)}
                     onChange={onPasswordConfirmChange}
-                    onBlur={onPasswordInputBlur}
                 />
-                <Text
-                    sx={{
-                        maxHeight: error ? errorLineHeight : '0px',
-                        overflow: 'hidden',
-                        transition: 'all 0.2s ease',
-                        transformOrigin: 'top',
-                        willChange: 'transform',
-                    }}
-                    fontSize={errorFontSize}
-                    lineHeight={errorLineHeight}
-                    color="danger.$300"
-                >
-                    Password doesn't match
-                </Text>
 
                 {showTerms ? (
                     <>
@@ -174,10 +137,7 @@ export const CreateAccountComponent: FC<IProps> = ({
                                     I have read and agree with the&nbsp;
                                 </Text>
                             </Checkbox>
-                            <ExternalLink
-                                href="https://waves.exchange/files/Privacy_Policy_Waves.Exchange.pdf"
-                                variant="body2"
-                            >
+                            <ExternalLink href="#" variant="body2">
                                 Privacy policy
                             </ExternalLink>
                         </Flex>
@@ -193,10 +153,7 @@ export const CreateAccountComponent: FC<IProps> = ({
                                     I have read and agree with the&nbsp;
                                 </Text>
                             </Checkbox>
-                            <ExternalLink
-                                href="https://waves.exchange/files/Terms_Of_Use_Waves.Exchange.pdf"
-                                variant="body2"
-                            >
+                            <ExternalLink href="#" variant="body2">
                                 Terms and Conditions
                             </ExternalLink>
                         </Flex>
@@ -208,7 +165,7 @@ export const CreateAccountComponent: FC<IProps> = ({
                     variant="primary"
                     variantSize="medium"
                     mt="$30"
-                    onClick={onSubmit}
+                    onClick={onSubmit as MouseEventHandler<HTMLButtonElement>}
                     disabled={isSubmitDisabled}
                 >
                     Sign up
@@ -220,11 +177,7 @@ export const CreateAccountComponent: FC<IProps> = ({
                     color="basic.$500"
                 >
                     If you had an account, visit{' '}
-                    <ExternalLink
-                        href="https://waves.exchange/"
-                        variant="body2"
-                        target="_blank"
-                    >
+                    <ExternalLink href="#" fontSize="$15">
                         Waves.Exchange
                     </ExternalLink>{' '}
                     to restore it.
