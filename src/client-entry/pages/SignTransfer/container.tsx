@@ -49,7 +49,7 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
 
     const attachment = catchable(
         compose(libs.crypto.bytesToString, libs.crypto.base58Decode)
-    )('676c939f-9109-4f2a-95d7-69ff42edd5d6');
+    )(tx.attachment);
 
     const handleConfirm = useCallback<
         MouseEventHandler<HTMLButtonElement>

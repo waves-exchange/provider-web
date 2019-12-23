@@ -154,20 +154,6 @@ export const LoginComponent: FC<IProps> = ({
                             overflow="auto"
                             mt="20px"
                             value={currentUser}
-                            sx={{
-                                '::-webkit-scrollbar-thumb': {
-                                    backgroundColor: 'basic.$500',
-                                    width: 3,
-                                    borderRadius: 4,
-                                },
-                                '::-webkit-scrollbar': {
-                                    width: 3,
-                                },
-                                '::-webkit-scrollbar-track-piece': {
-                                    mb: 5,
-                                    mt: 5,
-                                },
-                            }}
                             onChange={onUserChange as (value: unknown) => void}
                         >
                             {users.map((user) => (

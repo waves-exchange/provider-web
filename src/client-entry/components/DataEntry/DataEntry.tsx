@@ -32,20 +32,6 @@ export const DataEntry: FC<DataEntryProps> = ({ data }) => (
             overflowY="auto"
             pr="5px"
             mr="-5px"
-            sx={{
-                '::-webkit-scrollbar-thumb': {
-                    backgroundColor: 'basic.$500',
-                    width: 3,
-                    borderRadius: 4,
-                },
-                '::-webkit-scrollbar': {
-                    width: 3,
-                },
-                '::-webkit-scrollbar-track-piece': {
-                    mb: 5,
-                    mt: 5,
-                },
-            }}
         >
             {data.map((item, i) => (
                 <Flex
