@@ -1,5 +1,5 @@
 import BigNumber from '@waves/bignumber';
-import { IDataWithType } from '@waves/waves-js/dist/src/interface';
+import { IDataWithType } from '@waves/waves-js';
 import React, { FC, MouseEventHandler, useCallback } from 'react';
 import { WAVES } from '../../../constants';
 import { ISignTxProps } from '../../../interface';

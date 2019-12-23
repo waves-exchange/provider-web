@@ -3,10 +3,7 @@ import { fetchDetails } from '@waves/node-api-js/es/api-node/assets';
 import { TFeeInfo } from '@waves/node-api-js/es/api-node/transactions';
 import getAssetIdListByTx from '@waves/node-api-js/es/tools/adresses/getAssetIdListByTx';
 import { IWithId, TTransactionMap } from '@waves/ts-types';
-import {
-    TLong,
-    TTransactionParamWithType,
-} from '@waves/waves-js/dist/src/interface';
+import { TLong, TTransactionParamWithType } from '@waves/waves-js';
 import flatten from 'ramda/es/flatten';
 import indexBy from 'ramda/es/indexBy';
 import map from 'ramda/es/map';

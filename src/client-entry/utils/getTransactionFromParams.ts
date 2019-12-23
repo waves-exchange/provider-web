@@ -1,7 +1,4 @@
-import {
-    TTransactionParamWithType,
-    TLong,
-} from '@waves/waves-js/dist/src/interface';
+import { TTransactionParamWithType, TLong } from '@waves/waves-js';
 import { TTransaction, IWithId } from '@waves/ts-types';
 import { fixRecipient } from './fixRecipient';
 import { NAME_MAP } from '../../constants';

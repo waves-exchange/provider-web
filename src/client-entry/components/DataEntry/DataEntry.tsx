@@ -1,5 +1,5 @@
 import { Box, Flex, Text } from '@waves.exchange/react-uikit';
-import { IData } from '@waves/waves-js/dist/src/interface';
+import { IData } from '@waves/waves-js';
 import React, { FC } from 'react';
 
 type DataEntryProps = {

@@ -1,6 +1,6 @@
 // @ts-nocheck
 import { ISignTxProps } from '../../../interface';
-import { IBurnWithType } from '@waves/waves-js/dist/src/interface';
+import { IBurnWithType } from '@waves/waves-js';
 import { toFormat } from '../../utils';
 import React from 'react';
 import { AddressAvatar } from '@waves.exchange/react-uikit';
