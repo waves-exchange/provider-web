@@ -13,6 +13,18 @@ export const GlobalCSS: FC = () => {
                     margin: 0;
                     padding: 0;
                 }
+                ::-webkit-scrollbar-thumb {
+                    background-color: #495060;
+                    width: 3px;
+                    border-radius: 4px;
+                }
+                ::-webkit-scrollbar {
+                    width: 3px;
+                }
+                ::-webkit-scrollbar-track-piece {
+                    margin-bottom: 5px;
+                    margin-top: 5px;
+                }
             `}
         />
     );

@@ -94,23 +94,24 @@ export const SignInvoke: FC<IProps> = ({
                             >
                                 Payments
                             </Text>
-                            <Flex
-                                flexDirection="column"
-                                borderRadius="$4"
-                                bg="basic.$900"
-                                px="$10"
-                                py="$5"
-                                maxHeight="165px"
-                                overflowY="auto"
-                            >
-                                {payment.map((pay, i) => (
-                                    <InvokePayment
-                                        key={pay.assetId || 'WAVES'}
-                                        {...pay}
-                                        isLast={i === payment.length - 1}
-                                    />
-                                ))}
-                            </Flex>
+                            <Box p="$5" bg="basic.$900" borderRadius="$4">
+                                <Flex
+                                    flexDirection="column"
+                                    borderRadius="$4"
+                                    bg="basic.$900"
+                                    px="$5"
+                                    maxHeight="165px"
+                                    overflowY="auto"
+                                >
+                                    {payment.map((pay, i) => (
+                                        <InvokePayment
+                                            key={pay.assetId || 'WAVES'}
+                                            {...pay}
+                                            isLast={i === payment.length - 1}
+                                        />
+                                    ))}
+                                </Flex>
+                            </Box>
                         </Box>
                     )}
 

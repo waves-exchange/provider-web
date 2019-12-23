@@ -41,7 +41,16 @@ export const SignTransfer: FC<Props> = ({
             onConfirm={onConfirm}
         >
             <Flex px="$40" py="$30" bg="main.$900">
-                <IconTransfer type={iconType} size={60} />
+                <Flex
+                    alignItems="center"
+                    justifyContent="center"
+                    borderRadius="circle"
+                    bg="rgba(255, 175, 0, 0.1)"
+                    height={60}
+                    width={60}
+                >
+                    <IconTransfer type={iconType} size={40} />
+                </Flex>
                 <Flex ml="$20" flexDirection="column">
                     <Text variant="body1" color="basic.$500">
                         Sign Transfer TX
