@@ -190,6 +190,7 @@ export const LoginComponent: FC<IProps> = ({
                             value={password}
                             onChange={onPasswordChange}
                             autoFocus={true}
+                            aria-invalid={Boolean(errorMessage)}
                         />
                         <Text
                             sx={{
