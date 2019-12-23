@@ -152,12 +152,13 @@ export const LoginComponent: FC<IProps> = ({
                             borderRadius="$4"
                             maxHeight="180px"
                             overflow="auto"
+                            mt="20px"
                             value={currentUser}
                             sx={{
                                 '::-webkit-scrollbar-thumb': {
                                     backgroundColor: 'basic.$500',
                                     width: 3,
-                                    borderRadius: 4
+                                    borderRadius: 4,
                                 },
                                 '::-webkit-scrollbar': {
                                     width: 3,
@@ -165,7 +166,7 @@ export const LoginComponent: FC<IProps> = ({
                                 '::-webkit-scrollbar-track-piece': {
                                     mb: 5,
                                     mt: 5,
-                                }
+                                },
                             }}
                             onChange={onUserChange as (value: unknown) => void}
                         >

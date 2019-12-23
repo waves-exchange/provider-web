@@ -26,16 +26,17 @@ export const DataEntry: FC<DataEntryProps> = ({ data }) => (
                 </Text>
             </Box>
         </Flex>
-        <Box maxHeight="165px"
-             overflow="hidden"
-             overflowY="auto"
-             pr="5px"
-             mr="-5px"
-             sx={{
+        <Box
+            maxHeight="165px"
+            overflow="hidden"
+            overflowY="auto"
+            pr="5px"
+            mr="-5px"
+            sx={{
                 '::-webkit-scrollbar-thumb': {
                     backgroundColor: 'basic.$500',
                     width: 3,
-                    borderRadius: 4
+                    borderRadius: 4,
                 },
                 '::-webkit-scrollbar': {
                     width: 3,
@@ -43,8 +44,9 @@ export const DataEntry: FC<DataEntryProps> = ({ data }) => (
                 '::-webkit-scrollbar-track-piece': {
                     mb: 5,
                     mt: 5,
-                }
-            }}>
+                },
+            }}
+        >
             {data.map((item, i) => (
                 <Flex
                     key={item.key}

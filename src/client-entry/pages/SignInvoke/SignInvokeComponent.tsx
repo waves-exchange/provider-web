@@ -106,11 +106,11 @@ export const SignInvoke: FC<IProps> = ({
                                         '::-webkit-scrollbar-thumb': {
                                             backgroundColor: 'basic.$500',
                                             width: 3,
-                                            borderRadius: 4
+                                            borderRadius: 4,
                                         },
                                         '::-webkit-scrollbar': {
                                             width: 3,
-                                        }
+                                        },
                                     }}
                                 >
                                     {payment.map((pay, i) => (

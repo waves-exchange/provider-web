@@ -68,7 +68,12 @@ export const CreateAccountComponent: FC<IProps> = ({
     const errorLineHeight = '15px';
 
     return (
-        <Box bg="main.$800" width={520} borderRadius="$6" boxShadow="0 0 30px rgba(0, 0, 0, 0.15)">
+        <Box
+            bg="main.$800"
+            width={520}
+            borderRadius="$6"
+            boxShadow="0 0 30px rgba(0, 0, 0, 0.15)"
+        >
             <Flex height={65}>
                 <IconButton
                     ml="auto"
