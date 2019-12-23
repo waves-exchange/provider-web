@@ -48,6 +48,7 @@ export const Confirmation: FC<IConfirmationProps> = ({
                         address={address}
                         isShort={true}
                         name={name}
+                        addressWithCopy={true}
                     />
                 </Box>
                 <Flex flexDirection="column" alignItems="flex-end">

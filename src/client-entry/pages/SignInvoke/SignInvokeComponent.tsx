@@ -81,7 +81,7 @@ export const SignInvoke: FC<IProps> = ({
                         >
                             Account
                         </Text>
-                        <AddressAvatar address={dApp} />
+                        <AddressAvatar address={dApp} addressWithCopy={true} />
                     </Box>
 
                     {payment && payment.length > 0 && (

@@ -56,7 +56,11 @@ export const SignTransfer: FC<Props> = ({
                 <Text variant="body2" color="basic.$500">
                     Recipient
                 </Text>
-                <AddressAvatar mt="$5" address={recipientAddress} />
+                <AddressAvatar
+                    mt="$5"
+                    address={recipientAddress}
+                    addressWithCopy={true}
+                />
 
                 {attachement ? (
                     <>
