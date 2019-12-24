@@ -1,5 +1,5 @@
 {
-  "name": "@waves.exchange/storage-provider",
+  "name": "@waves.exchange/waves-signer",
   "version": "0.0.22",
   "main": "dist/storage-provider.min.js",
   "types": "dist/src/provider/index.d.ts",
