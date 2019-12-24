@@ -17,7 +17,10 @@ export class StorageProvider implements IProvider {
     private readonly _transport: ITransport;
 
     constructor(clientOrigin?: string, logs?: boolean) {
-        clientOrigin = clientOrigin || 'https://waves.exchange/signer';
+        clientOrigin =
+            (clientOrigin || 'https://waves.exchange/signer') +
+            '?' +
+            StorageProvider._getCacheClean();
         const Transport = TransportIframe.canUse()
             ? TransportIframe
             : TransportWindow;
@@ -26,6 +29,10 @@ export class StorageProvider implements IProvider {
         if (logs != null) {
             config.console.logLevel = config.console.LOG_LEVEL.VERBOSE;
         }
+    }
+
+    private static _getCacheClean(): string {
+        return String(Date.now() % (1000 * 60));
     }
 
     public async connect(options: IConnectOptions): Promise<void> {
