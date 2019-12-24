@@ -50,6 +50,7 @@ export const Confirmation: FC<IConfirmationProps> = ({
                         isShort={true}
                         name={name}
                         addressWithCopy={true}
+                        avatarSize="large"
                     />
                 </Box>
                 <Flex flexDirection="column" alignItems="flex-end">
