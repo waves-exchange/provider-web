@@ -35,15 +35,6 @@ preload();
 overlay.style.background = defaultTheme.colors.standard.$1000;
 overlay.style.opacity = '.6';
 
-analytics.addApi({
-    // apiToken: config._isProduction() ? 'UA-152433785-1' : 'UA-75283398-21',
-    apiToken: 'UA-152433785-1',
-    libraryUrl: 'https://waves.exchange/googleAnalytics.js', // TODO ???
-    initializeMethod: 'gaInit',
-    sendMethod: 'gaPushEvent',
-    type: 'ui',
-});
-
 WindowAdapter.createSimpleWindowAdapter()
     .then((adapter) => {
         const bus = new Bus<IBusEvents, TBusHandlers>(adapter);
@@ -55,6 +46,15 @@ WindowAdapter.createSimpleWindowAdapter()
             nodeUrl: 'https://nodes.wavesplatform.com',
             matcherUrl: 'https://nodes.wavesplatform.com/matcher',
         };
+
+        analytics.addApi({
+            apiToken:
+                state.networkByte === 87 ? 'UA-152433785-1' : 'UA-75283398-21',
+            libraryUrl: 'https://waves.exchange/googleAnalytics.js', // TODO ???
+            initializeMethod: 'gaInit',
+            sendMethod: 'gaPushEvent',
+            type: 'ui',
+        });
 
         analytics.init({
             platform: 'web',
