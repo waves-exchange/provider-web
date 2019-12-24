@@ -8,8 +8,13 @@ type DataEntryProps = {
 };
 
 export const DataEntry: FC<DataEntryProps> = ({ data }) => (
-    <Box mb="$20" px="15px" bg="basic.$900" borderRadius="$4">
-        <Flex py="13px" borderBottom="1px solid" borderColor="main.$500">
+    <Box mb="$20" bg="basic.$900" borderRadius="$4">
+        <Flex
+            py="13px"
+            px="15px"
+            borderBottom="1px solid"
+            borderColor="main.$500"
+        >
             <Box width="35%">
                 <Text variant="body2" color="basic.$500">
                     Key
@@ -30,8 +35,9 @@ export const DataEntry: FC<DataEntryProps> = ({ data }) => (
             maxHeight="165px"
             overflow="hidden"
             overflowY="auto"
-            pr="5px"
-            mr="-5px"
+            pr="10px"
+            pl="15px"
+            mr="5px"
         >
             {data.map((item, i) => (
                 <Flex
