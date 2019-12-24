@@ -36,10 +36,16 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
     const handleClose = useCallback<
         MouseEventHandler<HTMLButtonElement>
     >(() => {
-        analytics.send({ name: 'Login_Page_Close' });
-
         onCancel();
-    }, [onCancel]);
+
+        if (!users || users.length === 1) {
+            analytics.send({ name: 'Login_Page_Close' });
+        } else {
+            analytics.send({
+                name: 'Select_Account_Page_Close',
+            });
+        }
+    }, [onCancel, users]);
 
     const handleLogin = useCallback<MouseEventHandler<HTMLButtonElement>>(
         (e) => {
@@ -103,6 +109,10 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
         (e) => {
             e.preventDefault();
             currentUser && onConfirm(currentUser);
+
+            analytics.send({
+                name: 'Select_Account_Page_Continue',
+            });
         },
         [currentUser, onConfirm]
     );
