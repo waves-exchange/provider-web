@@ -53,7 +53,7 @@ export class TransportWindow extends Transport {
                 if (this._messageCallback != null) {
                     this._messageCallback(bus);
                 }
-                resolve();
+                resolve(bus);
             });
         });
     }
