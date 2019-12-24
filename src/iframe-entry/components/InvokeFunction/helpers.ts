@@ -13,8 +13,8 @@ export const getAttrStyles = (
     ':after': !isLast ? { ...pseudoElemStyles, content: '", "' } : {},
 });
 
-const formatText = (text: string): string =>
-    text.length > 5 ? `${text.slice(0, 4)}...` : text;
+const formatText = (text: string | number): string =>
+    String(text).length >= 5 ? `${String(text).slice(0, 4)}...` : String(text);
 
 export const getAttrContent = (
     type: TInvokeScriptCallArgument<TLong>['type'],
@@ -22,12 +22,13 @@ export const getAttrContent = (
 ): string | null => {
     switch (type) {
         case 'integer':
+            return formatText(value as string | number);
         case 'boolean':
             return String(value);
         case 'string':
             return `'${formatText(value as string)}'`;
         case 'binary':
-            return 'base64:...';
+            return "'base64:...'";
         default:
             return null;
     }
