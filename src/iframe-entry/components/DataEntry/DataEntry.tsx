@@ -50,6 +50,10 @@ export const DataEntry: FC<DataEntryProps> = ({ data }) => (
                             variant="body2"
                             color="standard.$0"
                             isTruncated={true}
+                            display="inline-block"
+                            maxWidth="100%"
+                            pr="$20"
+                            verticalAlign="middle"
                         >
                             {item.value}
                         </Text>
