@@ -1,5 +1,5 @@
 import { MouseEventHandler, useCallback } from 'react';
-import { analytics, IEventData } from '../../client-entry/utils/analytics';
+import { analytics, IEventData } from '../utils/analytics';
 import { IWithId, TTransaction } from '@waves/ts-types';
 import { TLong } from '@waves/waves-js';
 

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { SignTransfer as SignTransferComponent } from './SignTransferComponent';
 import { ISignTxProps } from '../../../interface';
 import { ITransferWithType, TLong } from '@waves/waves-js';
@@ -10,7 +10,7 @@ import compose from 'ramda/es/compose';
 import { WAVES } from '../../../constants';
 import { TAssetDetails } from '@waves/node-api-js/es/api-node/assets';
 import { getUserName } from '../../services/userService';
-import { analytics } from '../../../client-entry/utils/analytics';
+import { analytics } from '../../utils/analytics';
 import { useTxHandlers } from '../../hooks/useTxHandlers';
 
 const getAssetName = (
@@ -63,9 +63,13 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
         }
     );
 
-    analytics.send({
-        name: 'Confirm_Transfer_Tx_Show',
-    });
+    useEffect(
+        () =>
+            analytics.send({
+                name: 'Confirm_Transfer_Tx_Show',
+            }),
+        []
+    );
 
     return (
         <SignTransferComponent

@@ -1,4 +1,4 @@
-import React, { FC, useCallback, MouseEventHandler } from 'react';
+import React, { FC, useEffect } from 'react';
 import { SignInvoke as SignInvokeComponent } from './SignInvokeComponent';
 import { ISignTxProps } from '../../../interface';
 import { IInvokeWithType, TLong } from '@waves/waves-js';
@@ -10,6 +10,8 @@ import { getUserName } from '../../services/userService';
 import { DetailsWithLogo } from '../../utils/loadLogoInfo';
 import isNil from 'ramda/es/isNil';
 import prop from 'ramda/es/prop';
+import { useTxHandlers } from '../../hooks/useTxHandlers';
+import { analytics } from '../../utils/analytics';
 
 export interface IPayment {
     assetId: string | null;
@@ -94,7 +96,7 @@ export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
             call={tx.call as ICall}
             chainId={tx.chainId}
             payment={mapPayments(tx.payment || [])}
-            onCancel={onCancel}
+            onCancel={handleReject}
             onConfirm={handleConfirm}
         />
     );

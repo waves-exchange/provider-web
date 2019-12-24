@@ -1,11 +1,11 @@
 import BigNumber from '@waves/bignumber';
 import { IDataWithType } from '@waves/waves-js';
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { WAVES } from '../../../constants';
 import { ISignTxProps } from '../../../interface';
 import { SignDataComponent } from './SignDataComponent';
 import { getUserName } from '../../services/userService';
-import { analytics } from '../../../client-entry/utils/analytics';
+import { analytics } from '../../utils/analytics';
 import { useTxHandlers } from '../../hooks/useTxHandlers';
 
 export const SignDataContainer: FC<ISignTxProps<IDataWithType>> = ({
@@ -35,9 +35,13 @@ export const SignDataContainer: FC<ISignTxProps<IDataWithType>> = ({
         }
     );
 
-    analytics.send({
-        name: 'Confirm_Data_Tx_Show',
-    });
+    useEffect(
+        () =>
+            analytics.send({
+                name: 'Confirm_Data_Tx_Show',
+            }),
+        []
+    );
 
     return (
         <SignDataComponent
