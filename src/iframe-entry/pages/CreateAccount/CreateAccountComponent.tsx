@@ -185,6 +185,7 @@ export const CreateAccountComponent: FC<IProps> = ({
                             <ExternalLink
                                 href="https://waves.exchange/files/Privacy_Policy_Waves.Exchange.pdf"
                                 variant="body2"
+                                target="_blank"
                             >
                                 Privacy policy
                             </ExternalLink>
@@ -204,6 +205,7 @@ export const CreateAccountComponent: FC<IProps> = ({
                             <ExternalLink
                                 href="https://waves.exchange/files/Terms_Of_Use_Waves.Exchange.pdf"
                                 variant="body2"
+                                target="_blank"
                             >
                                 Terms and Conditions
                             </ExternalLink>
