@@ -41,6 +41,7 @@ interface IProps {
     onTermsAcceptedChange: ChangeEventHandler<HTMLInputElement>;
     onSubmit: MouseEventHandler<HTMLButtonElement>;
     onPasswordInputBlur: FocusEventHandler<HTMLInputElement>;
+    onExchangeLinkClick: MouseEventHandler;
 }
 
 export const CreateAccountComponent: FC<IProps> = ({
@@ -63,6 +64,7 @@ export const CreateAccountComponent: FC<IProps> = ({
     onPasswordConfirmChange,
     isSubmitDisabled,
     onPasswordInputBlur,
+    onExchangeLinkClick,
 }) => {
     const errorFontSize = '13px';
     const errorLineHeight = '15px';
@@ -230,6 +232,7 @@ export const CreateAccountComponent: FC<IProps> = ({
                         href="https://waves.exchange/"
                         variant="body2"
                         target="_blank"
+                        onClick={onExchangeLinkClick}
                     >
                         Waves.Exchange
                     </ExternalLink>{' '}
