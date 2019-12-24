@@ -16,7 +16,12 @@ import {
     RadioButtonProps,
     Text,
 } from '@waves.exchange/react-uikit';
-import React, { ChangeEventHandler, FC, MouseEventHandler } from 'react';
+import React, {
+    ChangeEventHandler,
+    FC,
+    MouseEventHandler,
+    KeyboardEventHandler,
+} from 'react';
 import { IUser } from '../../../interface';
 
 const RadioUser: FC<RadioButtonProps<IUser>> = ({
@@ -56,6 +61,7 @@ interface IProps {
     users?: IUser[];
     inputPasswordId: string;
     password: string;
+    isSubmitDisabled: boolean;
     onClose: MouseEventHandler<HTMLButtonElement>;
     onPasswordChange: ChangeEventHandler<HTMLInputElement>;
     onLogin: MouseEventHandler<HTMLButtonElement>;
@@ -80,12 +86,13 @@ export const LoginComponent: FC<IProps> = ({
     currentUser,
     onUserChange,
     onForgotPasswordLinkClick,
+    isSubmitDisabled,
 }) => {
     const errorFontSize = '13px';
     const errorLineHeight = '15px';
 
     return (
-        <Box bg="main.$800" width={520} borderRadius="$6">
+        <Box bg="main.$800" width={520} borderRadius="$6" as="form">
             <Flex height={65}>
                 <IconButton
                     ml="auto"
@@ -217,6 +224,7 @@ export const LoginComponent: FC<IProps> = ({
                             variantSize="medium"
                             mt="$20"
                             onClick={onLogin}
+                            disabled={isSubmitDisabled}
                         >
                             Log In
                         </Button>
