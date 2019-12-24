@@ -37,6 +37,12 @@ export class TransportIframe extends Transport {
         iframe.style.transition = 'opacity .2s';
         iframe.style.position = 'absolute';
         iframe.style.opacity = '0';
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.left = '0';
+        iframe.style.top = '0';
+        iframe.style.border = 'none';
+        iframe.style.position = 'fixed';
         iframe.src = url;
 
         return iframe;
