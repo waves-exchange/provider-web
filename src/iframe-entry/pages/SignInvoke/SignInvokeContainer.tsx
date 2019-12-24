@@ -55,11 +55,23 @@ export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
         .roundTo(feeAsset.decimals)
         .toFixed();
 
-    const handleConfirm = useCallback<
-        MouseEventHandler<HTMLButtonElement>
-    >(() => {
-        onConfirm(tx);
-    }, [tx, onConfirm]);
+    const { handleConfirm, handleReject } = useTxHandlers(
+        tx,
+        onCancel,
+        onConfirm,
+        {
+            onRejectAnalyticsArgs: { name: 'Confirm_Invoke_Tx_Reject' },
+            onConfirmAnalyticsArgs: { name: 'Confirm_Invoke_Tx_Confirm' },
+        }
+    );
+
+    useEffect(
+        () =>
+            analytics.send({
+                name: 'Confirm_Invoke_Tx_Show',
+            }),
+        []
+    );
 
     const mapPayments = (payments: Array<IMoney>): Array<IPayment> =>
         payments.map(({ assetId, amount }) => ({
