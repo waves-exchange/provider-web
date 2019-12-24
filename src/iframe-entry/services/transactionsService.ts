@@ -46,7 +46,11 @@ export const prepareTransactions = (
     );
     const assetsIdList = getAssetIdListByTx(transactions);
     const transactionsWithFee = Promise.all(
-        transactions.map(loadFeeByTransaction(state.nodeUrl))
+        transactions.map((tx, index) =>
+            list[index].fee
+                ? Promise.resolve(tx)
+                : loadFeeByTransaction(state.nodeUrl, tx)
+        )
     );
     const aliases = pipe(map(getAliasByTx), flatten, uniq)(transactions);
 
