@@ -41,50 +41,54 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
         onCancel();
     }, [onCancel]);
 
-    const handleLogin = useCallback<
-        MouseEventHandler<HTMLButtonElement>
-    >(() => {
-        const { resolveData: users } = getUsers(password, networkByte);
+    const handleLogin = useCallback<MouseEventHandler<HTMLButtonElement>>(
+        (e) => {
+            e.preventDefault();
+            const { resolveData: users } = getUsers(password, networkByte);
 
-        if (users) {
-            if (users.length === 1) {
-                onConfirm(users[0]);
-            } else if (users.length > 1) {
-                setUsers(users);
-            } else {
-                const user = addSeedUser(
-                    libs.crypto.randomSeed(15),
-                    password,
-                    networkByte
-                );
+            if (users) {
+                if (users.length === 1) {
+                    onConfirm(users[0]);
+                } else if (users.length > 1) {
+                    setUsers(users);
+                } else {
+                    const user = addSeedUser(
+                        libs.crypto.randomSeed(15),
+                        password,
+                        networkByte
+                    );
 
-                if (!user.ok) {
-                    setErrorMessage('Unknown error');
+                    if (!user.ok) {
+                        setErrorMessage('Unknown error');
 
-                    return;
+                        return;
+                    }
+
+                    analytics.send({
+                        name: 'Login_Page_Login_Click_Success',
+                        params: {
+                            Accounts_Length: users.length, // eslint-disable-line @typescript-eslint/camelcase
+                        },
+                    });
+
+                    onConfirm({
+                        address: libs.crypto.address(
+                            user.resolveData.seed,
+                            user.resolveData.networkByte
+                        ),
+                        privateKey: libs.crypto.privateKey(
+                            user.resolveData.seed
+                        ),
+                    });
                 }
+            } else {
+                analytics.send({ name: 'Login_Page_Login_Click_Error' });
 
-                analytics.send({
-                    name: 'Login_Page_Login_Click_Success',
-                    params: {
-                        Accounts_Length: users.length, // eslint-disable-line @typescript-eslint/camelcase
-                    },
-                });
-
-                onConfirm({
-                    address: libs.crypto.address(
-                        user.resolveData.seed,
-                        user.resolveData.networkByte
-                    ),
-                    privateKey: libs.crypto.privateKey(user.resolveData.seed),
-                });
+                setErrorMessage('Incorrect password');
             }
-        } else {
-            analytics.send({ name: 'Login_Page_Login_Click_Error' });
-
-            setErrorMessage('Incorrect password');
-        }
-    }, [networkByte, onConfirm, password]);
+        },
+        [networkByte, onConfirm, password]
+    );
 
     const handleUserChange = useCallback(
         (user: IUser): void => {
@@ -95,11 +99,13 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
         [setCurrentUser]
     );
 
-    const handleContinue = useCallback<
-        MouseEventHandler<HTMLButtonElement>
-    >(() => {
-        currentUser && onConfirm(currentUser);
-    }, [currentUser, onConfirm]);
+    const handleContinue = useCallback<MouseEventHandler<HTMLButtonElement>>(
+        (e) => {
+            e.preventDefault();
+            currentUser && onConfirm(currentUser);
+        },
+        [currentUser, onConfirm]
+    );
 
     const handleForgotPasswordLinkClick = useCallback(() => {
         analytics.send({ name: 'Login_Page_Forgot_Password' });
@@ -112,7 +118,7 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
     }, [currentUser, handleUserChange, users]);
 
     const hasMultipleUsers = users && users.length > 1;
-
+    const isSubmitDisabled = !password || !password.length;
     const title = hasMultipleUsers ? 'Account Selection' : 'Log in';
     const subTitle = hasMultipleUsers
         ? 'Choose one of your Waves.Exchange accounts.'
@@ -142,6 +148,7 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
             users={hasMultipleUsers ? users : undefined}
             currentUser={currentUser}
             onForgotPasswordLinkClick={handleForgotPasswordLinkClick}
+            isSubmitDisabled={isSubmitDisabled}
         />
     );
 };
