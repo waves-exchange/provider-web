@@ -5,10 +5,12 @@ import React, {
     MouseEventHandler,
     useCallback,
     useState,
+    useEffect,
 } from 'react';
 import { IUser } from '../../../interface';
 import { addSeedUser } from '../../services/userService';
 import { CreateAccountComponent } from './CreateAccountComponent';
+import { analytics } from '../../utils/analytics';
 
 interface IProps {
     networkByte: number;
@@ -42,6 +44,10 @@ export const CreateAccount: FC<IProps> = ({
     const checkboxPrivacyId = 'privacy';
     const checkboxTermsId = 'terms';
 
+    useEffect(() => {
+        analytics.send({ name: 'Create_Accout_Page_Show' });
+    }, []);
+
     const handleInputChange = useCallback(
         (event: React.ChangeEvent<HTMLInputElement>): void => {
             switch (event.target.id) {
@@ -66,10 +72,13 @@ export const CreateAccount: FC<IProps> = ({
         [isPrivacyAccepted, isTermsAccepted]
     );
 
-    const handleClose = useCallback<MouseEventHandler<HTMLButtonElement>>(
-        () => onCancel(),
-        [onCancel]
-    );
+    const handleClose = useCallback<
+        MouseEventHandler<HTMLButtonElement>
+    >(() => {
+        analytics.send({ name: 'Create_Accout_Page_Close' });
+
+        onCancel();
+    }, [onCancel]);
 
     const handleSubmit = useCallback<
         MouseEventHandler<HTMLButtonElement>
@@ -85,6 +94,8 @@ export const CreateAccount: FC<IProps> = ({
 
             return void 0;
         }
+
+        analytics.send({ name: 'Create_Accout_Page_Sign_In_Click' });
 
         onConfirm({
             address: libs.crypto.address(
@@ -106,6 +117,12 @@ export const CreateAccount: FC<IProps> = ({
             setError(true);
         }
     }, [passwordConfirm, password]);
+
+    const handleExchangeLinkClick = useCallback(() => {
+        analytics.send({
+            name: 'Create_Accout_Page_Waves_Exchange_Link_Click',
+        });
+    }, []);
 
     const isSubmitEnabled =
         password.length >= MIN_PASSWORD_LENGTH &&
@@ -135,6 +152,7 @@ export const CreateAccount: FC<IProps> = ({
             showTerms={!isPrivacyAcceptedProp && !isTermsAcceptedProp}
             minPasswordLength={MIN_PASSWORD_LENGTH}
             error={error}
+            onExchangeLinkClick={handleExchangeLinkClick}
         />
     );
 };

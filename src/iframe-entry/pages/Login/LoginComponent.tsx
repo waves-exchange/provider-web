@@ -62,6 +62,7 @@ interface IProps {
     onContinue: MouseEventHandler<HTMLButtonElement>;
     currentUser?: IUser;
     onUserChange?: (value: IUser) => void;
+    onForgotPasswordLinkClick: MouseEventHandler;
 }
 
 export const LoginComponent: FC<IProps> = ({
@@ -78,6 +79,7 @@ export const LoginComponent: FC<IProps> = ({
     errorMessage,
     currentUser,
     onUserChange,
+    onForgotPasswordLinkClick,
 }) => {
     const errorFontSize = '13px';
     const errorLineHeight = '15px';
@@ -225,6 +227,7 @@ export const LoginComponent: FC<IProps> = ({
                             target="_blank"
                             mt="$30"
                             variant="body2"
+                            onClick={onForgotPasswordLinkClick}
                         >
                             Forgot your password?
                         </ExternalLink>
