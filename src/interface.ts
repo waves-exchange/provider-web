@@ -11,7 +11,7 @@ import {
     TTransactionMap,
     TTransactionWithProofs,
 } from '@waves/ts-types';
-import { IMeta } from './client-entry/services/transactionsService';
+import { IMeta } from './iframe-entry/services/transactionsService';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type TBusHandlers = {

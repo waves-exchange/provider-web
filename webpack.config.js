@@ -2,17 +2,7 @@ const { resolve, join } = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const build = (entry, minimize, name, library, out) => ({
-    entry: join(__dirname, entry),
-    mode: minimize ? "production" : "development",
-    devtool: minimize ? undefined : "inline-source-map",
-    plugins: [
-        new CleanWebpackPlugin(),
-        new HtmlWebpackPlugin({
-            template: join(__dirname, 'src', 'index.html'),
-            filename: join(__dirname, 'iframe-entry', 'index.html')
-        }),
-    ],
+const getGeneralConfig = (minimize) => ({
     module: {
         rules: [
             {
@@ -36,6 +26,24 @@ const build = (entry, minimize, name, library, out) => ({
             }
         ],
     },
+    resolve: {
+        extensions: ['.tsx', '.ts', '.js'],
+        modules: ['node_modules']
+    },
+    mode: minimize ? "production" : "development",
+    devtool: minimize ? undefined : "inline-source-map",
+})
+
+const buildIframeEntry = (minimize) => ({
+    ...getGeneralConfig(minimize),
+    entry: join(__dirname, 'src/iframe-entry/index.ts'),
+    plugins: [
+        new CleanWebpackPlugin(),
+        new HtmlWebpackPlugin({
+            template: join(__dirname, 'src', 'index.html'),
+            filename: join(__dirname, 'iframe-entry', 'index.html')
+        }),
+    ],
     optimization: {
         minimize,
         usedExports: true,
@@ -50,24 +58,31 @@ const build = (entry, minimize, name, library, out) => ({
             }
         }
     },
-    resolve: {
-        extensions: ['.tsx', '.ts', '.js'],
-        modules: ['node_modules']
-    },
     output: {
-        library,
         libraryTarget: "umd",
         globalObject: "this",
-        filename: minimize ? `[name].[contenthash].min.js` : `[name].[contenthash].js`,
-        path: out ? out : resolve(__dirname, 'dist'),
+        filename: minimize ? '[name].[contenthash].min.js' : '[name].[contenthash].js',
+        path: resolve(__dirname, 'iframe-entry/dist'),
     }
 });
 
-const main = (entry, name, library, out) => [
-    build(entry, true, name, library, out)
-];
+const buildLibrary = (minimize) => ({
+    ...getGeneralConfig(minimize),
+    entry: join(__dirname, 'src/provider/index.ts'),
+    optimization: {
+        minimize,
+        usedExports: true,
+    },
+    output: {
+        library: 'storageProvider',
+        libraryTarget: "umd",
+        globalObject: "this",
+        filename: minimize ? 'storage-provider.min.js' : 'storage-provider.js',
+        path: resolve(__dirname, 'dist'),
+    }
+});
 
 module.exports = [
-    ...main('./src/client-entry/index.ts', 'provider-client', undefined, join(__dirname, 'iframe-entry', 'dist')),
-    // ...main('./src/provider/index.ts', 'storage-provider', 'storageProvider')
+    buildIframeEntry(true),
+    buildLibrary(true)
 ];

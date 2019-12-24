@@ -20,8 +20,7 @@
     "esModuleInterop": true
   },
   "include": [
-    "./src/provider/index.ts",
-    "./src/client-entry/index.ts"
+    "src"
   ],
   "exclude": [
     "node_modules",
