@@ -1,3 +1,4 @@
+const webpack = require('webpack');
 const { resolve, join } = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -43,6 +44,7 @@ const buildIframeEntry = (minimize) => ({
             template: join(__dirname, 'src', 'index.html'),
             filename: join(__dirname, 'iframe-entry', 'index.html')
         }),
+        new webpack.NodeEnvironmentPlugin(['NODE_ENV'])
     ],
     optimization: {
         minimize,
