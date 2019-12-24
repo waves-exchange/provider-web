@@ -19,7 +19,7 @@ export const InvokeFunction: FC<IProps> = ({ args, name }) => (
             <Text sx={pseudoElemStyles}>{name}</Text>
             <Text sx={wrapperStylesStart}>
                 {args.map(({ type, value }, index) => (
-                    <Text sx={getAttrStyles(type, index >= args.length)}>
+                    <Text sx={getAttrStyles(type, index === args.length - 1)}>
                         {getAttrContent(type, value)}
                     </Text>
                 ))}

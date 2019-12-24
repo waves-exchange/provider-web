@@ -12,7 +12,7 @@ import isNil from 'ramda/es/isNil';
 import prop from 'ramda/es/prop';
 
 export interface IPayment {
-    assetId: string;
+    assetId: string | null;
     name: string;
     amount: TLong;
     logo?: string;

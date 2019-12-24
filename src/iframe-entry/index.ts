@@ -12,8 +12,6 @@ import sign from './router/sign';
 import { fetchAliasses, fetchWavesBalance } from './services/userService';
 import renderPage from './utils/renderPage';
 
-config.console.logLevel = config.console.LOG_LEVEL.VERBOSE;
-
 const queue = new Queue(3);
 const overlay = document.getElementById('overlay')!;
 const preload = (): void => {

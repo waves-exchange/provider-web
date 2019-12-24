@@ -10,7 +10,6 @@ const BETTER_TOKENS_MAP = {
 
 const GATEWAYS_MAP = {
     W: {
-        WAVES: 'https://waves.exchange/img/assets/waves.svg',
         DG2xFkPdDwKUoBkzGAhQtLpSGzfXLiCYPEzeKH2Ad24p:
             'https://waves.exchange/img/assets/usdn.svg',
         '34N9YcEETLWn93qYQ64EsP1x89tSruJU44RrEMSXXEPJ':
@@ -51,7 +50,6 @@ const GATEWAYS_MAP = {
             'https://waves.exchange/img/assets/efyt.svg',
     },
     T: {
-        WAVES: 'https://waves.exchange/img/assets/waves.svg',
         '3KFXBGGLCjA5Z2DuW4Dq9fDDrHjJJP1ZEkaoajSzuKsC':
             'https://waves.exchange/img/assets/usdn.svg',
         '5Sh9KghfkZyhjwuodovDhB6PghDUGBHiAPZ4MkrPgKtX':

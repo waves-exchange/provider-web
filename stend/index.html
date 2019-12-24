@@ -27,8 +27,12 @@
         <script src="../node_modules/@waves/waves-js/dist/waves-js.js"></script>
         <script src="../dist/storage-provider.min.js"></script>
         <script>
-            var provider = new storageProvider.StorageProvider('http://localhost:8081/iframe-entry');
-            var waves = new wavesJs.Waves();
+            var provider = new storageProvider.StorageProvider(
+                'http://10.56.1.90:8081/iframe-entry'
+            );
+            var waves = new wavesJs.Waves({
+                NODE_URL: 'https://pool.testnet.wavesnodes.com',
+            });
             waves.setProvider(provider);
 
             var getByElement = function(element, key, defaultValue) {
@@ -100,7 +104,7 @@
                 onclick="waves.invoke({
         dApp: '3MwW4Ng8oipLNbZ45KaAiXNEKEUHmbMExv4',
         payment: [
-            { assetId: 'DWgwcZTMhSvnyYCoWLRUXXSH1RSkzThXLJhww9gwkqdn', amount: 1},
+            { assetId: null, amount: 1},
         ],
         call: { function: 'test', args: [
             { type: 'string', value: 'string' },
