@@ -9,6 +9,7 @@ import { IUser } from '../../../interface';
 import { LoginComponent } from './LoginComponent';
 import { getUsers, addSeedUser } from '../../services/userService';
 import { libs } from '@waves/waves-transactions';
+import { analytics } from '../../utils/analytics';
 
 interface IProps {
     networkByte: number;
@@ -32,10 +33,13 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
         []
     );
 
-    const handleClose = useCallback<MouseEventHandler<HTMLButtonElement>>(
-        () => onCancel(),
-        [onCancel]
-    );
+    const handleClose = useCallback<
+        MouseEventHandler<HTMLButtonElement>
+    >(() => {
+        analytics.send({ name: 'Login_Page_Close' });
+
+        onCancel();
+    }, [onCancel]);
 
     const handleLogin = useCallback<
         MouseEventHandler<HTMLButtonElement>
@@ -60,6 +64,13 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
                     return;
                 }
 
+                analytics.send({
+                    name: 'Login_Page_Login_Click_Success',
+                    params: {
+                        Accounts_Length: users.length, // eslint-disable-line @typescript-eslint/camelcase
+                    },
+                });
+
                 onConfirm({
                     address: libs.crypto.address(
                         user.resolveData.seed,
@@ -69,6 +80,8 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
                 });
             }
         } else {
+            analytics.send({ name: 'Login_Page_Login_Click_Error' });
+
             setErrorMessage('Incorrect password');
         }
     }, [networkByte, onConfirm, password]);
@@ -76,6 +89,8 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
     const handleUserChange = useCallback(
         (user: IUser): void => {
             setCurrentUser(user);
+
+            analytics.send({ name: 'Select_Account_Page_Change_User' });
         },
         [setCurrentUser]
     );
@@ -85,6 +100,10 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
     >(() => {
         currentUser && onConfirm(currentUser);
     }, [currentUser, onConfirm]);
+
+    const handleForgotPasswordLinkClick = useCallback(() => {
+        analytics.send({ name: 'Login_Page_Forgot_Password' });
+    }, []);
 
     useEffect(() => {
         if (!currentUser && Array.isArray(users) && users.length > 0) {
@@ -98,6 +117,14 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
     const subTitle = hasMultipleUsers
         ? 'Choose one of your Waves.Exchange accounts.'
         : 'Enter your Waves.Exchange password.';
+
+    useEffect(() => {
+        analytics.send({
+            name: hasMultipleUsers
+                ? 'Select_Account_Page_Show'
+                : 'Login_Page_Show',
+        });
+    }, [hasMultipleUsers]);
 
     return (
         <LoginComponent
@@ -114,6 +141,7 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
             onUserChange={handleUserChange}
             users={hasMultipleUsers ? users : undefined}
             currentUser={currentUser}
+            onForgotPasswordLinkClick={handleForgotPasswordLinkClick}
         />
     );
 };
