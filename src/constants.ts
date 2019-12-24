@@ -55,4 +55,7 @@ export const WAVES = {
 };
 
 export const MAX_ALIAS_LENGTH = 30;
-export const SPONSORED_TYPES: Array<TTransactionType> = [NAME_MAP.transfer];
+export const SPONSORED_TYPES: Array<TTransactionType> = [
+    NAME_MAP.transfer,
+    NAME_MAP.invoke,
+];
