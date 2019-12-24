@@ -1,10 +1,12 @@
 import BigNumber from '@waves/bignumber';
 import { IDataWithType } from '@waves/waves-js';
-import React, { FC, MouseEventHandler, useCallback } from 'react';
+import React, { FC } from 'react';
 import { WAVES } from '../../../constants';
 import { ISignTxProps } from '../../../interface';
 import { SignDataComponent } from './SignDataComponent';
 import { getUserName } from '../../services/userService';
+import { analytics } from '../../../client-entry/utils/analytics';
+import { useTxHandlers } from '../../hooks/useTxHandlers';
 
 export const SignDataContainer: FC<ISignTxProps<IDataWithType>> = ({
     tx,
@@ -18,20 +20,24 @@ export const SignDataContainer: FC<ISignTxProps<IDataWithType>> = ({
         .roundTo(WAVES.decimals)
         .toFixed();
     const userName = getUserName(networkByte, user.publicKey);
-    const balance = BigNumber.toBigNumber(user.balance)
-        .div(Math.pow(10, WAVES.decimals))
-        .roundTo(WAVES.decimals)
-        .toFixed();
 
     const userBalance = BigNumber.toBigNumber(user.balance)
         .div(Math.pow(10, WAVES.decimals))
         .toFixed();
 
-    const handleConfirm = useCallback<
-        MouseEventHandler<HTMLButtonElement>
-    >(() => {
-        onConfirm(tx);
-    }, [tx, onConfirm]);
+    const { handleReject, handleConfirm } = useTxHandlers(
+        tx,
+        onCancel,
+        onConfirm,
+        {
+            onRejectAnalyticsArgs: { name: 'Confirm_Data_Tx_Reject' },
+            onConfirmAnalyticsArgs: { name: 'Confirm_Data_Tx_Confirm' },
+        }
+    );
+
+    analytics.send({
+        name: 'Confirm_Data_Tx_Show',
+    });
 
     return (
         <SignDataComponent
@@ -41,7 +47,7 @@ export const SignDataContainer: FC<ISignTxProps<IDataWithType>> = ({
             data={tx.data}
             fee={`${fee} WAVES`}
             onConfirm={handleConfirm}
-            onReject={onCancel}
+            onReject={handleReject}
         />
     );
 };
