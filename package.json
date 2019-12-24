@@ -10,7 +10,8 @@
     "format": "npm run prettier -- --write",
     "check-format": "npm run prettier -- --list-different",
     "start": "python -m SimpleHTTPServer 8081",
-    "build": "webpack"
+    "build": "npm run clean && webpack",
+    "clean": "rm -rf ./dist && rm -rf ./iframe-entry/dist"
   },
   "husky": {
     "hooks": {
@@ -58,6 +59,7 @@
     "@typescript-eslint/eslint-plugin": "^2.10.0",
     "@typescript-eslint/parser": "^2.10.0",
     "@waves/waves-js": "0.0.21",
+    "clean-webpack-plugin": "^3.0.0",
     "eslint": "^6.7.2",
     "eslint-config-prettier": "^6.7.0",
     "eslint-plugin-import": "^2.19.1",
@@ -65,6 +67,7 @@
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.17.0",
     "eslint-plugin-react-hooks": "^2.3.0",
+    "html-webpack-plugin": "^3.2.0",
     "husky": "^3.1.0",
     "less-loader": "^5.0.0",
     "lint-staged": "^9.5.0",

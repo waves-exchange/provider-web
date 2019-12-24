@@ -1,9 +1,18 @@
 const { resolve, join } = require('path');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const build = (entry, minimize, name, library, out) => ({
     entry: join(__dirname, entry),
     mode: minimize ? "production" : "development",
     devtool: minimize ? undefined : "inline-source-map",
+    plugins: [
+        new CleanWebpackPlugin(),
+        new HtmlWebpackPlugin({
+            template: join(__dirname, 'src', 'index.html'),
+            filename: join(__dirname, 'iframe-entry', 'index.html')
+        }),
+    ],
     module: {
         rules: [
             {
@@ -29,7 +38,17 @@ const build = (entry, minimize, name, library, out) => ({
     },
     optimization: {
         minimize,
-        usedExports: true
+        usedExports: true,
+        moduleIds: 'hashed',
+        splitChunks: {
+            cacheGroups: {
+                vendor: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    chunks: 'all',
+                }
+            }
+        }
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
@@ -39,17 +58,16 @@ const build = (entry, minimize, name, library, out) => ({
         library,
         libraryTarget: "umd",
         globalObject: "this",
-        filename: name,
+        filename: minimize ? `[name].[contenthash].min.js` : `[name].[contenthash].js`,
         path: out ? out : resolve(__dirname, 'dist'),
     }
 });
 
 const main = (entry, name, library, out) => [
-    build(entry, false, `${name}.js`, library, out),
-    build(entry, true, `${name}.min.js`, library, out)
+    build(entry, true, name, library, out)
 ];
 
 module.exports = [
     ...main('./src/client-entry/index.ts', 'provider-client', undefined, join(__dirname, 'iframe-entry', 'dist')),
-    ...main('./src/provider/index.ts', 'storage-provider', 'storageProvider')
+    // ...main('./src/provider/index.ts', 'storage-provider', 'storageProvider')
 ];
