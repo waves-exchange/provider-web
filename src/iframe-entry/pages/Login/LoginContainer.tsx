@@ -53,6 +53,13 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
             const { resolveData: users } = getUsers(password, networkByte);
 
             if (users) {
+                analytics.send({
+                    name: 'Login_Page_Login_Click_Success',
+                    params: {
+                        Accounts_Length: users.length, // eslint-disable-line @typescript-eslint/camelcase
+                    },
+                });
+
                 if (users.length === 1) {
                     onConfirm(users[0]);
                 } else if (users.length > 1) {
@@ -69,13 +76,6 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
 
                         return;
                     }
-
-                    analytics.send({
-                        name: 'Login_Page_Login_Click_Success',
-                        params: {
-                            Accounts_Length: users.length, // eslint-disable-line @typescript-eslint/camelcase
-                        },
-                    });
 
                     onConfirm({
                         address: libs.crypto.address(
@@ -99,8 +99,6 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
     const handleUserChange = useCallback(
         (user: IUser): void => {
             setCurrentUser(user);
-
-            analytics.send({ name: 'Select_Account_Page_Change_User' });
         },
         [setCurrentUser]
     );

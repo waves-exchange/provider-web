@@ -45,7 +45,7 @@ export const CreateAccount: FC<IProps> = ({
     const checkboxTermsId = 'terms';
 
     useEffect(() => {
-        analytics.send({ name: 'Create_Accout_Page_Show' });
+        analytics.send({ name: 'Create_Account_Page_Show' });
     }, []);
 
     const handleInputChange = useCallback(
@@ -75,7 +75,7 @@ export const CreateAccount: FC<IProps> = ({
     const handleClose = useCallback<
         MouseEventHandler<HTMLButtonElement>
     >(() => {
-        analytics.send({ name: 'Create_Accout_Page_Close' });
+        analytics.send({ name: 'Create_Account_Page_Close' });
 
         onCancel();
     }, [onCancel]);
@@ -95,7 +95,7 @@ export const CreateAccount: FC<IProps> = ({
             return void 0;
         }
 
-        analytics.send({ name: 'Create_Accout_Page_Sign_In_Click' });
+        analytics.send({ name: 'Create_Account_Page_Sign_In_Click' });
 
         onConfirm({
             address: libs.crypto.address(
@@ -120,7 +120,7 @@ export const CreateAccount: FC<IProps> = ({
 
     const handleExchangeLinkClick = useCallback(() => {
         analytics.send({
-            name: 'Create_Accout_Page_Waves_Exchange_Link_Click',
+            name: 'Create_Account_Page_Waves_Exchange_Link_Click',
         });
     }, []);
 
