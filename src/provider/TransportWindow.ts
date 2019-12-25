@@ -11,11 +11,11 @@ export class TransportWindow extends Transport {
         this._url = url;
     }
 
-    protected beforeShow(): void {
+    protected _beforeShow(): void {
         return void 0;
     }
 
-    protected afterShow(): void {
+    protected _afterShow(): void {
         if (this._active != null) {
             this._active.win.close();
             this._active.bus.destroy();
@@ -23,7 +23,7 @@ export class TransportWindow extends Transport {
         this._active = undefined;
     }
 
-    protected async getBus(): Promise<TBus> {
+    protected async _getBus(): Promise<TBus> {
         if (this._active != null) {
             return Promise.resolve(this._active.bus);
         }

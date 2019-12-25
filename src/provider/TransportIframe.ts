@@ -51,7 +51,7 @@ export class TransportIframe extends Transport {
         return iframe;
     }
 
-    protected async getBus(): Promise<TBus> {
+    protected async _getBus(): Promise<TBus> {
         if (this._bus) {
             return Promise.resolve(this._bus);
         }
@@ -70,7 +70,7 @@ export class TransportIframe extends Transport {
         );
     }
 
-    protected beforeShow(): void {
+    protected _beforeShow(): void {
         if (this._iframe == null) {
             this._iframe = TransportIframe._createIframe(this._url);
             TransportIframe._addIframeToDom(this._iframe);
@@ -78,7 +78,7 @@ export class TransportIframe extends Transport {
         this._showIframe();
     }
 
-    protected afterShow(): void {
+    protected _afterShow(): void {
         this._hideIframe();
     }
 

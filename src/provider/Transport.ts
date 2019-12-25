@@ -14,21 +14,21 @@ export abstract class Transport implements ITransport {
     }
 
     public async dialog<T>(callback: TEventDispatcher<T>): Promise<T> {
-        this.runBeforeShow();
-        const bus = await this.getBus();
+        this._runBeforeShow();
+        const bus = await this._getBus();
         const action = async (): Promise<T> => callback(bus);
 
-        this.runEvents(bus);
+        this._runEvents(bus);
 
         if (this._queue.canPush()) {
             try {
                 const result = await this._queue.push(action);
 
-                this.runAfterShow();
+                this._runAfterShow();
 
                 return result;
             } catch (e) {
-                this.runAfterShow();
+                this._runAfterShow();
 
                 return Promise.reject(e);
             }
@@ -37,28 +37,28 @@ export abstract class Transport implements ITransport {
         }
     }
 
-    private runBeforeShow(): void {
+    private _runBeforeShow(): void {
         if (this._queue.length === 0) {
-            this.beforeShow();
+            this._beforeShow();
         }
     }
 
-    private runAfterShow(): void {
+    private _runAfterShow(): void {
         if (this._queue.length === 0) {
-            this.afterShow();
+            this._afterShow();
         }
     }
 
-    private runEvents(bus: TBus): void {
+    private _runEvents(bus: TBus): void {
         this._events
             .splice(0, this._events.length)
             .forEach((callback) => callback(bus));
     }
 
-    protected abstract beforeShow(): void;
-    protected abstract afterShow(): void;
+    protected abstract _beforeShow(): void;
+    protected abstract _afterShow(): void;
 
-    protected abstract getBus(): Promise<TBus>;
+    protected abstract _getBus(): Promise<TBus>;
 }
 
 type TEventDispatcher<T> = (bus: TBus) => Promise<T>;
