@@ -45,7 +45,7 @@ export function runByPath(path, args) {
 
 type TTargetTypes = 'all' | 'ui' | 'logic';
 
-interface IEventData {
+export interface IEventData {
     name: string;
     params?: any;
     target?: TTargetTypes;

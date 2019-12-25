@@ -22,10 +22,10 @@ export const InvokePayment: FC<TProps> = ({
     >
         <AssetLogo
             mr="$10"
-            variant="small"
             logo={logo}
             assetId={assetId}
             name={name}
+            size={26}
         />
         <Text variant="body2">{name}</Text>
         <Text variant="body2" flex="2" textAlign="right">
