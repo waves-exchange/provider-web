@@ -1,5 +1,5 @@
 import { IState } from '../interface';
-import { ITypedData } from '@waves/waves-js';
+import { ITypedData } from '@waves/signer';
 import { IUser } from '../../interface';
 
 export default function(

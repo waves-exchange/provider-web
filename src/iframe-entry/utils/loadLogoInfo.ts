@@ -1,4 +1,4 @@
-import { TLong } from '@waves/waves-js';
+import { TLong } from '@waves/signer';
 import { TAssetDetails } from '@waves/node-api-js/es/api-node/assets';
 import { fetchDataKey } from '@waves/node-api-js/es/api-node/addresses';
 import curry from 'ramda/es/curry';

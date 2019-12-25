@@ -1,6 +1,6 @@
 import { curry } from 'ramda';
 import { TTransaction, IWithId } from '@waves/ts-types';
-import { TLong } from '@waves/waves-js';
+import { TLong } from '@waves/signer';
 import {
     fetchCalculateFee,
     TFeeInfo,

@@ -1,6 +1,6 @@
 import { ITransferTransaction } from '@waves/ts-types';
 import { WithId } from '@waves/waves-transactions';
-import { TLong } from '@waves/waves-js';
+import { TLong } from '@waves/signer';
 
 const MAX_ALIAS_LENGTH = 30; // TODO
 
