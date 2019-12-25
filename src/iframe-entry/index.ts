@@ -25,15 +25,11 @@ const {
     crypto: { base64Encode, blake2b, stringToBytes },
 } = libs;
 const queue = new Queue(3);
-const overlay = document.getElementById('overlay')!;
 const preload = (): void => {
     renderPage(React.createElement(Preload));
 };
 
 preload();
-
-overlay.style.background = defaultTheme.colors.standard.$1000;
-overlay.style.opacity = '.6';
 
 WindowAdapter.createSimpleWindowAdapter()
     .then((adapter) => {

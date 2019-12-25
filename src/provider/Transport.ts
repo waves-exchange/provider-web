@@ -2,27 +2,33 @@ import { Queue } from '../utils/Queue';
 import { TBus, ITransport } from './interface';
 
 export abstract class Transport implements ITransport {
-    private readonly queue: Queue;
+    private readonly _queue: Queue;
+    private readonly _events: Array<TEventDispatcher<void>> = [];
 
     constructor(queueLength: number) {
-        this.queue = new Queue(queueLength);
+        this._queue = new Queue(queueLength);
     }
 
-    public async dialog<T>(callback: (bus: TBus) => Promise<T>): Promise<T> {
-        this.runBeforeShow();
-        const bus = await this.getBus();
+    public snedEvent(callback: TEventDispatcher<void>): void {
+        this._events.push(callback);
+    }
 
+    public async dialog<T>(callback: TEventDispatcher<T>): Promise<T> {
+        this._runBeforeShow();
+        const bus = await this._getBus();
         const action = async (): Promise<T> => callback(bus);
 
-        if (this.queue.canPush()) {
-            try {
-                const result = await this.queue.push(action);
+        this._runEvents(bus);
 
-                this.runAfterShow();
+        if (this._queue.canPush()) {
+            try {
+                const result = await this._queue.push(action);
+
+                this._runAfterShow();
 
                 return result;
             } catch (e) {
-                this.runAfterShow();
+                this._runAfterShow();
 
                 return Promise.reject(e);
             }
@@ -31,22 +37,28 @@ export abstract class Transport implements ITransport {
         }
     }
 
-    private runBeforeShow(): void {
-        if (this.queue.length === 0) {
-            this.beforeShow();
+    private _runBeforeShow(): void {
+        if (this._queue.length === 0) {
+            this._beforeShow();
         }
     }
 
-    private runAfterShow(): void {
-        if (this.queue.length === 0) {
-            this.afterShow();
+    private _runAfterShow(): void {
+        if (this._queue.length === 0) {
+            this._afterShow();
         }
     }
 
-    public abstract event(callback: (data: TBus) => void): void;
+    private _runEvents(bus: TBus): void {
+        this._events
+            .splice(0, this._events.length)
+            .forEach((callback) => callback(bus));
+    }
 
-    protected abstract beforeShow(): void;
-    protected abstract afterShow(): void;
+    protected abstract _beforeShow(): void;
+    protected abstract _afterShow(): void;
 
-    protected abstract getBus(): Promise<TBus>;
+    protected abstract _getBus(): Promise<TBus>;
 }
+
+type TEventDispatcher<T> = (bus: TBus) => Promise<T>;

@@ -37,7 +37,7 @@ export class StorageProvider implements IProvider {
 
     public async connect(options: IConnectOptions): Promise<void> {
         return Promise.resolve(
-            this._transport.event((bus) =>
+            this._transport.snedEvent((bus) =>
                 bus.dispatchEvent('connect', options)
             )
         );
