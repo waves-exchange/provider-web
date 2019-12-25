@@ -1,4 +1,3 @@
-import { defaultTheme } from '@waves.exchange/react-uikit';
 import { Bus, config, WindowAdapter } from '@waves/waves-browser-bus';
 import { IConnectOptions, IUserData } from '@waves/signer';
 import { libs } from '@waves/waves-transactions';
