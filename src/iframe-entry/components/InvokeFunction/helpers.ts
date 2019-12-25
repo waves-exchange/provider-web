@@ -8,7 +8,7 @@ export const getAttrStyles = (
     isLast: boolean
 ): CSSObject => ({
     variant: 'body2',
-    fontFamily: 'Menlo-Regular',
+    fontFamily: 'Menlo, Monaco, Consolas, Courier New, monospace',
     color: COLOR_MAP[attrType],
     ':after': !isLast ? { ...pseudoElemStyles, content: '", "' } : {},
 });
