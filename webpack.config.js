@@ -76,7 +76,7 @@ const buildLibrary = (minimize) => ({
         usedExports: true,
     },
     output: {
-        library: 'storageProvider',
+        library: 'providerWeb',
         libraryTarget: "umd",
         globalObject: "this",
         filename: minimize ? 'provider-web.min.js' : 'provider-web.js',

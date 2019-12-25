@@ -27,7 +27,7 @@
         <script src="../node_modules/@waves/signer/dist/signer.min.js"></script>
         <script src="../dist/provider-web.min.js"></script>
         <script>
-            var provider = new storageProvider.StorageProvider(
+            var provider = new providerWeb.ProviderWeb(
                 'http://localhost:8081/iframe-entry'
             );
             var waves = new signer.Signer({

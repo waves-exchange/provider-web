@@ -126,7 +126,7 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
     }, [currentUser, handleUserChange, users]);
 
     const hasMultipleUsers = users && users.length > 1;
-    const isSubmitDisabled = !password || !password.length;
+    const isSubmitDisabled = !password || !password.length || !!errorMessage;
     const title = hasMultipleUsers ? 'Account Selection' : 'Log in';
     const subTitle = hasMultipleUsers
         ? 'Choose one of your Waves.Exchange accounts.'
