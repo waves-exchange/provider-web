@@ -1,7 +1,7 @@
 import { AddressAvatar } from '@waves.exchange/react-uikit';
 import React from 'react';
 import { ISignTxProps } from '../../../interface';
-import { IReissueWithType } from '@waves/waves-js';
+import { IReissueWithType } from '@waves/signer';
 import { toFormat } from '../../utils';
 
 export default function(props: ISignTxProps<IReissueWithType>) {

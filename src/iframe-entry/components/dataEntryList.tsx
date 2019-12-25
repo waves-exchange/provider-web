@@ -1,5 +1,5 @@
 import React from 'react';
-import { ITypedData } from '@waves/waves-js';
+import { ITypedData } from '@waves/signer';
 
 export default function(props: { data: Array<ITypedData> }) {
     return (

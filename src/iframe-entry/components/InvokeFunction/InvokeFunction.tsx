@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { TInvokeScriptCallArgument } from '@waves/ts-types';
-import { TLong } from '@waves/waves-js';
+import { TLong } from '@waves/signer';
 import { Text, Flex, TFlexProps } from '@waves.exchange/react-uikit';
 import { getAttrStyles, getAttrContent } from './helpers';
 import {

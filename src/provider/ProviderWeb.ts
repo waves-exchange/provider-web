@@ -4,7 +4,7 @@ import {
     ITypedData,
     IUserData,
     TTransactionParamWithType,
-} from '@waves/waves-js';
+} from '@waves/signer';
 import { IWithId, TTransactionWithProofs } from '@waves/ts-types';
 import { ITransport } from './interface';
 import { TransportIframe } from './TransportIframe';
@@ -13,14 +13,14 @@ import { config } from '@waves/waves-browser-bus';
 
 type TLong = string | number;
 
-export class StorageProvider implements IProvider {
+export class ProviderWeb implements IProvider {
     private readonly _transport: ITransport;
 
     constructor(clientOrigin?: string, logs?: boolean) {
         clientOrigin =
             (clientOrigin || 'https://waves.exchange/signer') +
             '?' +
-            StorageProvider._getCacheClean();
+            ProviderWeb._getCacheClean();
         const Transport = TransportIframe.canUse()
             ? TransportIframe
             : TransportWindow;
@@ -37,7 +37,7 @@ export class StorageProvider implements IProvider {
 
     public async connect(options: IConnectOptions): Promise<void> {
         return Promise.resolve(
-            this._transport.snedEvent((bus) =>
+            this._transport.sendEvent((bus) =>
                 bus.dispatchEvent('connect', options)
             )
         );

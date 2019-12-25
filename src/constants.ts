@@ -1,4 +1,4 @@
-import { TRANSACTION_NAME_MAP, TRANSACTION_TYPE_MAP } from '@waves/waves-js';
+import { TRANSACTION_NAME_MAP, TRANSACTION_TYPE_MAP } from '@waves/signer';
 import { TTransactionType } from '@waves/ts-types';
 import BigNumber from '@waves/bignumber';
 

@@ -4,7 +4,7 @@ import {
     iconDataTransaction,
     Text,
 } from '@waves.exchange/react-uikit';
-import { IData } from '@waves/waves-js';
+import { IData } from '@waves/signer';
 import React, { FC, MouseEventHandler } from 'react';
 import { Confirmation } from '../../components/Confirmation';
 import { DataEntry } from '../../components/DataEntry/DataEntry';

@@ -10,7 +10,7 @@ import {
     Copy,
 } from '@waves.exchange/react-uikit';
 import { Confirmation } from '../../components/Confirmation';
-import { ICall } from '@waves/waves-js';
+import { ICall } from '@waves/signer';
 import { IPayment } from './SignInvokeContainer';
 import { InvokePayment } from '../../components/InvokePayment/InvokePayment';
 import { InvokeFunction } from '../../components/InvokeFunction/InvokeFunction';

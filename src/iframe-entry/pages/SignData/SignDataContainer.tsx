@@ -1,5 +1,5 @@
 import BigNumber from '@waves/bignumber';
-import { IDataWithType } from '@waves/waves-js';
+import { IDataWithType } from '@waves/signer';
 import React, { FC, useEffect } from 'react';
 import { WAVES } from '../../../constants';
 import { ISignTxProps } from '../../../interface';

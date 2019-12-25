@@ -9,7 +9,7 @@ export abstract class Transport implements ITransport {
         this._queue = new Queue(queueLength);
     }
 
-    public snedEvent(callback: TEventDispatcher<void>): void {
+    public sendEvent(callback: TEventDispatcher<void>): void {
         this._events.push(callback);
     }
 
