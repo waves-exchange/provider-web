@@ -1,6 +1,6 @@
 import React, { FC, MouseEventHandler } from 'react';
 
-import { Text, Flex, AddressAvatar } from '@waves.exchange/react-uikit';
+import { Text, Flex, Avatar, Copy } from '@waves.exchange/react-uikit';
 import {
     IconTransfer,
     IconTransferType,
@@ -15,6 +15,7 @@ interface Props {
     attachement: string;
     transferFee: string;
     recipientAddress: string;
+    recipientName: string;
     iconType: IconTransferType;
     onReject: MouseEventHandler<HTMLButtonElement>;
     onConfirm: MouseEventHandler<HTMLButtonElement>;
@@ -74,13 +75,29 @@ export const SignTransfer: FC<Props> = ({
                 <Text variant="body2" color="basic.$500">
                     Recipient
                 </Text>
-                <AddressAvatar
-                    mt="$5"
-                    address={recipientAddress}
-                    name={recipientName}
-                    addressWithCopy={true}
-                    avatarSize="medium"
-                />
+                {/* TODO - разобрать этот бардак с AddressAvatar */}
+                <Flex alignItems="center" mt="$5">
+                    <Avatar address={recipientAddress} variantSize="large" />
+                    <Flex
+                        ml="$10"
+                        flexDirection="column"
+                        justifyContent="center"
+                    >
+                        {name && (
+                            <Text variant="footnote1" color="basic.$500">
+                                {name}
+                            </Text>
+                        )}
+                        <Copy
+                            toCopyText={recipientName}
+                            text={recipientName}
+                            TextProps={{
+                                variant: 'body2',
+                                color: 'standard.$0',
+                            }}
+                        />
+                    </Flex>
+                </Flex>
 
                 {attachement ? (
                     <>
