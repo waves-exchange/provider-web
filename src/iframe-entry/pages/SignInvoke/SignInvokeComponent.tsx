@@ -1,12 +1,13 @@
 import React, { FC, MouseEventHandler } from 'react';
 import {
-    AddressAvatar,
     Icon,
     Flex,
     Text,
     Heading,
     Box,
     iconInvoke,
+    Avatar,
+    Copy,
 } from '@waves.exchange/react-uikit';
 import { Confirmation } from '../../components/Confirmation';
 import { ICall } from '@waves/waves-js';
@@ -18,7 +19,8 @@ export interface IProps {
     userAddress: string;
     userName: string;
     userBalance: string;
-    dApp: string;
+    dAppAddress: string;
+    dAppName: string;
     fee: string;
     call?: ICall;
     chainId?: number;
@@ -31,7 +33,8 @@ export const SignInvoke: FC<IProps> = ({
     userAddress,
     userName,
     userBalance,
-    dApp,
+    dAppAddress,
+    dAppName,
     fee,
     call,
     payment,
@@ -47,7 +50,14 @@ export const SignInvoke: FC<IProps> = ({
             onConfirm={onConfirm}
         >
             <Box bg="main.$800">
-                <Flex py="$20" px="$40" mb="$20" bg="main.$900">
+                <Flex
+                    py="$20"
+                    px="$40"
+                    mb="$20"
+                    bg="main.$900"
+                    borderBottom="1px solid"
+                    borderBottomColor="basic.$1000"
+                >
                     <Flex
                         borderRadius="circle"
                         width="60px"
@@ -81,7 +91,32 @@ export const SignInvoke: FC<IProps> = ({
                         >
                             Account
                         </Text>
-                        <AddressAvatar address={dApp} addressWithCopy={true} />
+                        {/* TODO - разобрать этот бардак с AddressAvatar */}
+                        <Flex alignItems="center">
+                            <Avatar address={dAppAddress} variantSize="large" />
+                            <Flex
+                                ml="$10"
+                                flexDirection="column"
+                                justifyContent="center"
+                            >
+                                {name && (
+                                    <Text
+                                        variant="footnote1"
+                                        color="basic.$500"
+                                    >
+                                        {name}
+                                    </Text>
+                                )}
+                                <Copy
+                                    toCopyText={dAppName}
+                                    text={dAppName}
+                                    TextProps={{
+                                        variant: 'body2',
+                                        color: 'standard.$0',
+                                    }}
+                                />
+                            </Flex>
+                        </Flex>
                     </Box>
 
                     {payment && payment.length > 0 && (
@@ -124,19 +159,16 @@ export const SignInvoke: FC<IProps> = ({
                         >
                             Call function
                         </Text>
-                        <Text
+                        <InvokeFunction
                             borderRadius="$4"
                             bg="basic.$900"
                             p="15px"
                             color="basic.$500"
                             as="div"
                             overflowX="auto"
-                        >
-                            <InvokeFunction
-                                args={call?.args ?? ([] as any)}
-                                name={call?.function ?? 'default'}
-                            />
-                        </Text>
+                            args={call?.args ?? ([] as any)}
+                            name={call?.function ?? 'default'}
+                        />
                     </Box>
 
                     <Box mb="$30">

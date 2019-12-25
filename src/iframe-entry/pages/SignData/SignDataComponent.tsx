@@ -61,7 +61,14 @@ export const SignDataComponent: FC<SignDataComponentProps> = ({
             </Flex>
         </Flex>
 
-        <Flex px="$40" py="$30" flexDirection="column" bg="main.$800">
+        <Flex
+            px="$40"
+            py="$30"
+            flexDirection="column"
+            bg="main.$800"
+            borderTop="1px solid"
+            borderTopColor="basic.$1000"
+        >
             <Text variant="body2" color="basic.$500" mb="$5">
                 Data
             </Text>
