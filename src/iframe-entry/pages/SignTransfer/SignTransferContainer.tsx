@@ -1,7 +1,7 @@
 import React, { FC, useEffect } from 'react';
 import { SignTransfer as SignTransferComponent } from './SignTransferComponent';
 import { ISignTxProps } from '../../../interface';
-import { ITransferWithType, TLong } from '@waves/waves-js';
+import { ITransferWithType, TLong } from '@waves/signer';
 import { getIconType } from '../../components/IconTransfer/helpers';
 import { BigNumber } from '@waves/bignumber';
 import { libs } from '@waves/waves-transactions';

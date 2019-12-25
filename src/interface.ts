@@ -4,7 +4,7 @@ import {
     IUserData,
     TLong,
     TTransactionParamWithType,
-} from '@waves/waves-js';
+} from '@waves/signer';
 import {
     IWithId,
     TTransaction,

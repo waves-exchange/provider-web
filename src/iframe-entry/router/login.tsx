@@ -1,6 +1,6 @@
 import renderPage from '../utils/renderPage';
 import { libs } from '@waves/waves-transactions';
-import { IUserData } from '@waves/waves-js';
+import { IUserData } from '@waves/signer';
 import {
     hasMultiaccount,
     saveTerms,

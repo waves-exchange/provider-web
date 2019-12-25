@@ -5,7 +5,7 @@ import { libs } from '@waves/waves-transactions';
 import { IPrivateSeedUserData } from '../interface';
 import { fetchBalance } from '@waves/node-api-js/es/api-node/addresses';
 import { fetchByAddress } from '@waves/node-api-js/es/api-node/alias';
-import { TLong } from '@waves/waves-js';
+import { TLong } from '@waves/signer';
 import { IUser } from '../../interface';
 
 export function getUsers(

@@ -1,11 +1,10 @@
 import React, { FC, useEffect } from 'react';
 import { SignInvoke as SignInvokeComponent } from './SignInvokeComponent';
 import { ISignTxProps } from '../../../interface';
-import { IInvokeWithType, TLong } from '@waves/waves-js';
+import { IInvokeWithType, TLong, ICall, IMoney } from '@waves/signer';
 import { BigNumber } from '@waves/bignumber';
 import { WAVES } from '../../../constants';
 import { TAssetDetails } from '@waves/node-api-js/es/api-node/assets';
-import { ICall, IMoney } from '@waves/waves-js';
 import { DetailsWithLogo } from '../../utils/loadLogoInfo';
 import isNil from 'ramda/es/isNil';
 import prop from 'ramda/es/prop';

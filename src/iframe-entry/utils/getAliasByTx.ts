@@ -1,5 +1,5 @@
 import { TTransaction, IWithId } from '@waves/ts-types';
-import { TLong } from '@waves/waves-js';
+import { TLong } from '@waves/signer';
 import { NAME_MAP } from '../../constants';
 import { isAddress } from './isAddress';
 

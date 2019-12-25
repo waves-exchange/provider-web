@@ -3,7 +3,7 @@ import {
     TLong,
     TRANSACTION_TYPE_MAP,
     TTransactionParamWithType,
-} from '@waves/waves-js';
+} from '@waves/signer';
 import { libs, signTx } from '@waves/waves-transactions';
 import React, { ReactNode } from 'react';
 import { NAME_MAP } from '../../constants';

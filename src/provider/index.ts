@@ -1,4 +1,4 @@
-import { StorageProvider as Class } from './StorageProvider';
+import { ProviderWeb as Class } from './ProviderWeb';
 
-export const StorageProvider: typeof Class = Class;
+export const ProviderWeb: typeof Class = Class;
 export default Class;

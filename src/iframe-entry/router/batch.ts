@@ -1,6 +1,6 @@
 import { IState } from '../interface';
 import renderPage from '../utils/renderPage';
-import { TLong, TTransactionParamWithType } from '@waves/waves-js';
+import { TLong, TTransactionParamWithType } from '@waves/signer';
 import batchPage from '../pages/batch';
 import { IWithId, TTransactionWithProofs } from '@waves/ts-types';
 import { libs, signTx } from '@waves/waves-transactions';

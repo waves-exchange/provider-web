@@ -79,7 +79,7 @@ const buildLibrary = (minimize) => ({
         library: 'storageProvider',
         libraryTarget: "umd",
         globalObject: "this",
-        filename: minimize ? 'storage-provider.min.js' : 'storage-provider.js',
+        filename: minimize ? 'provider-web.min.js' : 'provider-web.js',
         path: resolve(__dirname, 'dist'),
     }
 });
