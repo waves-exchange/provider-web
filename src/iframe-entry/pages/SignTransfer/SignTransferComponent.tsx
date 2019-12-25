@@ -19,7 +19,6 @@ interface Props {
     iconType: IconTransferType;
     onReject: MouseEventHandler<HTMLButtonElement>;
     onConfirm: MouseEventHandler<HTMLButtonElement>;
-    recipientName?: string;
 }
 
 export const SignTransfer: FC<Props> = ({
