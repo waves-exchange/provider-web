@@ -1,5 +1,5 @@
-import React, { FC, useCallback, MouseEventHandler } from 'react';
-import { SignTransfer as SignTransferComponent } from './component';
+import React, { FC, useEffect } from 'react';
+import { SignTransfer as SignTransferComponent } from './SignTransferComponent';
 import { ISignTxProps } from '../../../interface';
 import { ITransferWithType, TLong } from '@waves/waves-js';
 import { getIconType } from '../../components/IconTransfer/helpers';
@@ -10,6 +10,8 @@ import compose from 'ramda/es/compose';
 import { WAVES } from '../../../constants';
 import { TAssetDetails } from '@waves/node-api-js/es/api-node/assets';
 import { getUserName } from '../../services/userService';
+import { analytics } from '../../utils/analytics';
+import { useTxHandlers } from '../../hooks/useTxHandlers';
 
 const getAssetName = (
     assets: Record<string, TAssetDetails<TLong>>,
@@ -51,11 +53,23 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
         compose(libs.crypto.bytesToString, libs.crypto.base58Decode)
     )(tx.attachment);
 
-    const handleConfirm = useCallback<
-        MouseEventHandler<HTMLButtonElement>
-    >(() => {
-        onConfirm(tx);
-    }, [tx, onConfirm]);
+    const { handleReject, handleConfirm } = useTxHandlers(
+        tx,
+        onCancel,
+        onConfirm,
+        {
+            onRejectAnalyticsArgs: { name: 'Confirm_Transfer_Tx_Reject' },
+            onConfirmAnalyticsArgs: { name: 'Confirm_Transfer_Tx_Confirm' },
+        }
+    );
+
+    useEffect(
+        () =>
+            analytics.send({
+                name: 'Confirm_Transfer_Tx_Show',
+            }),
+        []
+    );
 
     return (
         <SignTransferComponent
@@ -69,7 +83,7 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
             transferFee={`${fee} ${getAssetName(txMeta.assets, tx.feeAssetId)}`}
             recipientAddress={txMeta.aliases[tx.recipient] ?? tx.recipient}
             attachement={attachment.ok ? attachment.resolveData : ''}
-            onReject={onCancel}
+            onReject={handleReject}
             onConfirm={handleConfirm}
             iconType={getIconType(tx, user, Object.keys(txMeta.aliases))}
         />

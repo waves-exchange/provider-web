@@ -21,7 +21,7 @@ import { prepareTransactions } from '../services/transactionsService';
 import renderPage from '../utils/renderPage';
 import batch from './batch';
 import omit from 'ramda/es/omit';
-import { SignTransfer } from '../pages/SignTransfer/container';
+import { SignTransfer } from '../pages/SignTransfer/SignTransferContainer';
 import { SignInvoke } from '../pages/SignInvoke/SignInvokeContainer';
 import { SignDataContainer } from '../pages/SignData/SignDataContainer';
 

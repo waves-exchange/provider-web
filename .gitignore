@@ -2,3 +2,5 @@ dist
 node_modules
 .idea
 iframe-entry/index.html
+.DS_Store
+**/.DS_Store
