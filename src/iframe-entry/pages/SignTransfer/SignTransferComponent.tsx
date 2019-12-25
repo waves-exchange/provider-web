@@ -18,10 +18,12 @@ interface Props {
     iconType: IconTransferType;
     onReject: MouseEventHandler<HTMLButtonElement>;
     onConfirm: MouseEventHandler<HTMLButtonElement>;
+    recipientName?: string;
 }
 
 export const SignTransfer: FC<Props> = ({
     recipientAddress,
+    recipientName,
     userAddress,
     userBalance,
     userName,
@@ -61,14 +63,23 @@ export const SignTransfer: FC<Props> = ({
                 </Flex>
             </Flex>
 
-            <Flex px="$40" py="$30" flexDirection="column" bg="main.$800">
+            <Flex
+                px="$40"
+                py="$30"
+                flexDirection="column"
+                bg="main.$800"
+                borderTop="1px solid"
+                borderTopColor="basic.$1000"
+            >
                 <Text variant="body2" color="basic.$500">
                     Recipient
                 </Text>
                 <AddressAvatar
                     mt="$5"
                     address={recipientAddress}
+                    name={recipientName}
                     addressWithCopy={true}
+                    avatarSize="medium"
                 />
 
                 {attachement ? (
@@ -83,6 +94,7 @@ export const SignTransfer: FC<Props> = ({
                             variant="body2"
                             color="standard.$0"
                             bg="basic.$900"
+                            borderRadius="$4"
                         >
                             {attachement}
                         </Text>

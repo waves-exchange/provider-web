@@ -78,6 +78,11 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
             )}`}
             transferFee={`${fee} ${getAssetName(txMeta.assets, tx.feeAssetId)}`}
             recipientAddress={txMeta.aliases[tx.recipient] ?? tx.recipient}
+            recipientName={
+                txMeta.aliases[tx.recipient]
+                    ? tx.recipient.replace(/alias:.:/, '')
+                    : undefined
+            }
             attachement={attachment.ok ? attachment.resolveData : ''}
             onReject={handleReject}
             onConfirm={handleConfirm}
