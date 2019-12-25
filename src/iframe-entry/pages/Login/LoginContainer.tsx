@@ -10,6 +10,7 @@ import { LoginComponent } from './LoginComponent';
 import { getUsers, addSeedUser } from '../../services/userService';
 import { libs } from '@waves/waves-transactions';
 import { analytics } from '../../utils/analytics';
+import { SelectAccountComponent } from './SelectAccountComponent';
 
 interface IProps {
     networkByte: number;
@@ -132,14 +133,6 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
         ? 'Choose one of your Waves.Exchange accounts.'
         : 'Enter your Waves.Exchange password.';
 
-    useEffect(() => {
-        analytics.send({
-            name: hasMultipleUsers
-                ? 'Select_Account_Page_Show'
-                : 'Login_Page_Show',
-        });
-    }, [hasMultipleUsers]);
-
     return (
         <LoginComponent
             title={title}
@@ -147,17 +140,22 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
             errorMessage={errorMessage}
             showNotification={!hasMultipleUsers}
             inputPasswordId={inputPasswordId}
-            networkByte={networkByte}
             onClose={handleClose}
             onLogin={handleLogin}
-            onContinue={handleContinue}
             password={password}
             onPasswordChange={handlePasswordChange}
-            onUserChange={handleUserChange}
-            users={hasMultipleUsers ? users : undefined}
-            currentUser={currentUser}
             onForgotPasswordLinkClick={handleForgotPasswordLinkClick}
             isSubmitDisabled={isSubmitDisabled}
-        />
+        >
+            {hasMultipleUsers ? (
+                <SelectAccountComponent
+                    networkByte={networkByte}
+                    onUserChange={handleUserChange}
+                    users={users}
+                    currentUser={currentUser}
+                    onContinue={handleContinue}
+                />
+            ) : null}
+        </LoginComponent>
     );
 };
