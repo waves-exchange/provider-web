@@ -149,6 +149,7 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
             errorMessage={errorMessage}
             showNotification={!hasMultipleUsers}
             inputPasswordId={inputPasswordId}
+            networkByte={networkByte}
             onClose={handleClose}
             onLogin={handleLogin}
             onContinue={handleContinue}

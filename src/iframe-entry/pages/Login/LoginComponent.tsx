@@ -16,13 +16,10 @@ import {
     RadioButtonProps,
     Text,
 } from '@waves.exchange/react-uikit';
-import React, {
-    ChangeEventHandler,
-    FC,
-    MouseEventHandler,
-    KeyboardEventHandler,
-} from 'react';
+import React, { ChangeEventHandler, FC, MouseEventHandler } from 'react';
 import { IUser } from '../../../interface';
+import { getUserName } from '../../services/userService';
+import { libs } from '@waves/waves-transactions';
 
 const RadioUser: FC<RadioButtonProps<IUser>> = ({
     children,
@@ -62,6 +59,7 @@ interface IProps {
     inputPasswordId: string;
     password: string;
     isSubmitDisabled: boolean;
+    networkByte: number;
     onClose: MouseEventHandler<HTMLButtonElement>;
     onPasswordChange: ChangeEventHandler<HTMLInputElement>;
     onLogin: MouseEventHandler<HTMLButtonElement>;
@@ -87,6 +85,7 @@ export const LoginComponent: FC<IProps> = ({
     onUserChange,
     onForgotPasswordLinkClick,
     isSubmitDisabled,
+    networkByte,
 }) => {
     const errorFontSize = '13px';
     const errorLineHeight = '15px';
@@ -169,6 +168,12 @@ export const LoginComponent: FC<IProps> = ({
                                 <RadioUser key={user.address} value={user}>
                                     <AddressAvatar
                                         address={user.address}
+                                        name={getUserName(
+                                            networkByte,
+                                            libs.crypto.publicKey({
+                                                privateKey: user.privateKey,
+                                            })
+                                        )}
                                     ></AddressAvatar>
                                 </RadioUser>
                             ))}
