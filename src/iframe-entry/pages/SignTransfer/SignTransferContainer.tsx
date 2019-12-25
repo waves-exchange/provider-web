@@ -13,6 +13,12 @@ import { analytics } from '../../utils/analytics';
 import { useTxHandlers } from '../../hooks/useTxHandlers';
 import { useTxUser } from '../../hooks/useTxUser';
 
+const MAX_ALIAS_LENGTH = 30; // TODO
+
+const isAlias = (nodeAlias: string): boolean => {
+    return nodeAlias.replace(/alias:.:/, '').length <= MAX_ALIAS_LENGTH;
+};
+
 const getAssetName = (
     assets: Record<string, TAssetDetails<TLong>>,
     assetId: string | null
@@ -67,6 +73,10 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
         []
     );
 
+    const recipientAddress = isAlias(tx.recipient)
+        ? txMeta.aliases[tx.recipient]
+        : tx.recipient;
+
     return (
         <SignTransferComponent
             userAddress={user.address}
@@ -77,12 +87,8 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
                 tx.assetId
             )}`}
             transferFee={`${fee} ${getAssetName(txMeta.assets, tx.feeAssetId)}`}
-            recipientAddress={txMeta.aliases[tx.recipient] ?? tx.recipient}
-            recipientName={
-                txMeta.aliases[tx.recipient]
-                    ? tx.recipient.replace(/alias:.:/, '')
-                    : undefined
-            }
+            recipientAddress={recipientAddress}
+            recipientName={tx.recipient}
             attachement={attachment.ok ? attachment.resolveData : ''}
             onReject={handleReject}
             onConfirm={handleConfirm}
