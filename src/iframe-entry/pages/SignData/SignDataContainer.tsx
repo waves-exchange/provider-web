@@ -4,9 +4,9 @@ import React, { FC, useEffect } from 'react';
 import { WAVES } from '../../../constants';
 import { ISignTxProps } from '../../../interface';
 import { SignDataComponent } from './SignDataComponent';
-import { getUserName } from '../../services/userService';
 import { analytics } from '../../utils/analytics';
 import { useTxHandlers } from '../../hooks/useTxHandlers';
+import { useTxUser } from '../../hooks/useTxUser';
 
 export const SignDataContainer: FC<ISignTxProps<IDataWithType>> = ({
     tx,
@@ -15,14 +15,10 @@ export const SignDataContainer: FC<ISignTxProps<IDataWithType>> = ({
     onConfirm,
     onCancel,
 }) => {
+    const { userName, userBalance } = useTxUser(user, networkByte);
     const fee = BigNumber.toBigNumber(tx.fee)
         .div(Math.pow(10, WAVES.decimals))
         .roundTo(WAVES.decimals)
-        .toFixed();
-    const userName = getUserName(networkByte, user.publicKey);
-
-    const userBalance = BigNumber.toBigNumber(user.balance)
-        .div(Math.pow(10, WAVES.decimals))
         .toFixed();
 
     const { handleReject, handleConfirm } = useTxHandlers(
