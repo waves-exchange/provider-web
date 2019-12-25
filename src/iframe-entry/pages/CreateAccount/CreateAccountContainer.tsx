@@ -5,7 +5,6 @@ import React, {
     MouseEventHandler,
     useCallback,
     useState,
-    useEffect,
 } from 'react';
 import { IUser } from '../../../interface';
 import { addSeedUser } from '../../services/userService';
@@ -43,10 +42,6 @@ export const CreateAccount: FC<IProps> = ({
     const inputPasswordConfirmId = 'password-confirm';
     const checkboxPrivacyId = 'privacy';
     const checkboxTermsId = 'terms';
-
-    useEffect(() => {
-        analytics.send({ name: 'Create_Account_Page_Show' });
-    }, []);
 
     const handleInputChange = useCallback(
         (event: React.ChangeEvent<HTMLInputElement>): void => {
