@@ -2,21 +2,27 @@ import { Queue } from '../utils/Queue';
 import { TBus, ITransport } from './interface';
 
 export abstract class Transport implements ITransport {
-    private readonly queue: Queue;
+    private readonly _queue: Queue;
+    private readonly _events: Array<TEventDispatcher<void>> = [];
 
     constructor(queueLength: number) {
-        this.queue = new Queue(queueLength);
+        this._queue = new Queue(queueLength);
     }
 
-    public async dialog<T>(callback: (bus: TBus) => Promise<T>): Promise<T> {
+    public event(callback: TEventDispatcher<void>): void {
+        this._events.push(callback);
+    }
+
+    public async dialog<T>(callback: TEventDispatcher<T>): Promise<T> {
         this.runBeforeShow();
         const bus = await this.getBus();
-
         const action = async (): Promise<T> => callback(bus);
 
-        if (this.queue.canPush()) {
+        this.runEvents(bus);
+
+        if (this._queue.canPush()) {
             try {
-                const result = await this.queue.push(action);
+                const result = await this._queue.push(action);
 
                 this.runAfterShow();
 
@@ -32,21 +38,27 @@ export abstract class Transport implements ITransport {
     }
 
     private runBeforeShow(): void {
-        if (this.queue.length === 0) {
+        if (this._queue.length === 0) {
             this.beforeShow();
         }
     }
 
     private runAfterShow(): void {
-        if (this.queue.length === 0) {
+        if (this._queue.length === 0) {
             this.afterShow();
         }
     }
 
-    public abstract event(callback: (data: TBus) => void): void;
+    private runEvents(bus: TBus): void {
+        this._events
+            .splice(0, this._events.length)
+            .forEach((callback) => callback(bus));
+    }
 
     protected abstract beforeShow(): void;
     protected abstract afterShow(): void;
 
     protected abstract getBus(): Promise<TBus>;
 }
+
+type TEventDispatcher<T> = (bus: TBus) => Promise<T>;

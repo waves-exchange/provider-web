@@ -4,16 +4,11 @@ import { Bus, WindowAdapter } from '@waves/waves-browser-bus';
 
 export class TransportWindow extends Transport {
     private readonly _url: string;
-    private _messageCallback: undefined | ((bus: TBus) => unknown);
     private _active: { win: Window; bus: TBus } | undefined;
 
     constructor(url: string, queueLength: number) {
         super(queueLength);
         this._url = url;
-    }
-
-    public event(callback: (bus: TBus) => void): void {
-        this._messageCallback = callback;
     }
 
     protected beforeShow(): void {
@@ -49,12 +44,7 @@ export class TransportWindow extends Transport {
         this._active = { win, bus };
 
         return new Promise((resolve) => {
-            bus.once('ready', () => {
-                if (this._messageCallback != null) {
-                    this._messageCallback(bus);
-                }
-                resolve(bus);
-            });
+            bus.once('ready', () => resolve(bus));
         });
     }
 }

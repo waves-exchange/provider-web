@@ -4,20 +4,13 @@ import { Bus, WindowAdapter } from '@waves/waves-browser-bus';
 
 export class TransportIframe extends Transport {
     private static _timer: ReturnType<typeof setTimeout> | null = null;
-    private readonly _ready: Promise<TBus>;
-    private readonly _iframe: HTMLIFrameElement;
+    private readonly _url: string;
+    private _iframe: HTMLIFrameElement | undefined;
+    private _bus: TBus | undefined;
 
     constructor(url: string, queueLength: number) {
         super(queueLength);
-        this._iframe = TransportIframe._createIframe(url);
-        this._ready = WindowAdapter.createSimpleWindowAdapter(
-            this._iframe
-        ).then((adapter) => {
-            this._hideIframe();
-
-            return new Bus(adapter, -1);
-        });
-        this._addIframeToDom();
+        this._url = url;
     }
 
     public static canUse(): boolean {
@@ -29,6 +22,16 @@ export class TransportIframe extends Transport {
             /iPad|iPhone|iPod/.test(navigator.platform);
 
         return !(iOS || isSafari);
+    }
+
+    private static _addIframeToDom(iframe: HTMLIFrameElement): void {
+        if (document.body != null) {
+            document.body.appendChild(iframe);
+        } else {
+            document.addEventListener('DOMContentLoaded', () => {
+                document.body.appendChild(iframe);
+            });
+        }
     }
 
     private static _createIframe(url: string): HTMLIFrameElement {
@@ -48,33 +51,35 @@ export class TransportIframe extends Transport {
         return iframe;
     }
 
-    public event(callback: (bus: TBus) => void): void {
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        this._ready.then((bus) => {
-            callback(bus);
-        });
-    }
-
     protected async getBus(): Promise<TBus> {
-        return this._ready;
+        if (this._bus) {
+            return Promise.resolve(this._bus);
+        }
+
+        if (this._iframe == null) {
+            this._iframe = TransportIframe._createIframe(this._url);
+            TransportIframe._addIframeToDom(this._iframe);
+        }
+
+        return WindowAdapter.createSimpleWindowAdapter(this._iframe).then(
+            (adapter) =>
+                new Promise((resolve) => {
+                    this._bus = new Bus(adapter, -1);
+                    this._bus.once('ready', () => resolve(this._bus));
+                })
+        );
     }
 
     protected beforeShow(): void {
+        if (this._iframe == null) {
+            this._iframe = TransportIframe._createIframe(this._url);
+            TransportIframe._addIframeToDom(this._iframe);
+        }
         this._showIframe();
     }
 
     protected afterShow(): void {
         this._hideIframe();
-    }
-
-    private _addIframeToDom(): void {
-        if (document.body != null) {
-            document.body.appendChild(this._iframe);
-        } else {
-            document.addEventListener('DOMContentLoaded', () => {
-                document.body.appendChild(this._iframe);
-            });
-        }
     }
 
     private _showIframe(): void {
@@ -125,7 +130,7 @@ export class TransportIframe extends Transport {
     private _applyStyle(styles: TWritableCSSStyleDeclaration): void {
         Object.entries(styles).forEach(([name, value]) => {
             if (value != null) {
-                this._iframe.style[name] = value;
+                this._iframe!.style[name] = value;
             }
         });
     }
