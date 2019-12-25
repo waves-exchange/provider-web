@@ -1,9 +1,8 @@
-import propEq from 'ramda/es/propEq';
 import { getUserId } from '../utils/getUserId';
 import { storage } from './storage';
 import { TCatchable } from '../utils/catchable';
 import { libs } from '@waves/waves-transactions';
-import { IPrivateSeedUserData, IPrivateKeyUserData } from '../interface';
+import { IPrivateSeedUserData } from '../interface';
 import { fetchBalance } from '@waves/node-api-js/es/api-node/addresses';
 import { fetchByAddress } from '@waves/node-api-js/es/api-node/alias';
 import { TLong } from '@waves/waves-js';
@@ -14,44 +13,62 @@ export function getUsers(
     networkByte: number
 ): TCatchable<Array<IUser>> {
     const data = storage.getPrivateData(password);
+    const usersData = storage.get('multiAccountUsers');
 
     if (!data.ok) {
         return data;
     }
-    const candidates = Object.values(data.resolveData).filter(
-        propEq('networkByte', networkByte)
-    );
-
-    const privateKeyStorageUsers = candidates.filter(
-        propEq('userType', 'privateKey')
-    ) as IPrivateKeyUserData[];
-
-    const seedStorageUsers = candidates.filter(
-        propEq('userType', 'seed')
-    ) as IPrivateSeedUserData[];
-
-    const privateKeyUsers = privateKeyStorageUsers.map(({ privateKey }) => ({
-        address: libs.crypto.address(
-            { publicKey: libs.crypto.publicKey({ privateKey }) },
-            networkByte
-        ),
-        privateKey,
-    }));
-
-    const seedUsers = seedStorageUsers.map(({ seed: storageSeed }) => {
-        const seed = storageSeed.startsWith('base58:')
-            ? libs.crypto.base58Decode(storageSeed.replace('base58:', ''))
-            : storageSeed;
-
-        return {
-            privateKey: libs.crypto.privateKey(seed),
-            address: libs.crypto.address(seed, networkByte),
-        };
-    });
 
     return {
         ...data,
-        resolveData: [...privateKeyUsers, ...seedUsers],
+        resolveData: Object.entries(usersData)
+            .map(([hash, userData]) => ({
+                hash,
+                lastLogin: userData.lastLogin,
+            }))
+            .sort((a, b) => b.lastLogin - a.lastLogin)
+            .reduce<IUser[]>((acc, x) => {
+                const user = data.resolveData[x.hash];
+
+                if (user.networkByte !== networkByte) {
+                    return acc;
+                }
+
+                if (user.userType === 'privateKey') {
+                    return [
+                        ...acc,
+                        {
+                            address: libs.crypto.address(
+                                {
+                                    publicKey: libs.crypto.publicKey({
+                                        privateKey: user.privateKey,
+                                    }),
+                                },
+                                networkByte
+                            ),
+                            privateKey: user.privateKey,
+                        },
+                    ];
+                }
+
+                if (user.userType === 'seed') {
+                    const seed = user.seed.startsWith('base58:')
+                        ? libs.crypto.base58Decode(
+                              user.seed.replace('base58:', '')
+                          )
+                        : user.seed;
+
+                    return [
+                        ...acc,
+                        {
+                            address: libs.crypto.address(seed, networkByte),
+                            privateKey: libs.crypto.privateKey(seed),
+                        },
+                    ];
+                }
+
+                return acc;
+            }, []),
     };
 }
 
