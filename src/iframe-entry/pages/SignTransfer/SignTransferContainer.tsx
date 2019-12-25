@@ -9,9 +9,9 @@ import { catchable } from '../../utils/catchable';
 import compose from 'ramda/es/compose';
 import { WAVES } from '../../../constants';
 import { TAssetDetails } from '@waves/node-api-js/es/api-node/assets';
-import { getUserName } from '../../services/userService';
 import { analytics } from '../../utils/analytics';
 import { useTxHandlers } from '../../hooks/useTxHandlers';
+import { useTxUser } from '../../hooks/useTxUser';
 
 const getAssetName = (
     assets: Record<string, TAssetDetails<TLong>>,
@@ -26,7 +26,7 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
     onConfirm,
     onCancel,
 }) => {
-    const userName = getUserName(networkByte, user.publicKey);
+    const { userName, userBalance } = useTxUser(user, networkByte);
     const amountAsset = tx.assetId === null ? WAVES : txMeta.assets[tx.assetId];
     const feeAsset =
         tx.feeAssetId === null ? WAVES : txMeta.assets[tx.feeAssetId];
@@ -34,10 +34,6 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
     if (!amountAsset || !feeAsset) {
         throw new Error('Amount of fee asstet not found'); // TODO ?
     }
-
-    const userBalance = BigNumber.toBigNumber(user.balance)
-        .div(Math.pow(10, WAVES.decimals))
-        .toFixed();
 
     const amount = BigNumber.toBigNumber(tx.amount)
         .div(Math.pow(10, amountAsset.decimals))

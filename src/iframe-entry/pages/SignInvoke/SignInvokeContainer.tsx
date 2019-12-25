@@ -6,11 +6,11 @@ import { BigNumber } from '@waves/bignumber';
 import { WAVES } from '../../../constants';
 import { TAssetDetails } from '@waves/node-api-js/es/api-node/assets';
 import { ICall, IMoney } from '@waves/waves-js';
-import { getUserName } from '../../services/userService';
 import { DetailsWithLogo } from '../../utils/loadLogoInfo';
 import isNil from 'ramda/es/isNil';
 import prop from 'ramda/es/prop';
 import { useTxHandlers } from '../../hooks/useTxHandlers';
+import { useTxUser } from '../../hooks/useTxUser';
 import { analytics } from '../../utils/analytics';
 
 export interface IPayment {
@@ -44,11 +44,8 @@ export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
     onConfirm,
     onCancel,
 }) => {
+    const { userName, userBalance } = useTxUser(user, networkByte);
     const getAssetProp = assetPropFactory(meta.assets);
-    const userBalance = BigNumber.toBigNumber(user.balance)
-        .div(Math.pow(10, WAVES.decimals))
-        .toFixed();
-    const userName = getUserName(networkByte, user.publicKey);
 
     const feeAsset = meta.assets[tx.feeAssetId || ''] || WAVES;
 
