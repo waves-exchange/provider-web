@@ -1,7 +1,6 @@
 import { Box, Flex, Text } from '@waves.exchange/react-uikit';
 import { IData } from '@waves/waves-js';
 import React, { FC } from 'react';
-import { overflow } from 'styled-system';
 
 type DataEntryProps = {
     data: IData['data'];
@@ -47,7 +46,15 @@ export const DataEntry: FC<DataEntryProps> = ({ data }) => (
                     py="13px"
                 >
                     <Box width="35%">
-                        <Text variant="body2" color="standard.$0">
+                        <Text
+                            variant="body2"
+                            color="standard.$0"
+                            isTruncated={true}
+                            display="inline-block"
+                            maxWidth="100%"
+                            pr="$20"
+                            verticalAlign="middle"
+                        >
                             {item.key}
                         </Text>
                     </Box>
@@ -61,7 +68,7 @@ export const DataEntry: FC<DataEntryProps> = ({ data }) => (
                             pr="$20"
                             verticalAlign="middle"
                         >
-                            {item.value}
+                            {String(item.value)}
                         </Text>
                     </Box>
                     <Box width="15%">
