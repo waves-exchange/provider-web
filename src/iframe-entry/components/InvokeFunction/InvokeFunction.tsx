@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { TInvokeScriptCallArgument } from '@waves/ts-types';
 import { TLong } from '@waves/waves-js';
-import { Text, Flex } from '@waves.exchange/react-uikit';
+import { Text, Flex, TFlexProps } from '@waves.exchange/react-uikit';
 import { getAttrStyles, getAttrContent } from './helpers';
 import {
     wrapperStylesEnd,
@@ -13,8 +13,12 @@ interface IProps {
     name: string;
     args: Array<TInvokeScriptCallArgument<TLong>>;
 }
-export const InvokeFunction: FC<IProps> = ({ args, name }) => (
-    <Flex sx={wrapperStylesEnd}>
+export const InvokeFunction: FC<IProps & TFlexProps> = ({
+    args,
+    name,
+    ...rest
+}) => (
+    <Flex sx={wrapperStylesEnd} fontSize="$13" lineHeight="$18" {...rest}>
         <Text isTruncated>
             <Text sx={pseudoElemStyles}>{name}</Text>
             <Text sx={wrapperStylesStart}>

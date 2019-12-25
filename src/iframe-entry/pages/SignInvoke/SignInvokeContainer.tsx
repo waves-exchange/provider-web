@@ -36,6 +36,12 @@ const assetPropFactory = (
         ? prop<P, DetailsWithLogo>(property, WAVES)
         : prop<P, DetailsWithLogo>(property, assets[assetId]);
 
+const MAX_ALIAS_LENGTH = 30; // TODO
+
+const isAlias = (nodeAlias: string): boolean => {
+    return nodeAlias.replace(/alias:.:/, '').length <= MAX_ALIAS_LENGTH;
+};
+
 export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
     meta,
     networkByte,
@@ -83,12 +89,15 @@ export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
             decimals: getAssetProp(assetId, 'decimals'),
         }));
 
+    const dAppAddress = isAlias(tx.dApp) ? meta.aliases[tx.dApp] : tx.dApp;
+
     return (
         <SignInvokeComponent
             userAddress={user.address}
             userName={userName}
             userBalance={`${userBalance} Waves`}
-            dApp={tx.dApp}
+            dAppAddress={dAppAddress}
+            dAppName={tx.dApp}
             fee={`${fee} ${getAssetProp(tx.feeAssetId, 'name')}`}
             call={tx.call as ICall}
             chainId={tx.chainId}
