@@ -24,13 +24,13 @@
                 box-sizing: border-box;
             }
         </style>
-        <script src="../node_modules/@waves/waves-js/dist/waves-js.js"></script>
-        <script src="../dist/storage-provider.min.js"></script>
+        <script src="../node_modules/@waves/signer/dist/signer.min.js"></script>
+        <script src="../dist/provider-web.min.js"></script>
         <script>
             var provider = new storageProvider.StorageProvider(
                 'http://localhost:8081/iframe-entry'
             );
-            var waves = new signer.Waves({
+            var waves = new signer.Signer({
                 NODE_URL: 'https://pool.testnet.wavesnodes.com',
             });
             waves.setProvider(provider);
