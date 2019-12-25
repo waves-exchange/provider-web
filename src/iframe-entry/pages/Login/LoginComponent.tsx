@@ -1,5 +1,4 @@
 import {
-    AddressAvatar,
     Box,
     Button,
     ExternalLink,
@@ -7,48 +6,14 @@ import {
     Heading,
     Icon,
     IconButton,
-    iconCheck,
     iconClose,
     iconLogo,
     InputPassword,
     Label,
-    RadioButtonGroup,
-    RadioButtonProps,
     Text,
 } from '@waves.exchange/react-uikit';
 import React, { ChangeEventHandler, FC, MouseEventHandler } from 'react';
 import { IUser } from '../../../interface';
-import { getUserName } from '../../services/userService';
-import { libs } from '@waves/waves-transactions';
-
-const RadioUser: FC<RadioButtonProps<IUser>> = ({
-    children,
-    checked,
-    value: _value,
-    ...rest
-}) => (
-    <Button
-        aria-checked={checked}
-        cursor="pointer"
-        bg="transparent"
-        p="0"
-        sx={{ outline: 0, ':hover': { bg: 'main.$600' } }}
-        {...rest}
-    >
-        <Flex
-            display="flex"
-            alignItems="center"
-            height="50px"
-            px="8px"
-            borderRadius="$4"
-        >
-            <Box flex={1}>{children}</Box>
-            {checked && (
-                <Icon icon={iconCheck} color="primary.$300" size="24px" />
-            )}
-        </Flex>
-    </Button>
-);
 
 interface IProps {
     title: string;
@@ -59,13 +24,9 @@ interface IProps {
     inputPasswordId: string;
     password: string;
     isSubmitDisabled: boolean;
-    networkByte: number;
     onClose: MouseEventHandler<HTMLButtonElement>;
     onPasswordChange: ChangeEventHandler<HTMLInputElement>;
     onLogin: MouseEventHandler<HTMLButtonElement>;
-    onContinue: MouseEventHandler<HTMLButtonElement>;
-    currentUser?: IUser;
-    onUserChange?: (value: IUser) => void;
     onForgotPasswordLinkClick: MouseEventHandler;
 }
 
@@ -73,19 +34,15 @@ export const LoginComponent: FC<IProps> = ({
     inputPasswordId,
     onClose,
     onLogin,
-    onContinue,
     password,
     onPasswordChange,
-    users,
     title,
     subTitle,
     showNotification,
     errorMessage,
-    currentUser,
-    onUserChange,
     onForgotPasswordLinkClick,
     isSubmitDisabled,
-    networkByte,
+    children,
 }) => {
     const errorFontSize = '13px';
     const errorLineHeight = '15px';
@@ -149,46 +106,8 @@ export const LoginComponent: FC<IProps> = ({
                     </Text>
                 )}
 
-                {users ? (
-                    <>
-                        <RadioButtonGroup
-                            direction="column"
-                            px="8px"
-                            bg="basic.$900"
-                            border="1px solid"
-                            borderColor="main.$600"
-                            borderRadius="$4"
-                            maxHeight="180px"
-                            overflow="auto"
-                            mt="20px"
-                            value={currentUser}
-                            onChange={onUserChange as (value: unknown) => void}
-                        >
-                            {users.map((user) => (
-                                <RadioUser key={user.address} value={user}>
-                                    <AddressAvatar
-                                        address={user.address}
-                                        name={getUserName(
-                                            networkByte,
-                                            libs.crypto.publicKey({
-                                                privateKey: user.privateKey,
-                                            })
-                                        )}
-                                    ></AddressAvatar>
-                                </RadioUser>
-                            ))}
-                        </RadioButtonGroup>
-
-                        <Button
-                            type="submit"
-                            variant="primary"
-                            variantSize="medium"
-                            mt="$30"
-                            onClick={onContinue}
-                        >
-                            Confirm
-                        </Button>
-                    </>
+                {children ? (
+                    children
                 ) : (
                     <>
                         <Label

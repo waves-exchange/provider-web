@@ -11,6 +11,7 @@ import { Login } from '../pages/Login/LoginContainer';
 import { IUser } from '../../interface';
 import React from 'react';
 import { IState } from '../interface';
+import { analytics } from '../utils/analytics';
 
 export default function(state: IState) {
     return async (): Promise<IUserData> => {
@@ -22,8 +23,15 @@ export default function(state: IState) {
                 }),
             });
         } else {
-            const Page = hasMultiaccount() ? Login : CreateAccount;
+            const hasMultiacc = hasMultiaccount();
+            const Page = hasMultiacc ? Login : CreateAccount;
             const termsAccepted = isTermsAccepted();
+
+            analytics.send({
+                name: hasMultiacc
+                    ? 'Login_Page_Show'
+                    : 'Create_Account_Page_Show',
+            });
 
             return new Promise((resolve, reject) => {
                 renderPage(
