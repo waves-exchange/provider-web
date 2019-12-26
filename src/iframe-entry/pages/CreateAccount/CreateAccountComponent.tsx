@@ -231,7 +231,7 @@ export const CreateAccountComponent: FC<IProps> = ({
                 >
                     If you had an account, visit{' '}
                     <ExternalLink
-                        href="https://waves.exchange/"
+                        href="https://testnet.waves.exchange/"
                         variant="body2"
                         target="_blank"
                         onClick={onExchangeLinkClick}
