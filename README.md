@@ -98,4 +98,4 @@ var provider = new Provider(
 <a id="More Examples"></a>
 ## More examples
 
-See example of an app that implements the donate button: <https://github.com/vlzhr/crypto-donate>.
+Getting Started with Waves Signer and ProviderWeb: <https://medium.com/@izhur27/893017c9b7ae?>.
