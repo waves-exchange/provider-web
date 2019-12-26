@@ -26,7 +26,7 @@ export class ProviderWeb implements IProvider {
             : TransportWindow;
 
         this._transport = new Transport(clientOrigin, 3);
-        if (logs != null) {
+        if (logs === true) {
             config.console.logLevel = config.console.LOG_LEVEL.VERBOSE;
         }
     }
