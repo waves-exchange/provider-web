@@ -18,7 +18,7 @@ export class ProviderWeb implements IProvider {
 
     constructor(clientOrigin?: string, logs?: boolean) {
         clientOrigin =
-            (clientOrigin || 'https://waves.exchange/signer') +
+            (clientOrigin || 'https://waves.exchange/signer/') +
             '?' +
             ProviderWeb._getCacheClean();
         const Transport = TransportIframe.canUse()
