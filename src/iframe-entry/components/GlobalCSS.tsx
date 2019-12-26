@@ -31,6 +31,9 @@ export const GlobalCSS: FC = () => {
                     margin: 0;
                     padding: 0;
                 }
+                button {
+                    font-family: 'Roboto', sans-serif;
+                }
                 ::-webkit-scrollbar-thumb {
                     background-color: #495060;
                     width: 3px;
