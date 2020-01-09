@@ -17,6 +17,9 @@ import sign from './router/sign';
 import { fetchAliasses, fetchWavesBalance } from './services/userService';
 import renderPage from './utils/renderPage';
 import { analytics } from './utils/analytics';
+import { middlewareWithContext } from './utils/middleware';
+import { preloadMW } from './middlewares/preload';
+import { loginMW } from './middlewares/login';
 
 config.console.logLevel = config.console.LOG_LEVEL.VERBOSE;
 
@@ -36,7 +39,6 @@ WindowAdapter.createSimpleWindowAdapter()
 
         const state: IState = {
             user: null,
-            needConfirm: true,
             networkByte: 87,
             nodeUrl: 'https://nodes.wavesplatform.com',
             matcherUrl: 'https://nodes.wavesplatform.com/matcher',
@@ -130,7 +132,10 @@ WindowAdapter.createSimpleWindowAdapter()
             };
         };
 
-        bus.registerRequestHandler('login', loginWithAnalytics(login)(state));
+        bus.registerRequestHandler(
+            'login',
+            middlewareWithContext(preloadMW, loginMW)(state)
+        );
         bus.registerRequestHandler('logout', logout(state));
 
         // bus.registerRequestHandler('sign-custom-bytes', wrapLogin(signBytes));
