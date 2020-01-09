@@ -1,4 +1,4 @@
-export class Queue<T = any> {
+export class Queue {
     public get length(): number {
         return this.actions.length + (this.active == null ? 0 : 1);
     }
@@ -10,7 +10,7 @@ export class Queue<T = any> {
         this.maxLength = maxLength;
     }
 
-    public async push(action: () => Promise<T>): Promise<T> {
+    public async push<T>(action: () => Promise<T>): Promise<T> {
         if (this.actions.length >= this.maxLength) {
             throw new Error("Cant't push action! Queue is full!");
         }

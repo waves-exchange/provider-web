@@ -1,9 +1,9 @@
 import { IState } from '../interface';
 
 export default function(state: IState) {
-    return () => {
+    return (): void => {
         if (state.user != null) {
-            return (state.user = null);
+            state.user = null;
         }
     };
 }
