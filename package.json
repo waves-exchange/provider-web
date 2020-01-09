@@ -42,7 +42,7 @@
     "@types/styled-system": "^5.1.4",
     "@waves.exchange/react-uikit": "^0.3.12",
     "@waves/bignumber": "0.0.1",
-    "@waves/node-api-js": "0.0.1",
+    "@waves/node-api-js": "0.0.3",
     "@waves/signer": "0.0.3",
     "@waves/ts-types": "^0.3.0",
     "@waves/waves-browser-bus": "^0.2.3",
