@@ -2,6 +2,7 @@ import React, { FC, MouseEventHandler } from 'react';
 import { Confirmation } from '../../components/Confirmation';
 import {
     Box,
+    CopyLabel,
     Flex,
     Icon,
     iconSignMessage,
@@ -69,14 +70,17 @@ export const SignMessageComponent: FC<SignMessageComponentProps> = ({
                 <Text variant="body2" color="basic.$500" mb="$5">
                     Message
                 </Text>
-                <Box
+                <Flex
                     bg="basic.$900"
                     borderRadius="$4"
                     py="15px"
                     pl="15px"
                     pr="5px"
+                    flexDirection="column"
+                    alignItems="flex-end"
                 >
                     <Box
+                        width="100%"
                         maxHeight="147px"
                         overflow="hidden"
                         overflowY="auto"
@@ -86,7 +90,8 @@ export const SignMessageComponent: FC<SignMessageComponentProps> = ({
                             {data}
                         </Text>
                     </Box>
-                </Box>
+                    <CopyLabel text={data} mr="15px" />
+                </Flex>
             </Flex>
         </Confirmation>
     );
