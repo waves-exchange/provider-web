@@ -6,6 +6,7 @@ import { getLoginHandler } from './handlers/login';
 import { getSignHandler } from './handlers/sign';
 import { IState } from './interface';
 import logout from './router/logout';
+import sign from './router/sign';
 
 config.console.logLevel = config.console.LOG_LEVEL.VERBOSE;
 const queue = new Queue(3);
