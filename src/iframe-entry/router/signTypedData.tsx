@@ -10,13 +10,13 @@ export default function(
     data: Array<ITypedData>,
     state: IState<IUserWithBalances>
 ): Promise<string> {
-    const signature = customData(
+    const { signature } = customData(
         {
             data,
             version: 2,
         } as any,
         state.user.privateKey
-    ).signature; // @TODO Fix any
+    ); // @TODO Fix any
 
     return new Promise((resolve, reject) => {
         renderPage(
