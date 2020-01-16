@@ -2,11 +2,11 @@ import React, { FC, MouseEventHandler } from 'react';
 import { Confirmation } from '../../components/Confirmation';
 import {
     Box,
-    CopyLabel,
     Flex,
     Icon,
     iconSignMessage,
     Text,
+    LightCopy,
 } from '@waves.exchange/react-uikit';
 
 interface SignMessageComponentProps {
@@ -90,7 +90,16 @@ export const SignMessageComponent: FC<SignMessageComponentProps> = ({
                             {data}
                         </Text>
                     </Box>
-                    <CopyLabel text={data} mr="15px" />
+                    <LightCopy
+                        text={data}
+                        mr="15px"
+                        fontSize={13}
+                        color="primary.$300"
+                        lineHeight="18px"
+                        cursor="pointer"
+                    >
+                        Copy
+                    </LightCopy>
                 </Flex>
             </Flex>
         </Confirmation>

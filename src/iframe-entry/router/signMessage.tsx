@@ -2,7 +2,7 @@ import { IUserWithBalances } from '../../interface';
 import { IState } from '../interface';
 import { customData, libs } from '@waves/waves-transactions';
 import renderPage from '../utils/renderPage';
-import { SignMessageContainer } from '../pages/signMessage/signMessageContainer';
+import { SignMessageContainer } from '../pages/SignMessage/SignMessageContainer';
 import React from 'react';
 
 export default function(
