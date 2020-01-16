@@ -14,9 +14,9 @@ export default function(
         {
             data,
             version: 2,
-        } as any,
+        },
         state.user.privateKey
-    ); // @TODO Fix any
+    );
 
     return new Promise((resolve, reject) => {
         renderPage(
