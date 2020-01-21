@@ -14,15 +14,10 @@ export const getSignHandler = (
 ): ((
     list: Array<TTransactionParamWithType>
 ) => Promise<Array<TTransactionWithProofs<TLong> & IWithId>>) =>
-    toQueue(
-        queue,
-        pipe<
-            Array<TTransactionParamWithType>,
-            Array<TTransactionParamWithType>,
-            Promise<Array<TTransactionWithProofs<TLong> & IWithId>>
-        >(preload, (list: Array<TTransactionParamWithType>) =>
-            login(state)()
-                .then(() => loadUserData(state as IState<IUser>))
-                .then((state) => sign(list, state))
-        )
-    );
+    toQueue(queue, (list: Array<TTransactionParamWithType>) => {
+        preload();
+
+        return login(state)()
+            .then(() => loadUserData(state as IState<IUser>))
+            .then((state) => sign(list, state));
+    });

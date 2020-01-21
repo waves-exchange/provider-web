@@ -16,26 +16,18 @@ export const getLoginHandler = (
     queue: Queue,
     state: IState
 ): (() => Promise<IUserData>) =>
-    toQueue(
-        queue,
-        pipe(
-            preload,
-            loginRoute(state),
-            tap(
-                then(
-                    pipe(
-                        prop('address'),
-                        applySpec({
-                            auuid: pipe(
-                                nthArg(0),
-                                libs.crypto.stringToBytes,
-                                libs.crypto.blake2b,
-                                libs.crypto.base64Encode
-                            ),
-                        }),
-                        analytics.addDefaultParams.bind(analytics)
-                    )
-                )
-            )
-        )
-    );
+    toQueue(queue, () => {
+        preload();
+
+        return loginRoute(state)().then((user) => {
+            analytics.addDefaultParams({
+                auuid: pipe(
+                    libs.crypto.stringToBytes,
+                    libs.crypto.blake2b,
+                    libs.crypto.base64Encode
+                )(user.address, undefined),
+            });
+
+            return user;
+        });
+    });
