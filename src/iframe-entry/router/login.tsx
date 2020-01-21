@@ -13,8 +13,8 @@ import React from 'react';
 import { IState } from '../interface';
 import { analytics } from '../utils/analytics';
 
-export default function(state: IState) {
-    return async (): Promise<IUserData> => {
+export default function(state: IState): () => Promise<IUserData> {
+    return (): Promise<IUserData> => {
         if (state.user != null) {
             return Promise.resolve({
                 address: state.user.address,

@@ -2,7 +2,6 @@ import { IUser } from '../interface';
 
 export interface IState<USER = IUser | null> {
     user: USER;
-    needConfirm: boolean;
     networkByte: number;
     nodeUrl: string;
     matcherUrl: string;

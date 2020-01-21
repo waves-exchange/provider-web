@@ -15,7 +15,7 @@ import { IMeta } from './iframe-entry/services/transactionsService';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type TBusHandlers = {
-    login: () => Promise<IUserData>;
+    login: (data?: void) => Promise<IUserData>;
     logout: () => void;
 
     'sign-custom-bytes': (data: string) => Promise<string>;
