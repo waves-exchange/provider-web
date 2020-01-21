@@ -1,6 +1,5 @@
 import { TLong, TTransactionParamWithType } from '@waves/signer';
 import { IWithId, TTransactionWithProofs } from '@waves/ts-types';
-import pipe from 'ramda/es/pipe';
 import { IUser } from '../../interface';
 import { Queue } from '../../utils/Queue';
 import { IState } from '../interface';
