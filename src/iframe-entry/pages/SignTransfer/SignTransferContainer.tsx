@@ -79,6 +79,7 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
             recipientAddress={recipientAddress}
             recipientName={tx.recipient}
             attachement={attachment.ok ? attachment.resolveData : ''}
+            tx={tx}
             onReject={handleReject}
             onConfirm={handleConfirm}
             iconType={getIconType(tx, user, Object.keys(txMeta.aliases))}

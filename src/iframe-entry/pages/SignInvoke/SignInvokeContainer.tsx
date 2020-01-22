@@ -97,6 +97,7 @@ export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
             payment={mapPayments(tx.payment || [])}
             onCancel={handleReject}
             onConfirm={handleConfirm}
+            tx={tx}
         />
     );
 };
