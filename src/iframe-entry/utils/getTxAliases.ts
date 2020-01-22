@@ -1,11 +1,9 @@
-import { TTransaction, IWithId } from '@waves/ts-types';
+import { TTransactionWithId } from '@waves/ts-types';
 import { TLong } from '@waves/signer';
-import { NAME_MAP } from '../../constants';
+import { NAME_MAP } from '../constants';
 import { isAddress } from './isAddress';
 
-export const getAliasByTx = (
-    tx: TTransaction<TLong> & IWithId
-): Array<string> => {
+export const getTxAliases = (tx: TTransactionWithId<TLong>): Array<string> => {
     switch (tx.type) {
         case NAME_MAP.invoke:
             return isAddress(tx.dApp) ? [] : [tx.dApp];

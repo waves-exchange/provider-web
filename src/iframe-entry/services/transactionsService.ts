@@ -12,10 +12,11 @@ import prop from 'ramda/es/prop';
 import uniq from 'ramda/es/uniq';
 import { IUser } from '../../interface';
 import { IState } from '../interface';
-import { getAliasByTx } from '../utils/getAliasByTx';
+import { getTxAliases } from '../utils/getTxAliases';
 import { getTransactionFromParams } from '../utils/getTransactionFromParams';
 import { loadFeeByTransaction } from '../utils/loadFeeByTransaction';
 import { loadLogoInfo, DetailsWithLogo } from '../utils/loadLogoInfo';
+import { cleanAddress } from '../utils/cleanAlias';
 
 const loadAliases = (
     base: string,
@@ -23,7 +24,7 @@ const loadAliases = (
 ): Promise<Record<string, string>> =>
     Promise.all(
         list.map((alias) =>
-            fetchByAlias(base, alias.replace(/alias:.:/, '')).then((item) => ({
+            fetchByAlias(base, cleanAddress(alias)).then((item) => ({
                 [alias]: item.address,
             }))
         )
@@ -52,7 +53,7 @@ export const prepareTransactions = (
                 : loadFeeByTransaction(state.nodeUrl, tx)
         )
     );
-    const aliases = pipe(map(getAliasByTx), flatten, uniq)(transactions);
+    const aliases = pipe(map(getTxAliases), flatten, uniq)(transactions);
 
     return Promise.all([
         transactionsWithFee,

@@ -1,6 +1,6 @@
 import { MouseEventHandler, useCallback } from 'react';
 import { analytics, IEventData } from '../utils/analytics';
-import { IWithId, TTransaction } from '@waves/ts-types';
+import { TTransaction, TTransactionWithId } from '@waves/ts-types';
 import { TLong } from '@waves/signer';
 
 type AnalyticsArgs = {
@@ -14,7 +14,7 @@ type TxHandlers = {
 };
 
 type UseTxHandlers = (
-    tx: TTransaction<TLong> & IWithId,
+    tx: TTransactionWithId<TLong>,
     onReject: () => void,
     onConfirm: (tx: TTransaction<TLong>) => void,
     analyticsArgs: AnalyticsArgs

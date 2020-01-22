@@ -4,14 +4,13 @@ import {
     ITypedData,
     IUserData,
     TTransactionParamWithType,
+    TLong,
 } from '@waves/signer';
 import { IWithId, TTransactionWithProofs } from '@waves/ts-types';
 import { ITransport } from './interface';
 import { TransportIframe } from './TransportIframe';
 import { TransportWindow } from './TransportWindow';
 import { config } from '@waves/waves-browser-bus';
-
-type TLong = string | number;
 
 export class ProviderWeb implements IProvider {
     private readonly _transport: ITransport;

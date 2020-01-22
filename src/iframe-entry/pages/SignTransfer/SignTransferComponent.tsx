@@ -1,11 +1,12 @@
 import React, { FC, MouseEventHandler } from 'react';
 
-import { Text, Flex, Avatar, Copy } from '@waves.exchange/react-uikit';
+import { Text, Flex } from '@waves.exchange/react-uikit';
 import {
     IconTransfer,
     IconTransferType,
 } from '../../components/IconTransfer/IconTransfer';
 import { Confirmation } from '../../components/Confirmation';
+import { Account } from '../../components/Account';
 
 interface Props {
     userAddress: string;
@@ -74,31 +75,11 @@ export const SignTransfer: FC<Props> = ({
                 <Text variant="body2" color="basic.$500">
                     Recipient
                 </Text>
-                {/* TODO - разобрать этот бардак с AddressAvatar */}
-                <Flex alignItems="center" mt="$5">
-                    <Avatar address={recipientAddress} variantSize="large" />
-                    <Flex
-                        ml="$10"
-                        flexDirection="column"
-                        justifyContent="center"
-                    >
-                        {name && (
-                            <Text variant="footnote1" color="basic.$500">
-                                {name}
-                            </Text>
-                        )}
-                        <Copy
-                            text={recipientName}
-                            inititialTooltipLabel="Copy"
-                            copiedTooltipLabel="Copied!"
-                        >
-                            <Text variant="body2" color="standard.$0">
-                                {recipientName}
-                            </Text>
-                        </Copy>
-                    </Flex>
-                </Flex>
-
+                <Account
+                    address={recipientAddress}
+                    userName={userName}
+                    alias={recipientName}
+                />
                 {attachement ? (
                     <>
                         <Text mt="$20" variant="body2" color="basic.$500">

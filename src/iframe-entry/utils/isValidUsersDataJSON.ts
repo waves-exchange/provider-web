@@ -1,5 +1,5 @@
-import { craeteMultiAccountHash } from './craeteMultiAccountHash';
+import { createMultiAccountHash } from './createMultiAccountHash';
 
 export default (users: string, hash: string): boolean => {
-    return craeteMultiAccountHash(users) === hash;
+    return createMultiAccountHash(users) === hash;
 };
