@@ -34,7 +34,6 @@ WindowAdapter.createSimpleWindowAdapter()
         bus.on('connect', getConnectHandler(state));
 
         bus.registerRequestHandler('login', getLoginHandler(queue, state));
-        bus.registerRequestHandler('logout', logout(state));
 
         bus.registerRequestHandler(
             'get-public-key',
