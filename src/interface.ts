@@ -59,3 +59,13 @@ export interface IUserWithBalances extends IUser {
     aliases: Array<string>;
     balance: TLong;
 }
+
+// eslint-disable-next-line prettier/prettier
+export type TFunction<Params extends Array<unknown>, Return> = (
+    ...args: Params
+) => Return;
+
+export interface IKeyPair {
+    privateKey: string;
+    publicKey: string;
+}
