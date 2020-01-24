@@ -88,13 +88,14 @@ export const SignTransfer: FC<Props> = ({
                             </Text>
                         )}
                         <Copy
-                            toCopyText={recipientName}
                             text={recipientName}
-                            TextProps={{
-                                variant: 'body2',
-                                color: 'standard.$0',
-                            }}
-                        />
+                            inititialTooltipLabel="Copy"
+                            copiedTooltipLabel="Copied!"
+                        >
+                            <Text variant="body2" color="standard.$0">
+                                {recipientName}
+                            </Text>
+                        </Copy>
                     </Flex>
                 </Flex>
 
