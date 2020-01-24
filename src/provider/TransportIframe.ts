@@ -2,6 +2,7 @@ import { Transport } from './Transport';
 import { TBus } from './interface';
 import { Bus, WindowAdapter } from '@waves/waves-browser-bus';
 import { CSSProperties } from 'react';
+import { IEncryptedUserData } from '../interface';
 
 export class TransportIframe extends Transport {
     private static _timer: ReturnType<typeof setTimeout> | null = null;
@@ -50,6 +51,27 @@ export class TransportIframe extends Transport {
         iframe.src = url;
 
         return iframe;
+    }
+
+    public getPublicKey(): Promise<string> {
+        return this._getBus().then((bus) => bus.request('get-public-key'));
+    }
+
+    public setStorage(data: IEncryptedUserData): Promise<void> {
+        return this._getBus()
+            .then((bus) => bus.request('set-user-data', data))
+            .then(() => this._hideIframe());
+    }
+
+    protected _dropTransportConnect(): void {
+        if (this._iframe != null) {
+            document.body.removeChild(this._iframe);
+            this._iframe = undefined;
+        }
+        if (this._bus) {
+            this._bus.destroy();
+            this._bus = undefined;
+        }
     }
 
     protected async _getBus(): Promise<TBus> {

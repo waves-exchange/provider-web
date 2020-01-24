@@ -5,4 +5,5 @@ export type TBus = Bus<IBusEvents, TBusHandlers>;
 export interface ITransport {
     dialog<T>(callback: (bus: TBus) => Promise<T>): Promise<T>;
     sendEvent(callback: (bus: TBus) => unknown): void;
+    dropConnection(): void;
 }

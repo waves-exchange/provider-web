@@ -9,32 +9,40 @@ export abstract class Transport implements ITransport {
         this._queue = new Queue(queueLength);
     }
 
+    public dropConnection(): void {
+        this._queue.clear(new Error('User rejection!'));
+        this._dropTransportConnect();
+    }
+
     public sendEvent(callback: TEventDispatcher<void>): void {
         this._events.push(callback);
     }
 
-    public async dialog<T>(callback: TEventDispatcher<T>): Promise<T> {
+    public dialog<T>(callback: TEventDispatcher<T>): Promise<T> {
         this._runBeforeShow();
-        const bus = await this._getBus();
-        const action = async (): Promise<T> => callback(bus);
 
-        this._runEvents(bus);
+        return this._getBus().then((bus) => {
+            const action = (): Promise<T> => callback(bus);
 
-        if (this._queue.canPush()) {
-            try {
-                const result = await this._queue.push(action);
+            this._runEvents(bus);
 
-                this._runAfterShow();
+            if (this._queue.canPush()) {
+                return this._queue
+                    .push(action)
+                    .then((result) => {
+                        this._runAfterShow();
 
-                return result;
-            } catch (e) {
-                this._runAfterShow();
+                        return result;
+                    })
+                    .catch((error) => {
+                        this._runAfterShow();
 
-                return Promise.reject(e);
+                        return Promise.reject(error);
+                    });
+            } else {
+                return Promise.reject(new Error('Queue is full!'));
             }
-        } else {
-            return Promise.reject(new Error('Queue is full!'));
-        }
+        });
     }
 
     private _runBeforeShow(): void {
@@ -54,6 +62,8 @@ export abstract class Transport implements ITransport {
             .splice(0, this._events.length)
             .forEach((callback) => callback(bus));
     }
+
+    protected abstract _dropTransportConnect(): void;
 
     protected abstract _beforeShow(): void;
     protected abstract _afterShow(): void;

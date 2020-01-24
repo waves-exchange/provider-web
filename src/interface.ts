@@ -21,14 +21,23 @@ export type TBusHandlers = {
     'sign-custom-bytes': (data: string) => Promise<string>;
     'sign-message': (data: string | number) => Promise<string>;
     'sign-typed-data': (data: Array<ITypedData>) => Promise<string>;
+    'get-public-key': () => Promise<string>;
+    'get-user-data': (publicKey: string) => Promise<IEncryptedUserData>;
+    'set-user-data': (data: IEncryptedUserData) => Promise<void>;
 
     sign(
         list: Array<TTransactionParamWithType>
     ): Promise<Array<TTransactionWithProofs<TLong> & IWithId>>;
 };
 
+export interface IEncryptedUserData {
+    publicKey: string;
+    encrypted: string;
+}
+
 export interface IBusEvents {
     connect: IConnectOptions;
+    close: void;
     ready: void;
 }
 
