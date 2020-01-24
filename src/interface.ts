@@ -64,3 +64,8 @@ export interface IUserWithBalances extends IUser {
 export type TFunction<Params extends Array<unknown>, Return> = (
     ...args: Params
 ) => Return;
+
+export interface IKeyPair {
+    privateKey: string;
+    publicKey: string;
+}

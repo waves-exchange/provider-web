@@ -5,6 +5,11 @@ import { Queue } from '../utils/Queue';
 import { getConnectHandler } from './handlers/connect';
 import { getLoginHandler } from './handlers/login';
 import { getSignHandler } from './handlers/sign';
+import {
+    getPublicKeyHandler,
+    getUserDataHandler,
+    setUserDataHandler,
+} from './handlers/moveUserHandlers';
 import { IState } from './interface';
 import logout from './router/logout';
 
@@ -22,54 +27,27 @@ WindowAdapter.createSimpleWindowAdapter()
             matcherUrl: undefined,
         };
 
-        const seed = libs.crypto.randomSeed();
-        const publicKey = libs.crypto.publicKey(seed);
-        const privateKey = libs.crypto.privateKey(seed);
+        const moveUserState = libs.crypto.keyPair(libs.crypto.randomSeed(25));
 
         bus.on('connect', getConnectHandler(state));
 
         bus.registerRequestHandler('login', getLoginHandler(queue, state));
         bus.registerRequestHandler('logout', logout(state));
 
-        bus.registerRequestHandler('get-public-key', () =>
-            Promise.resolve(publicKey)
+        bus.registerRequestHandler(
+            'get-public-key',
+            getPublicKeyHandler(moveUserState.publicKey)
+        );
+
+        bus.registerRequestHandler(
+            'get-user-data',
+            getUserDataHandler(moveUserState, state)
         );
 
         bus.registerRequestHandler(
             'set-user-data',
-            (data: IEncryptedUserData): Promise<void> => {
-                const bytes = libs.crypto.base64Decode(data.encrypted);
-                const sharedKey = libs.crypto.sharedKey(
-                    privateKey,
-                    data.publicKey,
-                    ''
-                );
-                const outState = JSON.parse(
-                    libs.crypto.messageDecrypt(sharedKey, bytes)
-                );
-
-                Object.entries(outState).forEach(([key, value]) => {
-                    state[key] = value;
-                });
-
-                return Promise.resolve();
-            }
+            setUserDataHandler(moveUserState, state)
         );
-
-        bus.registerRequestHandler('get-user-data', (outPublicKey: string) => {
-            const sharedKey = libs.crypto.sharedKey(
-                privateKey,
-                outPublicKey,
-                ''
-            );
-
-            return Promise.resolve({
-                publicKey,
-                encrypted: libs.crypto.base64Encode(
-                    libs.crypto.messageEncrypt(sharedKey, JSON.stringify(state))
-                ),
-            });
-        });
 
         // bus.registerRequestHandler('sign-custom-bytes', wrapLogin(signBytes));
         // bus.registerRequestHandler('sign-typed-data', wrapLogin(signTypedData));

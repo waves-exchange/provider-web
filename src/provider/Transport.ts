@@ -64,7 +64,6 @@ export abstract class Transport implements ITransport {
     }
 
     protected abstract _dropTransportConnect(): void;
-
     protected abstract _beforeShow(): void;
     protected abstract _afterShow(): void;
 
