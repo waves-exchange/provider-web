@@ -108,13 +108,14 @@ export const SignInvoke: FC<IProps> = ({
                                     </Text>
                                 )}
                                 <Copy
-                                    toCopyText={dAppName}
                                     text={dAppName}
-                                    TextProps={{
-                                        variant: 'body2',
-                                        color: 'standard.$0',
-                                    }}
-                                />
+                                    inititialTooltipLabel="Copy"
+                                    copiedTooltipLabel="Copied!"
+                                >
+                                    <Text variant="body2" color="standard.$0">
+                                        {dAppName}
+                                    </Text>
+                                </Copy>
                             </Flex>
                         </Flex>
                     </Box>
