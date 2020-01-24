@@ -2,6 +2,7 @@ import React, { FC, useCallback } from 'react';
 import { SignMessageComponent } from './SignMessageComponent';
 import { IUserWithBalances } from '../../../interface';
 import { useTxUser } from '../../hooks/useTxUser';
+import { analytics } from '../../utils/analytics';
 
 interface ISignMessageProps {
     data: string;
@@ -21,9 +22,11 @@ export const SignMessageContainer: FC<ISignMessageProps> = ({
     const { userName, userBalance } = useTxUser(user, networkByte);
     const handleConfirm = useCallback(() => {
         onConfirm();
+        analytics.send({ name: 'Confirm_Sign_Message_Reject' });
     }, [onConfirm]);
     const handleReject = useCallback(() => {
         onCancel();
+        analytics.send({ name: 'Confirm_Sign_Message_Reject' });
     }, [onCancel]);
 
     return (
