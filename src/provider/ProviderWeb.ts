@@ -44,7 +44,7 @@ export class ProviderWeb implements IProvider {
     }
 
     public logout(): Promise<void> {
-        return this._transport.dialog((bus) => bus.request('logout'));
+        return Promise.resolve(this._transport.dropConnection());
     }
 
     public login(): Promise<IUserData> {
