@@ -1,4 +1,4 @@
-import React, { FC, useEffect } from 'react';
+import React, { FC, useEffect, useState, useCallback } from 'react';
 import { SignTransfer as SignTransferComponent } from './SignTransferComponent';
 import { ISignTxProps } from '../../../interface';
 import { ITransferWithType, TLong } from '@waves/signer';
@@ -13,6 +13,8 @@ import { useTxHandlers } from '../../hooks/useTxHandlers';
 import { useTxUser } from '../../hooks/useTxUser';
 import { isAlias } from '../../utils/isAlias';
 import { getPrintableNumber } from '../../utils/math';
+import { FeeOption } from '@waves.exchange/react-uikit';
+import { BigNumber } from '@waves/bignumber';
 
 const getAssetName = (
     assets: Record<string, TAssetDetails<TLong>>,
@@ -66,6 +68,40 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
         ? txMeta.aliases[tx.recipient]
         : tx.recipient;
 
+    const feeList = [
+        {
+            id: WAVES.assetId,
+            name: WAVES.name,
+            ticker: WAVES.ticker,
+            value: fee,
+        },
+    ].concat(
+        txMeta.feeList.map((f) => ({
+            name: txMeta.assets[f.feeAssetId as string].name,
+            id: String(f.feeAssetId),
+            ticker: '',
+            value: String(f.feeAmount),
+        }))
+    );
+
+    const [selectedFee, setSelectedFee] = useState<FeeOption>({
+        id: WAVES.assetId,
+        name: WAVES.name,
+        ticker: WAVES.ticker,
+        value: fee,
+    });
+
+    const handleFeeSelect = useCallback(
+        (feeOption: FeeOption) => {
+            setSelectedFee(feeOption);
+            tx.feeAssetId = feeOption.id;
+            tx.fee = BigNumber.toBigNumber(feeOption.value)
+                .mul(Math.pow(10, txMeta.assets[feeOption.id].decimals))
+                .toFixed();
+        },
+        [tx.fee, tx.feeAssetId, txMeta.assets]
+    );
+
     return (
         <SignTransferComponent
             userAddress={user.address}
@@ -80,6 +116,10 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
             recipientName={tx.recipient}
             attachement={attachment.ok ? attachment.resolveData : ''}
             tx={tx}
+            meta={txMeta}
+            feeList={feeList}
+            selectedFee={selectedFee}
+            onFeeSelect={handleFeeSelect}
             onReject={handleReject}
             onConfirm={handleConfirm}
             iconType={getIconType(tx, user, Object.keys(txMeta.aliases))}

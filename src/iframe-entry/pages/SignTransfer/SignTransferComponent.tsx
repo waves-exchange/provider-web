@@ -1,5 +1,9 @@
 import {
+    FeeOption,
     Flex,
+    List,
+    Select,
+    Selected,
     Tab,
     TabPanel,
     TabPanels,
@@ -7,9 +11,9 @@ import {
     TabsList,
     Text,
 } from '@waves.exchange/react-uikit';
-import { TLong } from '@waves/signer';
+import { ITransferWithType, TLong } from '@waves/signer';
 import { ITransferTransaction, IWithId } from '@waves/ts-types';
-import React, { FC, MouseEventHandler } from 'react';
+import React, { FC, MouseEventHandler, ReactElement } from 'react';
 import { Account } from '../../components/Account';
 import { Confirmation } from '../../components/Confirmation';
 import {
@@ -18,6 +22,7 @@ import {
 } from '../../components/IconTransfer/IconTransfer';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
 import { TransactionJson } from '../../components/TransactionJson/TransactionJson';
+import { IMeta } from '../../services/transactionsService';
 
 type Props = {
     userAddress: string;
@@ -30,6 +35,10 @@ type Props = {
     recipientName: string;
     iconType: IconTransferType;
     tx: ITransferTransaction<TLong> & IWithId;
+    meta: IMeta<ITransferWithType<TLong>>;
+    feeList: FeeOption[];
+    selectedFee: FeeOption;
+    onFeeSelect: (option: FeeOption) => void;
     onReject: MouseEventHandler<HTMLButtonElement>;
     onConfirm: MouseEventHandler<HTMLButtonElement>;
 };
@@ -42,9 +51,12 @@ export const SignTransfer: FC<Props> = ({
     userName,
     attachement,
     transferAmount,
-    transferFee,
     iconType,
     tx,
+    meta,
+    feeList,
+    selectedFee,
+    onFeeSelect,
     onReject,
     onConfirm,
 }) => (
@@ -139,9 +151,21 @@ export const SignTransfer: FC<Props> = ({
                             <Text mt="$20" variant="body2" color="basic.$500">
                                 Fee
                             </Text>
-                            <Text mt="$5" variant="body2" color="standard.$0">
-                                {transferFee}
-                            </Text>
+                            <Select
+                                isDisabled={meta.feeList.length === 0}
+                                renderSelected={(open): ReactElement => (
+                                    <Selected
+                                        selected={selectedFee}
+                                        opened={open}
+                                    />
+                                )}
+                            >
+                                <List
+                                    onSelect={onFeeSelect}
+                                    options={feeList}
+                                    css={{ bottom: 56 }}
+                                ></List>
+                            </Select>
                         </Flex>
                     </TabPanel>
                     <TabPanel>

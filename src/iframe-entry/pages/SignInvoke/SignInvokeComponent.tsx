@@ -10,10 +10,13 @@ import {
     Tabs,
     TabsList,
     Text,
+    Select,
+    Selected,
+    List,
 } from '@waves.exchange/react-uikit';
-import { ICall, TLong } from '@waves/signer';
+import { ICall, TLong, IInvokeWithType } from '@waves/signer';
 import { IInvokeScriptTransaction, IWithId } from '@waves/ts-types';
-import React, { FC, MouseEventHandler } from 'react';
+import React, { FC, MouseEventHandler, ReactElement } from 'react';
 import { Confirmation } from '../../components/Confirmation';
 import { InvokeFunction } from '../../components/InvokeFunction/InvokeFunction';
 import { Account } from '../../components/Account';
@@ -21,6 +24,8 @@ import { InvokePayment } from '../../components/InvokePayment/InvokePayment';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
 import { TransactionJson } from '../../components/TransactionJson/TransactionJson';
 import { IPayment } from './SignInvokeContainer';
+import { FeeOption } from '@waves.exchange/react-uikit';
+import { IMeta } from '../../services/transactionsService';
 
 export interface IProps {
     userAddress: string;
@@ -33,6 +38,10 @@ export interface IProps {
     chainId?: number;
     payment: Array<IPayment>;
     tx: IInvokeScriptTransaction<TLong> & IWithId;
+    meta: IMeta<IInvokeWithType<TLong>>;
+    feeList: FeeOption[];
+    selectedFee: FeeOption;
+    onFeeSelect: (option: FeeOption) => void;
     onCancel: MouseEventHandler<HTMLButtonElement>;
     onConfirm: MouseEventHandler<HTMLButtonElement>;
 }
@@ -43,12 +52,15 @@ export const SignInvoke: FC<IProps> = ({
     userBalance,
     dAppAddress,
     dAppName,
-    fee,
+    meta,
     call,
     payment,
     tx,
     onCancel,
     onConfirm,
+    feeList,
+    selectedFee,
+    onFeeSelect,
 }) => (
     <Confirmation
         address={userAddress}
@@ -198,9 +210,21 @@ export const SignInvoke: FC<IProps> = ({
                                 >
                                     Fee
                                 </Text>
-                                <Text variant="body2" color="standard.$0">
-                                    {fee}
-                                </Text>
+                                <Select
+                                    isDisabled={meta.feeList.length === 0}
+                                    renderSelected={(open): ReactElement => (
+                                        <Selected
+                                            selected={selectedFee}
+                                            opened={open}
+                                        />
+                                    )}
+                                >
+                                    <List
+                                        onSelect={onFeeSelect}
+                                        options={feeList}
+                                        css={{ bottom: 56 }}
+                                    ></List>
+                                </Select>
                             </Box>
                         </TabPanel>
                         <TabPanel>
