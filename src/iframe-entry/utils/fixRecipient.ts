@@ -1,18 +1,19 @@
-import { MAX_ALIAS_LENGTH } from '../../constants';
 import curry from 'ramda/es/curry';
+import { cleanAddress } from './cleanAlias';
+import { isAddress } from './isAddress';
 
 export const fixRecipient = curry(
     <T extends { recipient: string }>(networkByte: number, data: T): T => {
-        const origin = data.recipient.replace(/alias:.:/, '');
+        const address = cleanAddress(data.recipient);
 
-        if (origin.length > MAX_ALIAS_LENGTH) {
-            return { ...data, recipient: origin };
+        if (isAddress(address)) {
+            return { ...data, recipient: address };
         } else {
             return {
                 ...data,
                 recipient: `alias:${String.fromCharCode(
                     networkByte
-                )}:${origin}`,
+                )}:${address}`,
             };
         }
     }

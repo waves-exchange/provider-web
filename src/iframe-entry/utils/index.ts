@@ -1,13 +1,13 @@
 import { TLong } from '@waves/signer';
 import { TAssetDetails } from '@waves/node-api-js/es/api-node/assets';
-import { WAVES } from '../../constants';
-import { BigNumber } from '@waves/bignumber';
+import { WAVES } from '../constants';
+import { getPrintableNumber } from './math';
 
 export const toArray = <T>(data: T | Array<T>): Array<T> =>
     Array.isArray(data) ? data : [data];
 
 export function toFormat(
-    data: TLong,
+    num: TLong,
     id: string | null,
     hash: Record<string, TAssetDetails>
 ): string {
@@ -17,10 +17,5 @@ export function toFormat(
         throw new Error('Asset not found!');
     }
 
-    return (
-        BigNumber.toBigNumber(data)
-            .div(Math.pow(10, asset.decimals))
-            .roundTo(asset.decimals)
-            .toFixed() + ` ${asset.name}`
-    );
+    return `${getPrintableNumber(num, asset.decimals)} ${asset.name}`;
 }

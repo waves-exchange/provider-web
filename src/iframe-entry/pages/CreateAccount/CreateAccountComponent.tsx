@@ -191,7 +191,9 @@ export const CreateAccountComponent: FC<IProps> = ({
                                 </Text>
                             </Checkbox>
                             <ExternalLink
-                                href="https://waves.exchange/files/Privacy_Policy_Waves.Exchange.pdf"
+                                href={getEnvAwareUrl(
+                                    '/files/Privacy_Policy_Waves.Exchange.pdf'
+                                )}
                                 variant="body2"
                                 target="_blank"
                             >
@@ -211,7 +213,9 @@ export const CreateAccountComponent: FC<IProps> = ({
                                 </Text>
                             </Checkbox>
                             <ExternalLink
-                                href="https://waves.exchange/files/Terms_Of_Use_Waves.Exchange.pdf"
+                                href={getEnvAwareUrl(
+                                    '/files/Terms_Of_Use_Waves.Exchange.pdf'
+                                )}
                                 variant="body2"
                                 target="_blank"
                             >
@@ -239,7 +243,7 @@ export const CreateAccountComponent: FC<IProps> = ({
                 >
                     If you had an account, visit{' '}
                     <ExternalLink
-                        href="https://waves.exchange/"
+                        href={getEnvAwareUrl()}
                         variant="body2"
                         target="_blank"
                         onClick={onExchangeLinkClick}
