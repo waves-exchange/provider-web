@@ -36,11 +36,14 @@ export const GlobalCSS: FC = () => {
                 }
                 ::-webkit-scrollbar-thumb {
                     background-color: #495060;
-                    width: 3px;
                     border-radius: 4px;
                 }
                 ::-webkit-scrollbar {
                     width: 3px;
+                    height: 3px;
+                }
+                ::-webkit-scrollbar-corner {
+                    opacity: 0;
                 }
                 ::-webkit-scrollbar-track-piece {
                     margin-bottom: 5px;
