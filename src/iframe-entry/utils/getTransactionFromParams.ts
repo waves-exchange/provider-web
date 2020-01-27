@@ -1,7 +1,7 @@
 import { TTransactionParamWithType, TLong } from '@waves/signer';
-import { TTransaction, IWithId } from '@waves/ts-types';
+import { TTransactionWithId } from '@waves/ts-types';
 import { fixRecipient } from './fixRecipient';
-import { NAME_MAP } from '../../constants';
+import { NAME_MAP } from '../constants';
 import { makeTx, libs } from '@waves/waves-transactions';
 import curry from 'ramda/es/curry';
 
@@ -28,10 +28,10 @@ const fixParams = (
 type GetTransactionFromParams = (
     options: { networkByte: number; privateKey: string },
     tx: TTransactionParamWithType
-) => TTransaction<TLong> & IWithId;
+) => TTransactionWithId<TLong>;
 
 export const getTransactionFromParams = curry<GetTransactionFromParams>(
-    ({ networkByte, privateKey }, tx): TTransaction<TLong> & IWithId => {
+    ({ networkByte, privateKey }, tx): TTransactionWithId<TLong> => {
         return makeTx({
             chainId: networkByte,
             senderPublicKey: libs.crypto.publicKey({ privateKey }),

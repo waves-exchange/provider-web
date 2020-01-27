@@ -1,5 +1,6 @@
-const MAX_ALIAS_LENGTH = 30;
+import { MAX_ALIAS_LENGTH } from '../constants';
+import { cleanAddress } from './cleanAlias';
 
-export function isAddress(addressOrAlias: string): boolean {
-    return addressOrAlias.replace(/alias:.:/, '').length > MAX_ALIAS_LENGTH;
+export function isAddress(address: string): boolean {
+    return cleanAddress(address).length > MAX_ALIAS_LENGTH;
 }

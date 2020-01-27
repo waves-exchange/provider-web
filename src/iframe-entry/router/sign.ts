@@ -6,7 +6,7 @@ import {
 } from '@waves/signer';
 import { libs, signTx } from '@waves/waves-transactions';
 import React, { ReactNode } from 'react';
-import { NAME_MAP } from '../../constants';
+import { NAME_MAP } from '../constants';
 import { ISignTxProps, IUserWithBalances } from '../../interface';
 import { IState } from '../interface';
 // import exchangePage from '../pages/transactions/exchange';

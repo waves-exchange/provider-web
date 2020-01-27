@@ -6,14 +6,13 @@ import {
     Heading,
     Box,
     iconInvoke,
-    Avatar,
-    Copy,
 } from '@waves.exchange/react-uikit';
 import { Confirmation } from '../../components/Confirmation';
 import { ICall } from '@waves/signer';
 import { IPayment } from './SignInvokeContainer';
 import { InvokePayment } from '../../components/InvokePayment/InvokePayment';
 import { InvokeFunction } from '../../components/InvokeFunction/InvokeFunction';
+import { Account } from '../../components/Account';
 
 export interface IProps {
     userAddress: string;
@@ -91,33 +90,11 @@ export const SignInvoke: FC<IProps> = ({
                         >
                             Account
                         </Text>
-                        {/* TODO - разобрать этот бардак с AddressAvatar */}
-                        <Flex alignItems="center">
-                            <Avatar address={dAppAddress} variantSize="large" />
-                            <Flex
-                                ml="$10"
-                                flexDirection="column"
-                                justifyContent="center"
-                            >
-                                {name && (
-                                    <Text
-                                        variant="footnote1"
-                                        color="basic.$500"
-                                    >
-                                        {name}
-                                    </Text>
-                                )}
-                                <Copy
-                                    text={dAppName}
-                                    inititialTooltipLabel="Copy"
-                                    copiedTooltipLabel="Copied!"
-                                >
-                                    <Text variant="body2" color="standard.$0">
-                                        {dAppName}
-                                    </Text>
-                                </Copy>
-                            </Flex>
-                        </Flex>
+                        <Account
+                            address={dAppAddress}
+                            userName={userName}
+                            alias={dAppName}
+                        />
                     </Box>
 
                     {payment && payment.length > 0 && (

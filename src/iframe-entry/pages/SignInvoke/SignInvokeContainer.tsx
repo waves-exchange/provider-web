@@ -3,7 +3,7 @@ import { SignInvoke as SignInvokeComponent } from './SignInvokeComponent';
 import { ISignTxProps } from '../../../interface';
 import { IInvokeWithType, TLong, ICall, IMoney } from '@waves/signer';
 import { BigNumber } from '@waves/bignumber';
-import { WAVES } from '../../../constants';
+import { WAVES } from '../../constants';
 import { TAssetDetails } from '@waves/node-api-js/es/api-node/assets';
 import { DetailsWithLogo } from '../../utils/loadLogoInfo';
 import isNil from 'ramda/es/isNil';
@@ -11,6 +11,8 @@ import prop from 'ramda/es/prop';
 import { useTxHandlers } from '../../hooks/useTxHandlers';
 import { useTxUser } from '../../hooks/useTxUser';
 import { analytics } from '../../utils/analytics';
+import { isAlias } from '../../utils/isAlias';
+import { getPrintableNumber } from '../../utils/math';
 
 export interface IPayment {
     assetId: string | null;
@@ -35,12 +37,6 @@ const assetPropFactory = (
         ? prop<P, DetailsWithLogo>(property, WAVES)
         : prop<P, DetailsWithLogo>(property, assets[assetId]);
 
-const MAX_ALIAS_LENGTH = 30; // TODO
-
-const isAlias = (nodeAlias: string): boolean => {
-    return nodeAlias.replace(/alias:.:/, '').length <= MAX_ALIAS_LENGTH;
-};
-
 export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
     meta,
     networkByte,
@@ -54,10 +50,7 @@ export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
 
     const feeAsset = meta.assets[tx.feeAssetId || ''] || WAVES;
 
-    const fee = BigNumber.toBigNumber(tx.fee)
-        .div(Math.pow(10, feeAsset.decimals))
-        .roundTo(feeAsset.decimals)
-        .toFixed();
+    const fee = getPrintableNumber(tx.fee, feeAsset.decimals);
 
     const { handleConfirm, handleReject } = useTxHandlers(
         tx,
@@ -81,9 +74,10 @@ export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
         payments.map(({ assetId, amount }) => ({
             assetId,
             name: getAssetProp(assetId, 'name'),
-            amount: BigNumber.toBigNumber(amount)
-                .div(Math.pow(10, getAssetProp(assetId, 'decimals')))
-                .toFixed(),
+            amount: getPrintableNumber(
+                amount,
+                getAssetProp(assetId, 'decimals')
+            ),
             logo: getAssetProp(assetId, 'logo'),
             decimals: getAssetProp(assetId, 'decimals'),
         }));

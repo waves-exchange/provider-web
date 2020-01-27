@@ -1,16 +1,12 @@
 import { ITransferTransaction } from '@waves/ts-types';
 import { WithId } from '@waves/waves-transactions';
 import { TLong } from '@waves/signer';
+import { cleanAddress } from '../../utils/cleanAlias';
+import { isAlias } from '../../utils/isAlias';
 
-const MAX_ALIAS_LENGTH = 30; // TODO
-
-const isAlias = (nodeAlias: string): boolean => {
-    return nodeAlias.replace(/alias:.:/, '').length <= MAX_ALIAS_LENGTH;
+const getAlias = (address: string): string => {
+    return isAlias(address) ? cleanAddress(address) : '';
 };
-
-const getAlias = (nodeAlias: string): string | null => {
-    return isAlias(nodeAlias) ? nodeAlias.replace(/alias:.:/, '') : null;
-}; // TODO убрать дублирование
 
 export type IconTransferType = 'send' | 'receive' | 'circular';
 
@@ -26,7 +22,7 @@ export const getIconType: GetIcon = (tx, user, userAliases) => {
 
     if (isAlias(tx.recipient)) {
         return isSenderMe
-            ? userAliases.includes(getAlias(tx.recipient)!)
+            ? userAliases.includes(getAlias(tx.recipient))
                 ? 'circular'
                 : 'send'
             : 'receive';

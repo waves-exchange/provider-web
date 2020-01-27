@@ -3,21 +3,16 @@ import { SignTransfer as SignTransferComponent } from './SignTransferComponent';
 import { ISignTxProps } from '../../../interface';
 import { ITransferWithType, TLong } from '@waves/signer';
 import { getIconType } from '../../components/IconTransfer/helpers';
-import { BigNumber } from '@waves/bignumber';
 import { libs } from '@waves/waves-transactions';
 import { catchable } from '../../utils/catchable';
 import compose from 'ramda/es/compose';
-import { WAVES } from '../../../constants';
+import { WAVES } from '../../constants';
 import { TAssetDetails } from '@waves/node-api-js/es/api-node/assets';
 import { analytics } from '../../utils/analytics';
 import { useTxHandlers } from '../../hooks/useTxHandlers';
 import { useTxUser } from '../../hooks/useTxUser';
-
-const MAX_ALIAS_LENGTH = 30; // TODO
-
-const isAlias = (nodeAlias: string): boolean => {
-    return nodeAlias.replace(/alias:.:/, '').length <= MAX_ALIAS_LENGTH;
-};
+import { isAlias } from '../../utils/isAlias';
+import { getPrintableNumber } from '../../utils/math';
 
 const getAssetName = (
     assets: Record<string, TAssetDetails<TLong>>,
@@ -41,15 +36,9 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
         throw new Error('Amount of fee asstet not found'); // TODO ?
     }
 
-    const amount = BigNumber.toBigNumber(tx.amount)
-        .div(Math.pow(10, amountAsset.decimals))
-        .roundTo(amountAsset.decimals)
-        .toFixed();
+    const amount = getPrintableNumber(tx.amount, amountAsset.decimals);
 
-    const fee = BigNumber.toBigNumber(tx.fee)
-        .div(Math.pow(10, feeAsset.decimals))
-        .roundTo(feeAsset.decimals)
-        .toFixed();
+    const fee = getPrintableNumber(tx.fee, feeAsset.decimals);
 
     const attachment = catchable(
         compose(libs.crypto.bytesToString, libs.crypto.base58Decode)

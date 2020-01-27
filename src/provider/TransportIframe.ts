@@ -1,6 +1,7 @@
 import { Transport } from './Transport';
 import { TBus } from './interface';
 import { Bus, WindowAdapter } from '@waves/waves-browser-bus';
+import { CSSProperties } from 'react';
 
 export class TransportIframe extends Transport {
     private static _timer: ReturnType<typeof setTimeout> | null = null;
@@ -83,7 +84,7 @@ export class TransportIframe extends Transport {
     }
 
     private _showIframe(): void {
-        const shownStyles = {
+        const shownStyles: CSSProperties = {
             width: '100%',
             height: '100%',
             left: '0',
@@ -92,7 +93,7 @@ export class TransportIframe extends Transport {
             position: 'fixed',
             display: 'block',
             opacity: '0',
-            zIndex: '99999999',
+            zIndex: 99999999,
         };
 
         this._applyStyle(shownStyles);
@@ -121,13 +122,13 @@ export class TransportIframe extends Transport {
                 top: '-100px',
                 position: 'absolute',
                 opacity: '0',
-                zIndex: '0',
+                zIndex: 0,
                 display: 'none',
             });
         }, 200);
     }
 
-    private _applyStyle(styles: TWritableCSSStyleDeclaration): void {
+    private _applyStyle(styles: CSSProperties): void {
         Object.entries(styles).forEach(([name, value]) => {
             if (value != null) {
                 this._iframe!.style[name] = value;
@@ -135,22 +136,3 @@ export class TransportIframe extends Transport {
         });
     }
 }
-
-type TWritableCSSStyleDeclaration = Partial<
-    Pick<
-        TFilterFunctions<TFilterNumberKeys<CSSStyleDeclaration>>,
-        Exclude<keyof CSSStyleDeclaration, 'length' | 'parentRule'>
-    >
->;
-
-type TFilterNumberKeys<T extends Record<keyof unknown, unknown>> = {
-    [Key in keyof T]: Key extends number ? never : T[Key];
-};
-
-type TNotFunction<T> = T extends (...args: Array<unknown>) => unknown
-    ? never
-    : T;
-
-type TFilterFunctions<T extends Record<keyof unknown, unknown>> = {
-    [Key in keyof T]: TNotFunction<T[Key]>;
-};

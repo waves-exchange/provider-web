@@ -1,5 +1,5 @@
 import { curry } from 'ramda';
-import { TTransaction, IWithId } from '@waves/ts-types';
+import { TTransactionWithId } from '@waves/ts-types';
 import { TLong } from '@waves/signer';
 import {
     fetchCalculateFee,
@@ -9,8 +9,8 @@ import {
 export const loadFeeByTransaction = curry(
     (
         base: string,
-        tx: TTransaction<TLong> & IWithId
-    ): Promise<TTransaction<TLong> & IWithId> =>
+        tx: TTransactionWithId<TLong>
+    ): Promise<TTransactionWithId<TLong>> =>
         fetchCalculateFee(base, tx)
             .then((info: TFeeInfo) => ({ ...tx, fee: info.feeAmount }))
             .catch(() => ({ ...tx }))

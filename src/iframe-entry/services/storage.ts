@@ -1,6 +1,6 @@
 import isNil from 'ramda/es/isNil';
 import { catchable, TCatchable } from '../utils/catchable';
-import { craeteMultiAccountHash } from '../utils/craeteMultiAccountHash';
+import { createMultiAccountHash } from '../utils/createMultiAccountHash';
 import { decryptMultiAccountData } from '../utils/decryptMultiAccountData';
 import { encryptMultiAccountData } from '../utils/encryptMultiAccountData';
 import { IUserStorageInfo, TPrivateMultiaccountData } from '../interface';
@@ -44,7 +44,7 @@ class StorageService {
         rounds?: number
     ): void {
         const json = JSON.stringify(data);
-        const hash = craeteMultiAccountHash(json);
+        const hash = createMultiAccountHash(json);
         const encrypted = encryptMultiAccountData(data, password, rounds);
 
         localStorage.setItem('multiAccountHash', `"${hash}"`);

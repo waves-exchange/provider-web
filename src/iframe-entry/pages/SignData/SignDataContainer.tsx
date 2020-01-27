@@ -1,12 +1,12 @@
-import BigNumber from '@waves/bignumber';
 import { IDataWithType } from '@waves/signer';
 import React, { FC, useEffect } from 'react';
-import { WAVES } from '../../../constants';
+import { WAVES } from '../../constants';
 import { ISignTxProps } from '../../../interface';
 import { SignDataComponent } from './SignDataComponent';
 import { analytics } from '../../utils/analytics';
 import { useTxHandlers } from '../../hooks/useTxHandlers';
 import { useTxUser } from '../../hooks/useTxUser';
+import { getPrintableNumber } from '../../utils/math';
 
 export const SignDataContainer: FC<ISignTxProps<IDataWithType>> = ({
     tx,
@@ -16,10 +16,7 @@ export const SignDataContainer: FC<ISignTxProps<IDataWithType>> = ({
     onCancel,
 }) => {
     const { userName, userBalance } = useTxUser(user, networkByte);
-    const fee = BigNumber.toBigNumber(tx.fee)
-        .div(Math.pow(10, WAVES.decimals))
-        .roundTo(WAVES.decimals)
-        .toFixed();
+    const fee = getPrintableNumber(tx.fee, WAVES.decimals);
 
     const { handleReject, handleConfirm } = useTxHandlers(
         tx,

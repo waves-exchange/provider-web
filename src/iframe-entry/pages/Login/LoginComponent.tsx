@@ -19,6 +19,7 @@ import React, {
     ReactNode,
 } from 'react';
 import { IUser } from '../../../interface';
+import { getEnvAwareUrl } from '../../utils/getEnvAwareUrl';
 
 interface IProps {
     title: string;
@@ -151,7 +152,7 @@ export const LoginComponent: FC<IProps> = ({
                         <ExternalLink
                             display="block"
                             textAlign="center"
-                            href="https://waves.exchange/faq#25"
+                            href={getEnvAwareUrl('/faq#25')}
                             target="_blank"
                             mt="$30"
                             variant="body2"
