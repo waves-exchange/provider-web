@@ -151,7 +151,7 @@ export const LoginComponent: FC<IProps> = ({
                         <ExternalLink
                             display="block"
                             textAlign="center"
-                            href="https://waves.exchange/faq#25"
+                            href="https://testnet.waves.exchange/faq#25"
                             target="_blank"
                             mt="$30"
                             variant="body2"
