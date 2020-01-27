@@ -1,18 +1,18 @@
-import React, { FC, useEffect } from 'react';
-import { SignInvoke as SignInvokeComponent } from './SignInvokeComponent';
-import { ISignTxProps } from '../../../interface';
-import { IInvokeWithType, TLong, ICall, IMoney } from '@waves/signer';
-import { BigNumber } from '@waves/bignumber';
-import { WAVES } from '../../constants';
+import { FeeOption } from '@waves.exchange/react-uikit';
 import { TAssetDetails } from '@waves/node-api-js/es/api-node/assets';
-import { DetailsWithLogo } from '../../utils/loadLogoInfo';
+import { ICall, IInvokeWithType, IMoney, TLong } from '@waves/signer';
 import isNil from 'ramda/es/isNil';
 import prop from 'ramda/es/prop';
+import React, { FC, useCallback, useEffect, useState } from 'react';
+import { ISignTxProps } from '../../../interface';
+import { WAVES } from '../../constants';
 import { useTxHandlers } from '../../hooks/useTxHandlers';
 import { useTxUser } from '../../hooks/useTxUser';
 import { analytics } from '../../utils/analytics';
 import { isAlias } from '../../utils/isAlias';
-import { getPrintableNumber } from '../../utils/math';
+import { DetailsWithLogo } from '../../utils/loadLogoInfo';
+import { getCoins, getPrintableNumber } from '../../utils/math';
+import { SignInvoke as SignInvokeComponent } from './SignInvokeComponent';
 
 export interface IPayment {
     assetId: string | null;
@@ -84,6 +84,36 @@ export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
 
     const dAppAddress = isAlias(tx.dApp) ? meta.aliases[tx.dApp] : tx.dApp;
 
+    const defaultFee: FeeOption = {
+        id: WAVES.assetId,
+        name: WAVES.name,
+        ticker: WAVES.ticker,
+        value: fee,
+    };
+
+    const feeList = [defaultFee].concat(
+        meta.feeList.map((f) => ({
+            name: getAssetProp(f.feeAssetId, 'name'),
+            id: String(f.feeAssetId),
+            ticker: '',
+            value: String(f.feeAmount),
+        }))
+    );
+
+    const [selectedFee, setSelectedFee] = useState<FeeOption>(defaultFee);
+
+    const handleFeeSelect = useCallback(
+        (feeOption: FeeOption) => {
+            setSelectedFee(feeOption);
+            tx.feeAssetId = feeOption.id;
+            tx.fee = getCoins(
+                feeOption.value,
+                getAssetProp(feeOption.id, 'decimals')
+            );
+        },
+        [getAssetProp, tx.fee, tx.feeAssetId]
+    );
+
     return (
         <SignInvokeComponent
             userAddress={user.address}
@@ -97,6 +127,11 @@ export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
             payment={mapPayments(tx.payment || [])}
             onCancel={handleReject}
             onConfirm={handleConfirm}
+            tx={tx}
+            meta={meta}
+            feeList={feeList}
+            selectedFee={selectedFee}
+            onFeeSelect={handleFeeSelect}
         />
     );
 };
