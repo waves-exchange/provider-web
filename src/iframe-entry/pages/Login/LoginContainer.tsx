@@ -4,13 +4,16 @@ import React, {
     useCallback,
     useState,
     useEffect,
+    ReactNode,
 } from 'react';
 import { IUser } from '../../../interface';
 import { LoginComponent } from './LoginComponent';
 import { getUsers, addSeedUser } from '../../services/userService';
 import { libs } from '@waves/waves-transactions';
 import { analytics } from '../../utils/analytics';
+import { getEnvAwareUrl } from '../../utils/getEnvAwareUrl';
 import { SelectAccountComponent } from './SelectAccountComponent';
+import { ExternalLink, Text } from '@waves.exchange/react-uikit';
 
 interface IProps {
     networkByte: number;
@@ -130,8 +133,42 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
     const isSubmitDisabled = !password || !password.length || !!errorMessage;
     const title = hasMultipleUsers ? 'Account Selection' : 'Log in';
     const subTitle = hasMultipleUsers
-        ? 'Choose one of your Waves.Exchange accounts.'
-        : 'Enter your Waves.Exchange password.';
+        ? (): ReactNode => (
+              <Text
+                  variant="body1"
+                  mt="$10"
+                  textAlign="center"
+                  color="basic.$500"
+              >
+                  Choose one of your{' '}
+                  <ExternalLink
+                      href={getEnvAwareUrl()}
+                      variant="body1"
+                      target="_blank"
+                  >
+                      Waves.Exchange
+                  </ExternalLink>{' '}
+                  accounts.
+              </Text>
+          )
+        : (): ReactNode => (
+              <Text
+                  variant="body1"
+                  mt="$10"
+                  textAlign="center"
+                  color="basic.$500"
+              >
+                  Enter your{' '}
+                  <ExternalLink
+                      href={getEnvAwareUrl()}
+                      variant="body1"
+                      target="_blank"
+                  >
+                      Waves.Exchange
+                  </ExternalLink>{' '}
+                  password.
+              </Text>
+          );
 
     return (
         <LoginComponent
