@@ -20,6 +20,7 @@ import React, {
     FocusEventHandler,
     MouseEventHandler,
 } from 'react';
+import { getEnvAwareUrl } from '../../utils/getEnvAwareUrl';
 
 interface IProps {
     inputPasswordId: string;
@@ -112,7 +113,14 @@ export const CreateAccountComponent: FC<IProps> = ({
                         textAlign="center"
                         color="basic.$500"
                     >
-                        Set a single password for all your Waves.Exchange
+                        Set a single password for all your{' '}
+                        <ExternalLink
+                            href={getEnvAwareUrl()}
+                            variant="body1"
+                            target="_blank"
+                        >
+                            Waves.Exchange
+                        </ExternalLink>{' '}
                         accounts.
                     </Text>
                 </Flex>
