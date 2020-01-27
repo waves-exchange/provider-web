@@ -1,18 +1,19 @@
 import React, { FC, useCallback } from 'react';
-import { SignMessageComponent } from './SignMessageComponent';
 import { IUserWithBalances } from '../../../interface';
 import { useTxUser } from '../../hooks/useTxUser';
+import { ITypedData } from '@waves/signer';
+import { SignTypedDataComponent } from './SignTypedDataComponent';
 import { analytics } from '../../utils/analytics';
 
-interface ISignMessageProps {
-    data: string;
+interface ISignTypedDataProps {
+    data: Array<ITypedData>;
     user: IUserWithBalances & { publicKey: string };
     networkByte: number;
     onConfirm: () => void;
     onCancel: () => void;
 }
 
-export const SignMessageContainer: FC<ISignMessageProps> = ({
+export const SignTypedDataContainer: FC<ISignTypedDataProps> = ({
     data,
     user,
     networkByte,
@@ -22,15 +23,15 @@ export const SignMessageContainer: FC<ISignMessageProps> = ({
     const { userName, userBalance } = useTxUser(user, networkByte);
     const handleConfirm = useCallback(() => {
         onConfirm();
-        analytics.send({ name: 'Confirm_Sign_Message_Confirm' });
+        analytics.send({ name: 'Confirm_Sign_Typed_Data_Confirm' });
     }, [onConfirm]);
     const handleReject = useCallback(() => {
         onCancel();
-        analytics.send({ name: 'Confirm_Sign_Message_Reject' });
+        analytics.send({ name: 'Confirm_Sign_Typed_Data_Reject' });
     }, [onCancel]);
 
     return (
-        <SignMessageComponent
+        <SignTypedDataComponent
             userAddress={user.address}
             userName={userName}
             userBalance={`${userBalance} Waves`}

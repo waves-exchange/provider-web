@@ -7,6 +7,7 @@ import { getSignHandler } from './handlers/sign';
 import { IState } from './interface';
 import logout from './router/logout';
 import { getSignMessageHandler } from './handlers/signMessage';
+import { getSignTypedDataHandler } from './handlers/signTypedData';
 
 config.console.logLevel = config.console.LOG_LEVEL.VERBOSE;
 const queue = new Queue(3);
@@ -28,7 +29,10 @@ WindowAdapter.createSimpleWindowAdapter()
         bus.registerRequestHandler('logout', logout(state));
 
         // bus.registerRequestHandler('sign-custom-bytes', wrapLogin(signBytes));
-        // bus.registerRequestHandler('sign-typed-data', wrapLogin(signTypedData));
+        bus.registerRequestHandler(
+            'sign-typed-data',
+            getSignTypedDataHandler(queue, state)
+        );
         bus.registerRequestHandler(
             'sign-message',
             getSignMessageHandler(queue, state)
