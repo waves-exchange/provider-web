@@ -7,3 +7,9 @@ export const getPrintableNumber = (number: TLong, decimals: number): string => {
         .roundTo(decimals)
         .toFixed();
 };
+
+export const getCoins = (n: TLong, decimals: number): string => {
+    return BigNumber.toBigNumber(n)
+        .mul(Math.pow(10, decimals))
+        .toFixed();
+};

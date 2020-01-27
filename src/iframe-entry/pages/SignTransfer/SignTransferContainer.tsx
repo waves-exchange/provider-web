@@ -1,20 +1,19 @@
-import React, { FC, useEffect, useState, useCallback } from 'react';
-import { SignTransfer as SignTransferComponent } from './SignTransferComponent';
-import { ISignTxProps } from '../../../interface';
-import { ITransferWithType, TLong } from '@waves/signer';
-import { getIconType } from '../../components/IconTransfer/helpers';
-import { libs } from '@waves/waves-transactions';
-import { catchable } from '../../utils/catchable';
-import compose from 'ramda/es/compose';
-import { WAVES } from '../../constants';
+import { FeeOption } from '@waves.exchange/react-uikit';
 import { TAssetDetails } from '@waves/node-api-js/es/api-node/assets';
-import { analytics } from '../../utils/analytics';
+import { ITransferWithType, TLong } from '@waves/signer';
+import { libs } from '@waves/waves-transactions';
+import compose from 'ramda/es/compose';
+import React, { FC, useCallback, useEffect, useState } from 'react';
+import { ISignTxProps } from '../../../interface';
+import { getIconType } from '../../components/IconTransfer/helpers';
+import { WAVES } from '../../constants';
 import { useTxHandlers } from '../../hooks/useTxHandlers';
 import { useTxUser } from '../../hooks/useTxUser';
+import { analytics } from '../../utils/analytics';
+import { catchable } from '../../utils/catchable';
 import { isAlias } from '../../utils/isAlias';
-import { getPrintableNumber } from '../../utils/math';
-import { FeeOption } from '@waves.exchange/react-uikit';
-import { BigNumber } from '@waves/bignumber';
+import { getCoins, getPrintableNumber } from '../../utils/math';
+import { SignTransfer as SignTransferComponent } from './SignTransferComponent';
 
 const getAssetName = (
     assets: Record<string, TAssetDetails<TLong>>,
@@ -68,14 +67,14 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
         ? txMeta.aliases[tx.recipient]
         : tx.recipient;
 
-    const feeList = [
-        {
-            id: WAVES.assetId,
-            name: WAVES.name,
-            ticker: WAVES.ticker,
-            value: fee,
-        },
-    ].concat(
+    const defaultFee: FeeOption = {
+        id: WAVES.assetId,
+        name: WAVES.name,
+        ticker: WAVES.ticker,
+        value: fee,
+    };
+
+    const feeList = [defaultFee].concat(
         txMeta.feeList.map((f) => ({
             name: txMeta.assets[f.feeAssetId as string].name,
             id: String(f.feeAssetId),
@@ -84,20 +83,16 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
         }))
     );
 
-    const [selectedFee, setSelectedFee] = useState<FeeOption>({
-        id: WAVES.assetId,
-        name: WAVES.name,
-        ticker: WAVES.ticker,
-        value: fee,
-    });
+    const [selectedFee, setSelectedFee] = useState<FeeOption>(defaultFee);
 
     const handleFeeSelect = useCallback(
         (feeOption: FeeOption) => {
             setSelectedFee(feeOption);
             tx.feeAssetId = feeOption.id;
-            tx.fee = BigNumber.toBigNumber(feeOption.value)
-                .mul(Math.pow(10, txMeta.assets[feeOption.id].decimals))
-                .toFixed();
+            tx.fee = getCoins(
+                feeOption.value,
+                txMeta.assets[feeOption.id].decimals
+            );
         },
         [tx.fee, tx.feeAssetId, txMeta.assets]
     );
