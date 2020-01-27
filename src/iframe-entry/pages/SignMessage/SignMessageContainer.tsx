@@ -22,7 +22,7 @@ export const SignMessageContainer: FC<ISignMessageProps> = ({
     const { userName, userBalance } = useTxUser(user, networkByte);
     const handleConfirm = useCallback(() => {
         onConfirm();
-        analytics.send({ name: 'Confirm_Sign_Message_Reject' });
+        analytics.send({ name: 'Confirm_Sign_Message_Confirm' });
     }, [onConfirm]);
     const handleReject = useCallback(() => {
         onCancel();

@@ -3,6 +3,7 @@ import { IUserWithBalances } from '../../../interface';
 import { useTxUser } from '../../hooks/useTxUser';
 import { ITypedData } from '@waves/signer';
 import { SignTypedDataComponent } from './SignTypedDataComponent';
+import { analytics } from '../../utils/analytics';
 
 interface ISignTypedDataProps {
     data: Array<ITypedData>;
@@ -22,9 +23,11 @@ export const SignTypedDataContainer: FC<ISignTypedDataProps> = ({
     const { userName, userBalance } = useTxUser(user, networkByte);
     const handleConfirm = useCallback(() => {
         onConfirm();
+        analytics.send({ name: 'Confirm_Sign_Typed_Data_Confirm' });
     }, [onConfirm]);
     const handleReject = useCallback(() => {
         onCancel();
+        analytics.send({ name: 'Confirm_Sign_Typed_Data_Reject' });
     }, [onCancel]);
 
     return (
