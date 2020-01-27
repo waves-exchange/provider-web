@@ -1,34 +1,41 @@
 import { IState } from '../interface';
 import { ITypedData } from '@waves/signer';
-import { IUser } from '../../interface';
+import { IUserWithBalances } from '../../interface';
+import { customData, libs } from '@waves/waves-transactions';
+import renderPage from '../utils/renderPage';
+import React from 'react';
+import { SignTypedDataContainer } from '../pages/SignTypedData/SignTypedDataContainer';
 
 export default function(
     data: Array<ITypedData>,
-    state: IState<IUser>
+    state: IState<IUserWithBalances>
 ): Promise<string> {
-    return Promise.reject('Unsupported method!');
-    // const signature = customData(
-    //     {
-    //         data,
-    //         version: 2,
-    //     } as any,
-    //     state.user.seed
-    // ).signature; // TODO Fix any
+    const { signature } = customData(
+        {
+            data,
+            version: 2,
+        },
+        state.user.privateKey
+    );
 
-    // return new Promise((resolve, reject) => {
-    //     renderPage(
-    //         React.createElement(signCustom, {
-    //             networkByte: state.networkByte,
-    //             title: 'dApp access sign of typed data',
-    //             data: <DataEntryList data={data} />,
-    //             sender: state.user.address,
-    //             onConfirm: () => {
-    //                 resolve(signature);
-    //             },
-    //             onCancel: () => {
-    //                 reject(new Error('User rejection!'));
-    //             },
-    //         })
-    //     );
-    // });
+    return new Promise((resolve, reject) => {
+        renderPage(
+            React.createElement(SignTypedDataContainer, {
+                networkByte: state.networkByte,
+                user: {
+                    ...state.user,
+                    publicKey: libs.crypto.publicKey({
+                        privateKey: state.user.privateKey,
+                    }),
+                },
+                data,
+                onConfirm: () => {
+                    resolve(signature);
+                },
+                onCancel: () => {
+                    reject(new Error('User rejection!'));
+                },
+            })
+        );
+    });
 }
