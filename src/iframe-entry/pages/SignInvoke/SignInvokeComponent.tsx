@@ -212,6 +212,7 @@ export const SignInvoke: FC<IProps> = ({
                                 </Text>
                                 <Select
                                     isDisabled={meta.feeList.length === 0}
+                                    placement="top"
                                     renderSelected={(open): ReactElement => (
                                         <Selected
                                             selected={selectedFee}
