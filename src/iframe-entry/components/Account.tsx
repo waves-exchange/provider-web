@@ -18,12 +18,9 @@ export const Account: FC<Props> = ({ address, userName, alias }) => {
                     </Text>
                 )}
                 <Copy
-                    toCopyText={alias}
+                    inititialTooltipLabel="Copy address"
+                    copiedTooltipLabel="Copied!"
                     text={alias}
-                    TextProps={{
-                        variant: 'body2',
-                        color: 'standard.$0',
-                    }}
                 />
             </Flex>
         </Flex>
