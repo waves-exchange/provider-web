@@ -1,8 +1,19 @@
 import React, { FC, MouseEventHandler } from 'react';
 import { Confirmation } from '../../components/Confirmation';
 import { ITypedData } from '@waves/signer';
-import { Flex, Icon, iconSignMessage, Text } from '@waves.exchange/react-uikit';
+import {
+    Flex,
+    Icon,
+    iconSignMessage,
+    Tab,
+    TabPanel,
+    TabPanels,
+    Tabs,
+    TabsList,
+    Text,
+} from '@waves.exchange/react-uikit';
 import { DataEntry } from '../../components/DataEntry/DataEntry';
+import { DataJson } from '../../components/DataJson/DataJson';
 
 interface SignTypedDataComponentProps {
     userAddress: string;
@@ -54,19 +65,33 @@ export const SignTypedDataComponent: FC<SignTypedDataComponentProps> = ({
                 </Flex>
             </Flex>
 
-            <Flex
-                px="$40"
-                py="$30"
-                flexDirection="column"
-                bg="main.$800"
-                borderTop="1px solid"
-                borderTopColor="basic.$1000"
-            >
-                <Text variant="body2" color="basic.$500" mb="$5">
-                    Data
-                </Text>
-                <DataEntry data={data} />
-            </Flex>
+            <Tabs>
+                <TabsList
+                    borderBottom="1px solid"
+                    borderColor="main.$700"
+                    mb="$30"
+                    px="$40"
+                    bg="main.$900"
+                >
+                    <Tab mr="32px" pb="12px">
+                        <Text variant="body1">Data</Text>
+                    </Tab>
+                    <Tab mr="32px" pb="12px">
+                        <Text variant="body1">JSON</Text>
+                    </Tab>
+                </TabsList>
+
+                <Flex flexDirection="column" mb="$30" px="$40" bg="main.$800">
+                    <TabPanels>
+                        <TabPanel>
+                            <DataEntry data={data} />
+                        </TabPanel>
+                        <TabPanel>
+                            <DataJson data={data} />
+                        </TabPanel>
+                    </TabPanels>
+                </Flex>
+            </Tabs>
         </Confirmation>
     );
 };
