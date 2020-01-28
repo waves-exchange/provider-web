@@ -1,13 +1,18 @@
 import { Bus, config, WindowAdapter } from '@waves/waves-browser-bus';
+import { libs } from '@waves/waves-transactions';
 import { IBusEvents, TBusHandlers } from '../interface';
 import { Queue } from '../utils/Queue';
 import { getConnectHandler } from './handlers/connect';
 import { getLoginHandler } from './handlers/login';
+import {
+    getPublicKeyHandler,
+    getUserDataHandler,
+    setUserDataHandler,
+} from './handlers/moveUserHandlers';
 import { getSignHandler } from './handlers/sign';
-import { IState } from './interface';
-import logout from './router/logout';
 import { getSignMessageHandler } from './handlers/signMessage';
 import { getSignTypedDataHandler } from './handlers/signTypedData';
+import { IState } from './interface';
 
 config.console.logLevel = config.console.LOG_LEVEL.VERBOSE;
 const queue = new Queue(3);
@@ -20,13 +25,29 @@ WindowAdapter.createSimpleWindowAdapter()
             user: null,
             networkByte: 87,
             nodeUrl: 'https://nodes.wavesplatform.com',
-            matcherUrl: 'https://nodes.wavesplatform.com/matcher',
+            matcherUrl: undefined,
         };
+
+        const moveUserState = libs.crypto.keyPair(libs.crypto.randomSeed(25));
 
         bus.on('connect', getConnectHandler(state));
 
         bus.registerRequestHandler('login', getLoginHandler(queue, state));
-        bus.registerRequestHandler('logout', logout(state));
+
+        bus.registerRequestHandler(
+            'get-public-key',
+            getPublicKeyHandler(moveUserState.publicKey)
+        );
+
+        bus.registerRequestHandler(
+            'get-user-data',
+            getUserDataHandler(moveUserState, state)
+        );
+
+        bus.registerRequestHandler(
+            'set-user-data',
+            setUserDataHandler(moveUserState, state)
+        );
 
         // bus.registerRequestHandler('sign-custom-bytes', wrapLogin(signBytes));
         bus.registerRequestHandler(
@@ -45,5 +66,9 @@ WindowAdapter.createSimpleWindowAdapter()
         // TODO add create order sign
 
         bus.dispatchEvent('ready', void 0);
+
+        window.addEventListener('unload', () => {
+            bus.dispatchEvent('close', undefined);
+        });
     })
     .catch(console.error);

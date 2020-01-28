@@ -16,19 +16,27 @@ import { IMeta } from './iframe-entry/services/transactionsService';
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type TBusHandlers = {
     login: (data?: void) => Promise<IUserData>;
-    logout: () => void;
 
     'sign-custom-bytes': (data: string) => Promise<string>;
     'sign-message': (data: string | number) => Promise<string>;
     'sign-typed-data': (data: Array<ITypedData>) => Promise<string>;
+    'get-public-key': () => Promise<string>;
+    'get-user-data': (publicKey: string) => Promise<IEncryptedUserData>;
+    'set-user-data': (data: IEncryptedUserData) => Promise<void>;
 
     sign(
         list: Array<TTransactionParamWithType>
     ): Promise<Array<TTransactionWithProofs<TLong> & IWithId>>;
 };
 
+export interface IEncryptedUserData {
+    publicKey: string;
+    encrypted: string;
+}
+
 export interface IBusEvents {
     connect: IConnectOptions;
+    close: void;
     ready: void;
 }
 
@@ -49,4 +57,14 @@ export interface IUser {
 export interface IUserWithBalances extends IUser {
     aliases: Array<string>;
     balance: TLong;
+}
+
+// eslint-disable-next-line prettier/prettier
+export type TFunction<Params extends Array<unknown>, Return> = (
+    ...args: Params
+) => Return;
+
+export interface IKeyPair {
+    privateKey: string;
+    publicKey: string;
 }

@@ -149,7 +149,9 @@
             <h2>
                 Sign Message
             </h2>
-            <button onclick="waves.signMessage('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et lacinia augue. Nulla eu diam orci. Suspendisse dapibus porttitor tellus id mattis. Phasellus vitae condimentum justo. Maecenas et ultricies libero. Donec vitae lacus lectus. Cras sem felis, pretium sed lacinia ac, congue quis ipsum. Etiam eget auctor sapien, vel accumsan nisi. Aenean ac risus sit amet nulla lacinia ullamcorper ut ac nunc. Suspendisse potenti. Donec dolor diam, hendrerit in ligula cursus, vestibulum tristique mauris. Vestibulum vitae congue risus, quis placerat est.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et lacinia augue. Nulla eu diam orci. Suspendisse dapibus porttitor tellus id mattis. Phasellus vitae condimentum justo. Maecenas et ultricies libero. Donec vitae lacus lectus. Cras sem felis, pretium sed lacinia ac, congue quis ipsum. Etiam eget auctor sapien, vel accumsan nisi. Aenean ac risus sit amet nulla lacinia ullamcorper ut ac nunc. Suspendisse potenti. Donec dolor diam, hendrerit in ligula cursus, vestibulum tristique mauris. Vestibulum vitae congue risus, quis placerat est.')">
+            <button
+                onclick="waves.signMessage('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et lacinia augue. Nulla eu diam orci. Suspendisse dapibus porttitor tellus id mattis. Phasellus vitae condimentum justo. Maecenas et ultricies libero. Donec vitae lacus lectus. Cras sem felis, pretium sed lacinia ac, congue quis ipsum. Etiam eget auctor sapien, vel accumsan nisi. Aenean ac risus sit amet nulla lacinia ullamcorper ut ac nunc. Suspendisse potenti. Donec dolor diam, hendrerit in ligula cursus, vestibulum tristique mauris. Vestibulum vitae congue risus, quis placerat est.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et lacinia augue. Nulla eu diam orci. Suspendisse dapibus porttitor tellus id mattis. Phasellus vitae condimentum justo. Maecenas et ultricies libero. Donec vitae lacus lectus. Cras sem felis, pretium sed lacinia ac, congue quis ipsum. Etiam eget auctor sapien, vel accumsan nisi. Aenean ac risus sit amet nulla lacinia ullamcorper ut ac nunc. Suspendisse potenti. Donec dolor diam, hendrerit in ligula cursus, vestibulum tristique mauris. Vestibulum vitae congue risus, quis placerat est.')"
+            >
                 Sign Lorem ipsum dolor sit amet...
             </button>
         </div>
@@ -157,15 +159,23 @@
             <h2>
                 Sign Data
             </h2>
-            <button onclick="waves.signTypedData([
+            <button
+                onclick="waves.signTypedData([
                 { key: 'BackChat', value: 'base64:BzWHaQUaGVsd29AAAAAAAA', type: 'string' },
                 { key: 'CallingAllGirls', value: 'false', type: 'string' },
                 { key: 'Jealousy', value: 'world', type: 'string' },
                 { key: 'AAAAAAAAAAAEAAAABaQEAAAADZm9v', value: 'Oh Waves, Waves!', type: 'string' },
                 { key: 'key', value: 123123123, type: 'integer' },
                 { key: 'key', value: true, type: 'boolean' },
-            ])">
-                Off-chain Sign Data
+            ])"
+            ></button>
+        </div>
+        <div>
+            <h2>
+                Logout
+            </h2>
+            <button onclick="waves.logout();">
+                Logout
             </button>
         </div>
     </body>
