@@ -4,7 +4,7 @@ export interface IState<USER = IUser | null> {
     user: USER;
     networkByte: number;
     nodeUrl: string;
-    matcherUrl: string;
+    matcherUrl?: string | undefined;
 }
 
 export type TPrivateMultiaccountData = Record<string, TPrivateUserData>;
