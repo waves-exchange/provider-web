@@ -1,17 +1,16 @@
 import { Bus, config, WindowAdapter } from '@waves/waves-browser-bus';
 import { libs } from '@waves/waves-transactions';
-import { IBusEvents, TBusHandlers, IEncryptedUserData } from '../interface';
+import { IBusEvents, TBusHandlers } from '../interface';
 import { Queue } from '../utils/Queue';
 import { getConnectHandler } from './handlers/connect';
 import { getLoginHandler } from './handlers/login';
-import { getSignHandler } from './handlers/sign';
 import {
     getPublicKeyHandler,
     getUserDataHandler,
     setUserDataHandler,
 } from './handlers/moveUserHandlers';
+import { getSignHandler } from './handlers/sign';
 import { IState } from './interface';
-import logout from './router/logout';
 
 config.console.logLevel = config.console.LOG_LEVEL.VERBOSE;
 const queue = new Queue(3);

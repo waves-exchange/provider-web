@@ -1,5 +1,5 @@
 import { libs } from '@waves/waves-transactions';
-import { IKeyPair, IUser, IEncryptedUserData } from '../../interface';
+import { IKeyPair, IEncryptedUserData } from '../../interface';
 import { IState } from '../interface';
 
 export const getPublicKeyHandler = (publicKey: string) => (): Promise<string> =>

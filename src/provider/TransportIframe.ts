@@ -6,8 +6,9 @@ import { IEncryptedUserData } from '../interface';
 export class TransportIframe extends Transport {
     private static _timer: ReturnType<typeof setTimeout> | null = null;
     private readonly _url: string;
-    private _iframe: HTMLIFrameElement | undefined;
-    private _bus: TBus | undefined;
+    private _activeBusData:
+        | { iframe: HTMLIFrameElement; bus: TBus }
+        | undefined;
 
     constructor(url: string, queueLength: number) {
         super(queueLength);
@@ -63,41 +64,42 @@ export class TransportIframe extends Transport {
     }
 
     protected _dropTransportConnect(): void {
-        if (this._iframe != null) {
-            document.body.removeChild(this._iframe);
-            this._iframe = undefined;
-        }
-        if (this._bus) {
-            this._bus.destroy();
-            this._bus = undefined;
+        if (this._activeBusData != null) {
+            document.body.removeChild(this._activeBusData.iframe);
+            this._activeBusData.bus.destroy();
+            this._activeBusData = undefined;
         }
     }
 
     protected async _getBus(): Promise<TBus> {
-        if (this._bus) {
-            return Promise.resolve(this._bus);
+        if (this._activeBusData) {
+            return Promise.resolve(this._activeBusData.bus);
         }
 
-        if (this._iframe == null) {
-            this._iframe = TransportIframe._createIframe(this._url);
-            TransportIframe._addIframeToDom(this._iframe);
-        }
+        const iframe = TransportIframe._createIframe(this._url);
 
-        return WindowAdapter.createSimpleWindowAdapter(this._iframe).then(
+        TransportIframe._addIframeToDom(iframe);
+
+        return WindowAdapter.createSimpleWindowAdapter(iframe).then(
             (adapter) =>
                 new Promise((resolve) => {
-                    this._bus = new Bus(adapter, -1);
-                    this._bus.once('ready', () => resolve(this._bus));
+                    const bus = new Bus(adapter, -1);
+
+                    bus.once('ready', () => resolve(bus));
+                    this._activeBusData = { iframe, bus };
                 })
         );
     }
 
     protected _beforeShow(): void {
-        if (this._iframe == null) {
-            this._iframe = TransportIframe._createIframe(this._url);
-            TransportIframe._addIframeToDom(this._iframe);
+        if (this._activeBusData == null) {
+            // eslint-disable-next-line @typescript-eslint/no-floating-promises
+            this._getBus().then(() => {
+                this._showIframe();
+            });
+        } else {
+            this._showIframe();
         }
-        this._showIframe();
     }
 
     protected _afterShow(): void {
@@ -152,7 +154,7 @@ export class TransportIframe extends Transport {
     private _applyStyle(styles: TWritableCSSStyleDeclaration): void {
         Object.entries(styles).forEach(([name, value]) => {
             if (value != null) {
-                this._iframe!.style[name] = value;
+                this._activeBusData!.iframe!.style[name] = value;
             }
         });
     }
