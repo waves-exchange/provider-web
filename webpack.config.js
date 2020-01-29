@@ -86,5 +86,6 @@ const buildLibrary = (minimize) => ({
 
 module.exports = [
     buildIframeEntry(true),
-    buildLibrary(true)
+    buildLibrary(true),
+    buildLibrary(false)
 ];
