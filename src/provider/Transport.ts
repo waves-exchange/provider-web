@@ -4,6 +4,7 @@ import { TBus, ITransport } from './interface';
 export abstract class Transport implements ITransport {
     private readonly _queue: Queue;
     private readonly _events: Array<TEventDispatcher<void>> = [];
+    private readonly _toRunEvents: Array<TEventDispatcher<void>> = [];
 
     constructor(queueLength: number) {
         this._queue = new Queue(queueLength);
@@ -11,11 +12,13 @@ export abstract class Transport implements ITransport {
 
     public dropConnection(): void {
         this._queue.clear(new Error('User rejection!'));
+        this._events.forEach((event) => this._toRunEvents.push(event));
         this._dropTransportConnect();
     }
 
     public sendEvent(callback: TEventDispatcher<void>): void {
         this._events.push(callback);
+        this._toRunEvents.push(callback);
     }
 
     public dialog<T>(callback: TEventDispatcher<T>): Promise<T> {
@@ -58,7 +61,7 @@ export abstract class Transport implements ITransport {
     }
 
     private _runEvents(bus: TBus): void {
-        this._events
+        this._toRunEvents
             .splice(0, this._events.length)
             .forEach((callback) => callback(bus));
     }
@@ -66,7 +69,6 @@ export abstract class Transport implements ITransport {
     protected abstract _dropTransportConnect(): void;
     protected abstract _beforeShow(): void;
     protected abstract _afterShow(): void;
-
     protected abstract _getBus(): Promise<TBus>;
 }
 
