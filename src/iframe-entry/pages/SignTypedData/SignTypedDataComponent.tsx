@@ -15,14 +15,14 @@ import {
 import { DataEntry } from '../../components/DataEntry/DataEntry';
 import { DataJson } from '../../components/DataJson/DataJson';
 
-interface SignTypedDataComponentProps {
+type SignTypedDataComponentProps = {
     userAddress: string;
     userName: string;
     userBalance: string;
     data: Array<ITypedData>;
     onReject: MouseEventHandler<HTMLButtonElement>;
     onConfirm: MouseEventHandler<HTMLButtonElement>;
-}
+};
 
 export const SignTypedDataComponent: FC<SignTypedDataComponentProps> = ({
     userAddress,
