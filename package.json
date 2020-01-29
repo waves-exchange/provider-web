@@ -3,6 +3,15 @@
   "version": "0.0.3",
   "main": "dist/provider-web.min.js",
   "types": "dist/provider/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/waves-exchange/provider-web.git"
+  },
+  "bugs": {
+    "url": "https://github.com/waves-exchange/provider-web/issues",
+    "email": "support@waves.exchange"
+  },
+  "homepage": "https://waves.exchange",
   "scripts": {
     "watch": "webpack --watch",
     "postversion": "npm publish",
