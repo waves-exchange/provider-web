@@ -10,11 +10,11 @@ import {
     Tabs,
     TabsList,
     Text,
+    AddressAvatar,
 } from '@waves.exchange/react-uikit';
 import { ITransferWithType, TLong } from '@waves/signer';
 import { ITransferTransaction, IWithId } from '@waves/ts-types';
 import React, { FC, MouseEventHandler, ReactElement } from 'react';
-import { Account } from '../../components/Account';
 import { Confirmation } from '../../components/Confirmation';
 import {
     IconTransfer,
@@ -119,10 +119,12 @@ export const SignTransfer: FC<Props> = ({
                             <Text variant="body2" color="basic.$500">
                                 Recipient
                             </Text>
-                            <Account
+
+                            <AddressAvatar
                                 address={recipientAddress}
-                                userName={userName}
                                 alias={recipientName}
+                                addressWithCopy={true}
+                                mt="$5"
                             />
 
                             {attachement ? (

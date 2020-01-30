@@ -13,13 +13,13 @@ import {
     Select,
     Selected,
     List,
+    AddressAvatar,
 } from '@waves.exchange/react-uikit';
 import { ICall, TLong, IInvokeWithType } from '@waves/signer';
 import { IInvokeScriptTransaction, IWithId } from '@waves/ts-types';
 import React, { FC, MouseEventHandler, ReactElement } from 'react';
 import { Confirmation } from '../../components/Confirmation';
 import { InvokeFunction } from '../../components/InvokeFunction/InvokeFunction';
-import { Account } from '../../components/Account';
 import { InvokePayment } from '../../components/InvokePayment/InvokePayment';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
 import { TransactionJson } from '../../components/TransactionJson/TransactionJson';
@@ -132,15 +132,15 @@ export const SignInvoke: FC<IProps> = ({
                                 <Text
                                     variant="body2"
                                     color="basic.$500"
-                                    mb="$3"
                                     as="div"
                                 >
                                     Account
                                 </Text>
-                                <Account
+                                <AddressAvatar
                                     address={dAppAddress}
-                                    userName={userName}
                                     alias={dAppName}
+                                    addressWithCopy={true}
+                                    mt="$5"
                                 />
                             </Box>
 
