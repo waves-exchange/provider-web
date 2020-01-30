@@ -20,7 +20,7 @@ export const DataJson: FC<DataJsonProps> = ({ data }) => (
             variant="body2"
             fontFamily="Menlo, Monaco, Consolas, Courier New, monospace"
         >
-            {JSON.stringify(data, null, 2)}
+            {typeof data === 'string' ? data : JSON.stringify(data, null, 2)}
         </Text>
     </Box>
 );

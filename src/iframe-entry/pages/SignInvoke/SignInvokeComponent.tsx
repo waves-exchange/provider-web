@@ -10,27 +10,29 @@ import {
     Tabs,
     TabsList,
     Text,
-    Select,
-    Selected,
-    List,
     AddressAvatar,
 } from '@waves.exchange/react-uikit';
 import { ICall, TLong, IInvokeWithType } from '@waves/signer';
 import { IInvokeScriptTransaction, IWithId } from '@waves/ts-types';
-import React, { FC, MouseEventHandler, ReactElement } from 'react';
+import React, { FC, MouseEventHandler } from 'react';
 import { Confirmation } from '../../components/Confirmation';
 import { InvokeFunction } from '../../components/InvokeFunction/InvokeFunction';
 import { InvokePayment } from '../../components/InvokePayment/InvokePayment';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
-import { TransactionJson } from '../../components/TransactionJson/TransactionJson';
 import { IPayment } from './SignInvokeContainer';
-import { FeeOption } from '@waves.exchange/react-uikit';
 import { IMeta } from '../../services/transactionsService';
+import {
+    FeeSelect,
+    FeeSelectHandler,
+} from '../../components/FeeSelect/FeeSelect';
+import { getPrintableNumber } from '../../utils/math';
+import { WAVES } from '../../constants';
+import { DataJson } from '../../components/DataJson/DataJson';
 
 export interface IProps {
     userAddress: string;
     userName: string;
-    userBalance: string;
+    userBalance: TLong;
     dAppAddress: string;
     dAppName: string;
     fee: string;
@@ -39,11 +41,10 @@ export interface IProps {
     payment: Array<IPayment>;
     tx: IInvokeScriptTransaction<TLong> & IWithId;
     meta: IMeta<IInvokeWithType<TLong>>;
-    feeList: FeeOption[];
-    selectedFee: FeeOption;
-    onFeeSelect: (option: FeeOption) => void;
     onCancel: MouseEventHandler<HTMLButtonElement>;
     onConfirm: MouseEventHandler<HTMLButtonElement>;
+    handleFeeSelect: FeeSelectHandler;
+    txJSON: string;
 }
 
 export const SignInvoke: FC<IProps> = ({
@@ -58,14 +59,13 @@ export const SignInvoke: FC<IProps> = ({
     tx,
     onCancel,
     onConfirm,
-    feeList,
-    selectedFee,
-    onFeeSelect,
+    handleFeeSelect,
+    txJSON,
 }) => (
     <Confirmation
         address={userAddress}
         name={userName}
-        balance={userBalance}
+        balance={`${getPrintableNumber(userBalance, WAVES.decimals)} Waves`}
         onReject={onCancel}
         onConfirm={onConfirm}
     >
@@ -183,32 +183,19 @@ export const SignInvoke: FC<IProps> = ({
                         />
                     </Box>
 
-                    <Box>
-                        <Text variant="body2" color="basic.$500" as="div">
-                            Fee
-                        </Text>
-                        <Select
-                            isDisabled={meta.feeList.length === 0}
-                            placement="top"
-                            renderSelected={(open): ReactElement => (
-                                <Selected
-                                    selected={selectedFee}
-                                    opened={open}
-                                />
-                            )}
-                        >
-                            <List
-                                onSelect={onFeeSelect}
-                                options={feeList}
-                            ></List>
-                        </Select>
-                    </Box>
+                    <FeeSelect
+                        mt="$20"
+                        txMeta={meta}
+                        fee={tx.fee}
+                        onFeeSelect={handleFeeSelect}
+                        availableWavesBalance={userBalance}
+                    />
                 </TabPanel>
                 <TabPanel>
                     <TransactionDetails tx={tx} />
                 </TabPanel>
                 <TabPanel>
-                    <TransactionJson tx={tx} />
+                    <DataJson data={txJSON} />
                 </TabPanel>
             </TabPanels>
         </Tabs>
