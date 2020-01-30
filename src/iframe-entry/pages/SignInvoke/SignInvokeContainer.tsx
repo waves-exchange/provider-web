@@ -1,18 +1,15 @@
-import { FeeOption } from '@waves.exchange/react-uikit';
-import { TAssetDetails } from '@waves/node-api-js/es/api-node/assets';
 import { ICall, IInvokeWithType, IMoney, TLong } from '@waves/signer';
-import isNil from 'ramda/es/isNil';
-import prop from 'ramda/es/prop';
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useEffect } from 'react';
 import { ISignTxProps } from '../../../interface';
 import { WAVES } from '../../constants';
 import { useTxHandlers } from '../../hooks/useTxHandlers';
-import { useTxUser } from '../../hooks/useTxUser';
 import { analytics } from '../../utils/analytics';
 import { isAlias } from '../../utils/isAlias';
-import { DetailsWithLogo } from '../../utils/loadLogoInfo';
-import { getCoins, getPrintableNumber } from '../../utils/math';
+import { getPrintableNumber } from '../../utils/math';
 import { SignInvoke as SignInvokeComponent } from './SignInvokeComponent';
+import { assetPropFactory } from '../../utils/assetPropFactory';
+import { useHandleFeeSelect } from '../../hooks/useHandleFeeSelect';
+import { getUserName } from '../../services/userService';
 
 export interface IPayment {
     assetId: string | null;
@@ -22,21 +19,6 @@ export interface IPayment {
     decimals: number;
 }
 
-type GetAssetProp = <P extends keyof DetailsWithLogo>(
-    id: string | null,
-    property: P
-) => DetailsWithLogo[P];
-
-const assetPropFactory = (
-    assets: Record<string, TAssetDetails<TLong>>
-): GetAssetProp => <P extends keyof DetailsWithLogo>(
-    assetId: string | null,
-    property: P
-): DetailsWithLogo[P] =>
-    isNil(assetId)
-        ? prop<P, DetailsWithLogo>(property, WAVES)
-        : prop<P, DetailsWithLogo>(property, assets[assetId]);
-
 export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
     meta,
     networkByte,
@@ -45,7 +27,6 @@ export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
     onConfirm,
     onCancel,
 }) => {
-    const { userName, userBalance } = useTxUser(user, networkByte);
     const getAssetProp = assetPropFactory(meta.assets);
 
     const feeAsset = meta.assets[tx.feeAssetId || ''] || WAVES;
@@ -84,41 +65,14 @@ export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
 
     const dAppAddress = isAlias(tx.dApp) ? meta.aliases[tx.dApp] : tx.dApp;
 
-    const defaultFee: FeeOption = {
-        id: WAVES.assetId,
-        name: WAVES.name,
-        ticker: WAVES.ticker,
-        value: fee,
-    };
-
-    const feeList = [defaultFee].concat(
-        meta.feeList.map((f) => ({
-            name: getAssetProp(f.feeAssetId, 'name'),
-            id: String(f.feeAssetId),
-            ticker: '',
-            value: String(f.feeAmount),
-        }))
-    );
-
-    const [selectedFee, setSelectedFee] = useState<FeeOption>(defaultFee);
-
-    const handleFeeSelect = useCallback(
-        (feeOption: FeeOption) => {
-            setSelectedFee(feeOption);
-            tx.feeAssetId = feeOption.id;
-            tx.fee = getCoins(
-                feeOption.value,
-                getAssetProp(feeOption.id, 'decimals')
-            );
-        },
-        [getAssetProp, tx.fee, tx.feeAssetId]
-    );
+    const handleFeeSelect = useHandleFeeSelect(tx);
 
     return (
         <SignInvokeComponent
+            key={tx.id}
             userAddress={user.address}
-            userName={userName}
-            userBalance={`${userBalance} Waves`}
+            userName={getUserName(networkByte, user.publicKey)}
+            userBalance={user.balance}
             dAppAddress={dAppAddress}
             dAppName={tx.dApp}
             fee={`${fee} ${getAssetProp(tx.feeAssetId, 'name')}`}
@@ -129,9 +83,7 @@ export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
             onConfirm={handleConfirm}
             tx={tx}
             meta={meta}
-            feeList={feeList}
-            selectedFee={selectedFee}
-            onFeeSelect={handleFeeSelect}
+            handleFeeSelect={handleFeeSelect}
         />
     );
 };

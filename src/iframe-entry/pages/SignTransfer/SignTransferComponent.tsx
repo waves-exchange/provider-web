@@ -1,9 +1,5 @@
 import {
-    FeeOption,
     Flex,
-    List,
-    Select,
-    Selected,
     Tab,
     TabPanel,
     TabPanels,
@@ -14,7 +10,7 @@ import {
 } from '@waves.exchange/react-uikit';
 import { ITransferWithType, TLong } from '@waves/signer';
 import { ITransferTransaction, IWithId } from '@waves/ts-types';
-import React, { FC, MouseEventHandler, ReactElement } from 'react';
+import React, { FC, MouseEventHandler } from 'react';
 import { Confirmation } from '../../components/Confirmation';
 import {
     IconTransfer,
@@ -23,11 +19,17 @@ import {
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
 import { TransactionJson } from '../../components/TransactionJson/TransactionJson';
 import { IMeta } from '../../services/transactionsService';
+import {
+    FeeSelect,
+    FeeSelectHandler,
+} from '../../components/FeeSelect/FeeSelect';
+import { getPrintableNumber } from '../../utils/math';
+import { WAVES } from '../../constants';
 
 type Props = {
     userAddress: string;
     userName: string;
-    userBalance: string;
+    userBalance: TLong;
     transferAmount: string;
     attachement: string;
     transferFee: string;
@@ -36,11 +38,9 @@ type Props = {
     iconType: IconTransferType;
     tx: ITransferTransaction<TLong> & IWithId;
     meta: IMeta<ITransferWithType<TLong>>;
-    feeList: FeeOption[];
-    selectedFee: FeeOption;
-    onFeeSelect: (option: FeeOption) => void;
     onReject: MouseEventHandler<HTMLButtonElement>;
     onConfirm: MouseEventHandler<HTMLButtonElement>;
+    handleFeeSelect: FeeSelectHandler;
 };
 
 export const SignTransfer: FC<Props> = ({
@@ -54,16 +54,14 @@ export const SignTransfer: FC<Props> = ({
     iconType,
     tx,
     meta,
-    feeList,
-    selectedFee,
-    onFeeSelect,
     onReject,
     onConfirm,
+    handleFeeSelect,
 }) => (
     <Confirmation
         address={userAddress}
         name={userName}
-        balance={userBalance}
+        balance={`${getPrintableNumber(userBalance, WAVES.decimals)} Waves`}
         onReject={onReject}
         onConfirm={onConfirm}
     >
@@ -148,24 +146,13 @@ export const SignTransfer: FC<Props> = ({
                             </>
                         ) : null}
 
-                        <Text mt="$20" variant="body2" color="basic.$500">
-                            Fee
-                        </Text>
-                        <Select
-                            isDisabled={meta.feeList.length === 0}
-                            placement="top"
-                            renderSelected={(open): ReactElement => (
-                                <Selected
-                                    selected={selectedFee}
-                                    opened={open}
-                                />
-                            )}
-                        >
-                            <List
-                                onSelect={onFeeSelect}
-                                options={feeList}
-                            ></List>
-                        </Select>
+                        <FeeSelect
+                            mt="$20"
+                            txMeta={meta}
+                            fee={tx.fee}
+                            onFeeSelect={handleFeeSelect}
+                            availableWavesBalance={userBalance}
+                        />
                     </Flex>
                 </TabPanel>
                 <TabPanel>

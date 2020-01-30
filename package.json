@@ -53,7 +53,7 @@
     "@waves.exchange/react-uikit": "^0.3.25",
     "@waves/bignumber": "0.0.1",
     "@waves/node-api-js": "0.0.3",
-    "@waves/signer": "0.0.6",
+    "@waves/signer": "0.0.8",
     "@waves/ts-types": "^0.3.0",
     "@waves/waves-browser-bus": "^0.2.3",
     "@waves/waves-transactions": "^3.20.2",
