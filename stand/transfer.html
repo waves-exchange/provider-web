@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Title</title>
+		<style>
+			html,
+			body,
+			#root {
+				position: relative;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				margin: 0;
+				padding: 0;
+				-webkit-overflow-scrolling: touch;
+			}
+		</style>
+		<script src="../node_modules/@waves/signer/dist/signer.min.js"></script>
+		<script src="../dist/provider-web.min.js"></script>
+		<script src="./scripts/script.js"></script>
+	</head>
+	<body style="overflow: auto; margin: auto; width: 50%; text-align: center;">
+		<div>
+			<input id='node-input'></input>
+			<button onclick="waves = new signer.Signer({ NODE_URL: getFromInput('node-input') }); waves.setProvider(provider);">Set node</button>
+		</div>
+		<div>
+			<h1>Login</h1>
+			<div id='login-return'></div>
+			<button onclick="waves.login().then(el => {setElementHTML('login-return', el.address)});">Login</button>
+		</div>
+		<div>
+			<h1>Logout</h1>
+			<div id='login-return'></div>
+			<button onclick="waves.logout().then(el => {setElementHTML('login-return', '')});">Logout</button>
+		</div>
+		<div>
+			<h1>Transfer Tx</h1>
+			<div>Amount: <input id='transfer-amount'></div>
+			<div>Recipient: <input id='transfer-recipient'></div>
+			<div>AssetId: <input id='transfer-assetId'></div>
+			<div>Fee AssetId: <input id='transfer-feeAssetId'></div>
+			<div>Fee: <input id='transfer-fee'></div>
+			<div>Attachment: <input id='transfer-attachement'></div>
+			<div id='transfer-return'></div>
+			<button onclick="transferTx(
+			getFromInput('transfer-amount'),
+			getFromInput('transfer-recipient'),
+			getFromInput('transfer-assetId'),
+			getFromInput('transfer-feeAssetId'),
+			getFromInput('transfer-fee'),
+			getFromInput('transfer-attachement'))
+			.then(tx => {console.log(tx); setElementHTML('transfer-return', getNodeTxLink(tx.id))})
+			.catch(err => {console.log(err); if(err.message) {setElementHTML('transfer-return', err.message)} else {setElementHTML('transfer-return', err)}});">Send TX</button>
+		</div>
+		<script type="text/javascript">
+			setElementValue('node-input', waves._options.NODE_URL);
+		</script>
+	</body>
+</html>

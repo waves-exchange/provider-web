@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Title</title>
+		<style>
+			html,
+			body,
+			#root {
+				position: relative;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				margin: 0;
+				padding: 0;
+				-webkit-overflow-scrolling: touch;
+			}
+		</style>
+		<script src="../node_modules/@waves/signer/dist/signer.min.js"></script>
+		<script src="../dist/provider-web.min.js"></script>
+		<script src="./scripts/script.js"></script>
+	</head>
+	<body style="overflow: auto; margin: auto; width: 50%; text-align: center;">
+		<div>
+			<input id='node-input'></input>
+			<button onclick="waves = new signer.Signer({ NODE_URL: getFromInput('node-input') }); waves.setProvider(provider);">Set node</button>
+		</div>
+		<div>
+			<h1>Login</h1>
+			<div id='login-return'></div>
+			<button onclick="waves.login().then(el => {setElementHTML('login-return', el.address)});">Login</button>
+		</div>
+		<div>
+			<h1>Logout</h1>
+			<div id='login-return'></div>
+			<button onclick="waves.logout().then(el => {setElementHTML('login-return', '')});">Logout</button>
+		</div>
+		<div>
+			<h1>Invoke Tx</h1>
+			<div>dApp: <input id='invoke-dapp'></div>
+			<div>FeeAssetId: <input id='invoke-feeAssetId'></div>
+			<div>Fee: <input id='invoke-fee'></div>
+			<div>Payment: <input id='invoke-payment'></div>
+			<div>Call: <input id='invoke-call'></div>
+			<div id='invoke-return'></div>
+			<button onclick="invokeTx(
+			getFromInput('invoke-dapp'),
+			getFromInput('invoke-fee'),
+			getFromInput('invoke-feeAssetId'),
+			getFromInput('invoke-payment'),
+			getFromInput('invoke-call'))
+			.then(tx => {console.log(tx); setElementHTML('invoke-return', getNodeTxLink(tx.id))})
+			.catch(err => {console.log(err); if(err.message) {setElementHTML('invoke-return', err.message)} else {setElementHTML('invoke-return', err)}});">Send TX</button>
+		</div>
+		<script type="text/javascript">
+			setElementValue('node-input', waves._options.NODE_URL);
+		</script>
+	</body>
+</html>

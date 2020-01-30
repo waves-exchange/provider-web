@@ -1,0 +1,53 @@
+var url = location.href.includes('provider=exchange') ?
+    'https://waves.exchange/signer' :
+    location.origin + '/iframe-entry';
+var node = location.href.includes('mainnet') ?
+    'https://nodes.wavesplatform.com' :
+    'https://pool.testnet.wavesnodes.com';
+var provider = new providerWeb.ProviderWeb(url);
+var waves = new signer.Signer({
+    NODE_URL: node
+});
+waves.setProvider(provider);
+var getByElement = function(element, key, defaultValue) {
+    return element.getAttribute(`data-${key}`) || defaultValue;
+};
+var getFromInput = function(elementId) {
+    return document.getElementById(elementId).value;
+}
+var setElementValue = function(elementId, value) {
+    document.getElementById(elementId).value = value;
+}
+var setElementHTML = function(elementId, value) {
+    document.getElementById(elementId).innerHTML = value;
+}
+var transferTx = function(amount, recipient, assetId, feeAssetId, fee, attachment) {
+    return waves
+        .transfer({
+            amount: amount,
+            recipient: recipient,
+            assetId: assetId || null,
+            feeAssetId: feeAssetId || null,
+            fee: fee || undefined,
+            attachment: attachment,
+        })
+        .broadcast();
+}
+var getNodeTxLink = function(txId) {
+    link = waves._options.NODE_URL + '/transactions/info/' + txId;
+    return `<a href="${link}">${link}</a>`
+}
+
+var invokeTx = function(dapp, fee, feeAssetId, payment, call) {
+    payment = JSON.parse(payment || '[]');
+    call ? call = JSON.parse(call) : call = null;
+
+    return waves.invoke({
+            dApp: dapp,
+            fee: fee || undefined,
+            feeAssetId: feeAssetId,
+            payment: payment,
+            call: call,
+        })
+        .broadcast();
+}
