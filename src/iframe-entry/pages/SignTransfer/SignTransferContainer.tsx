@@ -99,6 +99,7 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
 
     return (
         <SignTransferComponent
+            key={tx.id}
             userAddress={user.address}
             userName={userName}
             userBalance={`${userBalance} Waves`}

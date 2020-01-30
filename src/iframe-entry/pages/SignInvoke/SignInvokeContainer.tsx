@@ -116,6 +116,7 @@ export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
 
     return (
         <SignInvokeComponent
+            key={tx.id}
             userAddress={user.address}
             userName={userName}
             userBalance={`${userBalance} Waves`}
