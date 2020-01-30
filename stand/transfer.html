@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<title>Title</title>
+		<title>Transfer TX test page</title>
 		<style>
 			html,
 			body,
@@ -53,7 +53,9 @@
 			getFromInput('transfer-fee'),
 			getFromInput('transfer-attachement'))
 			.then(tx => {console.log(tx); setElementHTML('transfer-return', getNodeTxLink(tx.id))})
-			.catch(err => {console.log(err); if(err.message) {setElementHTML('transfer-return', err.message)} else {setElementHTML('transfer-return', err)}});">Send TX</button>
+			.catch(err => {console.log(err); if(err.message) {setElementHTML('transfer-return', err.message)} else {setElementHTML('transfer-return', err)}});
+			setElementHTML('login-return', waves._userData.address);
+			">Send TX</button>
 		</div>
 		<script type="text/javascript">
 			setElementValue('node-input', waves._options.NODE_URL);

@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<title>Invoke TX test page</title>
+		<title>Data TX test page</title>
 		<style>
 			html,
 			body,
@@ -37,27 +37,21 @@
 			<button onclick="waves.logout().then(el => {setElementHTML('login-return', '')});">Logout</button>
 		</div>
 		<div>
-			<h1>Invoke Tx</h1>
+			<h1>Data Tx</h1>
 			<h2>Example</h2>
-			<div id='dapp-example' onclick="copyText('dapp-example')">3N5TwK9d21XCWD7ooDKAkgE5pVH9MJWhJTA</div>
-			<br>
-			<div id='call-example' onclick="copyText('call-example')">{"function": "testArgs", "args": [{"type": "string", "value": "SomeString!"}, {"type": "integer", "value": -13}, {"type": "boolean", "value": false}, {"type": "binary", "value": "U29tZSBieXRlcyE="}]}</div>
+			<div id='datatx-example' onclick="copyText('datatx-example')">[{"key": "string_key", "type": "string", "value": "SomeString!"}, {"key": "integer_key", "type": "integer", "value": -13}, {"key": "boolean_key", "type": "boolean", "value": false}, {"key": "binary_key", "type": "binary", "value": "U29tZSBieXRlcyE="}]</div>
 			<br>
 			<h2>TX args</h2>
-			<div>dApp: <input id='invoke-dapp'></div>
-			<div>FeeAssetId: <input id='invoke-feeAssetId'></div>
-			<div>Fee: <input id='invoke-fee'></div>
-			<div>Payment: <input id='invoke-payment'></div>
-			<div>Call: <input id='invoke-call'></div>
-			<div id='invoke-return'></div>
-			<button onclick="invokeTx(
-			getFromInput('invoke-dapp'),
-			getFromInput('invoke-fee'),
-			getFromInput('invoke-feeAssetId'),
-			getFromInput('invoke-payment'),
-			getFromInput('invoke-call'))
-			.then(tx => {console.log(tx); setElementHTML('invoke-return', getNodeTxLink(tx.id))})
-			.catch(err => {console.log(err); if(err.message) {setElementHTML('invoke-return', err.message)} else {setElementHTML('invoke-return', err)}});
+			<div>Data: <input id='datatx-data'></div>
+			<div>FeeAssetId: <input id='datatx-feeAssetId'></div>
+			<div>Fee: <input id='datatx-fee'></div>
+			<div id='tx-return'></div>
+			<button onclick="dataTx(
+			getFromInput('datatx-data'),
+			getFromInput('datatx-fee'),
+			getFromInput('datatx-feeAssetId'))
+			.then(tx => {console.log(tx); setElementHTML('tx-return', getNodeTxLink(tx.id))})
+			.catch(err => {console.log(err); if(err.message) {setElementHTML('tx-return', err.message)} else {setElementHTML('tx-return', err)}});
 			setElementHTML('login-return', waves._userData.address);
 			">Send TX</button>
 		</div>

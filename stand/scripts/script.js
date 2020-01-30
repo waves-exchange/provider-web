@@ -51,3 +51,29 @@ var invokeTx = function(dapp, fee, feeAssetId, payment, call) {
         })
         .broadcast();
 }
+
+var dataTx = function(data, fee, feeAssetId) {
+    data ? data = JSON.parse(data) : data = null;
+
+    return waves.data({
+            data: data,
+            fee: fee || undefined,
+            feeAssetId: feeAssetId
+        })
+        .broadcast();
+}
+
+var copyText = function(containerid) {
+    if (document.selection) { // IE
+        var range = document.body.createTextRange();
+        range.moveToElementText(document.getElementById(containerid));
+        range.select();
+    } else if (window.getSelection) {
+        var range = document.createRange();
+        range.selectNode(document.getElementById(containerid));
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange(range);
+    }
+
+    document.execCommand('copy');
+}
