@@ -67,7 +67,7 @@ export const Confirmation: FC<IConfirmationProps> = ({
             </Box>
             <Flex
                 borderTop="1px solid"
-                borderTopColor="basic.$1000"
+                borderTopColor="main.$700"
                 px="$40"
                 py="$20"
             >
