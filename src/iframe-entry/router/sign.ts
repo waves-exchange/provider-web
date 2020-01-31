@@ -24,6 +24,7 @@ import omit from 'ramda/es/omit';
 import { SignTransfer } from '../pages/SignTransfer/SignTransferContainer';
 import { SignInvoke } from '../pages/SignInvoke/SignInvokeContainer';
 import { SignDataContainer } from '../pages/SignData/SignDataContainer';
+import { SignCancelLease } from '../pages/SignCancelLease/SignCancelLeaseContainer';
 
 const getPageByType = (type: keyof TRANSACTION_TYPE_MAP): ReactNode => {
     switch (type) {
@@ -38,7 +39,7 @@ const getPageByType = (type: keyof TRANSACTION_TYPE_MAP): ReactNode => {
         case NAME_MAP.lease:
             throw new Error('Unsupported type!'); // TODO
         case NAME_MAP.cancelLease:
-            throw new Error('Unsupported type!'); // TODO
+            return SignCancelLease;
         case NAME_MAP.alias:
             throw new Error('Unsupported type!'); // TODO
         case NAME_MAP.massTransfer:
@@ -72,6 +73,7 @@ export default function(
                     {
                         ...info,
                         networkByte: state.networkByte,
+                        nodeUrl: state.nodeUrl,
                         user: {
                             ...omit(['privateKey'], state.user),
                             publicKey: libs.crypto.publicKey({

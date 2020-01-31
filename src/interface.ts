@@ -42,6 +42,7 @@ export interface IBusEvents {
 
 export interface ISignTxProps<T extends TTransactionParamWithType> {
     networkByte: number;
+    nodeUrl: string;
     user: Omit<IUserWithBalances, 'seed'> & { publicKey: string };
     meta: IMeta<T>;
     tx: TTransactionMap<TLong>[T['type']] & IWithId;
