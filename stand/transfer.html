@@ -56,6 +56,11 @@
 			.catch(err => {console.log(err); if(err.message) {setElementHTML('transfer-return', err.message)} else {setElementHTML('transfer-return', err)}});
 			setElementHTML('login-return', waves._userData.address);
 			">Send TX</button>
+			<br>
+			<div>Sponsored AssetId: </div>
+			<div id="sponsored-asset-id" onclick="copyText('sponsored-asset-id')">2CjLFYkp4W4sEAxCjFG9oD3smfhvV6yQnNmiJyexbLdu</div>
+			<div>Bitcoin AssetId:</div>
+			<div id="bitcoin-asset-id" onclick="copyText('bitcoin-asset-id')">DWgwcZTMhSvnyYCoWLRUXXSH1RSkzThXLJhww9gwkqdn</div>
 		</div>
 		<script type="text/javascript">
 			setElementValue('node-input', waves._options.NODE_URL);

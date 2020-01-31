@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Invoke TX test page</title>
+		<style>
+			html,
+			body,
+			#root {
+				position: relative;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				margin: 0;
+				padding: 0;
+				-webkit-overflow-scrolling: touch;
+			}
+		</style>
+		<script src="../node_modules/@waves/signer/dist/signer.min.js"></script>
+		<script src="../dist/provider-web.min.js"></script>
+		<script src="./scripts/script.js"></script>
+	</head>
+	<body style="overflow: auto; margin: auto; width: 50%; text-align: center;">
+		<div>
+			<input id='node-input'></input>
+			<button onclick="waves = new signer.Signer({ NODE_URL: getFromInput('node-input') }); waves.setProvider(provider);">Set node</button>
+		</div>
+		<div>
+			<h1>Login</h1>
+			<div id='login-return'></div>
+			<button onclick="waves.login().then(el => {setElementHTML('login-return', el.address)});">Login</button>
+		</div>
+		<div>
+			<h1>Logout</h1>
+			<div id='login-return'></div>
+			<button onclick="waves.logout().then(el => {setElementHTML('login-return', '')});">Logout</button>
+		</div>
+		<div>
+			<h1>Sign text message</h1>
+			<div>Text: <textarea id='message-text' rows="5" cols="50" type='text'></textarea></div>
+			<div id='message-return'></div>
+			<button onclick="
+			signMessage(getFromInput('message-text'))
+			.then(tx => {console.log(tx); setElementHTML('message-return', tx)})
+			.catch(err => {console.log(err); err.message ? setElementHTML('message-return', err.message) : setElementHTML('message-return', err)});
+			">Sign</button>
+			
+			<h1>Sign custom data</h1>
+			<div id='data-example' onclick="copyText('data-example')">[{"key": "string_key", "type": "string", "value": "SomeString!"}, {"key": "integer_key", "type": "integer", "value": -13}, {"key": "boolean_key", "type": "boolean", "value": false}, {"key": "binary_key", "type": "binary", "value": "U29tZSBieXRlcyE="}]</div>
+			<br>
+			<div>Data: <textarea id='data-value' rows="5" cols="50" type='text'></textarea></div>
+			<div id='data-return'></div>
+			<button onclick="
+			signCustomData(getFromInput('data-value'))
+			.then(tx => {console.log(tx); setElementHTML('data-return', tx)})
+			.catch(err => {console.log(err); err.message ? setElementHTML('data-return', err.message) : setElementHTML('data-return', err)});
+			">Sign</button>
+		</div>
+		<script type="text/javascript">
+			setElementValue('node-input', waves._options.NODE_URL);
+		</script>
+	</body>
+</html>

@@ -77,3 +77,12 @@ var copyText = function(containerid) {
 
     document.execCommand('copy');
 }
+
+var signMessage = function(message) {
+	console.log(message);
+	return waves.signMessage(message);
+}
+
+var signCustomData = function(data) {
+	return waves.signTypedData(JSON.parse(data || '[]'));
+}
