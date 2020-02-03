@@ -54,10 +54,7 @@ export const getFeeOptions: GetFeeOptions = ({
     let feeAsset: DetailsWithLogo;
 
     if (isFeeAssetId(paramsFeeAssetId) || hasParamsFee(txParamsFee)) {
-        if (
-            isNonDefaultFeeAssetId(paramsFeeAssetId) &&
-            !hasParamsFee(txParamsFee)
-        ) {
+        if (isNonDefaultFeeAssetId(paramsFeeAssetId)) {
             // case feeAssetId - some asset, but not Waves, fee is not provided
             feeAsset = txMeta.assets[paramsFeeAssetId];
             defaultFeeOption = {
