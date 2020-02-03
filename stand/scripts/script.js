@@ -22,12 +22,19 @@ var setElementHTML = function(elementId, value) {
     document.getElementById(elementId).innerHTML = value;
 }
 var transferTx = function(amount, recipient, assetId, feeAssetId, fee, attachment) {
+
+    if (feeAssetId) {
+        feeAssetId=='WAVES' ? feeAssetId = null : null;
+    } else {
+        feeAssetId = undefined;
+    }
+
     return waves
         .transfer({
             amount: amount,
             recipient: recipient,
             assetId: assetId || null,
-            feeAssetId: feeAssetId || null,
+            feeAssetId: feeAssetId,
             fee: fee || undefined,
             attachment: attachment,
         })
@@ -41,6 +48,12 @@ var getNodeTxLink = function(txId) {
 var invokeTx = function(dapp, fee, feeAssetId, payment, call) {
     payment = JSON.parse(payment || '[]');
     call ? call = JSON.parse(call) : call = null;
+
+    if (feeAssetId) {
+        feeAssetId=='WAVES' ? feeAssetId = null : null;
+    } else {
+        feeAssetId = undefined;
+    }
 
     return waves.invoke({
             dApp: dapp,
@@ -57,8 +70,7 @@ var dataTx = function(data, fee, feeAssetId) {
 
     return waves.data({
             data: data,
-            fee: fee || undefined,
-            feeAssetId: feeAssetId
+            fee: fee || undefined
         })
         .broadcast();
 }
