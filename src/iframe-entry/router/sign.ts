@@ -31,6 +31,7 @@ import { SignBurnContainer } from '../pages/SignBurn/SignBurnContainer';
 import { SignSetAssetScriptContainer } from '../pages/SignSetAssetScript/SignSetAssetScriptContainer';
 import { SignSponsorship } from '../pages/SignSponsorship/SignSponsorshipContainer';
 import { SignAliasContainer } from '../pages/SignAlias/SignAliasContainer';
+import { SignReissueContainer } from '../pages/SignReissue/SignReissueContainer';
 
 const getPageByType = (type: keyof TRANSACTION_TYPE_MAP): ReactNode => {
     switch (type) {
@@ -60,6 +61,8 @@ const getPageByType = (type: keyof TRANSACTION_TYPE_MAP): ReactNode => {
             return SignSetAssetScriptContainer;
         case NAME_MAP.burn:
             return SignBurnContainer;
+        case NAME_MAP.reissue:
+            return SignReissueContainer;
         default:
             throw new Error('Unsupported transaction!');
     }

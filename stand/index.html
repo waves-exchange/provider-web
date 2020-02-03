@@ -274,6 +274,19 @@
 
         <div>
             <h2>
+                Reissue
+            </h2>
+            <button
+                onclick="waves.reissue({
+                    assetId: 'Eq5Yc2tgjxdE2BeQmWcxis9RKDCkUraDoTRdymrjPua3',
+                    quantity: 100000000000,
+                    reissuable: true
+                }).broadcast()"
+            >Sign Reissue</button>
+        </div>
+
+        <div>
+            <h2>
                 Logout
             </h2>
             <button onclick="waves.logout();">
