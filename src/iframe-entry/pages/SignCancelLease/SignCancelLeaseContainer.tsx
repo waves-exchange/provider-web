@@ -12,7 +12,7 @@ import { SignCancelLeaseComponent } from './SignCancelLeaseComponent';
 
 export const SignCancelLease: FC<ISignTxProps<
     ICancelLeaseTransactionWithId<TLong>
->> = ({ networkByte, nodeUrl, tx, meta, user, onConfirm, onCancel }) => {
+>> = ({ networkByte, nodeUrl, tx, user, onConfirm, onCancel }) => {
     const [amount, setAmount] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const { userName, userBalance } = useTxUser(user, networkByte);
@@ -67,7 +67,6 @@ export const SignCancelLease: FC<ISignTxProps<
             userName={userName}
             userBalance={`${userBalance} ${WAVES.name}`}
             tx={tx}
-            meta={meta}
             amount={`${amount} ${WAVES.name}`}
             fee={`${fee} ${WAVES.ticker}`}
             isLoading={isLoading}

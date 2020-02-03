@@ -10,13 +10,12 @@ import {
     TabsList,
     Text,
 } from '@waves.exchange/react-uikit';
-import { ICancelLeaseWithType, TLong } from '@waves/signer';
+import { TLong } from '@waves/signer';
 import { ICancelLeaseTransactionWithId } from '@waves/ts-types';
 import React, { FC, MouseEventHandler } from 'react';
 import { Confirmation } from '../../components/Confirmation';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
 import { TransactionJson } from '../../components/TransactionJson/TransactionJson';
-import { IMeta } from '../../services/transactionsService';
 
 type Props = {
     userAddress: string;
@@ -24,7 +23,6 @@ type Props = {
     userBalance: string;
     amount: string;
     tx: ICancelLeaseTransactionWithId<TLong>;
-    meta: IMeta<ICancelLeaseWithType<TLong>>;
     fee: string;
     isLoading: boolean;
     onReject: MouseEventHandler<HTMLButtonElement>;
