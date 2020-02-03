@@ -66,7 +66,7 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
         ? txMeta.aliases[tx.recipient]
         : tx.recipient;
 
-    const handleFeeSelect = useHandleFeeSelect(tx);
+    const [handleFeeSelect, txJSON] = useHandleFeeSelect(tx);
 
     return (
         <SignTransferComponent
@@ -88,6 +88,7 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
             onConfirm={handleConfirm}
             iconType={getIconType(tx, user, Object.keys(txMeta.aliases))}
             handleFeeSelect={handleFeeSelect}
+            txJSON={txJSON}
         />
     );
 };

@@ -17,7 +17,6 @@ import {
     IconTransferType,
 } from '../../components/IconTransfer/IconTransfer';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
-import { TransactionJson } from '../../components/TransactionJson/TransactionJson';
 import { IMeta } from '../../services/transactionsService';
 import {
     FeeSelect,
@@ -25,6 +24,7 @@ import {
 } from '../../components/FeeSelect/FeeSelect';
 import { getPrintableNumber } from '../../utils/math';
 import { WAVES } from '../../constants';
+import { DataJson } from '../../components/DataJson/DataJson';
 
 type Props = {
     userAddress: string;
@@ -41,6 +41,7 @@ type Props = {
     onReject: MouseEventHandler<HTMLButtonElement>;
     onConfirm: MouseEventHandler<HTMLButtonElement>;
     handleFeeSelect: FeeSelectHandler;
+    txJSON: string;
 };
 
 export const SignTransfer: FC<Props> = ({
@@ -57,6 +58,7 @@ export const SignTransfer: FC<Props> = ({
     onReject,
     onConfirm,
     handleFeeSelect,
+    txJSON,
 }) => (
     <Confirmation
         address={userAddress}
@@ -159,7 +161,7 @@ export const SignTransfer: FC<Props> = ({
                     <TransactionDetails tx={tx} />
                 </TabPanel>
                 <TabPanel>
-                    <TransactionJson tx={tx} />
+                    <DataJson data={txJSON} />
                 </TabPanel>
             </TabPanels>
         </Tabs>

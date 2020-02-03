@@ -19,7 +19,6 @@ import { Confirmation } from '../../components/Confirmation';
 import { InvokeFunction } from '../../components/InvokeFunction/InvokeFunction';
 import { InvokePayment } from '../../components/InvokePayment/InvokePayment';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
-import { TransactionJson } from '../../components/TransactionJson/TransactionJson';
 import { IPayment } from './SignInvokeContainer';
 import { IMeta } from '../../services/transactionsService';
 import {
@@ -28,6 +27,7 @@ import {
 } from '../../components/FeeSelect/FeeSelect';
 import { getPrintableNumber } from '../../utils/math';
 import { WAVES } from '../../constants';
+import { DataJson } from '../../components/DataJson/DataJson';
 
 export interface IProps {
     userAddress: string;
@@ -44,6 +44,7 @@ export interface IProps {
     onCancel: MouseEventHandler<HTMLButtonElement>;
     onConfirm: MouseEventHandler<HTMLButtonElement>;
     handleFeeSelect: FeeSelectHandler;
+    txJSON: string;
 }
 
 export const SignInvoke: FC<IProps> = ({
@@ -59,6 +60,7 @@ export const SignInvoke: FC<IProps> = ({
     onCancel,
     onConfirm,
     handleFeeSelect,
+    txJSON,
 }) => (
     <Confirmation
         address={userAddress}
@@ -193,7 +195,7 @@ export const SignInvoke: FC<IProps> = ({
                     <TransactionDetails tx={tx} />
                 </TabPanel>
                 <TabPanel>
-                    <TransactionJson tx={tx} />
+                    <DataJson data={txJSON} />
                 </TabPanel>
             </TabPanels>
         </Tabs>

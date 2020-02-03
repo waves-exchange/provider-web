@@ -65,7 +65,7 @@ export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
 
     const dAppAddress = isAlias(tx.dApp) ? meta.aliases[tx.dApp] : tx.dApp;
 
-    const handleFeeSelect = useHandleFeeSelect(tx);
+    const [handleFeeSelect, txJSON] = useHandleFeeSelect(tx);
 
     return (
         <SignInvokeComponent
@@ -82,6 +82,7 @@ export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
             onCancel={handleReject}
             onConfirm={handleConfirm}
             tx={tx}
+            txJSON={txJSON}
             meta={meta}
             handleFeeSelect={handleFeeSelect}
         />
