@@ -53,7 +53,6 @@ export const SignLease: FC<ISignTxProps<ILeaseTransactionWithId<TLong>>> = ({
             recipientAddress={recipientAddress}
             recipientName={cleanAddress(tx.recipient)}
             tx={tx}
-            meta={meta}
             amount={amount}
             fee={fee}
             onReject={handleReject}

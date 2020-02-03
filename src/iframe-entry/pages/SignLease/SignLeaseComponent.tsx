@@ -10,13 +10,12 @@ import {
     TabsList,
     Text,
 } from '@waves.exchange/react-uikit';
-import { ILeaseWithType, TLong } from '@waves/signer';
+import { TLong } from '@waves/signer';
 import { ILeaseTransactionWithId } from '@waves/ts-types';
 import React, { FC, MouseEventHandler } from 'react';
 import { Confirmation } from '../../components/Confirmation';
+import { DataJson } from '../../components/DataJson/DataJson';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
-import { TransactionJson } from '../../components/TransactionJson/TransactionJson';
-import { IMeta } from '../../services/transactionsService';
 
 type Props = {
     userAddress: string;
@@ -25,7 +24,6 @@ type Props = {
     recipientAddress: string;
     recipientName: string;
     tx: ILeaseTransactionWithId<TLong>;
-    meta: IMeta<ILeaseWithType<TLong>>;
     amount: string;
     fee: string;
     onReject: MouseEventHandler<HTMLButtonElement>;
@@ -125,7 +123,7 @@ export const SignLeaseComponent: FC<Props> = ({
                     <TransactionDetails tx={tx} />
                 </TabPanel>
                 <TabPanel>
-                    <TransactionJson tx={tx} />
+                    <DataJson data={tx} />
                 </TabPanel>
             </TabPanels>
         </Tabs>
