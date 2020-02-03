@@ -15,6 +15,7 @@
   "scripts": {
     "watch": "webpack --watch",
     "postversion": "npm publish",
+    "prepublish": "npm run build",
     "prettier": "prettier --ignore-path .gitignore \"./src/**/*.+(ts|tsx)\"",
     "format": "npm run prettier -- --write",
     "check-format": "npm run prettier -- --list-different",
@@ -50,7 +51,7 @@
     "@types/react": "^16.9.15",
     "@types/react-dom": "^16.9.4",
     "@types/styled-system": "^5.1.4",
-    "@waves.exchange/react-uikit": "^0.3.22",
+    "@waves.exchange/react-uikit": "^0.3.25",
     "@waves/bignumber": "0.0.1",
     "@waves/node-api-js": "0.0.3",
     "@waves/signer": "0.0.6",

@@ -25,7 +25,7 @@ export abstract class Transport implements ITransport {
         this._runBeforeShow();
 
         return this._getBus().then((bus) => {
-            const action = (): Promise<T> => callback(bus);
+            const action = this._wrapAction((): Promise<T> => callback(bus));
 
             this._runEvents(bus);
 
@@ -64,6 +64,22 @@ export abstract class Transport implements ITransport {
         this._toRunEvents
             .splice(0, this._events.length)
             .forEach((callback) => callback(bus));
+    }
+
+    private _wrapAction<T>(action: () => Promise<T>): () => Promise<T> {
+        return this._toRunEvents
+            ? (): Promise<T> => {
+                  const result = action();
+
+                  result.catch(() => {
+                      this._events.forEach((event) =>
+                          this._toRunEvents.push(event)
+                      );
+                  });
+
+                  return result;
+              }
+            : action;
     }
 
     protected abstract _dropTransportConnect(): void;

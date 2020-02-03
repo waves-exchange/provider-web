@@ -69,8 +69,14 @@ export const SignDataComponent: FC<SignDataComponentProps> = ({
             </Flex>
         </Flex>
 
-        <Tabs px="$40">
-            <TabsList borderBottom="1px solid" borderColor="main.$700" mb="$30">
+        <Tabs>
+            <TabsList
+                borderBottom="1px solid"
+                borderColor="main.$700"
+                bg="main.$900"
+                mb="$30"
+                px="$40"
+            >
                 <Tab mr="32px" pb="12px">
                     <Text variant="body1">Main</Text>
                 </Tab>
@@ -82,34 +88,36 @@ export const SignDataComponent: FC<SignDataComponentProps> = ({
                 </Tab>
             </TabsList>
 
-            <Flex
-                mb="$30"
-                flexDirection="column"
-                bg="main.$800"
-                borderTop="1px solid"
-                borderTopColor="basic.$1000"
-            >
-                <TabPanels>
-                    <TabPanel>
-                        <Text variant="body2" color="basic.$500" mb="$5">
-                            Data
-                        </Text>
-                        <DataEntry data={tx.data} />
-                        <Text variant="body2" color="basic.$500" mb="$5">
-                            Fee
-                        </Text>{' '}
-                        <Text variant="body2" color="standard.$0">
-                            {fee}
-                        </Text>
-                    </TabPanel>
-                    <TabPanel>
-                        <TransactionDetails tx={tx} />
-                    </TabPanel>
-                    <TabPanel>
-                        <TransactionJson tx={tx} />
-                    </TabPanel>
-                </TabPanels>
-            </Flex>
+            <TabPanels bg="main.$800" mb="$30" px="$40">
+                <TabPanel>
+                    <Text
+                        variant="body2"
+                        color="basic.$500"
+                        display="block"
+                        mb="$5"
+                    >
+                        Data
+                    </Text>
+                    <DataEntry data={tx.data} />
+                    <Text
+                        variant="body2"
+                        color="basic.$500"
+                        mb="$5"
+                        display="block"
+                    >
+                        Fee
+                    </Text>
+                    <Text variant="body2" color="standard.$0" display="block">
+                        {fee}
+                    </Text>
+                </TabPanel>
+                <TabPanel>
+                    <TransactionDetails tx={tx} />
+                </TabPanel>
+                <TabPanel>
+                    <TransactionJson tx={tx} />
+                </TabPanel>
+            </TabPanels>
         </Tabs>
     </Confirmation>
 );
