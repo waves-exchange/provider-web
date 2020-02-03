@@ -49,11 +49,6 @@ WindowAdapter.createSimpleWindowAdapter()
             setUserDataHandler(moveUserState, state)
         );
 
-        // bus.registerRequestHandler('sign-custom-bytes', wrapLogin(signBytes));
-        bus.registerRequestHandler(
-            'sign-typed-data',
-            getSignTypedDataHandler(queue, state)
-        );
         bus.registerRequestHandler(
             'sign-message',
             getSignMessageHandler(queue, state)
