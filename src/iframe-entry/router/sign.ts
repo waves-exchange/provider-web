@@ -26,6 +26,7 @@ import { SignInvoke } from '../pages/SignInvoke/SignInvokeContainer';
 import { SignDataContainer } from '../pages/SignData/SignDataContainer';
 import { SignCancelLease } from '../pages/SignCancelLease/SignCancelLeaseContainer';
 import { SignIssueContainer } from '../pages/SignIssue/SignIssueContainer';
+import { SignBurnContainer } from '../pages/SignBurn/SignBurnContainer';
 
 const getPageByType = (type: keyof TRANSACTION_TYPE_MAP): ReactNode => {
     switch (type) {
@@ -53,6 +54,8 @@ const getPageByType = (type: keyof TRANSACTION_TYPE_MAP): ReactNode => {
             throw new Error('Unsupported type!'); // TODO
         case NAME_MAP.setAssetScript:
             throw new Error('Unsupported type!'); // TODO
+        case NAME_MAP.burn:
+            return SignBurnContainer;
         default:
             throw new Error('Unsupported transaction!');
     }
