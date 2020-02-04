@@ -15,7 +15,7 @@ import { Confirmation } from '../../components/Confirmation';
 import { DataEntry } from '../../components/DataEntry/DataEntry';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
 import { IDataTransaction, IWithId } from '@waves/ts-types';
-import { TransactionJson } from '../../components/TransactionJson/TransactionJson';
+import { DataJson } from '../../components/DataJson/DataJson';
 
 type SignDataComponentProps = {
     userAddress: string;
@@ -115,7 +115,7 @@ export const SignDataComponent: FC<SignDataComponentProps> = ({
                     <TransactionDetails tx={tx} />
                 </TabPanel>
                 <TabPanel>
-                    <TransactionJson tx={tx} />
+                    <DataJson data={tx} />
                 </TabPanel>
             </TabPanels>
         </Tabs>

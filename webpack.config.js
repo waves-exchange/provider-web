@@ -8,7 +8,12 @@ const getGeneralConfig = (minimize) => ({
         rules: [
             {
                 test: /\.tsx?$/,
-                use: 'ts-loader',
+                use: {
+                    loader: 'ts-loader',
+                    options: {
+                        configFile: resolve('tsconfig.build.json')
+                    }
+                },
                 exclude: /node_modules/,
             },
             {
