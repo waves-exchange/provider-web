@@ -55,7 +55,7 @@
     "@types/react": "^16.9.15",
     "@types/react-dom": "^16.9.4",
     "@types/styled-system": "^5.1.4",
-    "@waves.exchange/react-uikit": "^0.3.27",
+    "@waves.exchange/react-uikit": "^0.3.32",
     "@waves/bignumber": "0.0.1",
     "@waves/node-api-js": "0.0.3",
     "@waves/signer": "0.0.8",
