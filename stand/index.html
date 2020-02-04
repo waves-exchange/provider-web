@@ -40,7 +40,7 @@
             waves.setProvider(provider);
 
             var getByElement = function(element, key, defaultValue) {
-                return element.getAttribute(`data-${key}`) || defaultValue;
+                return element.dataset[key.toLowerCase()] || defaultValue;
             };
 
             /**
@@ -52,7 +52,7 @@
                         amount: getByElement(element, 'amount', 1),
                         recipient: getByElement(element, 'recipient', 'merry'),
                         assetId: getByElement(element, 'assetId', null),
-                        feeAssetId: getByElement(element, 'feeAssetId', null),
+                        feeAssetId: getByElement(element, 'feeAssetId', undefined),
                         fee: getByElement(element, 'fee', undefined),
                         attachment: getByElement(element, 'attachment', ''),
                     })
@@ -76,14 +76,14 @@
         </div>
         <div style="display: flex; flex-direction: column;">
             <h2>
-                Transfer
+                Transfer 1 Waves to Merry
             </h2>
             <button
                 onclick="transfer(this);"
                 data-amount="10000000"
                 data-recipient="merry"
             >
-                Transfer 1 Waves to Merry
+                Basic
             </button>
             <button
                 onclick="transfer(this);"
@@ -91,14 +91,15 @@
                 data-recipient="merry"
                 data-feeAssetId="DWgwcZTMhSvnyYCoWLRUXXSH1RSkzThXLJhww9gwkqdn"
             >
-                Transfer 1 Waves to Merry with custom Fee
+                With custom Fee feeAssetId
             </button>
             <button
                 onclick="transfer(this);"
                 data-amount="10000000"
                 data-recipient="3PCAB4sHXgvtu5NPoen6EXR5yaNbvsEA8Fj"
+                data-fee="676767"
             >
-                Transfer 1 Waves to Merry by address with custom Fee
+                With custom Fee amount
             </button>
             <button
                 onclick="transfer(this);"
@@ -106,8 +107,7 @@
                 data-recipient="3PCAB4sHXgvtu5NPoen6EXR5yaNbvsEA8Fj"
                 data-attachment="72k1xXWG59fYdzSNoA"
             >
-                Transfer 1 Waves to Merry by address with custom Fee With short
-                attachment
+                By address With attachment
             </button>
         </div>
         <div>
@@ -124,7 +124,7 @@
             { type: 'boolean', value: true },
             { type: 'binary', value: 'base64:AAIDAAAAAAAAAAQIARIAAAAAAAAAAAEAAAABaQEAAAADZm9vAAAAAAkBAAAACFdyaXRlU2V0AAAAAQUAAAADbmlsAAAAACvwfcA=' }
         ] },
-        fee: 1000
+        fee: 1000,
     }).broadcast();"
             >
                 Invoke
