@@ -149,11 +149,11 @@ export const LoginComponent: FC<IProps> = ({
                         >
                             Log In
                         </Button>
+
                         <ExternalLink
                             display="block"
                             textAlign="center"
                             href={getEnvAwareUrl('/faq#25')}
-                            target="_blank"
                             mt="$30"
                             variant="body2"
                             onClick={onForgotPasswordLinkClick}
