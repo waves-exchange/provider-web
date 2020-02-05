@@ -1,7 +1,6 @@
-import { fetchInfo } from '@waves/node-api-js/es/api-node/transactions';
 import { TLong } from '@waves/signer';
 import { ICancelLeaseTransactionWithId } from '@waves/ts-types';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect } from 'react';
 import { ISignTxProps } from '../../../interface';
 import { WAVES } from '../../constants';
 import { useTxHandlers } from '../../hooks/useTxHandlers';
@@ -12,11 +11,10 @@ import { SignCancelLeaseComponent } from './SignCancelLeaseComponent';
 
 export const SignCancelLease: FC<ISignTxProps<
     ICancelLeaseTransactionWithId<TLong>
->> = ({ networkByte, nodeUrl, tx, user, onConfirm, onCancel }) => {
-    const [amount, setAmount] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+>> = ({ networkByte, tx, meta, user, onConfirm, onCancel }) => {
     const { userName, userBalance } = useTxUser(user, networkByte);
     const fee = getPrintableNumber(tx.fee, WAVES.decimals);
+    const amount = getPrintableNumber(meta.info.amount, WAVES.decimals);
 
     const { handleReject, handleConfirm } = useTxHandlers(
         tx,
@@ -36,31 +34,6 @@ export const SignCancelLease: FC<ISignTxProps<
         []
     );
 
-    useEffect(() => {
-        let isStillActual = true;
-
-        setIsLoading(true);
-
-        fetchInfo(nodeUrl, tx.leaseId)
-            .then((res) => {
-                if (isStillActual) {
-                    setIsLoading(false);
-                    setAmount(
-                        getPrintableNumber(res['amount'], WAVES.decimals)
-                    );
-                }
-            })
-            .catch(() => {
-                if (isStillActual) {
-                    setIsLoading(false);
-                }
-            });
-
-        return (): void => {
-            isStillActual = false;
-        };
-    }, [nodeUrl, tx.leaseId]);
-
     return (
         <SignCancelLeaseComponent
             userAddress={user.address}
@@ -69,7 +42,6 @@ export const SignCancelLease: FC<ISignTxProps<
             tx={tx}
             amount={`${amount} ${WAVES.name}`}
             fee={`${fee} ${WAVES.ticker}`}
-            isLoading={isLoading}
             onReject={handleReject}
             onConfirm={handleConfirm}
         />

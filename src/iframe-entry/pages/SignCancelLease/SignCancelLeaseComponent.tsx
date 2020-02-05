@@ -15,7 +15,7 @@ import { ICancelLeaseTransactionWithId } from '@waves/ts-types';
 import React, { FC, MouseEventHandler } from 'react';
 import { Confirmation } from '../../components/Confirmation';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
-import { TransactionJson } from '../../components/TransactionJson/TransactionJson';
+import { DataJson } from '../../components/DataJson/DataJson';
 
 type Props = {
     userAddress: string;
@@ -24,7 +24,6 @@ type Props = {
     amount: string;
     tx: ICancelLeaseTransactionWithId<TLong>;
     fee: string;
-    isLoading: boolean;
     onReject: MouseEventHandler<HTMLButtonElement>;
     onConfirm: MouseEventHandler<HTMLButtonElement>;
 };
@@ -36,7 +35,6 @@ export const SignCancelLeaseComponent: FC<Props> = ({
     amount,
     tx,
     fee,
-    isLoading,
     onReject,
     onConfirm,
 }) => (
@@ -67,7 +65,7 @@ export const SignCancelLeaseComponent: FC<Props> = ({
                     Sign Lease Cancel TX
                 </Text>
                 <Text fontSize={26} lineHeight="32px" color="standard.$0">
-                    {isLoading ? '...' : amount}
+                    {amount}
                 </Text>
             </Flex>
         </Flex>
@@ -123,7 +121,7 @@ export const SignCancelLeaseComponent: FC<Props> = ({
                     <TransactionDetails tx={tx} />
                 </TabPanel>
                 <TabPanel>
-                    <TransactionJson tx={tx} />
+                    <DataJson data={tx} />
                 </TabPanel>
             </TabPanels>
         </Tabs>
