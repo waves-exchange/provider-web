@@ -230,6 +230,29 @@
 
         <div>
             <h2>
+                Sponsorship
+            </h2>
+            <button
+                onclick="waves.sponsorship({
+                    assetId: '8BrF9fVo2tDPGMdcx91EdTZLmwUDX7K7h1zs6txCpAAA',
+                    minSponsoredAssetFee: 123
+                }).broadcast()"
+            >
+                Sign Sponsorship Enable
+            </button>
+
+            <button
+                onclick="waves.sponsorship({
+                    assetId: '8BrF9fVo2tDPGMdcx91EdTZLmwUDX7K7h1zs6txCpAAA',
+                    minSponsoredAssetFee: 0
+                }).broadcast()"
+            >
+                Sign Sponsorship Disable
+            </button>
+        </div>
+
+        <div>
+            <h2>
                 Cancel Lease
             </h2>
             <button
