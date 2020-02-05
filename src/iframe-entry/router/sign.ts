@@ -54,7 +54,7 @@ const getPageByType = (type: keyof TRANSACTION_TYPE_MAP): ReactNode => {
         case NAME_MAP.alias:
             return SignAliasContainer;
         case NAME_MAP.massTransfer:
-            throw new Error('Unsupported type!'); // TODO
+            return SignTransfer;
         case NAME_MAP.setScript:
             return SignSetAccountScript;
         case NAME_MAP.sponsorship:
