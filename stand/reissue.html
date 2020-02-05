@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<title>Transfer TX test page</title>
+		<title>Reissue TX test page</title>
 		<style>
 			html,
 			body,
@@ -37,28 +37,26 @@
 			<button onclick="waves.logout().then(el => {setElementHTML('login-return', '')});">Logout</button>
 		</div>
 		<div>
-			<h1>Transfer Tx</h1>
-			<div>Amount: <input id='transfer-amount'></div>
-			<div>Recipient: <input id='transfer-recipient'></div>
-			<div>AssetId: <input id='transfer-assetId'></div>
-			<div>Fee AssetId: <input id='transfer-feeAssetId'></div>
-			<div>Fee: <input id='transfer-fee'></div>
-			<div>Attachment: <input id='transfer-attachment'></div>
-			<div id='transfer-return'></div>
-			<button onclick="transferTx(
-			getFromInput('transfer-amount'),
-			getFromInput('transfer-recipient'),
-			getFromInput('transfer-assetId'),
-			getFromInput('transfer-feeAssetId'),
-			getFromInput('transfer-fee'),
-			getFromInput('transfer-attachment'))
-			.then(tx => {console.log(tx); setElementHTML('transfer-return', getNodeTxLink(tx.id))})
-			.catch(err => {console.log(err); if(err.message) {setElementHTML('transfer-return', err.message)} else {setElementHTML('transfer-return', err)}});
+			<h1>Reissue Tx</h1>
+			<div>AssetId: <input id='reissue-assetId'></div>
+			<div>Quantity: <input id='reissue-quantity'></div>
+			<div>Reissuable: <input id='reissue-reissuable' name='reissue-reissuable' type='checkbox', value='true'></div>
+			<div>Fee: <input id='reissue-fee'></div>
+			<div id='reissue-return'></div>
+			<button onclick="reissueAsset(
+			getFromInput('reissue-assetId'),
+			getFromInput('reissue-quantity'),
+			document.getElementById('reissue-reissuable').checked,
+			getFromInput('reissue-fee'))
+			.then(tx => {console.log(tx); setElementHTML('reissue-return', getNodeTxLink(tx.id))})
+			.catch(err => {console.log(err); if(err.message) {setElementHTML('reissue-return', err.message)} else {setElementHTML('reissue-return', err)}});
 			setElementHTML('login-return', waves._userData.address);
 			">Send TX</button>
 			<br>
-			<div>Sponsored AssetId: </div>
-			<div id="sponsored-asset-id" onclick="copyText('sponsored-asset-id')">2CjLFYkp4W4sEAxCjFG9oD3smfhvV6yQnNmiJyexbLdu</div>
+			<div>AssetId: </div>
+			<div id="asset-id" onclick="copyText('asset-id')">6RHh59Tbt17QPvgaEu79DQsC5XyTqhBzpfB2FLV59ABU</div>
+			<div>SponsoredAssetId: </div>
+			<div id="sponsoredasset-id" onclick="copyText('sponsoredasset-id')">5PSXoMR4VxHzCs273dJMqwdyZ7KNy7Ny613ZDrTaSyA1</div>
 			<div>Bitcoin AssetId:</div>
 			<div id="bitcoin-asset-id" onclick="copyText('bitcoin-asset-id')">DWgwcZTMhSvnyYCoWLRUXXSH1RSkzThXLJhww9gwkqdn</div>
 		</div>

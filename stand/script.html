@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<title>Transfer TX test page</title>
+		<title>Set Script TX test page</title>
 		<style>
 			html,
 			body,
@@ -37,30 +37,22 @@
 			<button onclick="waves.logout().then(el => {setElementHTML('login-return', '')});">Logout</button>
 		</div>
 		<div>
-			<h1>Transfer Tx</h1>
-			<div>Amount: <input id='transfer-amount'></div>
-			<div>Recipient: <input id='transfer-recipient'></div>
-			<div>AssetId: <input id='transfer-assetId'></div>
-			<div>Fee AssetId: <input id='transfer-feeAssetId'></div>
-			<div>Fee: <input id='transfer-fee'></div>
-			<div>Attachment: <input id='transfer-attachment'></div>
-			<div id='transfer-return'></div>
-			<button onclick="transferTx(
-			getFromInput('transfer-amount'),
-			getFromInput('transfer-recipient'),
-			getFromInput('transfer-assetId'),
-			getFromInput('transfer-feeAssetId'),
-			getFromInput('transfer-fee'),
-			getFromInput('transfer-attachment'))
-			.then(tx => {console.log(tx); setElementHTML('transfer-return', getNodeTxLink(tx.id))})
-			.catch(err => {console.log(err); if(err.message) {setElementHTML('transfer-return', err.message)} else {setElementHTML('transfer-return', err)}});
+			<h1>Set Script Tx</h1>
+			<div>Script: <input id='setscript-script'></div>
+			<div>Fee: <input id='setscript-fee'></div>
+			<div id='setscript-return'></div>
+			<button onclick="setScript(
+			getFromInput('setscript-script'),
+			getFromInput('setscript-fee'))
+			.then(tx => {console.log(tx); setElementHTML('setscript-return', getNodeTxLink(tx.id))})
+			.catch(err => {console.log(err); if(err.message) {setElementHTML('setscript-return', err.message)} else {setElementHTML('setscript-return', err)}});
 			setElementHTML('login-return', waves._userData.address);
 			">Send TX</button>
 			<br>
-			<div>Sponsored AssetId: </div>
-			<div id="sponsored-asset-id" onclick="copyText('sponsored-asset-id')">2CjLFYkp4W4sEAxCjFG9oD3smfhvV6yQnNmiJyexbLdu</div>
-			<div>Bitcoin AssetId:</div>
-			<div id="bitcoin-asset-id" onclick="copyText('bitcoin-asset-id')">DWgwcZTMhSvnyYCoWLRUXXSH1RSkzThXLJhww9gwkqdn</div>
+			<div>AssetScript: </div>
+			<div id="assescript-id" onclick="copyText('assescript-id')">AwkAAfQAAAADCAUAAAACdHgAAAAJYm9keUJ5dGVzCQABkQAAAAIIBQAAAAJ0eAAAAAZwcm9vZnMAAAAAAAAAAAAIBQAAAAJ0eAAAAA9zZW5kZXJQdWJsaWNLZXmIg5mo</div>
+			<div>AssetId: </div>
+			<div id="asset-id" onclick="copyText('asset-id')">6RHh59Tbt17QPvgaEu79DQsC5XyTqhBzpfB2FLV59ABU</div>
 		</div>
 		<script type="text/javascript">
 			setElementValue('node-input', waves._options.NODE_URL);

@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<title>Transfer TX test page</title>
+		<title>Burn TX test page</title>
 		<style>
 			html,
 			body,
@@ -37,28 +37,20 @@
 			<button onclick="waves.logout().then(el => {setElementHTML('login-return', '')});">Logout</button>
 		</div>
 		<div>
-			<h1>Transfer Tx</h1>
-			<div>Amount: <input id='transfer-amount'></div>
-			<div>Recipient: <input id='transfer-recipient'></div>
-			<div>AssetId: <input id='transfer-assetId'></div>
-			<div>Fee AssetId: <input id='transfer-feeAssetId'></div>
-			<div>Fee: <input id='transfer-fee'></div>
-			<div>Attachment: <input id='transfer-attachment'></div>
-			<div id='transfer-return'></div>
-			<button onclick="transferTx(
-			getFromInput('transfer-amount'),
-			getFromInput('transfer-recipient'),
-			getFromInput('transfer-assetId'),
-			getFromInput('transfer-feeAssetId'),
-			getFromInput('transfer-fee'),
-			getFromInput('transfer-attachment'))
-			.then(tx => {console.log(tx); setElementHTML('transfer-return', getNodeTxLink(tx.id))})
-			.catch(err => {console.log(err); if(err.message) {setElementHTML('transfer-return', err.message)} else {setElementHTML('transfer-return', err)}});
+			<h1>Burn Tx</h1>
+			<div>AssetId: <input id='burn-assetId'></div>
+			<div>Quantity: <input id='burn-quantity'></div>
+			<div id='burn-return'></div>
+			<button onclick="newAlias(
+			getFromInput('burn-assetId'),
+			getFromInput('burn-quantity'))
+			.then(tx => {console.log(tx); setElementHTML('burn-return', getNodeTxLink(tx.id))})
+			.catch(err => {console.log(err); if(err.message) {setElementHTML('burn-return', err.message)} else {setElementHTML('burn-return', err)}});
 			setElementHTML('login-return', waves._userData.address);
 			">Send TX</button>
 			<br>
-			<div>Sponsored AssetId: </div>
-			<div id="sponsored-asset-id" onclick="copyText('sponsored-asset-id')">2CjLFYkp4W4sEAxCjFG9oD3smfhvV6yQnNmiJyexbLdu</div>
+			<div>AssetId: </div>
+			<div id="asset-id" onclick="copyText('asset-id')">6RHh59Tbt17QPvgaEu79DQsC5XyTqhBzpfB2FLV59ABU</div>
 			<div>Bitcoin AssetId:</div>
 			<div id="bitcoin-asset-id" onclick="copyText('bitcoin-asset-id')">DWgwcZTMhSvnyYCoWLRUXXSH1RSkzThXLJhww9gwkqdn</div>
 		</div>

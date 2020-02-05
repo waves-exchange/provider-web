@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Lease TX test page</title>
+		<style>
+			html,
+			body,
+			#root {
+				position: relative;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				margin: 0;
+				padding: 0;
+				-webkit-overflow-scrolling: touch;
+			}
+		</style>
+		<script src="../node_modules/@waves/signer/dist/signer.min.js"></script>
+		<script src="../dist/provider-web.min.js"></script>
+		<script src="./scripts/script.js"></script>
+	</head>
+	<body style="overflow: auto; margin: auto; width: 50%; text-align: center;">
+		<div>
+			<input id='node-input'></input>
+			<button onclick="waves = new signer.Signer({ NODE_URL: getFromInput('node-input') }); waves.setProvider(provider);">Set node</button>
+		</div>
+		<div>
+			<h1>Login</h1>
+			<div id='login-return'></div>
+			<button onclick="waves.login().then(el => {setElementHTML('login-return', el.address)});">Login</button>
+		</div>
+		<div>
+			<h1>Logout</h1>
+			<div id='login-return'></div>
+			<button onclick="waves.logout().then(el => {setElementHTML('login-return', '')});">Logout</button>
+		</div>
+		<div>
+			<h1>Lease Tx</h1>
+			<div>Recipient: <input id='lease-recipient'></div>
+			<div>Amount: <input id='lease-amount'></div>
+			<div>Fee: <input id='lease-fee'></div>
+			<div id='lease-return'></div>
+			<button onclick="startLease(
+			getFromInput('lease-amount'),
+			getFromInput('lease-recipient'),
+			getFromInput('lease-fee'))
+			.then(tx => {console.log(tx); setElementHTML('lease-return', getNodeTxLink(tx.id))})
+			.catch(err => {console.log(err); if(err.message) {setElementHTML('lease-return', err.message)} else {setElementHTML('lease-return', err)}});
+			setElementHTML('login-return', waves._userData.address);
+			">Send TX</button>
+			<br>
+			<div>Address: </div>
+			<div id="test-address" onclick="copyText('test-address')">3NApQXCdH5P5LMtrawTUVLvh7UMdKidygmK</div>
+		</div>
+		<div>
+			<h1>Cancel Lease Tx</h1>
+			<div>LeaseId: <input id='cancelLease-leaseId'></div>
+			<div>Fee: <input id='cancelLease-fee'></div>
+			<div id='cancelLease-return'></div>
+			<button onclick="cancelLease(
+			getFromInput('cancelLease-leaseId'),
+			getFromInput('cancelLease-fee'))
+			.then(tx => {console.log(tx); setElementHTML('cancelLease-return', getNodeTxLink(tx.id))})
+			.catch(err => {console.log(err); if(err.message) {setElementHTML('cancelLease-return', err.message)} else {setElementHTML('cancelLease-return', err)}});
+			setElementHTML('login-return', waves._userData.address);
+			">Send TX</button>
+		</div>
+		<script type="text/javascript">
+			setElementValue('node-input', waves._options.NODE_URL);
+		</script>
+	</body>
+</html>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<title>Mass Transfer TX test page</title>
+		<style>
+			html,
+			body,
+			#root {
+				position: relative;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				align-items: center;
+				margin: 0;
+				padding: 0;
+				-webkit-overflow-scrolling: touch;
+			}
+		</style>
+		<script src="../node_modules/@waves/signer/dist/signer.min.js"></script>
+		<script src="../dist/provider-web.min.js"></script>
+		<script src="./scripts/script.js"></script>
+	</head>
+	<body style="overflow: auto; margin: auto; width: 50%; text-align: center;">
+		<div>
+			<input id='node-input'></input>
+			<button onclick="waves = new signer.Signer({ NODE_URL: getFromInput('node-input') }); waves.setProvider(provider);">Set node</button>
+		</div>
+		<div>
+			<h1>Login</h1>
+			<div id='login-return'></div>
+			<button onclick="waves.login().then(el => {setElementHTML('login-return', el.address)});">Login</button>
+		</div>
+		<div>
+			<h1>Logout</h1>
+			<div id='login-return'></div>
+			<button onclick="waves.logout().then(el => {setElementHTML('login-return', '')});">Logout</button>
+		</div>
+		<div>
+			<h1>Mass Transfer Tx</h1>
+			<div>AssetId: <input id='massTransfer-assetId'></div>
+			<div>Transfers: <input id='massTransfer-transfers'></div>
+			<div>Fee: <input id='massTransfer-fee'></div>
+			<div>Attachment: <input id='massTransfer-attachment'></div>
+			<div id='massTransfer-return'></div>
+			<button onclick="massTransfer(
+			getFromInput('massTransfer-assetId'),
+			getFromInput('massTransfer-transfers'),
+			getFromInput('massTransfer-attachment'))
+			getFromInput('massTransfer-fee'),
+			.then(tx => {console.log(tx); setElementHTML('massTransfer-return', getNodeTxLink(tx.id))})
+			.catch(err => {console.log(err); if(err.message) {setElementHTML('massTransfer-return', err.message)} else {setElementHTML('massTransfer-return', err)}});
+			setElementHTML('login-return', waves._userData.address);
+			">Send TX</button>
+			<br>
+			<div>Sponsored AssetId: </div>
+			<div id="sponsored-asset-id" onclick="copyText('sponsored-asset-id')">2CjLFYkp4W4sEAxCjFG9oD3smfhvV6yQnNmiJyexbLdu</div>
+			<div>Bitcoin AssetId:</div>
+			<div id="bitcoin-asset-id" onclick="copyText('bitcoin-asset-id')">DWgwcZTMhSvnyYCoWLRUXXSH1RSkzThXLJhww9gwkqdn</div>
+			<br>
+			<div id=massList onclick="copyText('massList')">
+				[{"recipient": 3MrrRsL3bjYWx5uShZhRxyQmQMNd5GDJRWs, "amount": 0.00001286},
+				{"recipient": tokemon_trainer, "amount": 0.00001120},
+				{"recipient": tokemon_trainer2, "amount": 0.00003343},
+				{"recipient": 3MuTA678bYWZFMY8AubzVkoSL5rTeRUTcLM, "amount": 0.00002956},
+				{"recipient": 3N7hPPS5fZFJbg19uSMDM7vAXxbYap2qma9, "amount": 0.00001278}]
+			</div>
+			<br>
+			<div id=massList2 onclick="copyText('massList2')">
+				[
+				{"recipient": "3MrrRsL3bjYWx5uShZhRxyQmQMNd5GDJRWs", "amount": 1286}, 
+				{"recipient": "tokemon_trainer", "amount": 1120}, 
+				{"recipient": "tokemon_trainer2", "amount": 3343}, 
+				{"recipient": "3MuTA678bYWZFMY8AubzVkoSL5rTeRUTcLM", "amount": 2956}, 
+				{"recipient": "3N7hPPS5fZFJbg19uSMDM7vAXxbYap2qma9", "amount": 1278}, 
+				{"recipient": "3MxGhBf3V2MvBCzhv1fdYKe5n5B2taBvGiX", "amount": 1518}, 
+				{"recipient": "3MqTgD6MKtckQh9L5HesmJpF1r5cZi2omMn", "amount": 2608}, 
+				{"recipient": "3N2vSezREsvs9VYo2LnYLT4pr11fgLkRF7R", "amount": 2465}, 
+				{"recipient": "3MyhJ6shQtPQSyHx7AtLvMRfUY8A27TExQJ", "amount": 2701}, 
+				{"recipient": "3MuEb4kp8K6o4TgcNmZ13RzfVuQHuNHBJ7U", "amount": 3900}, 
+				{"recipient": "3MtxpTFZstFseqsC7vhNR7yEFrApAyb2XoU", "amount": 1003}, 
+				{"recipient": "3N3tJmsQeuW7X6KVCkuaUSRK4LHStYbPqMk", "amount": 2194}, 
+				{"recipient": "3MrSRKvmtYgTTbRTJaBXmpCpPjb4M6H7jHv", "amount": 1595}, 
+				{"recipient": "3N3pa7P9dum2hTgpAEYRcQqbJjR8Qae8vHx", "amount": 3723}, 
+				{"recipient": "3MxdPU5FrU9LCKjpDEy9s5yK1962CRoCxyq", "amount": 2344}, 
+				{"recipient": "3N7VcJfcaiVXLzskNsn7teSAjcknErMqtHS", "amount": 3409}, 
+				{"recipient": "3N1U7CqH14Cy1VD8euJsUBhH84JpZDVKJ6K", "amount": 1009}, 
+				{"recipient": "3MrH7eTXyWbdpcitBcBy7ngcSCzZLTn23Dy", "amount": 1328}, 
+				{"recipient": "3N63MFZbrjWMRkjtohpmws3KbEjZJ17CfTC", "amount": 4228}, 
+				{"recipient": "3N5roVQNM7KjbrzwkiQQ5NyeQ4WNx64svPh", "amount": 2338}, 
+				{"recipient": "3NCQUWKY5CfcgXaUq81fcPJb9rxaMUGAWcp", "amount": 4341}, 
+				{"recipient": "3N558BFoDxf3xowRiZWLxHBKoQpg7i3Yr5X", "amount": 3698}, 
+				{"recipient": "3MyEo999vvfG6rcRAUGnBcsyNPDN92zXu1U", "amount": 1727}, 
+				{"recipient": "3MwrXRNxkYCHtxQ28aqFzfvpge6BhDDeBrL", "amount": 3673}, 
+				{"recipient": "3N29Q9utSg1eC7rmYyHArfBZuXE6ndocHu2", "amount": 3867}, 
+				{"recipient": "3N4rJ1KnJ9EDG8JFyZNEw15cT6HLTup32fW", "amount": 3668}, 
+				{"recipient": "3Mt4NZ3p5EUodANAxtUSCaFHGWo3wdoJoVR", "amount": 1236}, 
+				{"recipient": "3NB9FBnbPUtb5UTsXfn2yptvbNk6cUqTLE9", "amount": 3054}, 
+				{"recipient": "3MxySGYT9uj7PV2743yMiTnadS8ak5tAexr", "amount": 2969}, 
+				{"recipient": "3N7wa96j3spxjUJZ16KhhPuhhMyiK39gx8A", "amount": 2324}, 
+				{"recipient": "3MxjUvapQLRw6gJYiCNGNWisj1FRPTmeb6f", "amount": 4383}, 
+				{"recipient": "3MtMb9V2keQffqKw8kkYiGLemGAxajGdqFR", "amount": 3358}, 
+				{"recipient": "3N1G8pXR1nD1Qs2CNQBmSUySgEw4JUacymK", "amount": 1093}, 
+				{"recipient": "3N3eu1fPe5n3AnXV9X8z9Yy5EW7rXEzZnah", "amount": 1718}, 
+				{"recipient": "3N9RCkeygZZTrDLeRBxAXwyFgggKSiX67i9", "amount": 4908}, 
+				{"recipient": "3N2yCzv8KMxLC5Mk4At9BhKzwMBprDTzigP", "amount": 3545}, 
+				{"recipient": "3Mvgr7R5jGhc2TA9yCvSfqUX3k4nY61kH7k", "amount": 1035}, 
+				{"recipient": "3Msecs8BAUF5jhyw5Q2aT9FF66AV4dcRkc2", "amount": 1366}, 
+				{"recipient": "3N1CTEmV7aLd8fHfsthVAUAe7mueyh9pVWW", "amount": 3161}, 
+				{"recipient": "3N88ENdb2owqy5nTFb5hewHTeLTD18Zcpu1", "amount": 4585}, 
+				{"recipient": "3MpwJaTgRVJzd3HHZkqnanwb8cnnsU9C8SJ", "amount": 4917}, 
+				{"recipient": "3MyTcfNY2uk9Vj5sz1bmoJ6EempNjw2Fz9t", "amount": 1801}, 
+				{"recipient": "3N9JqUYcD1wsPq3Wmp8J6KGKjMfD6w8BkFV", "amount": 1861}, 
+				{"recipient": "3N4gm6U6MHfsXvrV5TniHGtydJeNqhQQs8Z", "amount": 1724}, 
+				{"recipient": "3N1QFqFgJ4pxuDaaQYvwwwiFMvofh9rD7qP", "amount": 4788}, 
+				{"recipient": "3MwNTJiz8gYUW1RDzLwkoP1e8znXSMi5dSb", "amount": 2537}, 
+				{"recipient": "3N6UTTPoCueMECD6TLZxyCwrsdNXnL564Qh", "amount": 2943}, 
+				{"recipient": "3N253RwR2ThrbAibc96MJZXFGE4xrLupdX7", "amount": 1691}, 
+				{"recipient": "3MqsghHB3zk8bnvdwuRHh5nzsHfzB3eMfhK", "amount": 3518}, 
+				{"recipient": "3MpUaTFRAjXxM3N9atFTKz1X6uNQWZBeY3g", "amount": 4385}, 
+				{"recipient": "3MvhmYRxQmAxxQyyfS27P6vSL217dwit82Q", "amount": 4669}, 
+				{"recipient": "3NDAAZn1NtoMZKg2ZWpziL2PM9xdNXBz9c9", "amount": 3711}, 
+				{"recipient": "3MsGLK2DZyoFRfCwnNZ7FfpzAjbW1prxzvw", "amount": 3310}, 
+				{"recipient": "3N8ohpJLwqqD8yHSGfNtWSwwZDp8V6rLsVR", "amount": 3746}, 
+				{"recipient": "3MzKtdyAjTbUYK1rqacdUh1wEh6Awq4Wwr9", "amount": 4148}, 
+				{"recipient": "3MyrjauBW8aJ2NbfkwKhvitw6rXgQpDsYCC", "amount": 3528}, 
+				{"recipient": "3NAuMezA1Bvi1wtHE8d8ZTMdk9GZaqWXgPN", "amount": 1214}, 
+				{"recipient": "3N3w11RJMXVWFSmcWqEucmBt8DkenqieCXC", "amount": 4879}, 
+				{"recipient": "3NCBCkLjgNdPtBt2FZJJ79Qx1tDq6ejaxFL", "amount": 3199}, 
+				{"recipient": "3MqfMHuTH8ytSw5VL8RKZwPaZTFdnPhxcVM", "amount": 3917}, 
+				{"recipient": "3MzNJwNM1nyzNYbVDfSiXLK5Fhg3u8kh7KQ", "amount": 1718}, 
+				{"recipient": "3NCX4MwYCwXVguC8zUKKEkEiVb3NcCf2L7Z", "amount": 3344}, 
+				{"recipient": "3NCy2HZx6a9XeeivFZbfkikgtLTYsb8CjAu", "amount": 1081}, 
+				{"recipient": "3MsxgLemUnAzoVnKndKZK3687wMzpqVxrTw", "amount": 2760}, 
+				{"recipient": "3Mxiy35csSiU7rmL6gfv6WfrSEydb1ujvCE", "amount": 3049}, 
+				{"recipient": "3Mwnjfv44J2grggekSUsXwYFCkSP7nFQ3kp", "amount": 2895}, 
+				{"recipient": "3MuUbiRx7sdoUcUEGPVEcnvXs4twVPbSMyz", "amount": 1483}, 
+				{"recipient": "3N2Zow8rWtBh7h2QhtajzqUqfDbHkB5mjzN", "amount": 4762}, 
+				{"recipient": "3MxZaaNanYfEkrCus1vBT4vJqWr38oog4jz", "amount": 4350}, 
+				{"recipient": "3N3JwfGjvaqJiGXXc1Q4UKj4yd3GaenVvCJ", "amount": 2497}, 
+				{"recipient": "3MwB6t7xvb5V3iCAe1d2MkdXBZs19zaKBy6", "amount": 4545}, 
+				{"recipient": "3Mxx5xBNdiUxX6Zhu9EncvR9sQjVohxbev9", "amount": 1279}, 
+				{"recipient": "3N3ATwri6SsDmsqWbLd8qu8PUFH3699QGkJ", "amount": 2589}, 
+				{"recipient": "3N9YrZFUFhQp2uhbn2rqNz7JRcH5LxWFUNR", "amount": 3640}, 
+				{"recipient": "3MsLD4XcLskXdZy7kxnMEaYPiJkFQEsFT7e", "amount": 4469}, 
+				{"recipient": "3N6BRKJR5qXmd78T6vYCDqNWDTQxrtmNoU5", "amount": 2945}, 
+				{"recipient": "3N9PpJ92FvXThyUM8YNKsQbyvin2hjJMLbM", "amount": 2539}, 
+				{"recipient": "3NACYfZ7i68uXY5jp4GKEhZTdekcaH3pTXY", "amount": 4047}, 
+				{"recipient": "3NBBTMhTmVPA9x8czZuvhXhmitLKC1W48yj", "amount": 3875}, 
+				{"recipient": "3MpsuqSAxmzbKdJBLVFpAcbv6PeXMrg8Y8T", "amount": 4305}, 
+				{"recipient": "3N8DiwkXxetuKWgQzfbw6ZxpJftBLb9sKF2", "amount": 1119}, 
+				{"recipient": "3MqNrGbLcR9v4GUN5BT9WmKd6wvjD2PfNy6", "amount": 2634}, 
+				{"recipient": "3MwD9ztEagqEr7MFRV6y1QTHzGK4C3UpDBB", "amount": 4649}, 
+				{"recipient": "3MyyRXBGFLDqWARp5LMwCfZsgK6tj2km6Y9", "amount": 3550}, 
+				{"recipient": "3N6f51ffR6SyuA51P31Hpyh7PzyYyaPZS3d", "amount": 2834}, 
+				{"recipient": "3MowW2nKi7bi7jHaw49GVAguKxcyHmVxiMP", "amount": 2358}, 
+				{"recipient": "3N7iPG7T3dozez6qz3tBFo7kGTfDcR2aHbx", "amount": 2363}, 
+				{"recipient": "3MvRGHMovrdAjVv9AyS5Ytbi56oSNgzK2Hf", "amount": 4588}, 
+				{"recipient": "3MuBWzCpfTRvUGZ5H2t8x3kkmd8Fg4uEiHo", "amount": 4085}, 
+				{"recipient": "3Mwxysw7xThQCtWBQjvz7GToXA5EZkTa83T", "amount": 4857}, 
+				{"recipient": "3MrhcoVfbwYPR9bohdmvgSTkTcT4qCagqzU", "amount": 2298}, 
+				{"recipient": "3N45TphKJH9zxsJBt3H3KeV1bwC15VhKUes", "amount": 4888}, 
+				{"recipient": "3MwGkmScHkq9QbDKWmqMCKEZTQ4a5JnnZyB", "amount": 1953}, 
+				{"recipient": "3N5WYKyP9SfaM87RwYEY8CLkjuLH7nQaCVt", "amount": 4815}, 
+				{"recipient": "3MrqgMFa1aPaj86GASyeYqVrMA9HJbCxPLt", "amount": 3938}, 
+				{"recipient": "3NCCzT6wYKBHi2q5X6PKcGXu73KjQVN45vu", "amount": 3345}, 
+				{"recipient": "3N7Vf1hX5yXAvSysAMcs2N3aY9e45aVWR56", "amount": 1893}, 
+				{"recipient": "3N5JyeYYRgD6xSoBbsxtj1x3WicATBzeL9E", "amount": 1412}, 
+				{"recipient": "3MuqNb9hd8Unt2pu4FQwvBFBCHxmkMwQdMT", "amount": 2107}, 
+				{"recipient": "3N21czxyJNWZ6wzvTVytVedd44uZ98jXSvw", "amount": 1385}
+				]
+			</div>
+			<div id=massList3 onclick="copyText('massList3')">
+			</div>
+		</div>
+		<script type="text/javascript">
+			setElementValue('node-input', waves._options.NODE_URL);
+		</script>
+	</body>
+</html>

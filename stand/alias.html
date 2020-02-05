@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
-		<title>Transfer TX test page</title>
+		<title>Alias TX test page</title>
 		<style>
 			html,
 			body,
@@ -37,30 +37,17 @@
 			<button onclick="waves.logout().then(el => {setElementHTML('login-return', '')});">Logout</button>
 		</div>
 		<div>
-			<h1>Transfer Tx</h1>
-			<div>Amount: <input id='transfer-amount'></div>
-			<div>Recipient: <input id='transfer-recipient'></div>
-			<div>AssetId: <input id='transfer-assetId'></div>
-			<div>Fee AssetId: <input id='transfer-feeAssetId'></div>
-			<div>Fee: <input id='transfer-fee'></div>
-			<div>Attachment: <input id='transfer-attachment'></div>
-			<div id='transfer-return'></div>
-			<button onclick="transferTx(
-			getFromInput('transfer-amount'),
-			getFromInput('transfer-recipient'),
-			getFromInput('transfer-assetId'),
-			getFromInput('transfer-feeAssetId'),
-			getFromInput('transfer-fee'),
-			getFromInput('transfer-attachment'))
-			.then(tx => {console.log(tx); setElementHTML('transfer-return', getNodeTxLink(tx.id))})
-			.catch(err => {console.log(err); if(err.message) {setElementHTML('transfer-return', err.message)} else {setElementHTML('transfer-return', err)}});
+			<h1>Alias Tx</h1>
+			<div>Alias: <input id='alias-alias'></div>
+			<div>Fee: <input id='alias-fee'></div>
+			<div id='alias-return'></div>
+			<button onclick="newAlias(
+			getFromInput('alias-alias'),
+			getFromInput('alias-fee'))
+			.then(tx => {console.log(tx); setElementHTML('alias-return', getNodeTxLink(tx.id))})
+			.catch(err => {console.log(err); if(err.message) {setElementHTML('alias-return', err.message)} else {setElementHTML('alias-return', err)}});
 			setElementHTML('login-return', waves._userData.address);
 			">Send TX</button>
-			<br>
-			<div>Sponsored AssetId: </div>
-			<div id="sponsored-asset-id" onclick="copyText('sponsored-asset-id')">2CjLFYkp4W4sEAxCjFG9oD3smfhvV6yQnNmiJyexbLdu</div>
-			<div>Bitcoin AssetId:</div>
-			<div id="bitcoin-asset-id" onclick="copyText('bitcoin-asset-id')">DWgwcZTMhSvnyYCoWLRUXXSH1RSkzThXLJhww9gwkqdn</div>
 		</div>
 		<script type="text/javascript">
 			setElementValue('node-input', waves._options.NODE_URL);

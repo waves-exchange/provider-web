@@ -98,3 +98,97 @@ var signMessage = function(message) {
 var signCustomData = function(data) {
 	return waves.signTypedData(JSON.parse(data || '[]'));
 }
+
+var startLease = function(amount, recipient, fee) {
+    return waves.lease({
+            amount: amount,
+            recipient: recipient,
+            fee: fee || null
+        })
+        .broadcast();
+}
+
+var issueAsset = function(name, decimals, quantity, reissuable, description, script) {
+    return waves.issue({
+            name: name,
+            decimals: parseInt(decimals),
+            quantity: quantity,
+            reissuable: reissuable, 
+            description: description,
+            script: script || null
+        })
+        .broadcast();
+}
+
+var burnAsset = function(assetId, quantity, fee) {
+    return waves.burn({
+            assetId: assetId,
+            quantity: quantity,
+            fee: fee || null
+        })
+        .broadcast();
+}
+
+var cancelLease = function(leaseId, fee) {
+    return waves.cancelLease({
+            leaseId: leaseId,
+            fee: fee || null
+        })
+        .broadcast();
+}
+
+var setSponsorship = function(assetId, rate, fee) {
+    return waves.sponsorship({
+            assetId: assetId,
+            minSponsoredAssetFee: rate || 0,
+            fee: fee || null
+        })
+        .broadcast();
+}
+
+var setAssetScript = function(assetId, script, fee) {
+    return waves.setAssetScript({
+            assetId: assetId,
+            script: script || null,
+            fee: fee || null
+        })
+        .broadcast();
+}
+
+var newAlias = function(alias, fee) {
+    return waves.alias({
+            alias: alias,
+            fee: fee || null
+        })
+        .broadcast();
+}
+
+var setScript = function(script, fee) {
+    return waves.setScript({
+            script: script || null,
+            fee: fee || null
+        })
+        .broadcast();
+}
+
+var reissueAsset = function(assetId, quantity, reissuable, fee) {
+    return waves.reissue({
+            assetId: assetId,
+            quantity: quantity,
+            reissuable: reissuable,
+            fee: fee || null
+        })
+        .broadcast();
+}
+
+var massTransfer = function(assetId, transfers, attachment, fee) {
+    transfers = JSON.parse(transfers || '[]');
+    
+    return waves.massTransfer({
+        assetId: assetId || null,
+        transfers: transfers,
+        attachment: attachment || null,
+        fee: fee || null
+    })
+    .broadcast();
+}
