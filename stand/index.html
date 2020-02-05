@@ -62,6 +62,27 @@
     </head>
 
     <body>
+        <div style="margin-top: 200px;">
+            <h2>
+                Sign massTransfer
+            </h2>
+            <button onclick="waves.massTransfer({
+                assetId: 'BC2RVCn2NzoWM8s5MVr2Tns9EmcxL6guMgnDWy3Uj8nA',
+                transfers: [
+                    {
+                        amount: 10,
+                        recipient: 'merry'
+                    },
+                    {
+                        amount: 20,
+                        recipient: '3PCAB4sHXgvtu5NPoen6EXR5yaNbvsEA8Fj'
+                    }
+                ],
+                attachment: '72k1xXWG59fYdzSNoA'
+            }).broadcast()">
+                massTransfer
+            </button>
+        </div >
         <div>
             <h1>Clear</h1>
             <button onclick="localStorage.clear()">Clear storage</button>
@@ -179,4 +200,5 @@
             </button>
         </div>
     </body>
+
 </html>
