@@ -56,42 +56,58 @@ export const SignSponsorshipComponent: FC<Props> = ({
     >
         <Flex px="$40" py="$20" bg="main.$900">
             {isSponsorshipEnable ? (
-                <Flex
-                    alignItems="center"
-                    justifyContent="center"
-                    borderRadius="circle"
-                    bg="rgba(129, 201, 38, 0.1)"
-                    height={60}
-                    width={60}
-                >
-                    <Icon
-                        icon={iconSponsorshipEnableTransaction}
-                        size={40}
-                        color="#81c926"
-                    />
-                </Flex>
+                <>
+                    <Flex
+                        alignItems="center"
+                        justifyContent="center"
+                        borderRadius="circle"
+                        bg="rgba(129, 201, 38, 0.1)"
+                        height={60}
+                        width={60}
+                    >
+                        <Icon
+                            icon={iconSponsorshipEnableTransaction}
+                            size={40}
+                            color="#81c926"
+                        />
+                    </Flex>
+                    <Flex ml="$20" alignItems="center">
+                        <Text
+                            fontSize="26px"
+                            lineHeight="32px"
+                            color="standard.$0"
+                        >
+                            Sign Enable Sponsorship TX
+                        </Text>
+                    </Flex>
+                </>
             ) : (
-                <Flex
-                    alignItems="center"
-                    justifyContent="center"
-                    borderRadius="circle"
-                    bg="rgba(248, 183, 0, 0.1)"
-                    height={60}
-                    width={60}
-                >
-                    <Icon
-                        icon={iconSponsorshipDisableTransaction}
-                        size={40}
-                        color="warning.$500"
-                    />
-                </Flex>
+                <>
+                    <Flex
+                        alignItems="center"
+                        justifyContent="center"
+                        borderRadius="circle"
+                        bg="rgba(248, 183, 0, 0.1)"
+                        height={60}
+                        width={60}
+                    >
+                        <Icon
+                            icon={iconSponsorshipDisableTransaction}
+                            size={40}
+                            color="warning.$500"
+                        />
+                    </Flex>
+                    <Flex ml="$20" alignItems="center">
+                        <Text
+                            fontSize="26px"
+                            lineHeight="32px"
+                            color="standard.$0"
+                        >
+                            Sign Disable Sponsorship TX
+                        </Text>
+                    </Flex>
+                </>
             )}
-
-            <Flex ml="$20" alignItems="center">
-                <Text fontSize="26px" lineHeight="32px" color="standard.$0">
-                    Sign Enable Sponsorship TX
-                </Text>
-            </Flex>
         </Flex>
 
         <Tabs>
