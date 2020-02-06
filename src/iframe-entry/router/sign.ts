@@ -24,6 +24,7 @@ import omit from 'ramda/es/omit';
 import { SignTransfer } from '../pages/SignTransfer/SignTransferContainer';
 import { SignInvoke } from '../pages/SignInvoke/SignInvokeContainer';
 import { SignDataContainer } from '../pages/SignData/SignDataContainer';
+import { SignLease } from '../pages/SignLease/SignLeaseContainer';
 import { SignCancelLease } from '../pages/SignCancelLease/SignCancelLeaseContainer';
 import { SignIssueContainer } from '../pages/SignIssue/SignIssueContainer';
 import { SignBurnContainer } from '../pages/SignBurn/SignBurnContainer';
@@ -42,7 +43,7 @@ const getPageByType = (type: keyof TRANSACTION_TYPE_MAP): ReactNode => {
         case NAME_MAP.exchange:
             throw new Error('Unsupported type!'); // TODO
         case NAME_MAP.lease:
-            throw new Error('Unsupported type!'); // TODO
+            return SignLease;
         case NAME_MAP.cancelLease:
             return SignCancelLease;
         case NAME_MAP.alias:

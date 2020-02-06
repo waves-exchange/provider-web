@@ -205,8 +205,29 @@
                 { key: 'key', value: 123123123, type: 'integer' },
                 { key: 'key', value: true, type: 'boolean' },
             ])"
-            ></button>
+            >Sign Data</button>
         </div>
+
+        <div>
+            <h2>
+                Lease
+            </h2>
+            <button
+                onclick="waves.lease({
+                    amount: 677728840,
+                    recipient: '3PCAB4sHXgvtu5NPoen6EXR5yaNbvsEA8Fj'
+                }).broadcast()"
+            >Lease
+            </button>
+            <button
+                onclick="waves.lease({
+                    amount: 677728840,
+                    recipient: 'alias:T:merry'
+                }).broadcast()"
+            >Lease to Merry by alias
+            </button>
+        </div>
+
         <div>
             <h2>
                 Cancel Lease
