@@ -5,11 +5,11 @@ import { WAVES } from '../../constants';
 import { useTxHandlers } from '../../hooks/useTxHandlers';
 import { analytics } from '../../utils/analytics';
 import { isAlias } from '../../utils/isAlias';
-import { getPrintableNumber } from '../../utils/math';
 import { SignInvoke as SignInvokeComponent } from './SignInvokeComponent';
 import { assetPropFactory } from '../../utils/assetPropFactory';
 import { useHandleFeeSelect } from '../../hooks/useHandleFeeSelect';
 import { getUserName } from '../../services/userService';
+import { getPrintableNumber } from '../../utils/math';
 
 export interface IPayment {
     assetId: string | null;
@@ -69,7 +69,6 @@ export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
 
     return (
         <SignInvokeComponent
-            key={tx.id}
             userAddress={user.address}
             userName={getUserName(networkByte, user.publicKey)}
             userBalance={user.balance}

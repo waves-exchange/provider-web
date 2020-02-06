@@ -25,6 +25,7 @@ import { SignTransfer } from '../pages/SignTransfer/SignTransferContainer';
 import { SignInvoke } from '../pages/SignInvoke/SignInvokeContainer';
 import { SignDataContainer } from '../pages/SignData/SignDataContainer';
 import { SignCancelLease } from '../pages/SignCancelLease/SignCancelLeaseContainer';
+import { SignIssueContainer } from '../pages/SignIssue/SignIssueContainer';
 
 const getPageByType = (type: keyof TRANSACTION_TYPE_MAP): ReactNode => {
     switch (type) {
@@ -34,6 +35,8 @@ const getPageByType = (type: keyof TRANSACTION_TYPE_MAP): ReactNode => {
             return SignInvoke;
         case NAME_MAP.data:
             return SignDataContainer;
+        case NAME_MAP.issue:
+            return SignIssueContainer;
         case NAME_MAP.exchange:
             throw new Error('Unsupported type!'); // TODO
         case NAME_MAP.lease:
@@ -67,31 +70,32 @@ export default function(
         const [info] = transactions;
 
         return new Promise((resolve, reject) => {
+            const props = {
+                ...info,
+                networkByte: state.networkByte,
+                user: {
+                    ...omit(['privateKey'], state.user),
+                    publicKey: libs.crypto.publicKey({
+                        privateKey: state.user.privateKey,
+                    }),
+                },
+                onConfirm: (transaction) => {
+                    resolve(
+                        signTx(transaction as any, {
+                            privateKey: state.user.privateKey,
+                        }) as any
+                    );
+                },
+                onCancel: () => {
+                    reject(new Error('User rejection!'));
+                },
+            } as ISignTxProps<TTransactionParamWithType>;
+
             renderPage(
-                React.createElement(
-                    getPageByType(info.tx.type) as any,
-                    {
-                        ...info,
-                        networkByte: state.networkByte,
-                        nodeUrl: state.nodeUrl,
-                        user: {
-                            ...omit(['privateKey'], state.user),
-                            publicKey: libs.crypto.publicKey({
-                                privateKey: state.user.privateKey,
-                            }),
-                        },
-                        onConfirm: (transaction) => {
-                            resolve(
-                                signTx(transaction as any, {
-                                    privateKey: state.user.privateKey,
-                                }) as any
-                            );
-                        },
-                        onCancel: () => {
-                            reject(new Error('User rejection!'));
-                        },
-                    } as ISignTxProps<TTransactionParamWithType>
-                )
+                React.createElement(getPageByType(info.tx.type) as any, {
+                    key: info.tx.id,
+                    ...props,
+                })
             );
         });
     });

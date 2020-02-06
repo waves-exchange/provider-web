@@ -62,6 +62,33 @@
     </head>
 
     <body>
+
+        <div style="margin-top: 200px;">
+            <h2>
+                Sign Burn
+            </h2>
+            <button onclick="waves.burn({
+                assetId: '9FKPH2PVQXpe8cuHHJkMKJMxdCmFZrPZftZTkPzhYXtj',
+                quantity: '1',
+            }).broadcast()">
+                Burn
+            </button>
+        </div >
+        <div>
+            <h2>
+                Sign Issue
+            </h2>
+            <button onclick="waves.issue({
+                name: 'Name of Token',
+                decimals: 2,
+                quantity: 1000,
+                reissuable: false,
+                description: 'Description of token',
+                script: 'base64:AAIDAAAAAAAAAAQIARIAAAAAAAAAAAEAAAABaQEAAAADZm9vAAAAAAkBAAAACFdyaXRlU2V0AAAAAQUAAAADbmlsAAAAACvwfcA='
+            }).broadcast()">
+                Sign Issue
+            </button>
+        </div >
         <div>
             <h1>Clear</h1>
             <button onclick="localStorage.clear()">Clear storage</button>

@@ -70,7 +70,6 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
 
     return (
         <SignTransferComponent
-            key={tx.id}
             userAddress={user.address}
             userName={getUserName(networkByte, user.publicKey)}
             userBalance={user.balance}
