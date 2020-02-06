@@ -114,11 +114,7 @@ export const CreateAccountComponent: FC<IProps> = ({
                         color="basic.$500"
                     >
                         Set a single password for all your{' '}
-                        <ExternalLink
-                            href={getEnvAwareUrl()}
-                            variant="body1"
-                            target="_blank"
-                        >
+                        <ExternalLink href={getEnvAwareUrl()} variant="body1">
                             Waves.Exchange
                         </ExternalLink>{' '}
                         accounts.
@@ -195,7 +191,6 @@ export const CreateAccountComponent: FC<IProps> = ({
                                     '/files/Privacy_Policy_Waves.Exchange.pdf'
                                 )}
                                 variant="body2"
-                                target="_blank"
                             >
                                 Privacy policy
                             </ExternalLink>
@@ -245,7 +240,6 @@ export const CreateAccountComponent: FC<IProps> = ({
                     <ExternalLink
                         href={getEnvAwareUrl()}
                         variant="body2"
-                        target="_blank"
                         onClick={onExchangeLinkClick}
                     >
                         Waves.Exchange

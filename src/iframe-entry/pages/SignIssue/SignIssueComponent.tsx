@@ -26,7 +26,6 @@ import {
     SmartAssetLogo,
 } from '@waves.exchange/react-uikit';
 import { Help } from '../../components/Help/Help';
-import { AssetLogo } from '@waves.exchange/react-uikit/dist/esm/components/AssetLogo/AssetLogo';
 import { DataJson } from '../../components/DataJson/DataJson';
 import { IIssueTransaction, IWithId } from '@waves/ts-types';
 import { TLong } from '@waves/signer';
@@ -38,7 +37,7 @@ type Props = {
     assetName: string;
     assetDescription: string;
     assetType: string;
-    assetScript?: string;
+    assetScript?: string | null;
     decimals: number;
     userAddress: string;
     userName: string;
@@ -69,7 +68,10 @@ export const SignIssueComponent: FC<Props> = ({
     canConfirm,
     tx,
 }) => {
-    const { boundaryRef: helpTooltipBoundaryRef, popperOptions: helpTooltipPopperOptions } = useBoundedTooltip({
+    const {
+        boundaryRef: helpTooltipBoundaryRef,
+        popperOptions: helpTooltipPopperOptions,
+    } = useBoundedTooltip({
         left: 60,
         right: 60,
     });
@@ -213,7 +215,11 @@ export const SignIssueComponent: FC<Props> = ({
                                                 Asset Type
                                             </Text>
 
-                                            <Help popperOptions={helpTooltipPopperOptions}>
+                                            <Help
+                                                popperOptions={
+                                                    helpTooltipPopperOptions
+                                                }
+                                            >
                                                 <Text
                                                     variant="body1"
                                                     fontWeight={700}
@@ -264,7 +270,11 @@ export const SignIssueComponent: FC<Props> = ({
                                             >
                                                 Decimals
                                             </Text>
-                                            <Help popperOptions={helpTooltipPopperOptions}>
+                                            <Help
+                                                popperOptions={
+                                                    helpTooltipPopperOptions
+                                                }
+                                            >
                                                 <Text
                                                     variant="body1"
                                                     fontWeight={700}
@@ -302,7 +312,9 @@ export const SignIssueComponent: FC<Props> = ({
                                             </Text>
                                             <Help
                                                 showDelay={1500}
-                                                popperOptions={helpTooltipPopperOptions}
+                                                popperOptions={
+                                                    helpTooltipPopperOptions
+                                                }
                                             >
                                                 <Text
                                                     display="block"

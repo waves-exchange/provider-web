@@ -141,11 +141,7 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
                   color="basic.$500"
               >
                   Choose one of your{' '}
-                  <ExternalLink
-                      href={getEnvAwareUrl()}
-                      variant="body1"
-                      target="_blank"
-                  >
+                  <ExternalLink href={getEnvAwareUrl()} variant="body1">
                       Waves.Exchange
                   </ExternalLink>{' '}
                   accounts.
@@ -159,11 +155,7 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
                   color="basic.$500"
               >
                   Enter your{' '}
-                  <ExternalLink
-                      href={getEnvAwareUrl()}
-                      variant="body1"
-                      target="_blank"
-                  >
+                  <ExternalLink href={getEnvAwareUrl()} variant="body1">
                       Waves.Exchange
                   </ExternalLink>{' '}
                   password.
