@@ -91,12 +91,7 @@ export const SignLeaseComponent: FC<Props> = ({
 
             <TabPanels bg="main.$800" mb="$30" px="$40">
                 <TabPanel>
-                    <Flex
-                        flexDirection="column"
-                        bg="main.$800"
-                        borderTop="1px solid"
-                        borderTopColor="basic.$1000"
-                    >
+                    <Flex flexDirection="column">
                         <Text variant="body2" color="basic.$500">
                             Recipient
                         </Text>

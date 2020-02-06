@@ -49,12 +49,12 @@ export const SignLease: FC<ISignTxProps<ILeaseTransactionWithId<TLong>>> = ({
         <SignLeaseComponent
             userAddress={user.address}
             userName={userName}
-            userBalance={`${userBalance} Waves`}
+            userBalance={`${userBalance} ${WAVES.name}`}
             recipientAddress={recipientAddress}
             recipientName={cleanAddress(tx.recipient)}
             tx={tx}
-            amount={amount}
-            fee={fee}
+            amount={`${amount} ${WAVES.name}`}
+            fee={`${fee} ${WAVES.name}`}
             onReject={handleReject}
             onConfirm={handleConfirm}
         />
