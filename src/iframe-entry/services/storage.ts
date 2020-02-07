@@ -1,4 +1,4 @@
-import isNil from 'ramda/es/isNil';
+import isNil from 'ramda/es/empty';
 import { catchable, TCatchable } from '../utils/catchable';
 import { createMultiAccountHash } from '../utils/createMultiAccountHash';
 import { decryptMultiAccountData } from '../utils/decryptMultiAccountData';
@@ -15,6 +15,10 @@ class StorageService {
         termsAccepted: (accepted) => accepted === 'true',
         multiAccountUsers: (data) => JSON.parse(data ?? '{}'),
     };
+
+    private static hasValue(value: any): boolean {
+        return !isNil(value) && Boolean(value) === true;
+    }
 
     public update(storage: Partial<IStorage>): void {
         Object.entries(storage).forEach(([key, value]) => {
@@ -101,7 +105,9 @@ class StorageService {
         const encrypted = localStorage.getItem('multiAccountData');
         const hash = localStorage.getItem('multiAccountHash');
 
-        return !(isNil(hash) || isNil(encrypted));
+        return !(
+            StorageService.hasValue(hash) || StorageService.hasValue(encrypted)
+        );
     }
 }
 

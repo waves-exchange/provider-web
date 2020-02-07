@@ -15,14 +15,14 @@ module.exports = {
     // setupFilesAfterEnv: ['<rootDir>/jest/setupFilesAfterEnv.ts'],
     collectCoverageFrom: [
         // exclude
-        "!**/src/**/*.stories.tsx",
-        "!**/src/assets/**",
-        "!**/src/themes/**",
-        "!**/src/**/constants*",
-        "!**/src/**/styles.ts",
-        "!**/src/**/*.d.ts",
+        '!**/src/**/*.stories.tsx',
+        '!**/src/assets/**',
+        '!**/src/themes/**',
+        '!**/src/**/constants*',
+        '!**/src/**/styles.ts',
+        '!**/src/**/*.d.ts',
         // include
-        "**/src/**/*.tsx",
-        "**/src/**/*.ts",
-    ]
+        '**/src/**/*.tsx',
+        '**/src/**/*.ts',
+    ],
 };
