@@ -9,8 +9,9 @@ import {
     TabsList,
     Text,
     Copy,
-    SmartAssetLogo,
+    AssetLogoWithIcon,
     useBoundedTooltip,
+    iconSmartMini,
 } from '@waves.exchange/react-uikit';
 import { TLong } from '@waves/signer';
 import { IWithId, IBurnTransaction } from '@waves/ts-types';
@@ -114,8 +115,10 @@ export const SignBurn: FC<IProps> = ({
                                     Asset ID
                                 </Text>
                                 <Flex alignItems="center" mt="$5">
-                                    <SmartAssetLogo
-                                        isSmart={isSmartAsset}
+                                    <AssetLogoWithIcon
+                                        icon={iconSmartMini}
+                                        iconLabel="Smart asset"
+                                        iconVisible={isSmartAsset}
                                         assetId={assetId}
                                         name={assetName}
                                         variant="medium"
