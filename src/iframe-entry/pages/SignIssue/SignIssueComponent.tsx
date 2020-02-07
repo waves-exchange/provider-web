@@ -1,34 +1,28 @@
-import React, {
-    FC,
-    MouseEventHandler,
-    useState,
-    useCallback,
-    useEffect,
-    ChangeEventHandler,
-} from 'react';
-import { Confirmation } from '../../components/Confirmation';
 import {
+    AssetLogoWithIcon,
+    Box,
+    Checkbox,
+    Copy,
+    ExternalLink,
     Flex,
     Icon,
-    Text,
-    Tabs,
-    TabsList,
+    iconIssueTransaction,
+    iconSmartMini,
+    Label,
     Tab,
     TabPanel,
     TabPanels,
-    Box,
-    Checkbox,
-    Label,
-    Copy,
-    ExternalLink,
-    iconIssueTransaction,
+    Tabs,
+    TabsList,
+    Text,
     useBoundedTooltip,
-    SmartAssetLogo,
 } from '@waves.exchange/react-uikit';
-import { Help } from '../../components/Help/Help';
-import { DataJson } from '../../components/DataJson/DataJson';
-import { IIssueTransaction, IWithId } from '@waves/ts-types';
 import { TLong } from '@waves/signer';
+import { IIssueTransaction, IWithId } from '@waves/ts-types';
+import React, { ChangeEventHandler, FC, MouseEventHandler } from 'react';
+import { Confirmation } from '../../components/Confirmation';
+import { DataJson } from '../../components/DataJson/DataJson';
+import { Help } from '../../components/Help/Help';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
 
 type Props = {
@@ -77,8 +71,8 @@ export const SignIssueComponent: FC<Props> = ({
     });
 
     const {
-        boundaryRef: smartAssetLogoTooltipBoundaryRef,
-        popperOptions: smartAssetLogoPopperOptions,
+        boundaryRef: assetLogoWithIconTooltipBoundaryRef,
+        popperOptions: assetLogoWithIconPopperOptions,
     } = useBoundedTooltip({ left: 0 });
 
     return (
@@ -146,20 +140,22 @@ export const SignIssueComponent: FC<Props> = ({
                             <Flex
                                 flexDirection="column"
                                 bg="main.$800"
-                                ref={smartAssetLogoTooltipBoundaryRef}
+                                ref={assetLogoWithIconTooltipBoundaryRef}
                             >
                                 <Text variant="body2" color="basic.$500">
                                     Asset ID
                                 </Text>
                                 <Flex alignItems="center" mt="$5">
-                                    <SmartAssetLogo
+                                    <AssetLogoWithIcon
                                         assetId={assetId}
                                         name={assetName}
                                         variant="medium"
                                         flexShrink={0}
-                                        isSmart={Boolean(assetScript)}
+                                        icon={iconSmartMini}
+                                        iconVisible={Boolean(assetScript)}
+                                        iconLabel="Smart asset"
                                         popperOptions={
-                                            smartAssetLogoPopperOptions
+                                            assetLogoWithIconPopperOptions
                                         }
                                     />
                                     <Copy

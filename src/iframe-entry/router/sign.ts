@@ -29,6 +29,7 @@ import { SignCancelLease } from '../pages/SignCancelLease/SignCancelLeaseContain
 import { SignIssueContainer } from '../pages/SignIssue/SignIssueContainer';
 import { SignBurnContainer } from '../pages/SignBurn/SignBurnContainer';
 import { SignSetAssetScriptContainer } from '../pages/SignSetAssetScript/SignSetAssetScriptContainer';
+import { SignSponsorship } from '../pages/SignSponsorship/SignSponsorshipContainer';
 
 const getPageByType = (type: keyof TRANSACTION_TYPE_MAP): ReactNode => {
     switch (type) {
@@ -53,7 +54,7 @@ const getPageByType = (type: keyof TRANSACTION_TYPE_MAP): ReactNode => {
         case NAME_MAP.setScript:
             throw new Error('Unsupported type!'); // TODO
         case NAME_MAP.sponsorship:
-            throw new Error('Unsupported type!'); // TODO
+            return SignSponsorship;
         case NAME_MAP.setAssetScript:
             return SignSetAssetScriptContainer;
         case NAME_MAP.burn:

@@ -11,7 +11,8 @@ import {
     Copy,
     ExternalLink,
     useBoundedTooltip,
-    SmartAssetLogo,
+    AssetLogoWithIcon,
+    iconSmartMini,
 } from '@waves.exchange/react-uikit';
 import { TLong } from '@waves/signer';
 import { ISetAssetScriptTransactionWithId } from '@waves/ts-types';
@@ -125,8 +126,10 @@ export const SignSetAssetScript: FC<IProps> = ({
                                     Asset ID
                                 </Text>
                                 <Flex alignItems="center" mt="$5">
-                                    <SmartAssetLogo
-                                        isSmart={Boolean(assetScript)}
+                                    <AssetLogoWithIcon
+                                        icon={iconSmartMini}
+                                        iconLabel="Smart asset"
+                                        iconVisible={Boolean(assetScript)}
                                         assetId={assetId}
                                         name={assetName}
                                         variant="medium"
