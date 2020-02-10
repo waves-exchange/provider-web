@@ -16,10 +16,6 @@ class StorageService {
         multiAccountUsers: (data) => JSON.parse(data ?? '{}'),
     };
 
-    private static hasValue(value: any): boolean {
-        return !isNil(value) && Boolean(value) === true;
-    }
-
     public update(storage: Partial<IStorage>): void {
         Object.entries(storage).forEach(([key, value]) => {
             if (value != null) {
@@ -66,7 +62,7 @@ class StorageService {
             localStorage.getItem('multiAccountHash') || 'null'
         );
 
-        if (isNil(hash) || isNil(encrypted)) {
+        if (!hash || !encrypted) {
             return {
                 ok: true,
                 resolveData: {},
@@ -105,9 +101,7 @@ class StorageService {
         const encrypted = localStorage.getItem('multiAccountData');
         const hash = localStorage.getItem('multiAccountHash');
 
-        return !(
-            StorageService.hasValue(hash) || StorageService.hasValue(encrypted)
-        );
+        return !!hash && !!encrypted;
     }
 }
 
