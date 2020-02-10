@@ -155,7 +155,11 @@ export const SignSponsorshipComponent: FC<Props> = ({
                                         name={sponsorAsset.name}
                                         icon={iconSponsorshipMini}
                                         iconLabel="Sponsorship"
-                                        iconVisible={!isSponsorshipEnable}
+                                        iconVisible={
+                                            Number(
+                                                sponsorAsset.minSponsoredAssetFee
+                                            ) > 0
+                                        }
                                         logo={sponsorAsset.logo}
                                         variant="medium"
                                         flexShrink={0}
