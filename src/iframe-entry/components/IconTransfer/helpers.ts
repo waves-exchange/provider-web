@@ -1,20 +1,14 @@
-import {
-    ITransferTransactionWithId,
-    IMassTransferTransactionWithId,
-} from '@waves/ts-types';
-import { TLong } from '@waves/signer';
 import { cleanAddress } from '../../utils/cleanAlias';
 import { isAlias } from '../../utils/isAlias';
 import { IconTransferType } from './IconTransfer';
+import { TransferTx } from '../../pages/SignTransfer/SignTransferContainer';
 
 const getAlias = (address: string): string => {
     return isAlias(address) ? cleanAddress(address) : '';
 };
 
 type GetIcon = (
-    tx:
-        | ITransferTransactionWithId<TLong>
-        | IMassTransferTransactionWithId<TLong>,
+    tx: TransferTx,
     user: { address: string; publicKey: string },
     userAliases: string[]
 ) => IconTransferType;

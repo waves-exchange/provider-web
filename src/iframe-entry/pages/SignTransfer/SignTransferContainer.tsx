@@ -7,7 +7,7 @@ import { analytics } from '../../utils/analytics';
 import { SignTransfer as SignTransferComponent } from './SignTransferComponent';
 import { getUserName } from '../../services/userService';
 import { useHandleFeeSelect } from '../../hooks/useHandleFeeSelect';
-import { getTransferViewData, isTransferMeta } from './helpers';
+import { getViewData, isTransferMeta } from './helpers';
 import {
     ITransferTransactionWithId,
     IMassTransferTransactionWithId,
@@ -48,12 +48,10 @@ export const SignTransfer: FC<ISignTxProps<TransferType>> = ({
 
     const [handleFeeSelect, txJSON] = useHandleFeeSelect(tx);
 
-    const {
-        totalTransferAmount,
-        transferList,
-        fee,
-        attachement,
-    } = getTransferViewData(tx, txMeta);
+    const { totalTransferAmount, transferList, fee, attachment } = getViewData(
+        tx,
+        txMeta
+    );
 
     const isMassTransfer = tx.type === 11;
 
@@ -64,7 +62,7 @@ export const SignTransfer: FC<ISignTxProps<TransferType>> = ({
             userBalance={user.balance}
             transferList={transferList}
             transferFee={fee}
-            attachement={attachement}
+            attachment={attachment}
             tx={tx}
             meta={isTransferMeta(txMeta) ? txMeta : undefined}
             onReject={handleReject}

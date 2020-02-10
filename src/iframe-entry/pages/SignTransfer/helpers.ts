@@ -1,73 +1,94 @@
-import { WAVES } from '../../constants';
+import { WAVES, NAME_MAP } from '../../constants';
 import { TransferTx, TransferMeta } from './SignTransferContainer';
 import { DetailsWithLogo } from '../../utils/loadLogoInfo';
 import { getPrintableNumber } from '../../utils/math';
 import { isAlias } from '../../utils/isAlias';
-import { TLong, ITransferWithType } from '@waves/signer';
+import { TLong, ITransferWithType, TRANSACTION_NAME_MAP } from '@waves/signer';
 import BigNumber from '@waves/bignumber';
-import { catchable } from '../../utils/catchable';
-import { libs } from '@waves/waves-transactions';
-import { compose } from 'ramda';
-import { TAssetDetails } from '@waves/node-api-js/es/api-node/assets';
+import { libs, IMassTransferItem } from '@waves/waves-transactions';
 import { IMeta } from '../../services/transactionsService';
 
-export const isTransferMeta = (
-    meta: TransferMeta
-): meta is IMeta<ITransferWithType> => meta.params.type === 4;
+type TxType =
+    | TRANSACTION_NAME_MAP['transfer']
+    | TRANSACTION_NAME_MAP['massTransfer'];
+type Asset = Pick<DetailsWithLogo, 'name' | 'assetId' | 'decimals'>;
+export type MetaAssets = Record<string, Asset>;
+export type MetaAliases = Record<string, string>;
+
+type GetAmountAsset = (
+    assetId: string | null | undefined,
+    assets: MetaAssets
+) => Asset;
+
+export const getAmountAsset: GetAmountAsset = (assetId, assets) =>
+    assetId === null || assetId === undefined ? WAVES : assets[assetId];
 
 type GetAssetName = (
-    assets: Record<string, TAssetDetails<TLong>>,
-    assetId: string | null
+    assetId: string | null | undefined,
+    assets: MetaAssets
 ) => string;
-const getAssetName: GetAssetName = (assets, assetId) =>
-    assetId !== null ? assets[assetId].name : WAVES.name;
 
-type GetFeeAsset = (tx: TransferTx, meta: TransferMeta) => DetailsWithLogo;
-export const getFeeAsset: GetFeeAsset = (tx, meta) => {
-    // Mass Transfer or feeAssetId === Waves
-    if (tx.type === 11 || tx.feeAssetId === null) {
+export const getAssetName: GetAssetName = (assetId, assets) => {
+    return assetId === null || assetId === 'WAVES' || assetId === undefined
+        ? WAVES.name
+        : assets[assetId].name;
+};
+
+type GetFeeAsset = (
+    txType: TxType,
+    assets: MetaAssets,
+    txFeeAssetId?: string | null
+) => Asset;
+
+export const getFeeAsset: GetFeeAsset = (txType, assets, txFeeAssetId) => {
+    if (
+        // Mass Transfer or feeAssetId === Waves
+        txType === 11 ||
+        txFeeAssetId === null ||
+        typeof txFeeAssetId === 'undefined'
+    ) {
         return WAVES;
     }
 
-    return meta.assets[tx.feeAssetId];
+    return assets[txFeeAssetId];
 };
 
-const getRecipientAddress = (recipient: string, meta: TransferMeta): string =>
-    isAlias(recipient) ? meta.aliases[recipient] : recipient;
+type GetRecipientAddress = (recipient: string, aliases: MetaAliases) => string;
+
+export const getRecipientAddress: GetRecipientAddress = (
+    recipient,
+    aliases
+): string => (isAlias(recipient) ? aliases[recipient] : recipient);
 
 type Recepient = { name: string; address: string };
-
 type RawTransferListItem = Recepient & {
     amount: TLong;
 };
-
 type GetRawTransferList = (
-    tx: TransferTx,
-    meta: TransferMeta
+    aliases: MetaAliases,
+    massTransfers: IMassTransferItem<TLong>[]
 ) => RawTransferListItem[];
 
-export const getRawTransfersList: GetRawTransferList = (tx, meta) => {
-    if (tx.type === 11) {
-        return tx.transfers.map(({ amount, recipient }) => ({
-            name: recipient,
-            address: getRecipientAddress(recipient, meta),
-            amount: amount,
-        }));
-    }
-
-    return [
-        {
-            name: tx.recipient,
-            address: getRecipientAddress(tx.recipient, meta),
-            amount: tx.amount,
-        },
-    ];
+export const getRawTransfersList: GetRawTransferList = (
+    aliases,
+    massTransfers
+) => {
+    return massTransfers.map(({ amount, recipient }) => ({
+        name: recipient,
+        address: getRecipientAddress(recipient, aliases),
+        amount: amount,
+    }));
 };
 
-export const getTotalTransferAmount = (
+type GetTotalTransferAmount = (
     rawTransferList: RawTransferListItem[],
     decimals: number
-): string => {
+) => string;
+
+export const getTotalTransferAmount: GetTotalTransferAmount = (
+    rawTransferList,
+    decimals
+) => {
     const sum = rawTransferList.reduce((sum, { amount }) => {
         return BigNumber.toBigNumber(amount).add(sum);
     }, BigNumber.toBigNumber(0));
@@ -75,7 +96,7 @@ export const getTotalTransferAmount = (
     return getPrintableNumber(sum.toString(), decimals);
 };
 
-type TransferListItem = Recepient & {
+export type TransferListItem = Recepient & {
     amount: string;
 };
 
@@ -90,40 +111,160 @@ export const getTransferList: GetTransferList = (rawTransferList, decimals) =>
         amount: getPrintableNumber(item.amount, decimals),
     }));
 
+type GetFeeAssetName = (
+    txType: TxType,
+    assets: MetaAssets,
+    feeAssetId?: string | null
+) => string;
+
+export const getFeeAssetName: GetFeeAssetName = (
+    txType,
+    assets,
+    feeAssetId
+) => {
+    return txType === 11 || feeAssetId === 'undefined' || feeAssetId === null
+        ? WAVES.name
+        : getAssetName(getFeeAsset(txType, assets, feeAssetId).assetId, assets);
+};
+
 type TransferViewData = {
     totalTransferAmount: string;
     transferList: TransferListItem[];
     fee: string;
-    attachement: string;
+    attachment: string;
 };
-type GetTransferViewData = (
-    tx: TransferTx,
-    meta: TransferMeta
-) => TransferViewData;
 
-export const getTransferViewData: GetTransferViewData = (tx, meta) => {
-    const amountAsset = tx.assetId === null ? WAVES : meta.assets[tx.assetId];
+type GetPrintableTxFee = (args: {
+    txType: TxType;
+    txFee: TLong;
+    assets: MetaAssets;
+    txFeeAssetId?: string | null;
+}) => string;
 
-    const rawTransferList = getRawTransfersList(tx, meta);
-    const feeAsset = getFeeAsset(tx, meta);
+export const getPrintableTxFee: GetPrintableTxFee = ({
+    txType,
+    txFee,
+    assets,
+    txFeeAssetId,
+}) =>
+    `${getPrintableNumber(
+        txFee,
+        getFeeAsset(txType, assets, txFeeAssetId).decimals
+    )} ${getFeeAssetName(txType, assets, txFeeAssetId)}`;
 
-    const attachement = catchable(
-        compose(libs.crypto.bytesToString, libs.crypto.base58Decode)
-    )(tx.attachment);
+type GetTransferViewData = (args: {
+    txRecipient: string;
+    txAssetId?: string | null;
+    txFee: TLong;
+    txFeeAssetId: string | null;
+    txAmount: TLong;
+    assets: Record<string, Asset>;
+    aliases: Record<string, string>;
+}) => Omit<TransferViewData, 'attachment'>;
+
+export const getTransferViewData: GetTransferViewData = ({
+    txRecipient,
+    txAssetId,
+    txFee,
+    txFeeAssetId,
+    txAmount,
+    assets,
+    aliases,
+}) => {
+    const { name, decimals } = getAmountAsset(txAssetId, assets);
+
+    return {
+        totalTransferAmount: `${getPrintableNumber(
+            txAmount,
+            decimals
+        )} ${name}`,
+        transferList: [
+            {
+                name: txRecipient,
+                address: getRecipientAddress(txRecipient, aliases),
+                amount: getPrintableNumber(txAmount, decimals),
+            },
+        ],
+        fee: getPrintableTxFee({
+            txType: NAME_MAP.transfer,
+            txFee,
+            assets,
+            txFeeAssetId,
+        }),
+    };
+};
+
+type GetMassTransferViewData = (args: {
+    txTransfers: IMassTransferItem<TLong>[];
+    txAssetId?: string | null;
+    txFee: TLong;
+    assets: Record<string, Asset>;
+    aliases: Record<string, string>;
+}) => Omit<TransferViewData, 'attachment'>;
+
+export const getMassTransferViewData: GetMassTransferViewData = ({
+    txTransfers,
+    txAssetId,
+    txFee,
+    assets,
+    aliases,
+}) => {
+    const { name, decimals } = getAmountAsset(txAssetId, assets);
+
+    const rawTransferList = getRawTransfersList(aliases, txTransfers);
 
     return {
         totalTransferAmount: `${getTotalTransferAmount(
             rawTransferList,
-            amountAsset.decimals
-        )} ${amountAsset.name}`,
-        transferList: getTransferList(rawTransferList, amountAsset.decimals),
-        fee: `${getPrintableNumber(tx.fee, feeAsset.decimals)} ${
-            tx.type === 11 ||
-            tx.feeAssetId === 'undefined' ||
-            tx.feeAssetId === null
-                ? WAVES.ticker
-                : getAssetName(meta.assets, feeAsset.assetId)
-        }`,
-        attachement: attachement.ok ? attachement.resolveData : '',
+            decimals
+        )} ${name}`,
+        transferList: getTransferList(rawTransferList, decimals),
+        fee: getPrintableTxFee({
+            txType: NAME_MAP.transfer,
+            txFee,
+            assets,
+        }),
     };
 };
+
+type GetViewData = (tx: TransferTx, meta: TransferMeta) => TransferViewData;
+
+export const getViewData: GetViewData = (tx, { aliases, assets }) => {
+    const transferViewData =
+        tx.type === 4
+            ? getTransferViewData({
+                  aliases: aliases,
+                  assets: assets,
+                  txAssetId: tx.assetId,
+                  txRecipient: tx.recipient,
+                  txAmount: tx.amount,
+                  txFee: tx.fee,
+                  txFeeAssetId: tx.feeAssetId,
+              })
+            : getMassTransferViewData({
+                  aliases: aliases,
+                  assets: assets,
+                  txAssetId: tx.assetId,
+                  txTransfers: tx.transfers,
+                  txFee: tx.fee,
+              });
+
+    let attachment = '';
+
+    try {
+        attachment = libs.crypto.bytesToString(
+            libs.crypto.base58Decode(tx.attachment || '')
+        );
+    } catch (e) {
+        // Do not have to do anything
+    }
+
+    return {
+        ...transferViewData,
+        attachment,
+    };
+};
+
+export const isTransferMeta = (
+    meta: TransferMeta
+): meta is IMeta<ITransferWithType> => meta.params.type === NAME_MAP.transfer;

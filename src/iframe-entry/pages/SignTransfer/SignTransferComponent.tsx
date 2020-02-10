@@ -27,7 +27,6 @@ import { WAVES } from '../../constants';
 import { DataJson } from '../../components/DataJson/DataJson';
 import { TransferTx } from './SignTransferContainer';
 import { IMeta } from '../../services/transactionsService';
-import { borderStyle } from 'styled-system';
 
 type TransferListItem = {
     name: string;
@@ -39,7 +38,7 @@ type Props = {
     userName: string;
     userBalance: TLong;
     transferAmount: string;
-    attachement: string;
+    attachment: string;
     transferFee: string;
     tx: TransferTx;
     meta?: IMeta<ITransferWithType>;
@@ -56,7 +55,7 @@ export const SignTransfer: FC<Props> = ({
     userAddress,
     userBalance,
     userName,
-    attachement,
+    attachment,
     transferAmount,
     iconType,
     tx,
@@ -176,7 +175,7 @@ export const SignTransfer: FC<Props> = ({
                             </Box>
                         )}
 
-                        {attachement ? (
+                        {attachment ? (
                             <>
                                 <Text
                                     mt="$20"
@@ -194,7 +193,7 @@ export const SignTransfer: FC<Props> = ({
                                     bg="basic.$900"
                                     borderRadius="$4"
                                 >
-                                    {attachement}
+                                    {attachment}
                                 </Text>
                             </>
                         ) : null}

@@ -15,7 +15,7 @@
   "scripts": {
     "watch": "webpack --watch",
     "postversion": "npm publish",
-    "prepublish": "npm run build",
+    "prepublish": "npm run test && npm run build",
     "prettier": "prettier --ignore-path .gitignore \"./src/**/*.+(ts|tsx)\"",
     "format": "npm run prettier -- --write",
     "check-format": "npm run prettier -- --list-different",
