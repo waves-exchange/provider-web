@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from 'react';
+import React, { FC, useCallback, useEffect } from 'react';
 import { SignMessageComponent } from './SignMessageComponent';
 import { IUserWithBalances } from '../../../interface';
 import { useTxUser } from '../../hooks/useTxUser';
@@ -20,14 +20,24 @@ export const SignMessageContainer: FC<ISignMessageProps> = ({
     onCancel,
 }) => {
     const { userName, userBalance } = useTxUser(user, networkByte);
+
     const handleConfirm = useCallback(() => {
         onConfirm();
         analytics.send({ name: 'Confirm_Sign_Message_Confirm' });
     }, [onConfirm]);
+
     const handleReject = useCallback(() => {
         onCancel();
         analytics.send({ name: 'Confirm_Sign_Message_Reject' });
     }, [onCancel]);
+
+    useEffect(
+        () =>
+            analytics.send({
+                name: 'Confirm_Sign_Message_Show',
+            }),
+        []
+    );
 
     return (
         <SignMessageComponent

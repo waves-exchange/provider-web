@@ -114,7 +114,11 @@ export const CreateAccountComponent: FC<IProps> = ({
                         color="basic.$500"
                     >
                         Set a single password for all your{' '}
-                        <ExternalLink href={getEnvAwareUrl()} variant="body1">
+                        <ExternalLink
+                            href={getEnvAwareUrl()}
+                            variant="body1"
+                            onClick={onExchangeLinkClick}
+                        >
                             Waves.Exchange
                         </ExternalLink>{' '}
                         accounts.
