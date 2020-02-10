@@ -1,4 +1,3 @@
-import isNil from 'ramda/es/empty';
 import { catchable, TCatchable } from '../utils/catchable';
 import { createMultiAccountHash } from '../utils/createMultiAccountHash';
 import { decryptMultiAccountData } from '../utils/decryptMultiAccountData';
