@@ -3,7 +3,11 @@ import renderPage from '../utils/renderPage';
 import Preload from '../pages/Preload';
 import { IState } from '../interface';
 import { IUser, IUserWithBalances } from '../../interface';
-import { fetchWavesBalance, fetchAliasses } from '../services/userService';
+import {
+    fetchWavesBalance,
+    fetchAliasses,
+    fetchAddressHasScript,
+} from '../services/userService';
 import { Queue } from '../../utils/Queue';
 
 export const preload = (): void => {
@@ -16,12 +20,14 @@ export const loadUserData = (
     Promise.all([
         fetchAliasses(state.nodeUrl, state.user.address),
         fetchWavesBalance(state.nodeUrl, state.user.address),
-    ]).then(([aliases, balance]) => ({
+        fetchAddressHasScript(state.nodeUrl, state.user.address),
+    ]).then(([aliases, balance, hasScript]) => ({
         ...state,
         user: {
             ...state.user,
             aliases,
             balance,
+            hasScript,
         },
     }));
 

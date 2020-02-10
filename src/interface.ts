@@ -58,6 +58,7 @@ export interface IUser {
 export interface IUserWithBalances extends IUser {
     aliases: Array<string>;
     balance: TLong;
+    hasScript: boolean;
 }
 
 // eslint-disable-next-line prettier/prettier

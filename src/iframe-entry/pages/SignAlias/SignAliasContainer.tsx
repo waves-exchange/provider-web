@@ -41,6 +41,7 @@ export const SignAliasContainer: FC<ISignTxProps<IAliasWithType>> = ({
             userAddress={user.address}
             userName={userName}
             userBalance={`${userBalance} WAVES`}
+            userHasScript={user.hasScript}
             tx={tx}
             fee={`${fee} WAVES`}
             onConfirm={handleConfirm}

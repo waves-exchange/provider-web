@@ -1,12 +1,15 @@
-import { getUserId } from '../utils/getUserId';
-import { storage } from './storage';
-import { TCatchable } from '../utils/catchable';
-import { libs } from '@waves/waves-transactions';
-import { IPrivateSeedUserData } from '../interface';
-import { fetchBalance } from '@waves/node-api-js/es/api-node/addresses';
+import {
+    fetchBalance,
+    fetchScriptInfo,
+} from '@waves/node-api-js/es/api-node/addresses';
 import { fetchByAddress } from '@waves/node-api-js/es/api-node/alias';
 import { TLong } from '@waves/signer';
+import { libs } from '@waves/waves-transactions';
 import { IUser } from '../../interface';
+import { IPrivateSeedUserData } from '../interface';
+import { TCatchable } from '../utils/catchable';
+import { getUserId } from '../utils/getUserId';
+import { storage } from './storage';
 
 export function getUsers(
     password: string,
@@ -113,7 +116,7 @@ export function getUserName(networkByte: number, publicKey: string): string {
     const id = getUserId(networkByte, publicKey);
     const userData = storage.get('multiAccountUsers');
 
-    return userData[id]?.name ?? 'Waves Acount';
+    return userData[id]?.name ?? 'Waves Account';
 }
 
 export function hasMultiaccount(): boolean {
@@ -140,4 +143,13 @@ export function fetchWavesBalance(
     address: string
 ): Promise<TLong> {
     return fetchBalance(base, address).then((info) => info.balance);
+}
+
+export function fetchAddressHasScript(
+    base: string,
+    address: string
+): Promise<boolean> {
+    return fetchScriptInfo(base, address)
+        .then((info) => info.extraFee !== 0)
+        .catch(() => false);
 }
