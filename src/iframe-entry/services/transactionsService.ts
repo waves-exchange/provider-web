@@ -49,12 +49,14 @@ const loadAliases = (
 
 export const prepareTransactions = (
     state: IState<IUser>,
-    list: Array<TTransactionParamWithType>
+    list: Array<TTransactionParamWithType>,
+    timestamp: number
 ): Promise<Array<ITransactionInfo<TTransactionParamWithType>>> => {
     const transactions = list.map(
         getTransactionFromParams({
             networkByte: state.networkByte,
             privateKey: state.user.privateKey,
+            timestamp,
         })
     );
     const assetsIdList = getAssetIdListByTx(transactions);
