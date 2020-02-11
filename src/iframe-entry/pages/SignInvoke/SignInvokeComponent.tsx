@@ -11,6 +11,7 @@ import {
     TabsList,
     Text,
     AddressAvatar,
+    AddressLabel,
 } from '@waves.exchange/react-uikit';
 import { ICall, TLong, IInvokeWithType } from '@waves/signer';
 import { IInvokeScriptTransaction, IWithId } from '@waves/ts-types';
@@ -123,12 +124,14 @@ export const SignInvoke: FC<IProps> = ({
                         >
                             Account
                         </Text>
-                        <AddressAvatar
+                        <AddressLabel
                             address={dAppAddress}
                             alias={dAppName}
-                            addressWithCopy={true}
+                            withCopy={true}
                             mt="$5"
-                        />
+                        >
+                            <AddressAvatar address={dAppAddress} />
+                        </AddressLabel>
                     </Box>
 
                     {payment && payment.length > 0 && (

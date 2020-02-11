@@ -7,6 +7,7 @@ import {
     TabsList,
     Text,
     AddressAvatar,
+    AddressLabel,
 } from '@waves.exchange/react-uikit';
 import { ITransferWithType, TLong } from '@waves/signer';
 import { ITransferTransaction, IWithId } from '@waves/ts-types';
@@ -113,12 +114,14 @@ export const SignTransfer: FC<Props> = ({
                         <Text variant="body2" color="basic.$500">
                             Recipient
                         </Text>
-                        <AddressAvatar
+                        <AddressLabel
                             address={recipientAddress}
                             alias={recipientName}
-                            addressWithCopy={true}
+                            withCopy={true}
                             mt="$5"
-                        />
+                        >
+                            <AddressAvatar address={recipientAddress} />
+                        </AddressLabel>
 
                         {attachement ? (
                             <>

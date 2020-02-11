@@ -7,6 +7,7 @@ import {
     Box,
     Icon,
     iconCheck,
+    AddressLabel,
 } from '@waves.exchange/react-uikit';
 import React, { useEffect, FC, MouseEventHandler } from 'react';
 import { IUser } from '../../../interface';
@@ -81,7 +82,7 @@ export const SelectAccountComponent: FC<SelectAccountProps> = ({
             >
                 {users.map((user) => (
                     <RadioUser key={user.address} value={user}>
-                        <AddressAvatar
+                        <AddressLabel
                             address={user.address}
                             name={getUserName(
                                 networkByte,
@@ -89,7 +90,9 @@ export const SelectAccountComponent: FC<SelectAccountProps> = ({
                                     privateKey: user.privateKey,
                                 })
                             )}
-                        ></AddressAvatar>
+                        >
+                            <AddressAvatar address={user.address} />
+                        </AddressLabel>
                     </RadioUser>
                 ))}
             </RadioButtonGroup>

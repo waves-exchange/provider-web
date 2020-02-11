@@ -6,6 +6,7 @@ import {
     Flex,
     Text,
     TFlexProps,
+    AddressLabel,
 } from '@waves.exchange/react-uikit';
 import { FC, MouseEventHandler } from 'react';
 
@@ -46,13 +47,14 @@ export const Confirmation: FC<IConfirmationProps> = ({
             borderBottomColor="basic.$1000"
         >
             <Box mr="$10">
-                <AddressAvatar
-                    address={address}
+                <AddressLabel
                     isShort={true}
+                    address={address}
                     name={name}
-                    addressWithCopy={true}
-                    avatarSize="large"
-                />
+                    withCopy={true}
+                >
+                    <AddressAvatar address={address} variantSize="large" />
+                </AddressLabel>
             </Box>
             <Flex flexDirection="column" alignItems="flex-end">
                 <Text variant="footnote1" color="basic.$500">
