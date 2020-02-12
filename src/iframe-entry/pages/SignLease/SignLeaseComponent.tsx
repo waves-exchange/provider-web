@@ -9,6 +9,7 @@ import {
     Tabs,
     TabsList,
     Text,
+    AddressLabel,
 } from '@waves.exchange/react-uikit';
 import { TLong } from '@waves/signer';
 import { ILeaseTransactionWithId } from '@waves/ts-types';
@@ -95,12 +96,14 @@ export const SignLeaseComponent: FC<Props> = ({
                         <Text variant="body2" color="basic.$500">
                             Recipient
                         </Text>
-                        <AddressAvatar
+                        <AddressLabel
                             address={recipientAddress}
                             alias={recipientName}
-                            addressWithCopy={true}
+                            withCopy={true}
                             mt="$5"
-                        />
+                        >
+                            <AddressAvatar address={recipientAddress} />
+                        </AddressLabel>
 
                         <Text mt="$20" variant="body2" color="basic.$500">
                             Fee
