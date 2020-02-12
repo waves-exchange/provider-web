@@ -11,6 +11,9 @@ import {
     TabsList,
     Text,
     useBoundedTooltip,
+    AddressLabel,
+    BoxWithIcon,
+    iconSmartMini,
 } from '@waves.exchange/react-uikit';
 import { TLong } from '@waves/signer';
 import { IAliasTransactionWithId } from '@waves/ts-types';
@@ -48,6 +51,8 @@ export const SignAliasComponent: FC<SignAliasComponentProps> = ({
         left: 60,
         right: 60,
     });
+
+    const { boundaryRef, popperOptions } = useBoundedTooltip({});
 
     return (
         <div ref={helpTooltipBoundaryRef}>
@@ -109,7 +114,7 @@ export const SignAliasComponent: FC<SignAliasComponentProps> = ({
                     </TabsList>
 
                     <TabPanels bg="main.$800" mb="$30" px="$40">
-                        <TabPanel>
+                        <TabPanel ref={boundaryRef}>
                             <Flex mb="$5">
                                 <Text
                                     variant="body2"
@@ -167,13 +172,30 @@ export const SignAliasComponent: FC<SignAliasComponentProps> = ({
                                 </Help>
                             </Flex>
 
-                            <AddressAvatar
+                            <AddressLabel
                                 address={userAddress}
                                 alias={tx.alias}
-                                isSmart={userHasScript}
-                                addressWithCopy={true}
+                                withCopy={true}
                                 mb="$20"
-                            />
+                            >
+                                {userHasScript ? (
+                                    <BoxWithIcon
+                                        icon={iconSmartMini}
+                                        iconLabel="Smart Account"
+                                        popperOptions={popperOptions}
+                                    >
+                                        <AddressAvatar
+                                            address={userAddress}
+                                            variantSize="large"
+                                        />
+                                    </BoxWithIcon>
+                                ) : (
+                                    <AddressAvatar
+                                        address={userAddress}
+                                        variantSize="large"
+                                    />
+                                )}
+                            </AddressLabel>
 
                             <Text
                                 variant="body2"
