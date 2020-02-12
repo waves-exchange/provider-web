@@ -1,5 +1,4 @@
 import {
-    AddressAvatar,
     ExternalLink,
     Flex,
     Icon,
@@ -13,6 +12,10 @@ import {
     useBoundedTooltip,
     LightCopy,
     Box,
+    AddressLabel,
+    AddressAvatar,
+    BoxWithIcon,
+    iconSmartMini,
 } from '@waves.exchange/react-uikit';
 import { TLong } from '@waves/signer';
 import { ISetScriptTransactionWithId } from '@waves/ts-types';
@@ -26,6 +29,7 @@ export interface IProps {
     userAddress: string;
     userName: string;
     userBalance: string;
+    userHasScript: boolean;
     fee: string;
     tx: ISetScriptTransactionWithId<TLong>;
     accountScript: string | null;
@@ -37,6 +41,7 @@ export const SignSetAccountScriptComponent: FC<IProps> = ({
     userAddress,
     userName,
     userBalance,
+    userHasScript,
     tx,
     fee,
     accountScript,
@@ -50,6 +55,8 @@ export const SignSetAccountScriptComponent: FC<IProps> = ({
         left: 60,
         right: 60,
     });
+
+    const { boundaryRef, popperOptions } = useBoundedTooltip({});
 
     return (
         <div ref={helpTooltipBoundaryRef}>
@@ -112,12 +119,33 @@ export const SignSetAccountScriptComponent: FC<IProps> = ({
                                 <Text variant="body2" color="basic.$500">
                                     Account
                                 </Text>
-                                <Flex alignItems="center" mt="$5">
-                                    <AddressAvatar
-                                        isSmart={true}
+                                <Flex
+                                    alignItems="center"
+                                    mt="$5"
+                                    ref={boundaryRef}
+                                >
+                                    <AddressLabel
                                         address={userAddress}
-                                        addressWithCopy={true}
-                                    />
+                                        withCopy={true}
+                                    >
+                                        {userHasScript ? (
+                                            <BoxWithIcon
+                                                icon={iconSmartMini}
+                                                iconLabel="Smart Account"
+                                                popperOptions={popperOptions}
+                                            >
+                                                <AddressAvatar
+                                                    address={userAddress}
+                                                    variantSize="large"
+                                                />
+                                            </BoxWithIcon>
+                                        ) : (
+                                            <AddressAvatar
+                                                address={userAddress}
+                                                variantSize="large"
+                                            />
+                                        )}
+                                    </AddressLabel>
                                 </Flex>
                                 <Flex mt="$20" mb="$5" alignItems="center">
                                     <Text

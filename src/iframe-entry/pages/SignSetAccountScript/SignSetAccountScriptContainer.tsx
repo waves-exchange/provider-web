@@ -40,10 +40,10 @@ export const SignSetAccountScript: FC<ISignTxProps<ISetScriptWithType>> = ({
             key={tx.id}
             userAddress={user.address}
             userName={getUserName(networkByte, user.publicKey)}
-            userBalance={`${getPrintableNumber(
-                user.balance,
-                WAVES.decimals
-            )} Waves`}
+            userBalance={`${getPrintableNumber(user.balance, WAVES.decimals)} ${
+                WAVES.name
+            }`}
+            userHasScript={user.hasScript}
             tx={tx}
             fee={`${fee} ${WAVES.name}`}
             accountScript={tx.script}
