@@ -97,8 +97,12 @@ class StorageService {
     }
 
     public hasPrivateData(): boolean {
-        const encrypted = localStorage.getItem('multiAccountData');
-        const hash = localStorage.getItem('multiAccountHash');
+        const encrypted = JSON.parse(
+            localStorage.getItem('multiAccountData') || 'null'
+        );
+        const hash = JSON.parse(
+            localStorage.getItem('multiAccountHash') || 'null'
+        );
 
         return !!hash && !!encrypted;
     }

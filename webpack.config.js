@@ -68,7 +68,7 @@ const buildIframeEntry = (minimize) => ({
     output: {
         libraryTarget: "umd",
         globalObject: "this",
-        filename: minimize ? '[name].[contenthash].min.js' : '[name].[contenthash].js',
+        filename: '[name].[contenthash].min.js',
         path: resolve(__dirname, 'iframe-entry/dist'),
     }
 });
@@ -84,13 +84,12 @@ const buildLibrary = (minimize) => ({
         library: 'providerWeb',
         libraryTarget: "umd",
         globalObject: "this",
-        filename: minimize ? 'provider-web.min.js' : 'provider-web.js',
+        filename: 'provider-web.min.js',
         path: resolve(__dirname, 'dist'),
     }
 });
 
 module.exports = [
     buildIframeEntry(true),
-    buildLibrary(true),
-    buildLibrary(false)
+    buildLibrary(true)
 ];
