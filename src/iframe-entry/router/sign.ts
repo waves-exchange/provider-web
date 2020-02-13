@@ -21,6 +21,7 @@ import { prepareTransactions } from '../services/transactionsService';
 import renderPage from '../utils/renderPage';
 import batch from './batch';
 import omit from 'ramda/es/omit';
+import { fetchNodeTime } from '@waves/node-api-js/es/api-node/utils';
 import { SignTransfer } from '../pages/SignTransfer/SignTransferContainer';
 import { SignInvoke } from '../pages/SignInvoke/SignInvokeContainer';
 import { SignDataContainer } from '../pages/SignData/SignDataContainer';
@@ -73,41 +74,49 @@ export default function(
     list: Array<TTransactionParamWithType>,
     state: IState<IUserWithBalances>
 ): Promise<Array<TTransactionWithProofs<TLong> & IWithId>> {
-    return prepareTransactions(state, list).then((transactions) => {
-        if (transactions.length !== 1) {
-            return batch(transactions, state);
-        }
+    return fetchNodeTime(state.nodeUrl)
+        .then((nodeTime) => nodeTime.NTP)
+        .catch(() => Date.now())
+        .then((time) =>
+            prepareTransactions(state, list, time).then((transactions) => {
+                if (transactions.length !== 1) {
+                    return batch(transactions, state);
+                }
 
-        const [info] = transactions;
+                const [info] = transactions;
 
-        return new Promise((resolve, reject) => {
-            const props = {
-                ...info,
-                networkByte: state.networkByte,
-                user: {
-                    ...omit(['privateKey'], state.user),
-                    publicKey: libs.crypto.publicKey({
-                        privateKey: state.user.privateKey,
-                    }),
-                },
-                onConfirm: (transaction) => {
-                    resolve(
-                        signTx(transaction as any, {
-                            privateKey: state.user.privateKey,
-                        }) as any
+                return new Promise((resolve, reject) => {
+                    const props = {
+                        ...info,
+                        networkByte: state.networkByte,
+                        user: {
+                            ...omit(['privateKey'], state.user),
+                            publicKey: libs.crypto.publicKey({
+                                privateKey: state.user.privateKey,
+                            }),
+                        },
+                        onConfirm: (transaction) => {
+                            resolve(
+                                signTx(transaction as any, {
+                                    privateKey: state.user.privateKey,
+                                }) as any
+                            );
+                        },
+                        onCancel: () => {
+                            reject(new Error('User rejection!'));
+                        },
+                    } as ISignTxProps<TTransactionParamWithType>;
+
+                    renderPage(
+                        React.createElement(
+                            getPageByType(info.tx.type) as any,
+                            {
+                                key: info.tx.id,
+                                ...props,
+                            }
+                        )
                     );
-                },
-                onCancel: () => {
-                    reject(new Error('User rejection!'));
-                },
-            } as ISignTxProps<TTransactionParamWithType>;
-
-            renderPage(
-                React.createElement(getPageByType(info.tx.type) as any, {
-                    key: info.tx.id,
-                    ...props,
-                })
-            );
-        });
-    });
+                });
+            })
+        );
 }
