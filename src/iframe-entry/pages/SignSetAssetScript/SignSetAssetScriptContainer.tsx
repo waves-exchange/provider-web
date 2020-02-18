@@ -3,7 +3,6 @@ import React, { FC, useEffect } from 'react';
 import { ISignTxProps } from '../../../interface';
 import { WAVES } from '../../constants';
 import { useTxHandlers } from '../../hooks/useTxHandlers';
-import { analytics } from '../../utils/analytics';
 import { getPrintableNumber } from '../../utils/math';
 import { SignSetAssetScript as SignSetAssetScriptComponent } from './SignSetAssetScriptComponent';
 import { getUserName } from '../../services/userService';
@@ -15,23 +14,13 @@ export const SignSetAssetScriptContainer: FC<ISignTxProps<
 
     const fee = getPrintableNumber(tx.fee, WAVES.decimals);
 
-    const { handleReject, handleConfirm } = useTxHandlers(
+    const { handleReject, handleConfirm, handleShow } = useTxHandlers(
         tx,
         onCancel,
-        onConfirm,
-        {
-            onRejectAnalyticsArgs: { name: 'Confirm_AssetScript_Tx_Reject' },
-            onConfirmAnalyticsArgs: { name: 'Confirm_AssetScript_Tx_Confirm' },
-        }
+        onConfirm
     );
 
-    useEffect(
-        () =>
-            analytics.send({
-                name: 'Confirm_AssetScript_Tx_Show',
-            }),
-        []
-    );
+    useEffect(handleShow);
 
     return (
         <SignSetAssetScriptComponent

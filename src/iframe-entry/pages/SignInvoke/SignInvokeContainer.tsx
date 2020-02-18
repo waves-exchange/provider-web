@@ -3,7 +3,6 @@ import React, { FC, useEffect } from 'react';
 import { ISignTxProps } from '../../../interface';
 import { WAVES } from '../../constants';
 import { useTxHandlers } from '../../hooks/useTxHandlers';
-import { analytics } from '../../utils/analytics';
 import { isAlias } from '../../utils/isAlias';
 import { SignInvoke as SignInvokeComponent } from './SignInvokeComponent';
 import { assetPropFactory } from '../../utils/assetPropFactory';
@@ -33,23 +32,13 @@ export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
 
     const fee = getPrintableNumber(tx.fee, feeAsset.decimals);
 
-    const { handleConfirm, handleReject } = useTxHandlers(
+    const { handleConfirm, handleReject, handleShow } = useTxHandlers(
         tx,
         onCancel,
-        onConfirm,
-        {
-            onRejectAnalyticsArgs: { name: 'Confirm_Invoke_Tx_Reject' },
-            onConfirmAnalyticsArgs: { name: 'Confirm_Invoke_Tx_Confirm' },
-        }
+        onConfirm
     );
 
-    useEffect(
-        () =>
-            analytics.send({
-                name: 'Confirm_Invoke_Tx_Show',
-            }),
-        []
-    );
+    useEffect(handleShow);
 
     const mapPayments = (payments: Array<IMoney>): Array<IPayment> =>
         payments.map(({ assetId, amount }) => ({

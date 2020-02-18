@@ -10,7 +10,6 @@ import { IIssueWithType } from '@waves/signer';
 import { useTxUser } from '../../hooks/useTxUser';
 import { useTxHandlers } from '../../hooks/useTxHandlers';
 import { SignIssueComponent } from './SignIssueComponent';
-import { analytics } from '../../utils/analytics';
 import { getPrintableNumber } from '../../utils/math';
 import { WAVES } from '../../constants';
 
@@ -23,23 +22,13 @@ export const SignIssueContainer: FC<ISignTxProps<IIssueWithType>> = ({
 }) => {
     const { userName, userBalance } = useTxUser(user, networkByte);
 
-    const { handleReject, handleConfirm } = useTxHandlers(
+    const { handleReject, handleConfirm, handleShow } = useTxHandlers(
         tx,
         onCancel,
-        onConfirm,
-        {
-            onRejectAnalyticsArgs: { name: 'Confirm_Issue_Tx_Reject' },
-            onConfirmAnalyticsArgs: { name: 'Confirm_Issue_Tx_Confirm' },
-        }
+        onConfirm
     );
 
-    useEffect(
-        () =>
-            analytics.send({
-                name: 'Confirm_Issue_Tx_Show',
-            }),
-        []
-    );
+    useEffect(handleShow);
 
     const [canConfirm, setCanConfirm] = useState(false);
     const handleTermsCheck = useCallback<ChangeEventHandler<HTMLInputElement>>(

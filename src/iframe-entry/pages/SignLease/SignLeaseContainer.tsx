@@ -5,7 +5,6 @@ import { ISignTxProps } from '../../../interface';
 import { WAVES } from '../../constants';
 import { useTxHandlers } from '../../hooks/useTxHandlers';
 import { useTxUser } from '../../hooks/useTxUser';
-import { analytics } from '../../utils/analytics';
 import { cleanAddress } from '../../utils/cleanAlias';
 import { isAlias } from '../../utils/isAlias';
 import { getPrintableNumber } from '../../utils/math';
@@ -23,23 +22,13 @@ export const SignLease: FC<ISignTxProps<ILeaseTransactionWithId<TLong>>> = ({
     const amount = getPrintableNumber(tx.amount, WAVES.decimals);
     const fee = getPrintableNumber(tx.fee, WAVES.decimals);
 
-    const { handleReject, handleConfirm } = useTxHandlers(
+    const { handleReject, handleConfirm, handleShow } = useTxHandlers(
         tx,
         onCancel,
-        onConfirm,
-        {
-            onRejectAnalyticsArgs: { name: 'Confirm_Lease_Tx_Reject' },
-            onConfirmAnalyticsArgs: { name: 'Confirm_Lease_Tx_Confirm' },
-        }
+        onConfirm
     );
 
-    useEffect(
-        () =>
-            analytics.send({
-                name: 'Confirm_Lease_Tx_Show',
-            }),
-        []
-    );
+    useEffect(handleShow);
 
     const recipientAddress = isAlias(tx.recipient)
         ? meta.aliases[tx.recipient]

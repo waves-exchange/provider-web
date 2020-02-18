@@ -4,7 +4,6 @@ import { ISignTxProps } from '../../../interface';
 import { WAVES } from '../../constants';
 import { useTxHandlers } from '../../hooks/useTxHandlers';
 import { getUserName } from '../../services/userService';
-import { analytics } from '../../utils/analytics';
 import { getPrintableNumber } from '../../utils/math';
 import { SignSetAccountScriptComponent } from './SignSetAccountScriptComponent';
 
@@ -17,23 +16,13 @@ export const SignSetAccountScript: FC<ISignTxProps<ISetScriptWithType>> = ({
 }) => {
     const fee = getPrintableNumber(tx.fee, WAVES.decimals);
 
-    const { handleReject, handleConfirm } = useTxHandlers(
+    const { handleReject, handleConfirm, handleShow } = useTxHandlers(
         tx,
         onCancel,
-        onConfirm,
-        {
-            onRejectAnalyticsArgs: { name: 'Confirm_Script_Tx_Reject' },
-            onConfirmAnalyticsArgs: { name: 'Confirm_Script_Tx_Confirm' },
-        }
+        onConfirm
     );
 
-    useEffect(
-        () =>
-            analytics.send({
-                name: 'Confirm_Script_Tx_Show',
-            }),
-        []
-    );
+    useEffect(handleShow);
 
     return (
         <SignSetAccountScriptComponent

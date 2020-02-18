@@ -5,7 +5,6 @@ import { ISignTxProps } from '../../../interface';
 import { WAVES } from '../../constants';
 import { useTxHandlers } from '../../hooks/useTxHandlers';
 import { useTxUser } from '../../hooks/useTxUser';
-import { analytics } from '../../utils/analytics';
 import { getPrintableNumber } from '../../utils/math';
 import { SignCancelLeaseComponent } from './SignCancelLeaseComponent';
 
@@ -16,23 +15,13 @@ export const SignCancelLease: FC<ISignTxProps<
     const fee = getPrintableNumber(tx.fee, WAVES.decimals);
     const amount = getPrintableNumber(meta.info.amount, WAVES.decimals);
 
-    const { handleReject, handleConfirm } = useTxHandlers(
+    const { handleReject, handleConfirm, handleShow } = useTxHandlers(
         tx,
         onCancel,
-        onConfirm,
-        {
-            onRejectAnalyticsArgs: { name: 'Confirm_Lease_Tx_Reject' },
-            onConfirmAnalyticsArgs: { name: 'Confirm_Lease_Tx_Confirm' },
-        }
+        onConfirm
     );
 
-    useEffect(
-        () =>
-            analytics.send({
-                name: 'Confirm_Lease_Tx_Show',
-            }),
-        []
-    );
+    useEffect(handleShow);
 
     return (
         <SignCancelLeaseComponent

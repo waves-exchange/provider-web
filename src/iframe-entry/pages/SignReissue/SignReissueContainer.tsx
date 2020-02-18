@@ -4,7 +4,6 @@ import { ISignTxProps } from '../../../interface';
 import { WAVES } from '../../constants';
 import { useTxHandlers } from '../../hooks/useTxHandlers';
 import { useTxUser } from '../../hooks/useTxUser';
-import { analytics } from '../../utils/analytics';
 import { getPrintableNumber } from '../../utils/math';
 import { SignReissueComponent } from './SignReissueComponent';
 
@@ -20,23 +19,13 @@ export const SignReissueContainer: FC<ISignTxProps<IReissueWithType>> = ({
     const fee = getPrintableNumber(tx.fee, WAVES.decimals);
     const reissueAsset = tx.assetId === null ? WAVES : meta.assets[tx.assetId];
 
-    const { handleReject, handleConfirm } = useTxHandlers(
+    const { handleReject, handleConfirm, handleShow } = useTxHandlers(
         tx,
         onCancel,
-        onConfirm,
-        {
-            onRejectAnalyticsArgs: { name: 'Confirm_Reissue_Tx_Reject' },
-            onConfirmAnalyticsArgs: { name: 'Confirm_Reissue_Tx_Confirm' },
-        }
+        onConfirm
     );
 
-    useEffect(
-        () =>
-            analytics.send({
-                name: 'Confirm_Reissue_Tx_Show',
-            }),
-        []
-    );
+    useEffect(handleShow);
 
     return (
         <SignReissueComponent

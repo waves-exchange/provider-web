@@ -3,7 +3,6 @@ import React, { FC, useEffect } from 'react';
 import { ISignTxProps } from '../../../interface';
 import { WAVES } from '../../constants';
 import { useTxHandlers } from '../../hooks/useTxHandlers';
-import { analytics } from '../../utils/analytics';
 import { getPrintableNumber } from '../../utils/math';
 import { SignBurn as SignBurnComponent } from './SignBurnComponent';
 import { getUserName } from '../../services/userService';
@@ -23,23 +22,13 @@ export const SignBurnContainer: FC<ISignTxProps<IBurnWithType>> = ({
 
     const fee = getPrintableNumber(tx.fee, feeAsset.decimals);
 
-    const { handleReject, handleConfirm } = useTxHandlers(
+    const { handleReject, handleConfirm, handleShow } = useTxHandlers(
         tx,
         onCancel,
-        onConfirm,
-        {
-            onRejectAnalyticsArgs: { name: 'Confirm_Burn_Tx_Reject' },
-            onConfirmAnalyticsArgs: { name: 'Confirm_Burn_Tx_Confirm' },
-        }
+        onConfirm
     );
 
-    useEffect(
-        () =>
-            analytics.send({
-                name: 'Confirm_Burn_Tx_Show',
-            }),
-        []
-    );
+    useEffect(handleShow);
 
     return (
         <SignBurnComponent

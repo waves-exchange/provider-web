@@ -3,7 +3,6 @@ import React, { FC, useEffect } from 'react';
 import { ISignTxProps } from '../../../interface';
 import { getIconType } from '../../components/IconTransfer/helpers';
 import { useTxHandlers } from '../../hooks/useTxHandlers';
-import { analytics } from '../../utils/analytics';
 import { SignTransfer as SignTransferComponent } from './SignTransferComponent';
 import { getUserName } from '../../services/userService';
 import { useHandleFeeSelect } from '../../hooks/useHandleFeeSelect';
@@ -28,23 +27,13 @@ export const SignTransfer: FC<ISignTxProps<TransferType>> = ({
     onConfirm,
     onCancel,
 }) => {
-    const { handleReject, handleConfirm } = useTxHandlers(
+    const { handleReject, handleConfirm, handleShow } = useTxHandlers(
         tx,
         onCancel,
-        onConfirm,
-        {
-            onRejectAnalyticsArgs: { name: 'Confirm_Transfer_Tx_Reject' },
-            onConfirmAnalyticsArgs: { name: 'Confirm_Transfer_Tx_Confirm' },
-        }
+        onConfirm
     );
 
-    useEffect(
-        () =>
-            analytics.send({
-                name: 'Confirm_Transfer_Tx_Show',
-            }),
-        []
-    );
+    useEffect(handleShow);
 
     const [handleFeeSelect, txJSON] = useHandleFeeSelect(tx);
 
