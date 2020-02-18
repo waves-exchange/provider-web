@@ -29,12 +29,11 @@
 		<div>
 			<h1>Login</h1>
 			<div id='login-return'></div>
-			<button onclick="waves.login().then(el => {setElementHTML('login-return', el.address)});">Login</button>
+			<button id='login-button' onclick="waves.login().then(el => {setElementHTML('login-return', el.address)});">Login</button>
 		</div>
 		<div>
 			<h1>Logout</h1>
-			<div id='login-return'></div>
-			<button onclick="waves.logout().then(el => {setElementHTML('login-return', '')});">Logout</button>
+			<button id='logout-button' onclick="waves.logout().then(el => {setElementHTML('login-return', '')});">Logout</button>
 		</div>
 		<div>
 			<h1>Set Asset Script Tx</h1>

@@ -29,19 +29,23 @@
 		<div>
 			<h1>Login</h1>
 			<div id='login-return'></div>
-			<button onclick="waves.login().then(el => {setElementHTML('login-return', el.address)});">Login</button>
+			<button id='login-button' onclick="waves.login().then(el => {setElementHTML('login-return', el.address)});">Login</button>
 		</div>
 		<div>
 			<h1>Logout</h1>
-			<div id='login-return'></div>
-			<button onclick="waves.logout().then(el => {setElementHTML('login-return', '')});">Logout</button>
+			<button id='logout-button' onclick="waves.logout().then(el => {setElementHTML('login-return', '')});">Logout</button>
 		</div>
 		<div>
 			<h1>Invoke Tx</h1>
 			<h2>Example</h2>
 			<div id='dapp-example' onclick="copyText('dapp-example')">3N5TwK9d21XCWD7ooDKAkgE5pVH9MJWhJTA</div>
 			<br>
-			<div id='payment-example' onclick="copyText('payment-example')">[{"assetId": null, "amount": 123}, {"assetId": "DWgwcZTMhSvnyYCoWLRUXXSH1RSkzThXLJhww9gwkqdn", "amount": 321}]</div>
+			<div id='payment-example' onclick="copyText('payment-example')">
+				[{"assetId": null, "amount": 123}, 
+				{"assetId": "DWgwcZTMhSvnyYCoWLRUXXSH1RSkzThXLJhww9gwkqdn", "amount": 321}, 
+				{"assetId": "2CjLFYkp4W4sEAxCjFG9oD3smfhvV6yQnNmiJyexbLdu", "amount": 222}, 
+				{"assetId": "6RHh59Tbt17QPvgaEu79DQsC5XyTqhBzpfB2FLV59ABU", "amount": 555}]
+			</div>
 			<br>
 			<div id='call-example' onclick="copyText('call-example')">{"function": "testArgs", "args": [{"type": "string", "value": "SomeString!"}, {"type": "integer", "value": -13}, {"type": "boolean", "value": false}, {"type": "binary", "value": "U29tZSBieXRlcyE="}]}</div>
 			<br>

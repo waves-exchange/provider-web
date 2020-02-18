@@ -29,21 +29,22 @@
 		<div>
 			<h1>Login</h1>
 			<div id='login-return'></div>
-			<button onclick="waves.login().then(el => {setElementHTML('login-return', el.address)});">Login</button>
+			<button id='login-button' onclick="waves.login().then(el => {setElementHTML('login-return', el.address)});">Login</button>
 		</div>
 		<div>
 			<h1>Logout</h1>
-			<div id='login-return'></div>
-			<button onclick="waves.logout().then(el => {setElementHTML('login-return', '')});">Logout</button>
+			<button id='logout-button' onclick="waves.logout().then(el => {setElementHTML('login-return', '')});">Logout</button>
 		</div>
 		<div>
 			<h1>Burn Tx</h1>
 			<div>AssetId: <input id='burn-assetId'></div>
 			<div>Quantity: <input id='burn-quantity'></div>
+			<div>Fee: <input id='burn-fee'></div>
 			<div id='burn-return'></div>
-			<button onclick="newAlias(
+			<button onclick="burnAsset(
 			getFromInput('burn-assetId'),
-			getFromInput('burn-quantity'))
+			getFromInput('burn-quantity'),
+			getFromInput('burn-fee'))
 			.then(tx => {console.log(tx); setElementHTML('burn-return', getNodeTxLink(tx.id))})
 			.catch(err => {console.log(err); if(err.message) {setElementHTML('burn-return', err.message)} else {setElementHTML('burn-return', err)}});
 			setElementHTML('login-return', waves._userData.address);

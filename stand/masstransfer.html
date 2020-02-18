@@ -29,12 +29,11 @@
 		<div>
 			<h1>Login</h1>
 			<div id='login-return'></div>
-			<button onclick="waves.login().then(el => {setElementHTML('login-return', el.address)});">Login</button>
+			<button id='login-button' onclick="waves.login().then(el => {setElementHTML('login-return', el.address)});">Login</button>
 		</div>
 		<div>
 			<h1>Logout</h1>
-			<div id='login-return'></div>
-			<button onclick="waves.logout().then(el => {setElementHTML('login-return', '')});">Logout</button>
+			<button id='logout-button' onclick="waves.logout().then(el => {setElementHTML('login-return', '')});">Logout</button>
 		</div>
 		<div>
 			<h1>Mass Transfer Tx</h1>
@@ -46,8 +45,8 @@
 			<button onclick="massTransfer(
 			getFromInput('massTransfer-assetId'),
 			getFromInput('massTransfer-transfers'),
-			getFromInput('massTransfer-attachment'))
-			getFromInput('massTransfer-fee'),
+			getFromInput('massTransfer-attachment'),
+			getFromInput('massTransfer-fee'))
 			.then(tx => {console.log(tx); setElementHTML('massTransfer-return', getNodeTxLink(tx.id))})
 			.catch(err => {console.log(err); if(err.message) {setElementHTML('massTransfer-return', err.message)} else {setElementHTML('massTransfer-return', err)}});
 			setElementHTML('login-return', waves._userData.address);
@@ -59,11 +58,13 @@
 			<div id="bitcoin-asset-id" onclick="copyText('bitcoin-asset-id')">DWgwcZTMhSvnyYCoWLRUXXSH1RSkzThXLJhww9gwkqdn</div>
 			<br>
 			<div id=massList onclick="copyText('massList')">
-				[{"recipient": 3MrrRsL3bjYWx5uShZhRxyQmQMNd5GDJRWs, "amount": 0.00001286},
-				{"recipient": tokemon_trainer, "amount": 0.00001120},
-				{"recipient": tokemon_trainer2, "amount": 0.00003343},
-				{"recipient": 3MuTA678bYWZFMY8AubzVkoSL5rTeRUTcLM, "amount": 0.00002956},
-				{"recipient": 3N7hPPS5fZFJbg19uSMDM7vAXxbYap2qma9, "amount": 0.00001278}]
+				[
+				{"recipient": "3MrrRsL3bjYWx5uShZhRxyQmQMNd5GDJRWs", "amount": 1111}, 
+				{"amount": 2222, "recipient": "tokemon_trainer"}, 
+				{"recipient": "tokemon_trainer2", "amount": 3333}, 
+				{"recipient": "3MuTA678bYWZFMY8AubzVkoSL5rTeRUTcLM", "amount": 4444}, 
+				{"amount": 5555, "recipient": "3N7hPPS5fZFJbg19uSMDM7vAXxbYap2qma9"}
+				]
 			</div>
 			<br>
 			<div id=massList2 onclick="copyText('massList2')">
