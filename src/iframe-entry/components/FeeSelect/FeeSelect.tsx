@@ -93,19 +93,14 @@ export const FeeSelect: FC<Props & BoxProps> = ({
                 Fee
             </Text>
             {feeOptions.length > 1 ? (
-                <Box {...rest}>
-                    <Select
-                        placement="top"
-                        renderSelected={(open): ReactElement => (
-                            <Selected
-                                selected={selectedFeeOption}
-                                opened={open}
-                            />
-                        )}
-                    >
-                        <List onSelect={handleFeeSelect} options={feeOptions} />
-                    </Select>
-                </Box>
+                <Select
+                    placement="top"
+                    renderSelected={(open): ReactElement => (
+                        <Selected selected={selectedFeeOption} opened={open} />
+                    )}
+                >
+                    <List onSelect={handleFeeSelect} options={feeOptions} />
+                </Select>
             ) : (
                 <Text variant="body2" color="standard.$0">
                     {selectedFeeOption.value} {selectedFeeOption.name}

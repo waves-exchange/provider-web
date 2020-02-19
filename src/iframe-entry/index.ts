@@ -11,11 +11,17 @@ import {
 } from './handlers/moveUserHandlers';
 import { getSignHandler } from './handlers/sign';
 import { getSignMessageHandler } from './handlers/signMessage';
-import { getSignTypedDataHandler } from './handlers/signTypedData';
 import { IState } from './interface';
+import { analytics } from './utils/analytics';
 
 config.console.logLevel = config.console.LOG_LEVEL.VERBOSE;
 const queue = new Queue(3);
+
+analytics.init({
+    platform: 'web',
+    userType: 'unknown',
+    referrer: document.referrer,
+});
 
 WindowAdapter.createSimpleWindowAdapter()
     .then((adapter) => {

@@ -34,6 +34,7 @@ import { SignSponsorship } from '../pages/SignSponsorship/SignSponsorshipContain
 import { SignAliasContainer } from '../pages/SignAlias/SignAliasContainer';
 import { SignReissueContainer } from '../pages/SignReissue/SignReissueContainer';
 import { SignSetAccountScript } from '../pages/SignSetAccountScript/SignSetAccountScriptContainer';
+import { analytics } from '../utils/analytics';
 
 const getPageByType = (type: keyof TRANSACTION_TYPE_MAP): ReactNode => {
     switch (type) {
@@ -54,7 +55,7 @@ const getPageByType = (type: keyof TRANSACTION_TYPE_MAP): ReactNode => {
         case NAME_MAP.alias:
             return SignAliasContainer;
         case NAME_MAP.massTransfer:
-            throw new Error('Unsupported type!'); // TODO
+            return SignTransfer;
         case NAME_MAP.setScript:
             return SignSetAccountScript;
         case NAME_MAP.sponsorship:
@@ -83,6 +84,19 @@ export default function(
                     return batch(transactions, state);
                 }
 
+                const tx = transactions[0].tx;
+
+                const analyticsParams = {
+                    type: Object.keys(NAME_MAP).find(
+                        (txType) => NAME_MAP[txType] === tx.type
+                    ),
+                };
+
+                analytics.send({
+                    name: 'Signer_Confirm_Tx_Show',
+                    params: analyticsParams,
+                });
+
                 const [info] = transactions;
 
                 return new Promise((resolve, reject) => {
@@ -95,17 +109,27 @@ export default function(
                                 privateKey: state.user.privateKey,
                             }),
                         },
-                        onConfirm: (transaction) => {
+                        onConfirm: () => {
+                            analytics.send({
+                                name: 'Signer_Confirm_Tx_Approve',
+                                params: analyticsParams,
+                            });
+
                             resolve(
-                                signTx(transaction as any, {
+                                signTx(tx as any, {
                                     privateKey: state.user.privateKey,
                                 }) as any
                             );
                         },
                         onCancel: () => {
+                            analytics.send({
+                                name: 'Signer_Confirm_Tx_Reject',
+                                params: analyticsParams,
+                            });
+
                             reject(new Error('User rejection!'));
                         },
-                    } as ISignTxProps<TTransactionParamWithType>;
+                    };
 
                     renderPage(
                         React.createElement(
