@@ -1,8 +1,7 @@
 import { ISponsorshipWithType } from '@waves/signer';
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { ISignTxProps } from '../../../interface';
 import { WAVES } from '../../constants';
-import { useTxHandlers } from '../../hooks/useTxHandlers';
 import { getUserName } from '../../services/userService';
 import { getPrintableNumber } from '../../utils/math';
 import { SignSponsorshipComponent } from './SignSponsorshipComponent';
@@ -22,14 +21,6 @@ export const SignSponsorship: FC<ISignTxProps<ISponsorshipWithType>> = ({
     );
     const fee = getPrintableNumber(tx.fee, WAVES.decimals);
 
-    const { handleReject, handleConfirm, handleShow } = useTxHandlers(
-        tx,
-        onCancel,
-        onConfirm
-    );
-
-    useEffect(handleShow);
-
     return (
         <SignSponsorshipComponent
             key={tx.id}
@@ -41,8 +32,8 @@ export const SignSponsorship: FC<ISignTxProps<ISponsorshipWithType>> = ({
             sponsorAsset={sponsorAsset}
             sponsorCharge={`${sponsorCharge} ${sponsorAsset.name}`}
             isSponsorshipEnable={Number(tx.minSponsoredAssetFee) > 0}
-            onReject={handleReject}
-            onConfirm={handleConfirm}
+            onReject={onCancel}
+            onConfirm={onConfirm}
         />
     );
 };

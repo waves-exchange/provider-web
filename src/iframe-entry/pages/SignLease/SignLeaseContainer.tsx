@@ -1,9 +1,8 @@
 import { TLong } from '@waves/signer';
 import { ILeaseTransactionWithId } from '@waves/ts-types';
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { ISignTxProps } from '../../../interface';
 import { WAVES } from '../../constants';
-import { useTxHandlers } from '../../hooks/useTxHandlers';
 import { useTxUser } from '../../hooks/useTxUser';
 import { cleanAddress } from '../../utils/cleanAlias';
 import { isAlias } from '../../utils/isAlias';
@@ -22,14 +21,6 @@ export const SignLease: FC<ISignTxProps<ILeaseTransactionWithId<TLong>>> = ({
     const amount = getPrintableNumber(tx.amount, WAVES.decimals);
     const fee = getPrintableNumber(tx.fee, WAVES.decimals);
 
-    const { handleReject, handleConfirm, handleShow } = useTxHandlers(
-        tx,
-        onCancel,
-        onConfirm
-    );
-
-    useEffect(handleShow);
-
     const recipientAddress = isAlias(tx.recipient)
         ? meta.aliases[tx.recipient]
         : tx.recipient;
@@ -44,8 +35,8 @@ export const SignLease: FC<ISignTxProps<ILeaseTransactionWithId<TLong>>> = ({
             tx={tx}
             amount={`${amount} ${WAVES.name}`}
             fee={`${fee} ${WAVES.name}`}
-            onReject={handleReject}
-            onConfirm={handleConfirm}
+            onReject={onCancel}
+            onConfirm={onConfirm}
         />
     );
 };

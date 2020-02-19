@@ -1,8 +1,7 @@
 import { ISetScriptWithType } from '@waves/signer';
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { ISignTxProps } from '../../../interface';
 import { WAVES } from '../../constants';
-import { useTxHandlers } from '../../hooks/useTxHandlers';
 import { getUserName } from '../../services/userService';
 import { getPrintableNumber } from '../../utils/math';
 import { SignSetAccountScriptComponent } from './SignSetAccountScriptComponent';
@@ -16,14 +15,6 @@ export const SignSetAccountScript: FC<ISignTxProps<ISetScriptWithType>> = ({
 }) => {
     const fee = getPrintableNumber(tx.fee, WAVES.decimals);
 
-    const { handleReject, handleConfirm, handleShow } = useTxHandlers(
-        tx,
-        onCancel,
-        onConfirm
-    );
-
-    useEffect(handleShow);
-
     return (
         <SignSetAccountScriptComponent
             key={tx.id}
@@ -36,8 +27,8 @@ export const SignSetAccountScript: FC<ISignTxProps<ISetScriptWithType>> = ({
             tx={tx}
             fee={`${fee} ${WAVES.name}`}
             accountScript={tx.script}
-            onCancel={handleReject}
-            onConfirm={handleConfirm}
+            onCancel={onCancel}
+            onConfirm={onConfirm}
         />
     );
 };

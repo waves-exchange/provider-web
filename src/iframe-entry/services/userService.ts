@@ -11,10 +11,14 @@ import { TCatchable } from '../utils/catchable';
 import { getUserId } from '../utils/getUserId';
 import { storage } from './storage';
 
+export type StorageUser = IUser & {
+    userType: 'keeper' | 'ledger' | 'seed' | 'privateKey';
+};
+
 export function getUsers(
     password: string,
     networkByte: number
-): TCatchable<Array<IUser>> {
+): TCatchable<Array<StorageUser>> {
     const data = storage.getPrivateData(password);
     const usersData = storage.get('multiAccountUsers');
 
@@ -30,7 +34,7 @@ export function getUsers(
                 lastLogin: userData.lastLogin,
             }))
             .sort((a, b) => b.lastLogin - a.lastLogin)
-            .reduce<IUser[]>((acc, x) => {
+            .reduce<StorageUser[]>((acc, x) => {
                 const user = data.resolveData[x.hash];
 
                 if (user.networkByte !== networkByte) {
@@ -50,6 +54,7 @@ export function getUsers(
                                 networkByte
                             ),
                             privateKey: user.privateKey,
+                            userType: user.userType,
                         },
                     ];
                 }
@@ -66,6 +71,7 @@ export function getUsers(
                         {
                             address: libs.crypto.address(seed, networkByte),
                             privateKey: libs.crypto.privateKey(seed),
+                            userType: user.userType,
                         },
                     ];
                 }

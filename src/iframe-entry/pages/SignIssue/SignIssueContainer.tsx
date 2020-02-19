@@ -1,14 +1,7 @@
-import React, {
-    FC,
-    useEffect,
-    useCallback,
-    useState,
-    ChangeEventHandler,
-} from 'react';
+import React, { FC, useCallback, useState, ChangeEventHandler } from 'react';
 import { ISignTxProps } from '../../../interface';
 import { IIssueWithType } from '@waves/signer';
 import { useTxUser } from '../../hooks/useTxUser';
-import { useTxHandlers } from '../../hooks/useTxHandlers';
 import { SignIssueComponent } from './SignIssueComponent';
 import { getPrintableNumber } from '../../utils/math';
 import { WAVES } from '../../constants';
@@ -21,14 +14,6 @@ export const SignIssueContainer: FC<ISignTxProps<IIssueWithType>> = ({
     onConfirm,
 }) => {
     const { userName, userBalance } = useTxUser(user, networkByte);
-
-    const { handleReject, handleConfirm, handleShow } = useTxHandlers(
-        tx,
-        onCancel,
-        onConfirm
-    );
-
-    useEffect(handleShow);
 
     const [canConfirm, setCanConfirm] = useState(false);
     const handleTermsCheck = useCallback<ChangeEventHandler<HTMLInputElement>>(
@@ -50,8 +35,8 @@ export const SignIssueContainer: FC<ISignTxProps<IIssueWithType>> = ({
             userName={userName}
             userBalance={userBalance}
             issueAmount={`${tx.quantity} ${tx.name}`}
-            onConfirm={handleConfirm}
-            onReject={handleReject}
+            onConfirm={onConfirm}
+            onReject={onCancel}
             onTermsCheck={handleTermsCheck}
             canConfirm={canConfirm}
             tx={tx}

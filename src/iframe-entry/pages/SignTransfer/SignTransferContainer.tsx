@@ -1,8 +1,7 @@
 import { ITransferWithType, TLong, IMassTransferWithType } from '@waves/signer';
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { ISignTxProps } from '../../../interface';
 import { getIconType } from '../../components/IconTransfer/helpers';
-import { useTxHandlers } from '../../hooks/useTxHandlers';
 import { SignTransfer as SignTransferComponent } from './SignTransferComponent';
 import { getUserName } from '../../services/userService';
 import { useHandleFeeSelect } from '../../hooks/useHandleFeeSelect';
@@ -27,14 +26,6 @@ export const SignTransfer: FC<ISignTxProps<TransferType>> = ({
     onConfirm,
     onCancel,
 }) => {
-    const { handleReject, handleConfirm, handleShow } = useTxHandlers(
-        tx,
-        onCancel,
-        onConfirm
-    );
-
-    useEffect(handleShow);
-
     const [handleFeeSelect, txJSON] = useHandleFeeSelect(tx);
 
     const { totalTransferAmount, transferList, fee, attachment } = getViewData(
@@ -54,12 +45,12 @@ export const SignTransfer: FC<ISignTxProps<TransferType>> = ({
             attachment={attachment}
             tx={tx}
             meta={isTransferMeta(txMeta) ? txMeta : undefined}
-            onReject={handleReject}
-            onConfirm={handleConfirm}
+            onReject={onCancel}
+            onConfirm={onConfirm}
             handleFeeSelect={handleFeeSelect}
             txJSON={txJSON}
             iconType={getIconType(tx, user, Object.keys(txMeta.aliases))}
-            transferAmount={totalTransferAmount}
+            transferAmount={`-${totalTransferAmount}`}
             isMassTransfer={isMassTransfer}
         />
     );

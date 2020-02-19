@@ -149,29 +149,37 @@ export const SignTransfer: FC<Props> = ({
                                 maxHeight={240}
                                 overflowY="auto"
                             >
-                                {transferList.map(({ address, amount }, i) => (
-                                    <Flex
-                                        key={i}
-                                        alignItems="center"
-                                        justifyContent="space-between"
-                                        pt={i > 0 ? '7px' : 0}
-                                        pb={
-                                            i < transferList.length - 1
-                                                ? '7px'
-                                                : 0
-                                        }
-                                    >
-                                        <AddressLabel address={address} mt="$5">
-                                            <AddressAvatar address={address} />
-                                        </AddressLabel>
-                                        <Text
-                                            variant="body2"
-                                            color="standard.$0"
+                                {transferList.map(
+                                    ({ address, amount, name }, i) => (
+                                        <Flex
+                                            key={i}
+                                            alignItems="center"
+                                            justifyContent="space-between"
+                                            pt={i > 0 ? '7px' : 0}
+                                            pb={
+                                                i < transferList.length - 1
+                                                    ? '7px'
+                                                    : 0
+                                            }
                                         >
-                                            {amount}
-                                        </Text>
-                                    </Flex>
-                                ))}
+                                            <AddressLabel
+                                                address={address}
+                                                alias={name}
+                                                mt="$5"
+                                            >
+                                                <AddressAvatar
+                                                    address={address}
+                                                />
+                                            </AddressLabel>
+                                            <Text
+                                                variant="body2"
+                                                color="standard.$0"
+                                            >
+                                                {amount}
+                                            </Text>
+                                        </Flex>
+                                    )
+                                )}
                             </Box>
                         )}
 

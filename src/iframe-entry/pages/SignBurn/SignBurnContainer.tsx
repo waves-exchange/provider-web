@@ -1,8 +1,7 @@
 import { IBurnWithType } from '@waves/signer';
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { ISignTxProps } from '../../../interface';
 import { WAVES } from '../../constants';
-import { useTxHandlers } from '../../hooks/useTxHandlers';
 import { getPrintableNumber } from '../../utils/math';
 import { SignBurn as SignBurnComponent } from './SignBurnComponent';
 import { getUserName } from '../../services/userService';
@@ -22,14 +21,6 @@ export const SignBurnContainer: FC<ISignTxProps<IBurnWithType>> = ({
 
     const fee = getPrintableNumber(tx.fee, feeAsset.decimals);
 
-    const { handleReject, handleConfirm, handleShow } = useTxHandlers(
-        tx,
-        onCancel,
-        onConfirm
-    );
-
-    useEffect(handleShow);
-
     return (
         <SignBurnComponent
             key={tx.id}
@@ -45,8 +36,8 @@ export const SignBurnContainer: FC<ISignTxProps<IBurnWithType>> = ({
             assetId={burnAsset.assetId}
             assetName={burnAsset.name}
             isSmartAsset={burnAsset.scripted}
-            onCancel={handleReject}
-            onConfirm={handleConfirm}
+            onCancel={onCancel}
+            onConfirm={onConfirm}
         />
     );
 };

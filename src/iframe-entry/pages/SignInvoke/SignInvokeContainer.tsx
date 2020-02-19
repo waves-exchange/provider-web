@@ -1,8 +1,7 @@
 import { ICall, IInvokeWithType, IMoney, TLong } from '@waves/signer';
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { ISignTxProps } from '../../../interface';
 import { WAVES } from '../../constants';
-import { useTxHandlers } from '../../hooks/useTxHandlers';
 import { isAlias } from '../../utils/isAlias';
 import { SignInvoke as SignInvokeComponent } from './SignInvokeComponent';
 import { assetPropFactory } from '../../utils/assetPropFactory';
@@ -32,14 +31,6 @@ export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
 
     const fee = getPrintableNumber(tx.fee, feeAsset.decimals);
 
-    const { handleConfirm, handleReject, handleShow } = useTxHandlers(
-        tx,
-        onCancel,
-        onConfirm
-    );
-
-    useEffect(handleShow);
-
     const mapPayments = (payments: Array<IMoney>): Array<IPayment> =>
         payments.map(({ assetId, amount }) => ({
             assetId,
@@ -67,8 +58,8 @@ export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
             call={tx.call as ICall}
             chainId={tx.chainId}
             payment={mapPayments(tx.payment || [])}
-            onCancel={handleReject}
-            onConfirm={handleConfirm}
+            onCancel={onCancel}
+            onConfirm={onConfirm}
             tx={tx}
             txJSON={txJSON}
             meta={meta}
