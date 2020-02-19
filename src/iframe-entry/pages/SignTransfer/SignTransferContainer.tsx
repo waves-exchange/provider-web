@@ -73,7 +73,7 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
             userAddress={user.address}
             userName={getUserName(networkByte, user.publicKey)}
             userBalance={user.balance}
-            transferAmount={`${amount} ${getAssetName(
+            transferAmount={`-${amount} ${getAssetName(
                 txMeta.assets,
                 tx.assetId
             )}`}
