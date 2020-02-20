@@ -121,7 +121,7 @@ export const SignBurn: FC<IProps> = ({
                                         iconVisible={isSmartAsset}
                                         assetId={assetId}
                                         name={assetName}
-                                        variant="medium"
+                                        size="30px"
                                         flexShrink={0}
                                         popperOptions={popperOptions}
                                     />
