@@ -12,7 +12,7 @@ class StorageService {
 
     private static readonly parser: TParser = {
         termsAccepted: (accepted) => accepted === 'true',
-        multiAccountUsers: (data) => JSON.parse(data || '') || {},
+        multiAccountUsers: (data) => JSON.parse(data || '{}') || {},
     };
 
     public update(storage: Partial<IStorage>): void {
