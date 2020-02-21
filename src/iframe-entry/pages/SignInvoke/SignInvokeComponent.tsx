@@ -129,7 +129,7 @@ export const SignInvoke: FC<IProps> = ({
                                 mb="$3"
                                 as="div"
                             >
-                                Account
+                                dApp
                             </Text>
                             <AddressLabel
                                 address={dAppAddress}
