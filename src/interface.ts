@@ -7,11 +7,11 @@ import {
 } from '@waves/signer';
 import {
     IWithId,
-    TTransaction,
     TTransactionMap,
     TTransactionWithProofs,
 } from '@waves/ts-types';
 import { IMeta } from './iframe-entry/services/transactionsService';
+import { MouseEventHandler } from 'react';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type TBusHandlers = {
@@ -42,11 +42,12 @@ export interface IBusEvents {
 
 export interface ISignTxProps<T extends TTransactionParamWithType> {
     networkByte: number;
+    nodeUrl: string;
     user: Omit<IUserWithBalances, 'seed'> & { publicKey: string };
     meta: IMeta<T>;
     tx: TTransactionMap<TLong>[T['type']] & IWithId;
-    onConfirm: (tx: TTransaction<TLong>) => void;
-    onCancel: () => void;
+    onConfirm: MouseEventHandler;
+    onCancel: MouseEventHandler;
 }
 
 export interface IUser {
@@ -57,6 +58,7 @@ export interface IUser {
 export interface IUserWithBalances extends IUser {
     aliases: Array<string>;
     balance: TLong;
+    hasScript: boolean;
 }
 
 // eslint-disable-next-line prettier/prettier

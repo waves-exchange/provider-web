@@ -30,12 +30,6 @@ export function getConnectHandler(
             type: 'ui',
         });
 
-        analytics.init({
-            platform: 'web',
-            userType: 'unknown',
-            referrer: document.referrer,
-        });
-
         analytics.activate();
 
         analytics.send({

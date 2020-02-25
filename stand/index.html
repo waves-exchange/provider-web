@@ -25,7 +25,7 @@
             }
         </style>
         <script src="../node_modules/@waves/signer/dist/signer.min.js"></script>
-        <script src="../dist/provider-web.js"></script>
+        <script src="../dist/provider-web.min.js"></script>
         <script>
             var url = location.href.includes('provider=exchange')
                 ? 'https://waves.exchange/signer'
@@ -66,6 +66,62 @@
     </head>
 
     <body>
+        <div style="margin-top: 200px;">
+            <h2>
+                Sign Set Asset Script
+            </h2>
+            <button onclick="waves.setAssetScript({
+                assetId: '9FKPH2PVQXpe8cuHHJkMKJMxdCmFZrPZftZTkPzhYXtj',
+                script: '12345678',
+            }).broadcast()">
+                set asset script
+            </button>
+        </div >
+        <div>
+            <h2>
+                Sign Burn
+            </h2>
+            <button onclick="waves.burn({
+                assetId: '9FKPH2PVQXpe8cuHHJkMKJMxdCmFZrPZftZTkPzhYXtj',
+                quantity: '1',
+            }).broadcast()">
+                Burn
+            </button>
+        </div >
+        <div>
+            <h2>
+                Sign Issue
+            </h2>
+            <button onclick="waves.issue({
+                name: 'Name of Token',
+                decimals: 2,
+                quantity: 1000,
+                reissuable: false,
+                description: 'Description of token',
+                script: 'base64:AAIDAAAAAAAAAAQIARIAAAAAAAAAAAEAAAABaQEAAAADZm9vAAAAAAkBAAAACFdyaXRlU2V0AAAAAQUAAAADbmlsAAAAACvwfcA='
+            }).broadcast()">sign issue
+            </button>   
+        </div>
+            <h2>
+                Sign massTransfer
+            </h2>
+            <button onclick="waves.massTransfer({
+                assetId: 'BC2RVCn2NzoWM8s5MVr2Tns9EmcxL6guMgnDWy3Uj8nA',
+                transfers: [
+                    {
+                        amount: 10,
+                        recipient: 'merry'
+                    },
+                    {
+                        amount: 20,
+                        recipient: '3PCAB4sHXgvtu5NPoen6EXR5yaNbvsEA8Fj'
+                    }
+                ],
+                attachment: '72k1xXWG59fYdzSNoA'
+            }).broadcast()">
+                massTransfer
+            </button>
+        </div >
         <div>
             <h1>Clear</h1>
             <button onclick="localStorage.clear()">Clear storage</button>
@@ -172,8 +228,99 @@
                 { key: 'key', value: 123123123, type: 'integer' },
                 { key: 'key', value: true, type: 'boolean' },
             ])"
-            ></button>
+            >Sign Data</button>
         </div>
+
+        <div>
+            <h2>
+                Lease
+            </h2>
+            <button
+                onclick="waves.lease({
+                    amount: 677728840,
+                    recipient: '3PCAB4sHXgvtu5NPoen6EXR5yaNbvsEA8Fj'
+                }).broadcast()"
+            >Lease
+            </button>
+            <button
+                onclick="waves.lease({
+                    amount: 677728840,
+                    recipient: 'alias:T:merry'
+                }).broadcast()"
+            >Lease to Merry by alias
+            </button>
+        </div>
+
+        <div>
+            <h2>
+                Sponsorship
+            </h2>
+            <button
+                onclick="waves.sponsorship({
+                    assetId: '8BrF9fVo2tDPGMdcx91EdTZLmwUDX7K7h1zs6txCpAAA',
+                    minSponsoredAssetFee: 123
+                }).broadcast()"
+            >
+                Sign Sponsorship Enable
+            </button>
+
+            <button
+                onclick="waves.sponsorship({
+                    assetId: '8BrF9fVo2tDPGMdcx91EdTZLmwUDX7K7h1zs6txCpAAA',
+                    minSponsoredAssetFee: 0
+                }).broadcast()"
+            >
+                Sign Sponsorship Disable
+            </button>
+        </div>
+
+        <div>
+            <h2>
+                Cancel Lease
+            </h2>
+            <button
+                onclick="waves.cancelLease({
+                    leaseId: 'FUQasynBUELMXc9T1hrphfFwJvU2ENBiUfnJPci7jq4w',
+                }).broadcast()"
+            >Cancel Lease
+            </button>
+        </div>
+
+        <div>
+            <h2>
+                Alias
+            </h2>
+            <button onclick="waves.alias({ alias: 'new_alias' }).broadcast()">
+                Sign Alias
+            </button>
+        </div>
+
+        <div>
+            <h2>
+                Reissue
+            </h2>
+            <button
+                onclick="waves.reissue({
+                    assetId: '6RHh59Tbt17QPvgaEu79DQsC5XyTqhBzpfB2FLV59ABU',
+                    quantity: 100000000000,
+                    reissuable: true
+                }).broadcast()"
+            >Sign Reissue</button>
+        </div>
+
+        <div>
+            <h2>
+                Account Script
+            </h2>
+            <button
+                onclick="waves.setScript({
+                    script: 'AgQAAAAEdGhpcwkBAAAAB2V4dHJhY3QAAAABCAUAAAACdHgAAAAGc2VuZGVyBAAAAAckbWF0Y2gwBQAAAAJ0eAMJAAABAAAAAgUAAAAHJG1hdGNoMAIAAAATVHJhbnNmZXJUcmFuc2FjdGlvbgQAAAABdAUAAAAHJG1hdGNoMAQAAAANY29ycmVjdEFuc3dlcgkBAAAAB2V4dHJhY3QAAAABCQAEHAAAAAIFAAAABHRoaXMCAAAADWhhc2hlZCBhbnN3ZXIEAAAABmFuc3dlcgkAAfUAAAABCAUAAAABdAAAAAphdHRhY2htZW50AwkAAAAAAAACBQAAAA1jb3JyZWN0QW5zd2VyBQAAAAZhbnN3ZXIJAQAAAAEhAAAAAQkBAAAACWlzRGVmaW5lZAAAAAEIBQAAAAF0AAAAB2Fzc2V0SWQHAwMJAAABAAAAAgUAAAAHJG1hdGNoMAIAAAAPRGF0YVRyYW5zYWN0aW9uBgkAAAEAAAACBQAAAAckbWF0Y2gwAgAAABRTZXRTY3JpcHRUcmFuc2FjdGlvbgQAAAABcwUAAAAHJG1hdGNoMAkAAfQAAAADCAUAAAABcwAAAAlib2R5Qnl0ZXMJAAGRAAAAAggFAAAAAXMAAAAGcHJvb2ZzAAAAAAAAAAAACAUAAAABcwAAAA9zZW5kZXJQdWJsaWNLZXkHnYrj7g==',
+                }).broadcast();"
+            >
+                Set Script
+            </button>
+        </div>
+
         <div>
             <h2>
                 Logout
@@ -183,4 +330,5 @@
             </button>
         </div>
     </body>
+
 </html>

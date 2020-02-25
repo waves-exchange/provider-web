@@ -8,7 +8,7 @@ import React, {
 } from 'react';
 import { IUser } from '../../../interface';
 import { LoginComponent } from './LoginComponent';
-import { getUsers, addSeedUser } from '../../services/userService';
+import { getUsers, addSeedUser, StorageUser } from '../../services/userService';
 import { libs } from '@waves/waves-transactions';
 import { analytics } from '../../utils/analytics';
 import { getEnvAwareUrl } from '../../utils/getEnvAwareUrl';
@@ -23,8 +23,8 @@ interface IProps {
 
 export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
     const [errorMessage, setErrorMessage] = useState<string>();
-    const [currentUser, setCurrentUser] = useState<IUser>();
-    const [users, setUsers] = useState<IUser[]>();
+    const [currentUser, setCurrentUser] = useState<StorageUser>();
+    const [users, setUsers] = useState<StorageUser[]>();
     const [password, setPassword] = useState<string>('');
 
     const inputPasswordId = 'password';
@@ -66,6 +66,10 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
 
                 if (users.length === 1) {
                     onConfirm(users[0]);
+
+                    analytics.addDefaultParams({
+                        userType: users[0].userType,
+                    });
                 } else if (users.length > 1) {
                     setUsers(users);
                 } else {
@@ -101,7 +105,7 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
     );
 
     const handleUserChange = useCallback(
-        (user: IUser): void => {
+        (user: StorageUser): void => {
             setCurrentUser(user);
         },
         [setCurrentUser]
@@ -111,6 +115,10 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
         (e) => {
             e.preventDefault();
             currentUser && onConfirm(currentUser);
+
+            analytics.addDefaultParams({
+                userType: currentUser?.userType,
+            });
 
             analytics.send({
                 name: 'Select_Account_Page_Continue',
@@ -141,11 +149,7 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
                   color="basic.$500"
               >
                   Choose one of your{' '}
-                  <ExternalLink
-                      href={getEnvAwareUrl()}
-                      variant="body1"
-                      target="_blank"
-                  >
+                  <ExternalLink href={getEnvAwareUrl()} variant="body1">
                       Waves.Exchange
                   </ExternalLink>{' '}
                   accounts.
@@ -159,11 +163,7 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
                   color="basic.$500"
               >
                   Enter your{' '}
-                  <ExternalLink
-                      href={getEnvAwareUrl()}
-                      variant="body1"
-                      target="_blank"
-                  >
+                  <ExternalLink href={getEnvAwareUrl()} variant="body1">
                       Waves.Exchange
                   </ExternalLink>{' '}
                   password.

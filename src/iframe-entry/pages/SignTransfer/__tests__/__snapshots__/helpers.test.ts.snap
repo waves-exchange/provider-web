@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getMassTransferViewData returns correct value 1`] = `
+Object {
+  "fee": "1 Waves",
+  "totalTransferAmount": "0.03 asset1_name",
+  "transferList": Array [
+    Object {
+      "address": "3PCAB4sHXgvtu5NPoen6EXR5yaNbvsEA8Fj",
+      "amount": "0.01",
+      "name": "3PCAB4sHXgvtu5NPoen6EXR5yaNbvsEA8Fj",
+    },
+    Object {
+      "address": "alias1_address",
+      "amount": "0.02",
+      "name": "alias:T:merry",
+    },
+  ],
+}
+`;
+
+exports[`getTransferList returns correct transfer list 1`] = `
+Array [
+  Object {
+    "address": "3PCAB4sHXgvtu5NPoen6EXR5yaNbvsEA8Fj",
+    "amount": "1",
+    "name": "3PCAB4sHXgvtu5NPoen6EXR5yaNbvsEA8Fj",
+  },
+  Object {
+    "address": "alias1_address",
+    "amount": "2",
+    "name": "alias:T:merry",
+  },
+]
+`;
+
+exports[`getTransferViewData returns correct value 1`] = `
+Object {
+  "fee": "1 Waves",
+  "totalTransferAmount": "1000000 asset1_name",
+  "transferList": Array [
+    Object {
+      "address": "alias1_address",
+      "amount": "1000000",
+      "name": "alias:T:merry",
+    },
+  ],
+}
+`;

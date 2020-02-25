@@ -71,7 +71,7 @@ class Analytics {
     protected loaded: Promise<Array<Boolean>> | null;
     protected events = [];
     protected apiList: Array<IApiData> = [];
-    protected defaultParams: Record<string, any> = Object.create(null);
+    protected readonly defaultParams: Record<string, any> = Object.create(null);
     protected isActive: boolean = false;
     protected isActivated: boolean = false;
     protected apiReadyList: Array<IAdapter> = [];
@@ -84,7 +84,7 @@ class Analytics {
     }
 
     public init(defaultParams: Record<string, any>): void {
-        this.defaultParams = defaultParams || this.defaultParams;
+        Object.assign(this.defaultParams, defaultParams);
     }
 
     public addApi(data: IApiData) {
@@ -92,7 +92,7 @@ class Analytics {
     }
 
     public addDefaultParams(params: Record<string, any>): void {
-        this.defaultParams = { ...this.defaultParams, ...params };
+        Object.assign(this.defaultParams, params);
     }
 
     public deactivate(): void {
@@ -140,7 +140,10 @@ class Analytics {
     public send(data: IEventData) {
         const event = {
             ...data,
-            params: { ...data.params, ...this.defaultParams },
+            params: {
+                ...this.defaultParams,
+                ...data.params,
+            },
         };
 
         if (this.isActive && this.isActivated) {
@@ -162,7 +165,7 @@ class Analytics {
                 return type === 'all' ? true : item.type === type;
             })
             .forEach(function(item) {
-                return item.send(data.name, data.params);
+                return item.send(data.name, { ...data.params });
             });
     }
 }
