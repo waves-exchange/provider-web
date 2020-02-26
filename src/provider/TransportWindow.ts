@@ -38,11 +38,7 @@ export class TransportWindow extends Transport {
                     reject(new Error('User rejection!'));
                 });
 
-                return callback(bus).then((result) => {
-                    return this._changeTransport(bus).then(() =>
-                        resolve(result)
-                    );
-                }, reject);
+                return callback(bus).then(resolve, reject);
             });
         };
 
@@ -91,16 +87,5 @@ export class TransportWindow extends Transport {
         this._useTransportChanged = false;
         this._iframeTransport.dropConnection();
         this._afterShow();
-    }
-
-    private _changeTransport(bus: TBus): Promise<void> {
-        return this._iframeTransport
-            .getPublicKey()
-            .then((publicKey) => bus.request('get-user-data', publicKey))
-            .then((data) => this._iframeTransport.setStorage(data))
-            .then(() => this._afterShow())
-            .then(() => {
-                this._useTransportChanged = true;
-            });
     }
 }
