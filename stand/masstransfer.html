@@ -37,18 +37,20 @@
 		</div>
 		<div>
 			<h1>Mass Transfer Tx</h1>
-			<div>AssetId: <input id='massTransfer-assetId'></div>
-			<div>Transfers: <input id='massTransfer-transfers'></div>
-			<div>Fee: <input id='massTransfer-fee'></div>
-			<div>Attachment: <input id='massTransfer-attachment'></div>
-			<div id='massTransfer-return'></div>
-			<button onclick="massTransfer(
-			getFromInput('massTransfer-assetId'),
-			getFromInput('massTransfer-transfers'),
-			getFromInput('massTransfer-attachment'),
-			getFromInput('massTransfer-fee'))
-			.then(tx => {console.log(tx); setElementHTML('massTransfer-return', getNodeTxLink(tx.id))})
-			.catch(err => {console.log(err); if(err.message) {setElementHTML('massTransfer-return', err.message)} else {setElementHTML('massTransfer-return', err)}});
+			<div>AssetId: <input id='tx-assetId'></div>
+			<div>Transfers: <input id='tx-transfers'></div>
+			<div>Fee: <input id='tx-fee'></div>
+			<div>Attachment: <input id='tx-attachment'></div>
+			<div id='tx-return'></div>
+			<button 
+			id="send-tx"
+			onclick="massTransfer(
+			getFromInput('tx-assetId'),
+			getFromInput('tx-transfers'),
+			getFromInput('tx-attachment'),
+			getFromInput('tx-fee'))
+			.then(tx => {console.log(tx); setElementHTML('tx-return', getNodeTxLink(tx.id))})
+			.catch(err => {console.log(err); if(err.message) {setElementHTML('tx-return', err.message)} else {setElementHTML('tx-return', err)}});
 			setElementHTML('login-return', waves._userData.address);
 			">Send TX</button>
 			<br>

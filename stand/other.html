@@ -37,23 +37,14 @@
 		</div>
 		<div>
 			<h1>Sign text message</h1>
-			<div>Text: <textarea id='message-text' rows="5" cols="50" type='text'></textarea></div>
-			<div id='message-return'></div>
-			<button onclick="
-			signMessage(getFromInput('message-text'))
-			.then(tx => {console.log(tx); setElementHTML('message-return', tx)})
-			.catch(err => {console.log(err); err.message ? setElementHTML('message-return', err.message) : setElementHTML('message-return', err)});
-			">Sign</button>
-			
-			<h1>Sign custom data</h1>
-			<div id='data-example' onclick="copyText('data-example')">[{"key": "string_key", "type": "string", "value": "SomeString!"}, {"key": "integer_key", "type": "integer", "value": -13}, {"key": "boolean_key", "type": "boolean", "value": false}, {"key": "binary_key", "type": "binary", "value": "U29tZSBieXRlcyE="}]</div>
-			<br>
-			<div>Data: <textarea id='data-value' rows="5" cols="50" type='text'></textarea></div>
-			<div id='data-return'></div>
-			<button onclick="
-			signCustomData(getFromInput('data-value'))
-			.then(tx => {console.log(tx); setElementHTML('data-return', tx)})
-			.catch(err => {console.log(err); err.message ? setElementHTML('data-return', err.message) : setElementHTML('data-return', err)});
+			<div>Text: <textarea id='tx-text' rows="5" cols="50" type='text'></textarea></div>
+			<div id='tx-return'></div>
+			<button 
+			id="sign-message"
+			onclick="
+			signMessage(getFromInput('tx-text'))
+			.then(tx => {console.log(tx); setElementHTML('tx-return', tx)})
+			.catch(err => {console.log(err); err.message ? setElementHTML('tx-return', err.message) : setElementHTML('tx-return', err)});
 			">Sign</button>
 		</div>
 		<script type="text/javascript">

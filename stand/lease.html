@@ -37,34 +37,34 @@
 		</div>
 		<div>
 			<h1>Lease Tx</h1>
-			<div>Recipient: <input id='lease-recipient'></div>
-			<div>Amount: <input id='lease-amount'></div>
-			<div>Fee: <input id='lease-fee'></div>
-			<div id='lease-return'></div>
-			<button onclick="startLease(
-			getFromInput('lease-amount'),
-			getFromInput('lease-recipient'),
-			getFromInput('lease-fee'))
-			.then(tx => {console.log(tx); setElementHTML('lease-return', getNodeTxLink(tx.id))})
-			.catch(err => {console.log(err); if(err.message) {setElementHTML('lease-return', err.message)} else {setElementHTML('lease-return', err)}});
+			<div>Recipient: <input id='tx-recipient'></div>
+			<div>Amount: <input id='tx-amount'></div>
+			<div>Fee: <input id='tx-fee'></div>
+			<div>LeaseId: <input id='tx-leaseId'></div>
+			<div id='tx-return'></div>
+			<button 
+			id="send-tx"
+			onclick="startLease(
+			getFromInput('tx-amount'),
+			getFromInput('tx-recipient'),
+			getFromInput('tx-fee'))
+			.then(tx => {console.log(tx); setElementHTML('tx-return', getNodeTxLink(tx.id))})
+			.catch(err => {console.log(err); if(err.message) {setElementHTML('tx-return', err.message)} else {setElementHTML('tx-return', err)}});
 			setElementHTML('login-return', waves._userData.address);
 			">Send TX</button>
-			<br>
-			<div>Address: </div>
-			<div id="test-address" onclick="copyText('test-address')">3NApQXCdH5P5LMtrawTUVLvh7UMdKidygmK</div>
+			<button 
+			id="send-cancel-lease-tx"
+			onclick="cancelLease(
+			getFromInput('tx-leaseId'),
+			getFromInput('tx-fee'))
+			.then(tx => {console.log(tx); setElementHTML('tx-return', getNodeTxLink(tx.id))})
+			.catch(err => {console.log(err); if(err.message) {setElementHTML('tx-return', err.message)} else {setElementHTML('tx-return', err)}});
+			setElementHTML('login-return', waves._userData.address);
+			">Send Cancel Lease TX</button>
 		</div>
 		<div>
-			<h1>Cancel Lease Tx</h1>
-			<div>LeaseId: <input id='cancelLease-leaseId'></div>
-			<div>Fee: <input id='cancelLease-fee'></div>
-			<div id='cancelLease-return'></div>
-			<button onclick="cancelLease(
-			getFromInput('cancelLease-leaseId'),
-			getFromInput('cancelLease-fee'))
-			.then(tx => {console.log(tx); setElementHTML('cancelLease-return', getNodeTxLink(tx.id))})
-			.catch(err => {console.log(err); if(err.message) {setElementHTML('cancelLease-return', err.message)} else {setElementHTML('cancelLease-return', err)}});
-			setElementHTML('login-return', waves._userData.address);
-			">Send TX</button>
+			<div>Address: </div>
+			<div id="test-address" onclick="copyText('test-address')">3NApQXCdH5P5LMtrawTUVLvh7UMdKidygmK</div>
 		</div>
 		<script type="text/javascript">
 			setElementValue('node-input', waves._options.NODE_URL);

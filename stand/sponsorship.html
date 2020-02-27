@@ -37,16 +37,18 @@
 		</div>
 		<div>
 			<h1>Sponsorship Tx</h1>
-			<div>AssetId: <input id='sponsorship-assetId'></div>
-			<div>minSponsoredAssetFee: <input id='sponsorship-rate'></div>
-			<div>Fee: <input id='sponsorship-fee'></div>
-			<div id='sponsorship-return'></div>
-			<button onclick="setSponsorship(
-			getFromInput('sponsorship-assetId'),
-			getFromInput('sponsorship-rate'),
-			getFromInput('sponsorship-fee'))
-			.then(tx => {console.log(tx); setElementHTML('sponsorship-return', getNodeTxLink(tx.id))})
-			.catch(err => {console.log(err); if(err.message) {setElementHTML('sponsorship-return', err.message)} else {setElementHTML('sponsorship-return', err)}});
+			<div>AssetId: <input id='tx-assetId'></div>
+			<div>minSponsoredAssetFee: <input id='tx-rate'></div>
+			<div>Fee: <input id='tx-fee'></div>
+			<div id='tx-return'></div>
+			<button 
+			id="send-tx"
+			onclick="setSponsorship(
+			getFromInput('tx-assetId'),
+			getFromInput('tx-rate'),
+			getFromInput('tx-fee'))
+			.then(tx => {console.log(tx); setElementHTML('tx-return', getNodeTxLink(tx.id))})
+			.catch(err => {console.log(err); if(err.message) {setElementHTML('tx-return', err.message)} else {setElementHTML('tx-return', err)}});
 			setElementHTML('login-return', waves._userData.address);
 			">Send TX</button>
 			<br>

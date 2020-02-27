@@ -40,7 +40,9 @@
 			<div>Script: <input id='setscript-script'></div>
 			<div>Fee: <input id='setscript-fee'></div>
 			<div id='setscript-return'></div>
-			<button onclick="setScript(
+			<button 
+			id="send-tx"
+			onclick="setScript(
 			getFromInput('setscript-script'),
 			getFromInput('setscript-fee'))
 			.then(tx => {console.log(tx); setElementHTML('setscript-return', getNodeTxLink(tx.id))})

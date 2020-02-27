@@ -38,13 +38,15 @@
 		<div>
 			<h1>Alias Tx</h1>
 			<div>Alias: <input id='alias-alias'></div>
-			<div>Fee: <input id='alias-fee'></div>
-			<div id='alias-return'></div>
-			<button onclick="newAlias(
+			<div>Fee: <input id='tx-fee'></div>
+			<div id='tx-return'></div>
+			<button 
+			button id="send-tx"
+			onclick="newAlias(
 			getFromInput('alias-alias'),
-			getFromInput('alias-fee'))
-			.then(tx => {console.log(tx); setElementHTML('alias-return', getNodeTxLink(tx.id))})
-			.catch(err => {console.log(err); if(err.message) {setElementHTML('alias-return', err.message)} else {setElementHTML('alias-return', err)}});
+			getFromInput('tx-fee'))
+			.then(tx => {console.log(tx); setElementHTML('tx-return', getNodeTxLink(tx.id))})
+			.catch(err => {console.log(err); if(err.message) {setElementHTML('tx-return', err.message)} else {setElementHTML('tx-return', err)}});
 			setElementHTML('login-return', waves._userData.address);
 			">Send TX</button>
 		</div>

@@ -37,22 +37,24 @@
 		</div>
 		<div>
 			<h1>Transfer Tx</h1>
-			<div>Amount: <input id='transfer-amount'></div>
-			<div>Recipient: <input id='transfer-recipient'></div>
-			<div>AssetId: <input id='transfer-assetId'></div>
-			<div>Fee AssetId: <input id='transfer-feeAssetId'></div>
-			<div>Fee: <input id='transfer-fee'></div>
-			<div>Attachment: <input id='transfer-attachment'></div>
-			<div id='transfer-return'></div>
-			<button onclick="transferTx(
-			getFromInput('transfer-amount'),
-			getFromInput('transfer-recipient'),
-			getFromInput('transfer-assetId'),
-			getFromInput('transfer-feeAssetId'),
-			getFromInput('transfer-fee'),
-			getFromInput('transfer-attachment'))
-			.then(tx => {console.log(tx); setElementHTML('transfer-return', getNodeTxLink(tx.id))})
-			.catch(err => {console.log(err); if(err.message) {setElementHTML('transfer-return', err.message)} else {setElementHTML('transfer-return', err)}});
+			<div>Amount: <input id='tx-amount'></div>
+			<div>Recipient: <input id='tx-recipient'></div>
+			<div>AssetId: <input id='tx-assetId'></div>
+			<div>Fee AssetId: <input id='tx-feeAssetId'></div>
+			<div>Fee: <input id='tx-fee'></div>
+			<div>Attachment: <input id='tx-attachment'></div>
+			<div id='tx-return'></div>
+			<button 
+			id="send-tx"
+			onclick="transferTx(
+			getFromInput('tx-amount'),
+			getFromInput('tx-recipient'),
+			getFromInput('tx-assetId'),
+			getFromInput('tx-feeAssetId'),
+			getFromInput('tx-fee'),
+			getFromInput('tx-attachment'))
+			.then(tx => {console.log(tx); setElementHTML('tx-return', getNodeTxLink(tx.id))})
+			.catch(err => {console.log(err); if(err.message) {setElementHTML('tx-return', err.message)} else {setElementHTML('tx-return', err)}});
 			setElementHTML('login-return', waves._userData.address);
 			">Send TX</button>
 			<br>

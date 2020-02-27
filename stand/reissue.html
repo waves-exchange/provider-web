@@ -37,18 +37,20 @@
 		</div>
 		<div>
 			<h1>Reissue Tx</h1>
-			<div>AssetId: <input id='reissue-assetId'></div>
-			<div>Quantity: <input id='reissue-quantity'></div>
-			<div>Reissuable: <input id='reissue-reissuable' name='reissue-reissuable' type='checkbox', value='true'></div>
-			<div>Fee: <input id='reissue-fee'></div>
-			<div id='reissue-return'></div>
-			<button onclick="reissueAsset(
-			getFromInput('reissue-assetId'),
-			getFromInput('reissue-quantity'),
-			document.getElementById('reissue-reissuable').checked,
-			getFromInput('reissue-fee'))
-			.then(tx => {console.log(tx); setElementHTML('reissue-return', getNodeTxLink(tx.id))})
-			.catch(err => {console.log(err); if(err.message) {setElementHTML('reissue-return', err.message)} else {setElementHTML('reissue-return', err)}});
+			<div>AssetId: <input id='tx-assetId'></div>
+			<div>Quantity: <input id='tx-quantity'></div>
+			<div>Reissuable: <input id='tx-reissuable' name='tx-reissuable' type='checkbox', value='true'></div>
+			<div>Fee: <input id='tx-fee'></div>
+			<div id='tx-return'></div>
+			<button 
+			id="send-tx"
+			onclick="reissueAsset(
+			getFromInput('tx-assetId'),
+			getFromInput('tx-quantity'),
+			document.getElementById('tx-reissuable').checked,
+			getFromInput('tx-fee'))
+			.then(tx => {console.log(tx); setElementHTML('tx-return', getNodeTxLink(tx.id))})
+			.catch(err => {console.log(err); if(err.message) {setElementHTML('tx-return', err.message)} else {setElementHTML('tx-return', err)}});
 			setElementHTML('login-return', waves._userData.address);
 			">Send TX</button>
 			<br>

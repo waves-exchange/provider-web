@@ -37,16 +37,18 @@
 		</div>
 		<div>
 			<h1>Burn Tx</h1>
-			<div>AssetId: <input id='burn-assetId'></div>
-			<div>Quantity: <input id='burn-quantity'></div>
-			<div>Fee: <input id='burn-fee'></div>
-			<div id='burn-return'></div>
-			<button onclick="burnAsset(
-			getFromInput('burn-assetId'),
-			getFromInput('burn-quantity'),
-			getFromInput('burn-fee'))
-			.then(tx => {console.log(tx); setElementHTML('burn-return', getNodeTxLink(tx.id))})
-			.catch(err => {console.log(err); if(err.message) {setElementHTML('burn-return', err.message)} else {setElementHTML('burn-return', err)}});
+			<div>AssetId: <input id='tx-assetId'></div>
+			<div>Quantity: <input id='tx-quantity'></div>
+			<div>Fee: <input id='tx-fee'></div>
+			<div id='tx-return'></div>
+			<button 
+			id="send-tx"
+			onclick="burnAsset(
+			getFromInput('tx-assetId'),
+			getFromInput('tx-quantity'),
+			getFromInput('tx-fee'))
+			.then(tx => {console.log(tx); setElementHTML('tx-return', getNodeTxLink(tx.id))})
+			.catch(err => {console.log(err); if(err.message) {setElementHTML('tx-return', err.message)} else {setElementHTML('tx-return', err)}});
 			setElementHTML('login-return', waves._userData.address);
 			">Send TX</button>
 			<br>

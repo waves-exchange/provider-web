@@ -54,20 +54,21 @@
 			<div>Bitcoin AssetId:</div>
 			<div id="bitcoin-asset-id" onclick="copyText('bitcoin-asset-id')">DWgwcZTMhSvnyYCoWLRUXXSH1RSkzThXLJhww9gwkqdn</div>
 			<h2>TX args</h2>
-			<div>dApp: <input id='invoke-dapp'></div>
-			<div>FeeAssetId: <input id='invoke-feeAssetId'></div>
-			<div>Fee: <input id='invoke-fee'></div>
-			<div>Payment: <input id='invoke-payment'></div>
-			<div>Call: <input id='invoke-call'></div>
-			<div id='invoke-return'></div>
-			<button onclick="invokeTx(
-			getFromInput('invoke-dapp'),
-			getFromInput('invoke-fee'),
-			getFromInput('invoke-feeAssetId'),
-			getFromInput('invoke-payment'),
-			getFromInput('invoke-call'))
-			.then(tx => {console.log(tx); setElementHTML('invoke-return', getNodeTxLink(tx.id))})
-			.catch(err => {console.log(err); if(err.message) {setElementHTML('invoke-return', err.message)} else {setElementHTML('invoke-return', err)}});
+			<div>dApp: <input id='tx-dapp'></div>
+			<div>FeeAssetId: <input id='tx-feeAssetId'></div>
+			<div>Fee: <input id='tx-fee'></div>
+			<div>Payment: <input id='tx-payment'></div>
+			<div>Call: <input id='tx-call'></div>
+			<div id='tx-return'></div>
+			<button id="send-tx"
+			onclick="invokeTx(
+			getFromInput('tx-dapp'),
+			getFromInput('tx-fee'),
+			getFromInput('tx-feeAssetId'),
+			getFromInput('tx-payment'),
+			getFromInput('tx-call'))
+			.then(tx => {console.log(tx); setElementHTML('tx-return', getNodeTxLink(tx.id))})
+			.catch(err => {console.log(err); if(err.message) {setElementHTML('tx-return', err.message)} else {setElementHTML('tx-return', err)}});
 			setElementHTML('login-return', waves._userData.address);
 			">Send TX</button>
 		</div>
