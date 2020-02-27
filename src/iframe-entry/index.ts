@@ -46,11 +46,6 @@ WindowAdapter.createSimpleWindowAdapter()
         );
 
         bus.registerRequestHandler(
-            'get-user-data',
-            getUserDataHandler(moveUserState, state)
-        );
-
-        bus.registerRequestHandler(
             'set-user-data',
             setUserDataHandler(moveUserState, state)
         );
