@@ -93,7 +93,11 @@ export const SignInvoke: FC<IProps> = ({
                         <Text variant="body1" color="basic.$500" mb="$3">
                             Sign Invoke Script TX
                         </Text>
-                        <Heading variant="heading2" color="standard.$0">
+                        <Heading
+                            variant="heading2"
+                            color="standard.$0"
+                            data-test-id="payments-count"
+                        >
                             {payment.length > 0 ? payment.length : 'No'}{' '}
                             Payments
                         </Heading>
@@ -109,13 +113,13 @@ export const SignInvoke: FC<IProps> = ({
                     mb="$30"
                     px="$40"
                 >
-                    <Tab mr="32px" pb="12px">
+                    <Tab mr="32px" pb="12px" data-test-id="tab-main">
                         <Text variant="body1">Main</Text>
                     </Tab>
-                    <Tab mr="32px" pb="12px">
+                    <Tab mr="32px" pb="12px" data-test-id="tab-details">
                         <Text variant="body1">Details</Text>
                     </Tab>
-                    <Tab mr="32px" pb="12px">
+                    <Tab mr="32px" pb="12px" data-test-id="tab-json">
                         <Text variant="body1">JSON</Text>
                     </Tab>
                 </TabsList>
@@ -136,6 +140,7 @@ export const SignInvoke: FC<IProps> = ({
                                 alias={dAppName}
                                 withCopy={true}
                                 mt="$5"
+                                data-test-id="dapp-address"
                             >
                                 <BoxWithIcon
                                     icon={iconSmartMini}

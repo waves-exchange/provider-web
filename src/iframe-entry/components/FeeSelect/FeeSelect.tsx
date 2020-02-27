@@ -94,6 +94,7 @@ export const FeeSelect: FC<Props & BoxProps> = ({
             </Text>
             {feeOptions.length > 1 ? (
                 <Select
+                    data-test-id="tx-fee-select"
                     placement="top"
                     renderSelected={(open): ReactElement => (
                         <Selected selected={selectedFeeOption} opened={open} />
@@ -102,7 +103,7 @@ export const FeeSelect: FC<Props & BoxProps> = ({
                     <List onSelect={handleFeeSelect} options={feeOptions} />
                 </Select>
             ) : (
-                <Text variant="body2" color="standard.$0">
+                <Text variant="body2" color="standard.$0" data-test-id="tx-fee">
                     {selectedFeeOption.value} {selectedFeeOption.name}
                 </Text>
             )}

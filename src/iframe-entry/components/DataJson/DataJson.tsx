@@ -19,6 +19,7 @@ export const DataJson: FC<DataJsonProps> = ({ data }) => (
             m="0"
             variant="body2"
             fontFamily="Menlo, Monaco, Consolas, Courier New, monospace"
+            data-test-id="data-json"
         >
             {typeof data === 'string' ? data : JSON.stringify(data, null, 2)}
         </Text>

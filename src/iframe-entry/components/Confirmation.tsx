@@ -52,6 +52,7 @@ export const Confirmation: FC<IConfirmationProps> = ({
                     address={address}
                     name={name}
                     withCopy={true}
+                    data-test-id="address-info"
                 >
                     <AddressAvatar address={address} variantSize="large" />
                 </AddressLabel>
@@ -60,7 +61,11 @@ export const Confirmation: FC<IConfirmationProps> = ({
                 <Text variant="footnote1" color="basic.$500">
                     Balance
                 </Text>
-                <Text variant="body2" color="standard.$0">
+                <Text
+                    variant="body2"
+                    color="standard.$0"
+                    data-test-id="address-balance"
+                >
                     {balance}
                 </Text>
             </Flex>
@@ -79,6 +84,7 @@ export const Confirmation: FC<IConfirmationProps> = ({
                 variant="danger"
                 variantSize="medium"
                 onClick={onReject}
+                data-test-id="reject"
             >
                 Reject
             </Button>
@@ -89,6 +95,7 @@ export const Confirmation: FC<IConfirmationProps> = ({
                 variantSize="medium"
                 disabled={!canConfirm}
                 onClick={onConfirm}
+                data-test-id="confirm"
             >
                 Confirm
             </Button>

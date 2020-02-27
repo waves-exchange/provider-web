@@ -18,7 +18,7 @@ export const TransactionDetails: FC<TransactionDetailsProps> = ({ tx }) => (
             <Text variant="body2" color="basic.$500">
                 Type
             </Text>
-            <Text variant="body2" color="standard.$0">
+            <Text variant="body2" color="standard.$0" data-test-id="tx-type">
                 {tx.type}
             </Text>
         </Flex>
@@ -31,7 +31,7 @@ export const TransactionDetails: FC<TransactionDetailsProps> = ({ tx }) => (
             <Text variant="body2" color="basic.$500">
                 Version
             </Text>
-            <Text variant="body2" color="standard.$0">
+            <Text variant="body2" color="standard.$0" data-test-id="tx-version">
                 {tx.version}
             </Text>
         </Flex>
@@ -44,7 +44,7 @@ export const TransactionDetails: FC<TransactionDetailsProps> = ({ tx }) => (
             <Text variant="body2" color="basic.$500">
                 TX Id
             </Text>
-            <Text variant="body2" color="standard.$0">
+            <Text variant="body2" color="standard.$0" data-test-id="tx-id">
                 {tx.id}
             </Text>
         </Flex>
@@ -57,7 +57,11 @@ export const TransactionDetails: FC<TransactionDetailsProps> = ({ tx }) => (
             <Text variant="body2" color="basic.$500">
                 Timestamp
             </Text>
-            <Text variant="body2" color="standard.$0">
+            <Text
+                variant="body2"
+                color="standard.$0"
+                data-test-id="tx-timestamp"
+            >
                 {tx.timestamp}
             </Text>
         </Flex>

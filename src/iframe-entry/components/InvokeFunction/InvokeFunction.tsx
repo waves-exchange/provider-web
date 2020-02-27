@@ -19,7 +19,7 @@ export const InvokeFunction: FC<IProps & TFlexProps> = ({
     ...rest
 }) => (
     <Flex sx={wrapperStylesEnd} fontSize="$13" lineHeight="$18" {...rest}>
-        <Text isTruncated>
+        <Text isTruncated data-test-id="invoke-function">
             <Text sx={pseudoElemStyles}>{name}</Text>
             <Text sx={wrapperStylesStart}>
                 {args.map(({ type, value }, index) => (

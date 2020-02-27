@@ -26,8 +26,15 @@ export const InvokePayment: FC<TProps> = ({
             name={name}
             size={26}
         />
-        <Text variant="body2">{name}</Text>
-        <Text variant="body2" flex="2" textAlign="right">
+        <Text variant="body2" data-test-id="payment-asset">
+            {name}
+        </Text>
+        <Text
+            variant="body2"
+            flex="2"
+            textAlign="right"
+            data-test-id="payment-amount"
+        >
             {amount}
         </Text>
     </Flex>
