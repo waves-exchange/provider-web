@@ -43,10 +43,11 @@
         <script>
             (function() {
                 window.addEventListener('load', function() {
-                    var factor = innerWidth / 520;
+                    var root = document.getElementById('root');
+                    var factor = window.outerWidth === window.innerWidth ? window.outerWidth / 520 : 1;
+
                     if (factor < 1) {
-                        document.getElementById('root').style.transform =
-                            'scale(' + factor + ')';
+                        root.style.transform = 'scale(' + factor + ')';
                     }
                 });
             })();
