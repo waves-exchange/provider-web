@@ -1,7 +1,7 @@
 import { Queue } from '../utils/Queue';
 import { TBus, ITransport } from './interface';
 
-export abstract class Transport implements ITransport {
+export abstract class Transport<T> implements ITransport<T> {
     private readonly _queue: Queue;
     private readonly _events: Array<TEventDispatcher<void>> = [];
     private readonly _toRunEvents: Array<TEventDispatcher<void>> = [];
@@ -82,6 +82,7 @@ export abstract class Transport implements ITransport {
             : action;
     }
 
+    public abstract get(): T | undefined;
     protected abstract _dropTransportConnect(): void;
     protected abstract _beforeShow(): void;
     protected abstract _afterShow(): void;

@@ -1,75 +1,31 @@
-import { Transport } from './Transport';
-import { TBus } from './interface';
 import { Bus, WindowAdapter } from '@waves/waves-browser-bus';
 import { CSSProperties } from 'react';
-import { IEncryptedUserData } from '../interface';
 import { renderErrorPage } from '../iframe-entry/utils/renderErrorPage';
+import { TBus } from './interface';
+import { Transport } from './Transport';
 
-export class TransportIframe extends Transport {
+export class TransportIframe extends Transport<HTMLIFrameElement> {
     private static _timer: ReturnType<typeof setTimeout> | null = null;
     private readonly _url: string;
-    private readonly _activeBusCreate: Promise<TBus> | undefined;
     private _iframe: HTMLIFrameElement | undefined;
     private _bus: TBus | undefined;
 
     constructor(url: string, queueLength: number) {
         super(queueLength);
         this._url = url;
+        this._initIframe();
     }
 
-    public static canUse(): boolean {
-        const userAgent = navigator.userAgent.toLowerCase();
-        const isSafari =
-            userAgent.includes('safari') && !userAgent.includes('chrome');
-        const iOS =
-            navigator.platform != null &&
-            /iPad|iPhone|iPod/.test(navigator.platform);
-
-        return !(iOS || isSafari);
-    }
-
-    private static _addIframeToDom(iframe: HTMLIFrameElement): void {
-        if (document.body != null) {
-            document.body.appendChild(iframe);
-        } else {
-            document.addEventListener('DOMContentLoaded', () => {
-                document.body.appendChild(iframe);
-            });
-        }
-    }
-
-    private static _createIframe(url: string): HTMLIFrameElement {
-        const iframe = document.createElement('iframe');
-
-        iframe.style.transition = 'opacity .2s';
-        iframe.style.position = 'absolute';
-        iframe.style.opacity = '0';
-        iframe.style.width = '100%';
-        iframe.style.height = '100%';
-        iframe.style.left = '0';
-        iframe.style.top = '0';
-        iframe.style.border = 'none';
-        iframe.style.position = 'fixed';
-        iframe.src = url;
-
-        return iframe;
-    }
-
-    public getPublicKey(): Promise<string> {
-        return this._getBus().then((bus) => bus.request('get-public-key'));
-    }
-
-    public setStorage(data: IEncryptedUserData): Promise<void> {
-        return this._getBus()
-            .then((bus) => bus.request('set-user-data', data))
-            .then(() => this._hideIframe());
+    public get(): HTMLIFrameElement | undefined {
+        return this._iframe;
     }
 
     protected _dropTransportConnect(): void {
         if (this._iframe != null) {
             document.body.removeChild(this._iframe);
-            this._iframe = undefined;
+            this._initIframe();
         }
+
         if (this._bus) {
             this._bus.destroy();
             this._bus = undefined;
@@ -81,32 +37,56 @@ export class TransportIframe extends Transport {
             return Promise.resolve(this._bus);
         }
 
-        if (this._iframe == null) {
-            this._iframe = TransportIframe._createIframe(this._url);
-            this._listenFetchURLError(this._iframe);
-            TransportIframe._addIframeToDom(this._iframe);
-        }
-
         return WindowAdapter.createSimpleWindowAdapter(this._iframe).then(
             (adapter) =>
                 new Promise((resolve) => {
                     this._bus = new Bus(adapter, -1);
-                    this._bus.once('ready', () => resolve(this._bus));
+                    this._bus.once('ready', () => {
+                        resolve(this._bus);
+                    });
                 })
         );
     }
 
     protected _beforeShow(): void {
-        if (this._iframe == null) {
-            this._iframe = TransportIframe._createIframe(this._url);
-            this._listenFetchURLError(this._iframe);
-            TransportIframe._addIframeToDom(this._iframe);
-        }
         this._showIframe();
     }
 
     protected _afterShow(): void {
         this._hideIframe();
+    }
+
+    private _initIframe(): void {
+        this._iframe = this._createIframe();
+        this._addIframeToDom(this._iframe);
+        this._listenFetchURLError(this._iframe);
+        this._hideIframe();
+    }
+
+    private _addIframeToDom(iframe: HTMLIFrameElement): void {
+        if (document.body != null) {
+            document.body.appendChild(iframe);
+        } else {
+            document.addEventListener('DOMContentLoaded', () => {
+                document.body.appendChild(iframe);
+            });
+        }
+    }
+
+    private _createIframe(): HTMLIFrameElement {
+        const iframe = document.createElement('iframe');
+
+        iframe.style.transition = 'opacity .2s';
+        iframe.style.position = 'absolute';
+        iframe.style.opacity = '0';
+        iframe.style.width = '100%';
+        iframe.style.height = '100%';
+        iframe.style.left = '0';
+        iframe.style.top = '0';
+        iframe.style.border = 'none';
+        iframe.style.position = 'fixed';
+
+        return iframe;
     }
 
     private _showIframe(): void {
@@ -123,9 +103,11 @@ export class TransportIframe extends Transport {
         };
 
         this._applyStyle(shownStyles);
+
         if (TransportIframe._timer != null) {
             clearTimeout(TransportIframe._timer);
         }
+
         TransportIframe._timer = setTimeout(() => {
             this._applyStyle({ opacity: '1' });
         }, 0);
@@ -137,9 +119,11 @@ export class TransportIframe extends Transport {
         };
 
         this._applyStyle(hiddenStyle);
+
         if (TransportIframe._timer != null) {
             clearTimeout(TransportIframe._timer);
         }
+
         TransportIframe._timer = setTimeout(() => {
             this._applyStyle({
                 width: '10px',
@@ -178,7 +162,7 @@ export class TransportIframe extends Transport {
         renderErrorPage(element, onClose, error);
     }
 
-    private _listenFetchURLError(iframe: HTMLIFrameElement) {
+    private _listenFetchURLError(iframe: HTMLIFrameElement): void {
         fetch(this._url).catch(() => {
             iframe.addEventListener('load', () => {
                 this._renderErrorPage(

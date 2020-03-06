@@ -1,18 +1,13 @@
 import { Bus, config, WindowAdapter } from '@waves/waves-browser-bus';
-import { libs } from '@waves/waves-transactions';
-import { IBusEvents, TBusHandlers } from '../interface';
+import { IBusEvents, IUser, TBusHandlers } from '../interface';
 import { Queue } from '../utils/Queue';
 import { getConnectHandler } from './handlers/connect';
 import { getLoginHandler } from './handlers/login';
-import {
-    getPublicKeyHandler,
-    getUserDataHandler,
-    setUserDataHandler,
-} from './handlers/moveUserHandlers';
 import { getSignHandler } from './handlers/sign';
 import { getSignMessageHandler } from './handlers/signMessage';
 import { IState } from './interface';
 import { analytics } from './utils/analytics';
+import { isSafari } from './utils/isSafari';
 
 config.console.logLevel = config.console.LOG_LEVEL.VERBOSE;
 const queue = new Queue(3);
@@ -22,6 +17,10 @@ analytics.init({
     userType: 'unknown',
     referrer: document.referrer,
 });
+
+if (window.top === window && window.opener && isSafari()) {
+    window.opener.__loginWindow = window;
+}
 
 WindowAdapter.createSimpleWindowAdapter()
     .then((adapter) => {
@@ -34,21 +33,16 @@ WindowAdapter.createSimpleWindowAdapter()
             matcherUrl: undefined,
         };
 
-        const moveUserState = libs.crypto.keyPair(libs.crypto.randomSeed(25));
+        Object.defineProperty(window, '__setUser', {
+            writable: false,
+            value: (user: IUser) => {
+                state.user = user;
+            },
+        });
 
         bus.on('connect', getConnectHandler(state));
 
         bus.registerRequestHandler('login', getLoginHandler(queue, state));
-
-        bus.registerRequestHandler(
-            'get-public-key',
-            getPublicKeyHandler(moveUserState.publicKey)
-        );
-
-        bus.registerRequestHandler(
-            'set-user-data',
-            setUserDataHandler(moveUserState, state)
-        );
 
         bus.registerRequestHandler(
             'sign-message',

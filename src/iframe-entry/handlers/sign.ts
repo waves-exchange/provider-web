@@ -3,7 +3,6 @@ import { IWithId, TTransactionWithProofs } from '@waves/ts-types';
 import { IUser } from '../../interface';
 import { Queue } from '../../utils/Queue';
 import { IState } from '../interface';
-import login from '../router/login';
 import sign from '../router/sign';
 import { loadUserData, preload, toQueue } from './helpers';
 
@@ -16,8 +15,7 @@ export const getSignHandler = (
     toQueue(queue, (list: Array<TTransactionParamWithType>) => {
         preload();
 
-        return login(state)()
-            .then(preload)
-            .then(() => loadUserData(state as IState<IUser>))
-            .then((state) => sign(list, state));
+        return loadUserData(state as IState<IUser>).then((state) =>
+            sign(list, state)
+        );
     });
