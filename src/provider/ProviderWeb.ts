@@ -55,12 +55,8 @@ export class ProviderWeb implements IProvider {
 
         const iframe = this._transport.get();
 
-        if (!iframe) {
-            throw new Error('Iframe was blocked');
-        }
-
         if (isSafari()) {
-            const win = iframe?.contentWindow?.open(this._clientUrl);
+            const win = iframe.contentWindow?.open(this._clientUrl);
 
             if (!win) {
                 throw new Error('Window was blocked');

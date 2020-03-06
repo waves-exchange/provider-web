@@ -8,6 +8,7 @@ import login from '../router/login';
 import { analytics } from '../utils/analytics';
 import { isSafari } from '../utils/isSafari';
 import { preload, toQueue } from './helpers';
+import { TBus } from '../../provider/interface';
 
 export const getLoginHandler = (
     queue: Queue,
@@ -15,6 +16,20 @@ export const getLoginHandler = (
 ): (() => Promise<IUserData>) =>
     toQueue(queue, () => {
         preload();
+
+        function loginAndClose(
+            bus: TBus,
+            resolve: (u: IUserData) => void,
+            reject: () => void
+        ): void {
+            bus.request('login', void 0, -1)
+                .then((res) => {
+                    window['__loginWindow'].close();
+
+                    resolve(res);
+                })
+                .catch(reject);
+        }
 
         if (window.top !== window && isSafari()) {
             const adapter = new WindowAdapter(
@@ -35,22 +50,10 @@ export const getLoginHandler = (
 
             return new Promise((resolve, reject) => {
                 bus.once('ready', () => {
-                    bus.request('login', void 0, -1)
-                        .then((res) => {
-                            window['__loginWindow'].close();
-
-                            resolve(res);
-                        })
-                        .catch(reject);
+                    loginAndClose(bus, resolve, reject);
                 });
 
-                bus.request('login', void 0, -1)
-                    .then((res) => {
-                        window['__loginWindow'].close();
-
-                        resolve(res);
-                    })
-                    .catch(reject);
+                loginAndClose(bus, resolve, reject);
             });
         } else {
             return login(state)().then((user) => {

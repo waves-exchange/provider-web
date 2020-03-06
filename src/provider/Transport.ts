@@ -82,7 +82,7 @@ export abstract class Transport<T> implements ITransport<T> {
             : action;
     }
 
-    public abstract get(): T | undefined;
+    public abstract get(): T;
     protected abstract _dropTransportConnect(): void;
     protected abstract _beforeShow(): void;
     protected abstract _afterShow(): void;
