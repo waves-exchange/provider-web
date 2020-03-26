@@ -45,7 +45,7 @@ Add library initialization to your app.
    
    const signer = new Signer({
      // Specify URL of the node on Testnet
-     NODE_URL: 'https://pool.testnet.wavesnodes.com'
+     NODE_URL: 'https://nodes-testnet.wavesnodes.com'
    });
    signer.setProvider(new Provider());
    ```
