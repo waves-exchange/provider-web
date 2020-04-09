@@ -18,9 +18,11 @@ analytics.init({
     referrer: document.referrer,
 });
 
-if (window.top === window && window.opener && isSafari()) {
-    window.opener.__loginWindow = window;
-}
+window.addEventListener('load', () => {
+    if (window.top === window && window.opener && isSafari()) {
+        window.opener.__loginWindow = window;
+    }
+});
 
 WindowAdapter.createSimpleWindowAdapter()
     .then((adapter) => {

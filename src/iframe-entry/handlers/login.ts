@@ -19,16 +19,20 @@ export const getLoginHandler = (
 
         function loginAndClose(
             bus: TBus,
-            resolve: (u: IUserData) => void,
-            reject: () => void
+            resolve: (userData: IUserData) => void,
+            reject: (err: Error) => void
         ): void {
             bus.request('login', void 0, -1)
                 .then((res) => {
                     window['__loginWindow'].close();
-
+                    bus.destroy();
                     resolve(res);
                 })
-                .catch(reject);
+                .catch((err: Error) => {
+                    window['__loginWindow'].close();
+                    bus.destroy();
+                    reject(err);
+                });
         }
 
         if (window.top !== window && isSafari()) {
@@ -51,6 +55,11 @@ export const getLoginHandler = (
             return new Promise((resolve, reject) => {
                 bus.once('ready', () => {
                     loginAndClose(bus, resolve, reject);
+                });
+
+                bus.once('close', () => {
+                    bus.destroy();
+                    reject('Window was closed by user');
                 });
 
                 loginAndClose(bus, resolve, reject);

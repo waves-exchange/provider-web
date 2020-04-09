@@ -66,11 +66,18 @@ export class ProviderWeb implements IProvider {
         iframe.src = this._clientUrl;
 
         return this._transport.dialog((bus) =>
-            bus.request('login').then((userData) => {
-                this._userData = userData;
+            bus
+                .request('login')
+                .then((userData) => {
+                    this._userData = userData;
 
-                return userData;
-            })
+                    return userData;
+                })
+                .catch((err) => {
+                    this._transport.dropConnection();
+
+                    return Promise.reject(err);
+                })
         );
     }
 
