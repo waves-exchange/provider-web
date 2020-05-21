@@ -3,6 +3,7 @@ import { TBus } from './interface';
 import { Bus, WindowAdapter } from '@waves/waves-browser-bus';
 import { CSSProperties } from 'react';
 import { IEncryptedUserData } from '../interface';
+import { renderErrorPage } from '../iframe-entry/utils/renderErrorPage';
 
 export class TransportIframe extends Transport {
     private static _timer: ReturnType<typeof setTimeout> | null = null;
@@ -78,6 +79,8 @@ export class TransportIframe extends Transport {
         }
 
         const iframe = TransportIframe._createIframe(this._url);
+
+        this._listenFetchURLError(iframe);
 
         TransportIframe._addIframeToDom(iframe);
 
@@ -157,6 +160,35 @@ export class TransportIframe extends Transport {
             if (value != null) {
                 this._activeBusData!.iframe!.style[name] = value;
             }
+        });
+    }
+
+    private _renderErrorPage(
+        element: HTMLElement,
+        onClose: () => void,
+        error: string
+    ): void {
+        element.style.position = 'relative';
+        element.style.boxSizing = 'border-box';
+        element.style.width = '100%';
+        element.style.height = '100%';
+        element.style.display = 'flex';
+        element.style.justifyContent = 'center';
+        element.style.alignItems = 'center';
+        element.style.margin = '0px';
+        renderErrorPage(element, onClose, error);
+    }
+
+    private _listenFetchURLError(iframe: HTMLIFrameElement) {
+        fetch(this._url).catch(() => {
+            iframe.addEventListener('load', () => {
+                this._renderErrorPage(
+                    iframe!.contentDocument!.body,
+                    this.dropConnection.bind(this),
+                    'The request could not be processed. To resume your further work, disable the installed plugins.'
+                );
+                this._showIframe();
+            });
         });
     }
 }
