@@ -17,6 +17,7 @@ export const getSignHandler = (
         preload();
 
         return login(state)()
+            .then(preload)
             .then(() => loadUserData(state as IState<IUser>))
             .then((state) => sign(list, state));
     });

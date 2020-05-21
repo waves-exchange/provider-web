@@ -11,11 +11,17 @@ import {
 } from './handlers/moveUserHandlers';
 import { getSignHandler } from './handlers/sign';
 import { getSignMessageHandler } from './handlers/signMessage';
-import { getSignTypedDataHandler } from './handlers/signTypedData';
 import { IState } from './interface';
+import { analytics } from './utils/analytics';
 
 config.console.logLevel = config.console.LOG_LEVEL.VERBOSE;
 const queue = new Queue(3);
+
+analytics.init({
+    platform: 'web',
+    userType: 'unknown',
+    referrer: document.referrer,
+});
 
 WindowAdapter.createSimpleWindowAdapter()
     .then((adapter) => {
@@ -40,20 +46,10 @@ WindowAdapter.createSimpleWindowAdapter()
         );
 
         bus.registerRequestHandler(
-            'get-user-data',
-            getUserDataHandler(moveUserState, state)
-        );
-
-        bus.registerRequestHandler(
             'set-user-data',
             setUserDataHandler(moveUserState, state)
         );
 
-        // bus.registerRequestHandler('sign-custom-bytes', wrapLogin(signBytes));
-        bus.registerRequestHandler(
-            'sign-typed-data',
-            getSignTypedDataHandler(queue, state)
-        );
         bus.registerRequestHandler(
             'sign-message',
             getSignMessageHandler(queue, state)

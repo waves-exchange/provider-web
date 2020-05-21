@@ -7,10 +7,11 @@ import {
     Box,
     Icon,
     iconCheck,
+    AddressLabel,
 } from '@waves.exchange/react-uikit';
 import React, { useEffect, FC, MouseEventHandler } from 'react';
 import { IUser } from '../../../interface';
-import { getUserName } from '../../services/userService';
+import { getUserName, StorageUser } from '../../services/userService';
 import { libs } from '@waves/waves-transactions';
 import { analytics } from '../../utils/analytics';
 
@@ -44,10 +45,10 @@ const RadioUser: FC<RadioButtonProps<IUser>> = ({
 );
 
 type SelectAccountProps = {
-    users?: IUser[];
-    currentUser?: IUser;
+    users?: StorageUser[];
+    currentUser?: StorageUser;
     networkByte: number;
-    onUserChange: (value: IUser) => void;
+    onUserChange: (value: StorageUser) => void;
     onContinue: MouseEventHandler<HTMLButtonElement>;
 };
 
@@ -81,7 +82,7 @@ export const SelectAccountComponent: FC<SelectAccountProps> = ({
             >
                 {users.map((user) => (
                     <RadioUser key={user.address} value={user}>
-                        <AddressAvatar
+                        <AddressLabel
                             address={user.address}
                             name={getUserName(
                                 networkByte,
@@ -89,7 +90,9 @@ export const SelectAccountComponent: FC<SelectAccountProps> = ({
                                     privateKey: user.privateKey,
                                 })
                             )}
-                        ></AddressAvatar>
+                        >
+                            <AddressAvatar address={user.address} />
+                        </AddressLabel>
                     </RadioUser>
                 ))}
             </RadioButtonGroup>

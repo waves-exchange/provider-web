@@ -117,7 +117,7 @@ export const CreateAccountComponent: FC<IProps> = ({
                         <ExternalLink
                             href={getEnvAwareUrl()}
                             variant="body1"
-                            target="_blank"
+                            onClick={onExchangeLinkClick}
                         >
                             Waves.Exchange
                         </ExternalLink>{' '}
@@ -195,7 +195,6 @@ export const CreateAccountComponent: FC<IProps> = ({
                                     '/files/Privacy_Policy_Waves.Exchange.pdf'
                                 )}
                                 variant="body2"
-                                target="_blank"
                             >
                                 Privacy policy
                             </ExternalLink>
@@ -245,7 +244,6 @@ export const CreateAccountComponent: FC<IProps> = ({
                     <ExternalLink
                         href={getEnvAwareUrl()}
                         variant="body2"
-                        target="_blank"
                         onClick={onExchangeLinkClick}
                     >
                         Waves.Exchange

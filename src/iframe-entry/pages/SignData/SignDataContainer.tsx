@@ -1,10 +1,8 @@
 import { IDataWithType } from '@waves/signer';
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { WAVES } from '../../constants';
 import { ISignTxProps } from '../../../interface';
 import { SignDataComponent } from './SignDataComponent';
-import { analytics } from '../../utils/analytics';
-import { useTxHandlers } from '../../hooks/useTxHandlers';
 import { useTxUser } from '../../hooks/useTxUser';
 import { getPrintableNumber } from '../../utils/math';
 
@@ -18,24 +16,6 @@ export const SignDataContainer: FC<ISignTxProps<IDataWithType>> = ({
     const { userName, userBalance } = useTxUser(user, networkByte);
     const fee = getPrintableNumber(tx.fee, WAVES.decimals);
 
-    const { handleReject, handleConfirm } = useTxHandlers(
-        tx,
-        onCancel,
-        onConfirm,
-        {
-            onRejectAnalyticsArgs: { name: 'Confirm_Data_Tx_Reject' },
-            onConfirmAnalyticsArgs: { name: 'Confirm_Data_Tx_Confirm' },
-        }
-    );
-
-    useEffect(
-        () =>
-            analytics.send({
-                name: 'Confirm_Data_Tx_Show',
-            }),
-        []
-    );
-
     return (
         <SignDataComponent
             userAddress={user.address}
@@ -43,8 +23,8 @@ export const SignDataContainer: FC<ISignTxProps<IDataWithType>> = ({
             userBalance={`${userBalance} WAVES`}
             tx={tx}
             fee={`${fee} WAVES`}
-            onConfirm={handleConfirm}
-            onReject={handleReject}
+            onConfirm={onConfirm}
+            onReject={onCancel}
         />
     );
 };

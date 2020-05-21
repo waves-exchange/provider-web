@@ -1,26 +1,24 @@
-import { FeeOption } from '@waves.exchange/react-uikit';
-import { TAssetDetails } from '@waves/node-api-js/es/api-node/assets';
-import { ITransferWithType, TLong } from '@waves/signer';
-import { libs } from '@waves/waves-transactions';
-import compose from 'ramda/es/compose';
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import { ITransferWithType, TLong, IMassTransferWithType } from '@waves/signer';
+import React, { FC } from 'react';
 import { ISignTxProps } from '../../../interface';
 import { getIconType } from '../../components/IconTransfer/helpers';
-import { WAVES } from '../../constants';
-import { useTxHandlers } from '../../hooks/useTxHandlers';
-import { useTxUser } from '../../hooks/useTxUser';
-import { analytics } from '../../utils/analytics';
-import { catchable } from '../../utils/catchable';
-import { isAlias } from '../../utils/isAlias';
-import { getCoins, getPrintableNumber } from '../../utils/math';
 import { SignTransfer as SignTransferComponent } from './SignTransferComponent';
+import { getUserName } from '../../services/userService';
+import { useHandleFeeSelect } from '../../hooks/useHandleFeeSelect';
+import { getViewData, isTransferMeta } from './helpers';
+import {
+    ITransferTransactionWithId,
+    IMassTransferTransactionWithId,
+} from '@waves/ts-types';
+import { IMeta } from '../../services/transactionsService';
 
-const getAssetName = (
-    assets: Record<string, TAssetDetails<TLong>>,
-    assetId: string | null
-): string => (assetId ? assets[assetId].name : WAVES.name);
+export type TransferType = ITransferWithType | IMassTransferWithType;
+export type TransferTx =
+    | ITransferTransactionWithId<TLong>
+    | IMassTransferTransactionWithId<TLong>;
+export type TransferMeta = IMeta<TransferType>;
 
-export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
+export const SignTransfer: FC<ISignTxProps<TransferType>> = ({
     meta: txMeta,
     networkByte,
     tx,
@@ -28,96 +26,32 @@ export const SignTransfer: FC<ISignTxProps<ITransferWithType>> = ({
     onConfirm,
     onCancel,
 }) => {
-    const { userName, userBalance } = useTxUser(user, networkByte);
-    const amountAsset = tx.assetId === null ? WAVES : txMeta.assets[tx.assetId];
-    const feeAsset =
-        tx.feeAssetId === null ? WAVES : txMeta.assets[tx.feeAssetId];
+    const [handleFeeSelect, txJSON] = useHandleFeeSelect(tx);
 
-    if (!amountAsset || !feeAsset) {
-        throw new Error('Amount of fee asstet not found'); // TODO ?
-    }
-
-    const amount = getPrintableNumber(tx.amount, amountAsset.decimals);
-
-    const fee = getPrintableNumber(tx.fee, feeAsset.decimals);
-
-    const attachment = catchable(
-        compose(libs.crypto.bytesToString, libs.crypto.base58Decode)
-    )(tx.attachment);
-
-    const { handleReject, handleConfirm } = useTxHandlers(
+    const { totalTransferAmount, transferList, fee, attachment } = getViewData(
         tx,
-        onCancel,
-        onConfirm,
-        {
-            onRejectAnalyticsArgs: { name: 'Confirm_Transfer_Tx_Reject' },
-            onConfirmAnalyticsArgs: { name: 'Confirm_Transfer_Tx_Confirm' },
-        }
+        txMeta
     );
 
-    useEffect(
-        () =>
-            analytics.send({
-                name: 'Confirm_Transfer_Tx_Show',
-            }),
-        []
-    );
-
-    const recipientAddress = isAlias(tx.recipient)
-        ? txMeta.aliases[tx.recipient]
-        : tx.recipient;
-
-    const defaultFee: FeeOption = {
-        id: WAVES.assetId,
-        name: WAVES.name,
-        ticker: WAVES.ticker,
-        value: fee,
-    };
-
-    const feeList = [defaultFee].concat(
-        txMeta.feeList.map((f) => ({
-            name: txMeta.assets[f.feeAssetId as string].name,
-            id: String(f.feeAssetId),
-            ticker: '',
-            value: String(f.feeAmount),
-        }))
-    );
-
-    const [selectedFee, setSelectedFee] = useState<FeeOption>(defaultFee);
-
-    const handleFeeSelect = useCallback(
-        (feeOption: FeeOption) => {
-            setSelectedFee(feeOption);
-            tx.feeAssetId = feeOption.id;
-            tx.fee = getCoins(
-                feeOption.value,
-                txMeta.assets[feeOption.id].decimals
-            );
-        },
-        [tx.fee, tx.feeAssetId, txMeta.assets]
-    );
+    const isMassTransfer = tx.type === 11;
 
     return (
         <SignTransferComponent
             userAddress={user.address}
-            userName={userName}
-            userBalance={`${userBalance} Waves`}
-            transferAmount={`${amount} ${getAssetName(
-                txMeta.assets,
-                tx.assetId
-            )}`}
-            transferFee={`${fee} ${getAssetName(txMeta.assets, tx.feeAssetId)}`}
-            recipientAddress={recipientAddress}
-            recipientName={tx.recipient}
-            attachement={attachment.ok ? attachment.resolveData : ''}
+            userName={getUserName(networkByte, user.publicKey)}
+            userBalance={user.balance}
+            transferList={transferList}
+            transferFee={fee}
+            attachment={attachment}
             tx={tx}
-            meta={txMeta}
-            feeList={feeList}
-            selectedFee={selectedFee}
-            onFeeSelect={handleFeeSelect}
-            onReject={handleReject}
-            onConfirm={handleConfirm}
+            meta={isTransferMeta(txMeta) ? txMeta : undefined}
+            onReject={onCancel}
+            onConfirm={onConfirm}
+            handleFeeSelect={handleFeeSelect}
+            txJSON={txJSON}
             iconType={getIconType(tx, user, Object.keys(txMeta.aliases))}
+            transferAmount={`-${totalTransferAmount}`}
+            isMassTransfer={isMassTransfer}
         />
     );
 };

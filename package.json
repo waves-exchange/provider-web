@@ -1,17 +1,31 @@
 {
   "name": "@waves.exchange/provider-web",
-  "version": "0.0.3",
+  "version": "0.2.1",
   "main": "dist/provider-web.min.js",
   "types": "dist/provider/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/waves-exchange/provider-web.git"
+  },
+  "bugs": {
+    "url": "https://github.com/waves-exchange/provider-web/issues",
+    "email": "support@waves.exchange"
+  },
+  "homepage": "https://waves.exchange",
   "scripts": {
     "watch": "webpack --watch",
     "postversion": "npm publish",
+    "prepublish": "npm run test && npm run build",
     "prettier": "prettier --ignore-path .gitignore \"./src/**/*.+(ts|tsx)\"",
     "format": "npm run prettier -- --write",
     "check-format": "npm run prettier -- --list-different",
     "start": "http-server ./ -p 8081",
     "build": "npm run clean && webpack",
-    "clean": "rm -rf ./dist && rm -rf ./iframe-entry/dist"
+    "clean": "rm -rf ./dist && rm -rf ./iframe-entry/dist",
+    "test": "jest",
+    "test:c": "jest --coverage",
+    "test:d": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand --watch",
+    "test:w": "jest --watch"
   },
   "husky": {
     "hooks": {
@@ -41,11 +55,11 @@
     "@types/react": "^16.9.15",
     "@types/react-dom": "^16.9.4",
     "@types/styled-system": "^5.1.4",
-    "@waves.exchange/react-uikit": "^0.3.22",
+    "@waves.exchange/react-uikit": "^0.4.1",
     "@waves/bignumber": "0.0.1",
-    "@waves/node-api-js": "0.0.3",
-    "@waves/signer": "0.0.6",
-    "@waves/ts-types": "^0.3.0",
+    "@waves/node-api-js": "^0.1.0",
+    "@waves/signer": "^0.1.0",
+    "@waves/ts-types": "^0.3.2",
     "@waves/waves-browser-bus": "^0.2.3",
     "@waves/waves-transactions": "^3.20.2",
     "emotion-theming": "^10.0.19",
@@ -57,6 +71,7 @@
     "typed-ts-events": "^1.0.5"
   },
   "devDependencies": {
+    "@types/jest": "^25.1.1",
     "@types/styled-system__css": "^5.0.4",
     "@typescript-eslint/eslint-plugin": "^2.10.0",
     "@typescript-eslint/parser": "^2.10.0",
@@ -64,16 +79,18 @@
     "eslint": "^6.7.2",
     "eslint-config-prettier": "^6.7.0",
     "eslint-plugin-import": "^2.19.1",
-    "eslint-plugin-jest": "^23.1.1",
+    "eslint-plugin-jest": "^23.6.0",
     "eslint-plugin-prettier": "^3.1.1",
     "eslint-plugin-react": "^7.17.0",
     "eslint-plugin-react-hooks": "^2.3.0",
     "html-webpack-plugin": "^3.2.0",
     "http-server": "^0.12.0",
     "husky": "^3.1.0",
+    "jest": "^25.1.0",
     "less-loader": "^5.0.0",
     "lint-staged": "^9.5.0",
     "prettier": "^1.19.1",
+    "ts-jest": "^25.1.0",
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.2",
     "uri-js": "^4.2.2",

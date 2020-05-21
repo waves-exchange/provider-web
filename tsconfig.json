@@ -19,12 +19,4 @@
     "noUnusedLocals": false,
     "esModuleInterop": true
   },
-  "include": [
-    "src"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "../waves-js"
-  ]
 }

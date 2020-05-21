@@ -1,17 +1,18 @@
 import React from 'react';
 import renderPage from '../utils/renderPage';
 import Preload from '../pages/Preload';
-import tap from 'ramda/es/tap';
 import { IState } from '../interface';
 import { IUser, IUserWithBalances } from '../../interface';
-import { fetchWavesBalance, fetchAliasses } from '../services/userService';
+import {
+    fetchWavesBalance,
+    fetchAliasses,
+    fetchAddressHasScript,
+} from '../services/userService';
 import { Queue } from '../../utils/Queue';
 
-const preloadFunc = (): void => {
+export const preload = (): void => {
     renderPage(React.createElement(Preload));
 };
-
-export const preload: IPreloadFunc = tap(preloadFunc) as any;
 
 export const loadUserData = (
     state: IState<IUser>
@@ -19,12 +20,14 @@ export const loadUserData = (
     Promise.all([
         fetchAliasses(state.nodeUrl, state.user.address),
         fetchWavesBalance(state.nodeUrl, state.user.address),
-    ]).then(([aliases, balance]) => ({
+        fetchAddressHasScript(state.nodeUrl, state.user.address),
+    ]).then(([aliases, balance, hasScript]) => ({
         ...state,
         user: {
             ...state.user,
             aliases,
             balance,
+            hasScript,
         },
     }));
 
@@ -49,8 +52,3 @@ type TParam<T> = T extends (data: infer PARAM) => Promise<any> ? PARAM : never;
 type TReturn<T> = T extends (data: any) => Promise<infer RETURN>
     ? RETURN
     : never;
-
-export interface IPreloadFunc {
-    <T>(data: T): T;
-    (): void;
-}

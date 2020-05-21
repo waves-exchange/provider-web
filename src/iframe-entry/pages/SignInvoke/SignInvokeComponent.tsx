@@ -10,27 +10,33 @@ import {
     Tabs,
     TabsList,
     Text,
-    Select,
-    Selected,
-    List,
+    AddressAvatar,
+    AddressLabel,
+    BoxWithIcon,
+    iconSmartMini,
+    useBoundedTooltip,
 } from '@waves.exchange/react-uikit';
 import { ICall, TLong, IInvokeWithType } from '@waves/signer';
 import { IInvokeScriptTransaction, IWithId } from '@waves/ts-types';
-import React, { FC, MouseEventHandler, ReactElement } from 'react';
+import React, { FC, MouseEventHandler } from 'react';
 import { Confirmation } from '../../components/Confirmation';
 import { InvokeFunction } from '../../components/InvokeFunction/InvokeFunction';
-import { Account } from '../../components/Account';
 import { InvokePayment } from '../../components/InvokePayment/InvokePayment';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
-import { TransactionJson } from '../../components/TransactionJson/TransactionJson';
 import { IPayment } from './SignInvokeContainer';
-import { FeeOption } from '@waves.exchange/react-uikit';
 import { IMeta } from '../../services/transactionsService';
+import {
+    FeeSelect,
+    FeeSelectHandler,
+} from '../../components/FeeSelect/FeeSelect';
+import { getPrintableNumber } from '../../utils/math';
+import { WAVES } from '../../constants';
+import { DataJson } from '../../components/DataJson/DataJson';
 
 export interface IProps {
     userAddress: string;
     userName: string;
-    userBalance: string;
+    userBalance: TLong;
     dAppAddress: string;
     dAppName: string;
     fee: string;
@@ -39,11 +45,10 @@ export interface IProps {
     payment: Array<IPayment>;
     tx: IInvokeScriptTransaction<TLong> & IWithId;
     meta: IMeta<IInvokeWithType<TLong>>;
-    feeList: FeeOption[];
-    selectedFee: FeeOption;
-    onFeeSelect: (option: FeeOption) => void;
     onCancel: MouseEventHandler<HTMLButtonElement>;
     onConfirm: MouseEventHandler<HTMLButtonElement>;
+    handleFeeSelect: FeeSelectHandler;
+    txJSON: string;
 }
 
 export const SignInvoke: FC<IProps> = ({
@@ -58,26 +63,20 @@ export const SignInvoke: FC<IProps> = ({
     tx,
     onCancel,
     onConfirm,
-    feeList,
-    selectedFee,
-    onFeeSelect,
-}) => (
-    <Confirmation
-        address={userAddress}
-        name={userName}
-        balance={userBalance}
-        onReject={onCancel}
-        onConfirm={onConfirm}
-    >
-        <Box bg="main.$800">
-            <Flex
-                py="$20"
-                px="$40"
-                mb="$20"
-                bg="main.$900"
-                borderBottom="1px solid"
-                borderBottomColor="basic.$1000"
-            >
+    handleFeeSelect,
+    txJSON,
+}) => {
+    const { boundaryRef, popperOptions } = useBoundedTooltip({});
+
+    return (
+        <Confirmation
+            address={userAddress}
+            name={userName}
+            balance={`${getPrintableNumber(userBalance, WAVES.decimals)} Waves`}
+            onReject={onCancel}
+            onConfirm={onConfirm}
+        >
+            <Flex py="$20" px="$40" bg="main.$900">
                 <Flex
                     borderRadius="circle"
                     width="60px"
@@ -102,11 +101,13 @@ export const SignInvoke: FC<IProps> = ({
                 )}
             </Flex>
 
-            <Tabs px="$40">
+            <Tabs>
                 <TabsList
                     borderBottom="1px solid"
                     borderColor="main.$700"
+                    bg="main.$900"
                     mb="$30"
+                    px="$40"
                 >
                     <Tab mr="32px" pb="12px">
                         <Text variant="body1">Main</Text>
@@ -119,68 +120,34 @@ export const SignInvoke: FC<IProps> = ({
                     </Tab>
                 </TabsList>
 
-                <Flex
-                    mb="$30"
-                    flexDirection="column"
-                    bg="main.$800"
-                    borderTop="1px solid"
-                    borderTopColor="basic.$1000"
-                >
-                    <TabPanels>
-                        <TabPanel>
-                            <Box mb="$20">
-                                <Text
-                                    variant="body2"
-                                    color="basic.$500"
-                                    mb="$3"
-                                    as="div"
+                <TabPanels bg="main.$800" mb="$30" px="$40">
+                    <TabPanel>
+                        <Box mb="$20" ref={boundaryRef}>
+                            <Text
+                                variant="body2"
+                                color="basic.$500"
+                                mb="$3"
+                                as="div"
+                            >
+                                dApp
+                            </Text>
+                            <AddressLabel
+                                address={dAppAddress}
+                                alias={dAppName}
+                                withCopy={true}
+                                mt="$5"
+                            >
+                                <BoxWithIcon
+                                    icon={iconSmartMini}
+                                    iconLabel="Script account"
+                                    popperOptions={popperOptions}
                                 >
-                                    Account
-                                </Text>
-                                <Account
-                                    address={dAppAddress}
-                                    userName={userName}
-                                    alias={dAppName}
-                                />
-                            </Box>
+                                    <AddressAvatar address={dAppAddress} />
+                                </BoxWithIcon>
+                            </AddressLabel>
+                        </Box>
 
-                            {payment && payment.length > 0 && (
-                                <Box mb="$20">
-                                    <Text
-                                        variant="body2"
-                                        color="basic.$500"
-                                        as="div"
-                                        mb="$5"
-                                    >
-                                        Payments
-                                    </Text>
-                                    <Box
-                                        p="$5"
-                                        bg="basic.$900"
-                                        borderRadius="$4"
-                                    >
-                                        <Flex
-                                            flexDirection="column"
-                                            borderRadius="$4"
-                                            bg="basic.$900"
-                                            px="$5"
-                                            maxHeight="165px"
-                                            overflowY="auto"
-                                        >
-                                            {payment.map((pay, i) => (
-                                                <InvokePayment
-                                                    key={pay.assetId || 'WAVES'}
-                                                    {...pay}
-                                                    isLast={
-                                                        i === payment.length - 1
-                                                    }
-                                                />
-                                            ))}
-                                        </Flex>
-                                    </Box>
-                                </Box>
-                            )}
-
+                        {payment && payment.length > 0 && (
                             <Box mb="$20">
                                 <Text
                                     variant="body2"
@@ -188,55 +155,68 @@ export const SignInvoke: FC<IProps> = ({
                                     as="div"
                                     mb="$5"
                                 >
-                                    Call function
+                                    Payments
                                 </Text>
-                                <InvokeFunction
-                                    borderRadius="$4"
-                                    bg="basic.$900"
-                                    p="15px"
-                                    color="basic.$500"
-                                    as="div"
-                                    overflowX="auto"
-                                    args={call?.args ?? ([] as any)}
-                                    name={call?.function ?? 'default'}
-                                />
+                                <Box p="$5" bg="basic.$900" borderRadius="$4">
+                                    <Flex
+                                        flexDirection="column"
+                                        borderRadius="$4"
+                                        bg="basic.$900"
+                                        px="$5"
+                                        maxHeight="165px"
+                                        overflowY="auto"
+                                    >
+                                        {payment.map((pay, i) => (
+                                            <InvokePayment
+                                                key={pay.assetId || 'WAVES'}
+                                                {...pay}
+                                                isLast={
+                                                    i === payment.length - 1
+                                                }
+                                            />
+                                        ))}
+                                    </Flex>
+                                </Box>
                             </Box>
+                        )}
 
-                            <Box>
-                                <Text
-                                    variant="body2"
-                                    color="basic.$500"
-                                    as="div"
-                                >
-                                    Fee
-                                </Text>
-                                <Select
-                                    isDisabled={meta.feeList.length === 0}
-                                    placement="top"
-                                    renderSelected={(open): ReactElement => (
-                                        <Selected
-                                            selected={selectedFee}
-                                            opened={open}
-                                        />
-                                    )}
-                                >
-                                    <List
-                                        onSelect={onFeeSelect}
-                                        options={feeList}
-                                        css={{ bottom: 56 }}
-                                    ></List>
-                                </Select>
-                            </Box>
-                        </TabPanel>
-                        <TabPanel>
-                            <TransactionDetails tx={tx} />
-                        </TabPanel>
-                        <TabPanel>
-                            <TransactionJson tx={tx} />
-                        </TabPanel>
-                    </TabPanels>
-                </Flex>
+                        <Box mb="$20">
+                            <Text
+                                variant="body2"
+                                color="basic.$500"
+                                as="div"
+                                mb="$5"
+                            >
+                                Call function
+                            </Text>
+                            <InvokeFunction
+                                borderRadius="$4"
+                                bg="basic.$900"
+                                p="15px"
+                                color="basic.$500"
+                                as="div"
+                                overflowX="auto"
+                                args={call?.args ?? ([] as any)}
+                                name={call?.function ?? 'default'}
+                            />
+                        </Box>
+
+                        <FeeSelect
+                            mt="$20"
+                            txMeta={meta}
+                            fee={tx.fee}
+                            onFeeSelect={handleFeeSelect}
+                            availableWavesBalance={userBalance}
+                        />
+                    </TabPanel>
+                    <TabPanel>
+                        <TransactionDetails tx={tx} />
+                    </TabPanel>
+                    <TabPanel>
+                        <DataJson data={txJSON} />
+                    </TabPanel>
+                </TabPanels>
             </Tabs>
-        </Box>
-    </Confirmation>
-);
+        </Confirmation>
+    );
+};
