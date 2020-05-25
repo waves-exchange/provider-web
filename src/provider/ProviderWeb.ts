@@ -65,6 +65,10 @@ export class ProviderWeb implements IProvider {
 
         iframe.src = this._clientUrl;
 
+        iframe.addEventListener('load', () => {
+            iframe.contentWindow!['__loaded'] = true;
+        });
+
         return this._transport.dialog((bus) =>
             bus
                 .request('login')

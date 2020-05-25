@@ -18,11 +18,14 @@ analytics.init({
     referrer: document.referrer,
 });
 
-window.addEventListener('load', () => {
-    if (window.top === window && window.opener && isSafari()) {
-        window.opener.__loginWindow = window;
-    }
-});
+if (window.top === window && window.opener && isSafari()) {
+    const intervalId = setInterval(() => {
+        if ('__loaded' in window.opener) {
+            window.opener.__loginWindow = window;
+            clearInterval(intervalId);
+        }
+    }, 100);
+}
 
 WindowAdapter.createSimpleWindowAdapter()
     .then((adapter) => {
