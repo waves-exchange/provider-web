@@ -18,7 +18,10 @@ analytics.init({
     referrer: document.referrer,
 });
 
-if (window.top === window && window.opener && isSafari()) {
+const isLoginWindowInSafari =
+    window.top === window && window.opener && isSafari();
+
+if (isLoginWindowInSafari) {
     const intervalId = setInterval(() => {
         if ('__loaded' in window.opener) {
             window.opener.__loginWindow = window;
@@ -60,7 +63,16 @@ WindowAdapter.createSimpleWindowAdapter()
         // TODO add remove order sign
         // TODO add create order sign
 
-        bus.dispatchEvent('ready', void 0);
+        if (isLoginWindowInSafari) {
+            const intervalId = setInterval(() => {
+                if ('__loginWindow' in window.opener) {
+                    bus.dispatchEvent('ready', void 0);
+                    clearInterval(intervalId);
+                }
+            }, 100);
+        } else {
+            bus.dispatchEvent('ready', void 0);
+        }
 
         window.addEventListener('unload', () => {
             bus.dispatchEvent('close', undefined);

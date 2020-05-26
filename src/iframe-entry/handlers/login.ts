@@ -17,25 +17,30 @@ export const getLoginHandler = (
     toQueue(queue, () => {
         preload();
 
-        function loginAndClose(
-            bus: TBus,
-            resolve: (userData: IUserData) => void,
-            reject: (err: Error) => void
-        ): void {
-            bus.request('login', void 0, -1)
-                .then((res) => {
-                    window['__loginWindow'].close();
-                    bus.destroy();
-                    resolve(res);
-                })
-                .catch((err: Error) => {
-                    window['__loginWindow'].close();
-                    bus.destroy();
-                    reject(err);
-                });
-        }
-
         if (window.top !== window && isSafari()) {
+            const loginAndClose = (
+                bus: TBus,
+                resolve: (userData: IUserData) => void,
+                reject: (err: Error) => void
+            ): void => {
+                bus.dispatchEvent('connect', {
+                    NODE_URL: state.nodeUrl,
+                    NETWORK_BYTE: state.networkByte,
+                });
+
+                bus.request('login', void 0, -1)
+                    .then((res) => {
+                        window['__loginWindow'].close();
+                        bus.destroy();
+                        resolve(res);
+                    })
+                    .catch((err: Error) => {
+                        window['__loginWindow'].close();
+                        bus.destroy();
+                        reject(err);
+                    });
+            };
+
             const adapter = new WindowAdapter(
                 [
                     new WindowProtocol(
@@ -43,26 +48,36 @@ export const getLoginHandler = (
                         WindowProtocol.PROTOCOL_TYPES.LISTEN
                     ),
                 ],
-                [
-                    new WindowProtocol(
-                        window['__loginWindow'],
-                        WindowProtocol.PROTOCOL_TYPES.DISPATCH
-                    ),
-                ]
+                []
             );
             const bus = new Bus(adapter);
 
             return new Promise((resolve, reject) => {
                 bus.once('ready', () => {
-                    loginAndClose(bus, resolve, reject);
+                    const loginBus = new Bus(
+                        new WindowAdapter(
+                            [
+                                new WindowProtocol(
+                                    window,
+                                    WindowProtocol.PROTOCOL_TYPES.LISTEN
+                                ),
+                            ],
+                            [
+                                new WindowProtocol(
+                                    window['__loginWindow'],
+                                    WindowProtocol.PROTOCOL_TYPES.DISPATCH
+                                ),
+                            ]
+                        )
+                    );
+
+                    loginAndClose(loginBus, resolve, reject);
                 });
 
                 bus.once('close', () => {
                     bus.destroy();
                     reject('Window was closed by user');
                 });
-
-                loginAndClose(bus, resolve, reject);
             });
         } else {
             return login(state)().then((user) => {
