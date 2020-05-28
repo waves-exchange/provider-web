@@ -20,6 +20,7 @@ analytics.init({
 
 const isLoginWindowInSafari =
     window.top === window && window.opener && isSafari();
+const isIframeSafari = window.top !== window && isSafari();
 
 if (isLoginWindowInSafari) {
     const intervalId = setInterval(() => {
@@ -28,6 +29,12 @@ if (isLoginWindowInSafari) {
             clearInterval(intervalId);
         }
     }, 100);
+}
+
+if (isIframeSafari) {
+    window.addEventListener('load', () => {
+        window['__loaded'] = true;
+    });
 }
 
 WindowAdapter.createSimpleWindowAdapter()
