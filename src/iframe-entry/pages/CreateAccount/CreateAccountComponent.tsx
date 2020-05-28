@@ -13,6 +13,7 @@ import {
     Label,
     PasswordComplexityIndicator,
     Text,
+    Help,
 } from '@waves.exchange/react-uikit';
 import React, {
     ChangeEventHandler,
@@ -99,30 +100,30 @@ export const CreateAccountComponent: FC<IProps> = ({
                     level={2}
                     textAlign="center"
                     mt="$20"
+                    mb="$10"
                     color="standard.$0"
                     fontWeight={500}
                 >
-                    Create Account
+                    Log In with Waves.Exchange
                 </Heading>
 
-                <Flex justifyContent="center">
+                <Flex justifyContent="center" alignItems="center" mb="$20">
                     <Text
                         variant="body1"
-                        mt="$10"
-                        mb="$20"
                         textAlign="center"
                         color="basic.$500"
+                        mr="6px"
                     >
-                        Set a single password for all your{' '}
-                        <ExternalLink
-                            href={getEnvAwareUrl()}
-                            variant="body1"
-                            onClick={onExchangeLinkClick}
-                        >
-                            Waves.Exchange
-                        </ExternalLink>{' '}
-                        accounts.
+                        Create account.
                     </Text>
+                    <Help direction="bottom">
+                        <Box width="300px">
+                            <Text>
+                                The dApp won't have access to your password.
+                                This is stored locally within your browser.
+                            </Text>
+                        </Box>
+                    </Help>
                 </Flex>
 
                 <Label
@@ -131,7 +132,7 @@ export const CreateAccountComponent: FC<IProps> = ({
                     variant="body2"
                     color="standard.$0"
                 >
-                    Create password
+                    Create Password
                 </Label>
                 <InputPassword
                     id={inputPasswordId}
@@ -152,7 +153,7 @@ export const CreateAccountComponent: FC<IProps> = ({
                     variant="body2"
                     color="standard.$0"
                 >
-                    Confirm password
+                    Confirm Password
                 </Label>
                 <InputPassword
                     mb="$10"
@@ -196,7 +197,7 @@ export const CreateAccountComponent: FC<IProps> = ({
                                 )}
                                 variant="body2"
                             >
-                                Privacy policy
+                                Privacy Policy
                             </ExternalLink>
                         </Flex>
 
@@ -232,7 +233,7 @@ export const CreateAccountComponent: FC<IProps> = ({
                     onClick={onSubmit}
                     disabled={isSubmitDisabled}
                 >
-                    Sign up
+                    Sign Up
                 </Button>
                 <Text
                     variant="body2"
