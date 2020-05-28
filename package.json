@@ -1,6 +1,6 @@
 {
   "name": "@waves.exchange/provider-web",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "main": "dist/provider-web.min.js",
   "types": "dist/provider/index.d.ts",
   "repository": {
