@@ -1,9 +1,7 @@
 import { ICall, IInvokeWithType, IMoney, TLong } from '@waves/signer';
-import React, { FC, useEffect } from 'react';
+import React, { FC } from 'react';
 import { ISignTxProps } from '../../../interface';
 import { WAVES } from '../../constants';
-import { useTxHandlers } from '../../hooks/useTxHandlers';
-import { analytics } from '../../utils/analytics';
 import { isAlias } from '../../utils/isAlias';
 import { SignInvoke as SignInvokeComponent } from './SignInvokeComponent';
 import { assetPropFactory } from '../../utils/assetPropFactory';
@@ -33,24 +31,6 @@ export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
 
     const fee = getPrintableNumber(tx.fee, feeAsset.decimals);
 
-    const { handleConfirm, handleReject } = useTxHandlers(
-        tx,
-        onCancel,
-        onConfirm,
-        {
-            onRejectAnalyticsArgs: { name: 'Confirm_Invoke_Tx_Reject' },
-            onConfirmAnalyticsArgs: { name: 'Confirm_Invoke_Tx_Confirm' },
-        }
-    );
-
-    useEffect(
-        () =>
-            analytics.send({
-                name: 'Confirm_Invoke_Tx_Show',
-            }),
-        []
-    );
-
     const mapPayments = (payments: Array<IMoney>): Array<IPayment> =>
         payments.map(({ assetId, amount }) => ({
             assetId,
@@ -78,8 +58,8 @@ export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
             call={tx.call as ICall}
             chainId={tx.chainId}
             payment={mapPayments(tx.payment || [])}
-            onCancel={handleReject}
-            onConfirm={handleConfirm}
+            onCancel={onCancel}
+            onConfirm={onConfirm}
             tx={tx}
             txJSON={txJSON}
             meta={meta}

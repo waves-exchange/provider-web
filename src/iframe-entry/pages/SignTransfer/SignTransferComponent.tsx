@@ -8,9 +8,9 @@ import {
     Text,
     AddressAvatar,
     AddressLabel,
+    Box,
 } from '@waves.exchange/react-uikit';
-import { ITransferWithType, TLong } from '@waves/signer';
-import { ITransferTransaction, IWithId } from '@waves/ts-types';
+import { TLong, ITransferWithType } from '@waves/signer';
 import React, { FC, MouseEventHandler } from 'react';
 import { Confirmation } from '../../components/Confirmation';
 import {
@@ -18,7 +18,6 @@ import {
     IconTransferType,
 } from '../../components/IconTransfer/IconTransfer';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
-import { IMeta } from '../../services/transactionsService';
 import {
     FeeSelect,
     FeeSelectHandler,
@@ -26,32 +25,37 @@ import {
 import { getPrintableNumber } from '../../utils/math';
 import { WAVES } from '../../constants';
 import { DataJson } from '../../components/DataJson/DataJson';
+import { TransferTx } from './SignTransferContainer';
+import { IMeta } from '../../services/transactionsService';
 
+type TransferListItem = {
+    name: string;
+    address: string;
+    amount: string;
+};
 type Props = {
     userAddress: string;
     userName: string;
     userBalance: TLong;
     transferAmount: string;
-    attachement: string;
+    attachment: string;
     transferFee: string;
-    recipientAddress: string;
-    recipientName: string;
-    iconType: IconTransferType;
-    tx: ITransferTransaction<TLong> & IWithId;
-    meta: IMeta<ITransferWithType<TLong>>;
+    tx: TransferTx;
+    meta?: IMeta<ITransferWithType>;
     onReject: MouseEventHandler<HTMLButtonElement>;
     onConfirm: MouseEventHandler<HTMLButtonElement>;
     handleFeeSelect: FeeSelectHandler;
     txJSON: string;
+    iconType: IconTransferType;
+    isMassTransfer: boolean;
+    transferList: TransferListItem[];
 };
 
 export const SignTransfer: FC<Props> = ({
-    recipientAddress,
-    recipientName,
     userAddress,
     userBalance,
     userName,
-    attachement,
+    attachment,
     transferAmount,
     iconType,
     tx,
@@ -60,6 +64,9 @@ export const SignTransfer: FC<Props> = ({
     onConfirm,
     handleFeeSelect,
     txJSON,
+    transferList,
+    transferFee,
+    isMassTransfer,
 }) => (
     <Confirmation
         address={userAddress}
@@ -81,7 +88,9 @@ export const SignTransfer: FC<Props> = ({
             </Flex>
             <Flex ml="$20" flexDirection="column">
                 <Text variant="body1" color="basic.$500">
-                    Sign Transfer TX
+                    {!isMassTransfer
+                        ? 'Sign Transfer TX'
+                        : 'Sign MassTransfer TX'}
                 </Text>
                 <Text fontSize={26} lineHeight="32px" color="standard.$0">
                     {transferAmount}
@@ -112,18 +121,69 @@ export const SignTransfer: FC<Props> = ({
                 <TabPanel>
                     <Flex flexDirection="column">
                         <Text variant="body2" color="basic.$500">
-                            Recipient
+                            {!isMassTransfer ? 'Recipient' : 'Recipients'}
                         </Text>
-                        <AddressLabel
-                            address={recipientAddress}
-                            alias={recipientName}
-                            withCopy={true}
-                            mt="$5"
-                        >
-                            <AddressAvatar address={recipientAddress} />
-                        </AddressLabel>
+                        {!isMassTransfer ? (
+                            <AddressLabel
+                                address={transferList[0].address}
+                                alias={transferList[0].name}
+                                withCopy={true}
+                                mt="$5"
+                            >
+                                <AddressAvatar
+                                    address={transferList[0].address}
+                                />
+                            </AddressLabel>
+                        ) : (
+                            <Box
+                                sx={{
+                                    '& > * + *': {
+                                        borderTop: '1px dashed',
+                                        borderColor: 'main.$500',
+                                    },
+                                }}
+                                mt="$5"
+                                p={15}
+                                backgroundColor="basic.$900"
+                                borderRadius="$4"
+                                maxHeight={240}
+                                overflowY="auto"
+                            >
+                                {transferList.map(
+                                    ({ address, amount, name }, i) => (
+                                        <Flex
+                                            key={i}
+                                            alignItems="center"
+                                            justifyContent="space-between"
+                                            pt={i > 0 ? '7px' : 0}
+                                            pb={
+                                                i < transferList.length - 1
+                                                    ? '7px'
+                                                    : 0
+                                            }
+                                        >
+                                            <AddressLabel
+                                                address={address}
+                                                alias={name}
+                                                mt="$5"
+                                            >
+                                                <AddressAvatar
+                                                    address={address}
+                                                />
+                                            </AddressLabel>
+                                            <Text
+                                                variant="body2"
+                                                color="standard.$0"
+                                            >
+                                                {amount}
+                                            </Text>
+                                        </Flex>
+                                    )
+                                )}
+                            </Box>
+                        )}
 
-                        {attachement ? (
+                        {attachment ? (
                             <>
                                 <Text
                                     mt="$20"
@@ -141,18 +201,37 @@ export const SignTransfer: FC<Props> = ({
                                     bg="basic.$900"
                                     borderRadius="$4"
                                 >
-                                    {attachement}
+                                    {attachment}
                                 </Text>
                             </>
                         ) : null}
 
-                        <FeeSelect
-                            mt="$20"
-                            txMeta={meta}
-                            fee={tx.fee}
-                            onFeeSelect={handleFeeSelect}
-                            availableWavesBalance={userBalance}
-                        />
+                        {isMassTransfer && (
+                            <>
+                                <Text
+                                    variant="body2"
+                                    color="basic.$500"
+                                    display="block"
+                                    mt="$20"
+                                    mb="$5"
+                                >
+                                    Fee
+                                </Text>
+                                <Text variant="body2" color="standard.$0">
+                                    {transferFee}
+                                </Text>
+                            </>
+                        )}
+
+                        {meta && !isMassTransfer && (
+                            <FeeSelect
+                                mt="$20"
+                                txMeta={meta}
+                                fee={tx.fee}
+                                onFeeSelect={handleFeeSelect}
+                                availableWavesBalance={userBalance}
+                            />
+                        )}
                     </Flex>
                 </TabPanel>
                 <TabPanel>

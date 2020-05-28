@@ -1,6 +1,6 @@
 {
   "name": "@waves.exchange/provider-web",
-  "version": "0.1.2",
+  "version": "0.2.2",
   "main": "dist/provider-web.min.js",
   "types": "dist/provider/index.d.ts",
   "repository": {
@@ -15,7 +15,7 @@
   "scripts": {
     "watch": "webpack --watch",
     "postversion": "npm publish",
-    "prepublish": "npm run build",
+    "prepublish": "npm run test && npm run build",
     "prettier": "prettier --ignore-path .gitignore \"./src/**/*.+(ts|tsx)\"",
     "format": "npm run prettier -- --write",
     "check-format": "npm run prettier -- --list-different",
@@ -55,11 +55,11 @@
     "@types/react": "^16.9.15",
     "@types/react-dom": "^16.9.4",
     "@types/styled-system": "^5.1.4",
-    "@waves.exchange/react-uikit": "^0.4.1",
+    "@waves.exchange/react-uikit": "^0.5.11",
     "@waves/bignumber": "0.0.1",
-    "@waves/node-api-js": "0.0.3",
-    "@waves/signer": "0.0.8",
-    "@waves/ts-types": "^0.3.0",
+    "@waves/node-api-js": "^0.1.0",
+    "@waves/signer": "^0.1.0",
+    "@waves/ts-types": "^0.3.2",
     "@waves/waves-browser-bus": "^0.2.3",
     "@waves/waves-transactions": "^3.20.2",
     "emotion-theming": "^10.0.19",

@@ -1,7 +1,6 @@
 import { IUser } from '../../interface';
 import { Queue } from '../../utils/Queue';
 import { IState } from '../interface';
-import login from '../router/login';
 import { loadUserData, preload, toQueue } from './helpers';
 import signTypedData from '../router/signTypedData';
 import { ITypedData } from '@waves/signer';
@@ -13,7 +12,7 @@ export const getSignTypedDataHandler = (
     toQueue(queue, (data: Array<ITypedData>) => {
         preload();
 
-        return login(state)()
-            .then(() => loadUserData(state as IState<IUser>))
-            .then((state) => signTypedData(data, state));
+        return loadUserData(state as IState<IUser>).then((state) =>
+            signTypedData(data, state)
+        );
     });

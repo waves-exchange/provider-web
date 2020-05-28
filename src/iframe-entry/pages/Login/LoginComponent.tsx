@@ -12,18 +12,12 @@ import {
     Label,
     Text,
 } from '@waves.exchange/react-uikit';
-import React, {
-    ChangeEventHandler,
-    FC,
-    MouseEventHandler,
-    ReactNode,
-} from 'react';
+import React, { ChangeEventHandler, FC, MouseEventHandler } from 'react';
 import { IUser } from '../../../interface';
 import { getEnvAwareUrl } from '../../utils/getEnvAwareUrl';
 
 interface IProps {
     title: string;
-    subTitle: () => ReactNode;
     showNotification: boolean;
     errorMessage?: string;
     users?: IUser[];
@@ -43,7 +37,6 @@ export const LoginComponent: FC<IProps> = ({
     password,
     onPasswordChange,
     title,
-    subTitle,
     showNotification,
     errorMessage,
     onForgotPasswordLinkClick,
@@ -82,8 +75,6 @@ export const LoginComponent: FC<IProps> = ({
                 >
                     {title}
                 </Heading>
-
-                <Flex justifyContent="center">{subTitle()}</Flex>
 
                 {showNotification && (
                     <Text

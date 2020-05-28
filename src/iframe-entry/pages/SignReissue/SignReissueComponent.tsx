@@ -119,7 +119,7 @@ export const SignReissueComponent: FC<SignReissueComponentProps> = ({
                                 <AssetLogoWithIcon
                                     assetId={reissueAsset.assetId}
                                     name={reissueAsset.name}
-                                    variant="medium"
+                                    size="30px"
                                     flexShrink={0}
                                     icon={iconSmartMini}
                                     iconVisible={reissueAsset.scripted}

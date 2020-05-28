@@ -2,6 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=yes" />
         <title>Title</title>
         <style>
             html,
@@ -15,8 +16,7 @@
                 margin: 0;
                 padding: 0;
                 height: 100%;
-                width: 100%;
-                overflow: hidden;
+                width: 100vw;
                 -webkit-overflow-scrolling: touch;
             }
 
@@ -25,14 +25,14 @@
             }
         </style>
         <script src="../node_modules/@waves/signer/dist/signer.min.js"></script>
-        <script src="../dist/provider-web.js"></script>
+        <script src="../dist/provider-web.min.js"></script>
         <script>
             var url = location.href.includes('provider=exchange')
                 ? 'https://waves.exchange/signer'
                 : location.origin + '/iframe-entry';
             var node = location.href.includes('mainnet')
                 ? 'https://nodes.wavesplatform.com'
-                : 'https://pool.testnet.wavesnodes.com';
+                : 'https://nodes-testnet.wavesnodes.com';
 
             var provider = new providerWeb.ProviderWeb(url);
             var waves = new signer.Signer({ NODE_URL: node });
@@ -95,8 +95,27 @@
                 reissuable: false,
                 description: 'Description of token',
                 script: 'base64:AAIDAAAAAAAAAAQIARIAAAAAAAAAAAEAAAABaQEAAAADZm9vAAAAAAkBAAAACFdyaXRlU2V0AAAAAQUAAAADbmlsAAAAACvwfcA='
+            }).broadcast()">sign issue
+            </button>
+        </div>
+            <h2>
+                Sign massTransfer
+            </h2>
+            <button onclick="waves.massTransfer({
+                assetId: 'BC2RVCn2NzoWM8s5MVr2Tns9EmcxL6guMgnDWy3Uj8nA',
+                transfers: [
+                    {
+                        amount: 10,
+                        recipient: 'merry'
+                    },
+                    {
+                        amount: 20,
+                        recipient: '3PCAB4sHXgvtu5NPoen6EXR5yaNbvsEA8Fj'
+                    }
+                ],
+                attachment: '72k1xXWG59fYdzSNoA'
             }).broadcast()">
-                Sign Issue
+                massTransfer
             </button>
         </div >
         <div>
@@ -107,41 +126,49 @@
             <h1>Login</h1>
             <button onclick="waves.login();">Login</button>
         </div>
-        <div style="display: flex; flex-direction: column;">
+        <div>
             <h2>
                 Transfer 1 Waves to Merry
             </h2>
-            <button
-                onclick="transfer(this);"
-                data-amount="10000000"
-                data-recipient="merry"
-            >
-                Basic
-            </button>
-            <button
-                onclick="transfer(this);"
-                data-amount="10000000"
-                data-recipient="merry"
-                data-feeAssetId="DWgwcZTMhSvnyYCoWLRUXXSH1RSkzThXLJhww9gwkqdn"
-            >
-                With custom Fee feeAssetId
-            </button>
-            <button
-                onclick="transfer(this);"
-                data-amount="10000000"
-                data-recipient="3PCAB4sHXgvtu5NPoen6EXR5yaNbvsEA8Fj"
-                data-fee="676767"
-            >
-                With custom Fee amount
-            </button>
-            <button
-                onclick="transfer(this);"
-                data-amount="10000000"
-                data-recipient="3PCAB4sHXgvtu5NPoen6EXR5yaNbvsEA8Fj"
-                data-attachment="72k1xXWG59fYdzSNoA"
-            >
-                By address With attachment
-            </button>
+            <div>
+                <button
+                    onclick="transfer(this);"
+                    data-amount="10000000"
+                    data-recipient="merry"
+                >
+                    Basic
+                </button>
+            </div>
+            <div>
+                <button
+                    onclick="transfer(this);"
+                    data-amount="10000000"
+                    data-recipient="merry"
+                    data-feeAssetId="DWgwcZTMhSvnyYCoWLRUXXSH1RSkzThXLJhww9gwkqdn"
+                >
+                    With custom Fee feeAssetId
+                </button>
+            </div>
+            <div>
+                <button
+                    onclick="transfer(this);"
+                    data-amount="10000000"
+                    data-recipient="3PCAB4sHXgvtu5NPoen6EXR5yaNbvsEA8Fj"
+                    data-fee="676767"
+                >
+                    With custom Fee amount
+                </button>
+            </div>
+            <div>
+                <button
+                    onclick="transfer(this);"
+                    data-amount="10000000"
+                    data-recipient="3PCAB4sHXgvtu5NPoen6EXR5yaNbvsEA8Fj"
+                    data-attachment="72k1xXWG59fYdzSNoA"
+                >
+                    By address With attachment
+                </button>
+            </div>
         </div>
         <div>
             <h2>Invoke</h2>
@@ -307,4 +334,5 @@
             </button>
         </div>
     </body>
+
 </html>

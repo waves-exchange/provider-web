@@ -1,9 +1,8 @@
 import { IUser } from '../../interface';
 import { Queue } from '../../utils/Queue';
 import { IState } from '../interface';
-import login from '../router/login';
-import { loadUserData, preload, toQueue } from './helpers';
 import signMessage from '../router/signMessage';
+import { loadUserData, preload, toQueue } from './helpers';
 
 export const getSignMessageHandler = (
     queue: Queue,
@@ -12,7 +11,7 @@ export const getSignMessageHandler = (
     toQueue(queue, (message: string | number) => {
         preload();
 
-        return login(state)()
-            .then(() => loadUserData(state as IState<IUser>))
-            .then((state) => signMessage(message, state));
+        return loadUserData(state as IState<IUser>).then((state) =>
+            signMessage(message, state)
+        );
     });

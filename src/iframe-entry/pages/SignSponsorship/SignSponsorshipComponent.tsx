@@ -161,7 +161,7 @@ export const SignSponsorshipComponent: FC<Props> = ({
                                             ) > 0
                                         }
                                         logo={sponsorAsset.logo}
-                                        variant="medium"
+                                        size="30px"
                                         flexShrink={0}
                                         popperOptions={popperOptions}
                                     />

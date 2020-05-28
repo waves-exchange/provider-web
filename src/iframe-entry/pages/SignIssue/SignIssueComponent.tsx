@@ -149,7 +149,7 @@ export const SignIssueComponent: FC<Props> = ({
                                     <AssetLogoWithIcon
                                         assetId={assetId}
                                         name={assetName}
-                                        variant="medium"
+                                        size="30px"
                                         flexShrink={0}
                                         icon={iconSmartMini}
                                         iconVisible={Boolean(assetScript)}

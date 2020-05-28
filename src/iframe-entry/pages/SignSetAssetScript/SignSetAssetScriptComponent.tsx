@@ -132,7 +132,7 @@ export const SignSetAssetScript: FC<IProps> = ({
                                         iconVisible={Boolean(assetScript)}
                                         assetId={assetId}
                                         name={assetName}
-                                        variant="medium"
+                                        size="30px"
                                         flexShrink={0}
                                         popperOptions={{
                                             strategy: 'fixed',
