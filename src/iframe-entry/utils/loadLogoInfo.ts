@@ -110,7 +110,8 @@ export const loadLogoInfo = curry(
         Promise.all(
             data.map((asset) => {
                 const address = getBetterTokensAddress(networkByte);
-                const MAP = GATEWAYS_MAP[String.fromCharCode(networkByte)];
+                const MAP =
+                    GATEWAYS_MAP[String.fromCharCode(networkByte)] || {};
                 const logo = MAP[asset.assetId];
 
                 if (logo != null) {
