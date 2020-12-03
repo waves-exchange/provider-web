@@ -3,7 +3,7 @@ var url = location.href.includes('provider=exchange') ?
     location.origin + '/iframe-entry';
 var node = location.href.includes('mainnet') ?
     'https://nodes.wavesplatform.com' :
-    'https://pool.testnet.wavesnodes.com';
+    'https://nodes-testnet.wavesnodes.com';
 var provider = new providerWeb.ProviderWeb(url);
 var waves = new signer.Signer({
     NODE_URL: node
