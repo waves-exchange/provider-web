@@ -104,7 +104,7 @@ export const SelectAccountComponent: FC<SelectAccountProps> = ({
                 mt="$30"
                 onClick={onContinue}
             >
-                Confirm
+                Continue
             </Button>
         </>
     );
