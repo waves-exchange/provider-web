@@ -20,60 +20,46 @@ export function getUsers(
     networkByte: number
 ): TCatchable<Array<StorageUser>> {
     const data = storage.getPrivateData(password);
-    const usersData = storage.get('multiAccountUsers');
 
     if (!data.ok) {
         return data;
     }
 
     return {
-        ...data,
-        resolveData: Object.entries(usersData)
+        ok: true,
+        rejectData: null,
+        resolveData: Object.entries(storage.get('multiAccountUsers'))
             .map(([hash, userData]) => ({
                 hash,
                 lastLogin: userData.lastLogin,
             }))
             .sort((a, b) => b.lastLogin - a.lastLogin)
-            .reduce<StorageUser[]>((acc, x) => {
-                const user = data.resolveData[x.hash];
+            .reduce<Array<StorageUser>>((acc, { hash }) => {
+                const privateData = data.resolveData[hash];
 
-                if (user.networkByte !== networkByte) {
+                if (!privateData) {
                     return acc;
                 }
 
-                if (user.userType === 'privateKey') {
-                    return [
-                        ...acc,
-                        {
-                            address: libs.crypto.address(
-                                {
-                                    publicKey: libs.crypto.publicKey({
-                                        privateKey: user.privateKey,
-                                    }),
-                                },
-                                networkByte
+                switch (privateData.userType) {
+                    case 'seed':
+                        acc.push({
+                            userType: privateData.userType,
+                            address: libs.crypto.address(privateData.seed),
+                            privateKey: libs.crypto.privateKey(
+                                privateData.seed
                             ),
-                            privateKey: user.privateKey,
-                            userType: user.userType,
-                        },
-                    ];
-                }
-
-                if (user.userType === 'seed') {
-                    const seed = user.seed.startsWith('base58:')
-                        ? libs.crypto.base58Decode(
-                              user.seed.replace('base58:', '')
-                          )
-                        : user.seed;
-
-                    return [
-                        ...acc,
-                        {
-                            address: libs.crypto.address(seed, networkByte),
-                            privateKey: libs.crypto.privateKey(seed),
-                            userType: user.userType,
-                        },
-                    ];
+                        });
+                        break;
+                    case 'privateKey':
+                        acc.push({
+                            userType: privateData.userType,
+                            privateKey: privateData.privateKey,
+                            address: libs.crypto.address(privateData),
+                        });
+                        break;
+                    default:
+                        break;
                 }
 
                 return acc;
