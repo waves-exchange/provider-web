@@ -1,6 +1,6 @@
 import renderPage from '../utils/renderPage';
 import { libs } from '@waves/waves-transactions';
-import { IUserData } from '@waves/signer';
+import { UserData } from '@waves/signer';
 import {
     hasMultiaccount,
     saveTerms,
@@ -13,8 +13,8 @@ import React from 'react';
 import { IState } from '../interface';
 import { analytics } from '../utils/analytics';
 
-export default function(state: IState): () => Promise<IUserData> {
-    return (): Promise<IUserData> => {
+export default function(state: IState): () => Promise<UserData> {
+    return (): Promise<UserData> => {
         if (state.user != null) {
             return Promise.resolve({
                 address: state.user.address,

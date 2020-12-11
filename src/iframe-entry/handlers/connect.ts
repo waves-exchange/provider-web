@@ -1,10 +1,10 @@
-import { IConnectOptions } from '@waves/signer';
+import { ConnectOptions } from '@waves/signer';
 import { IState } from '../interface';
 import { analytics } from '../utils/analytics';
 
 export function getConnectHandler(
     state: IState
-): (options: IConnectOptions) => void {
+): (options: ConnectOptions) => void {
     return (options): void => {
         state.networkByte = options.NETWORK_BYTE;
         state.nodeUrl = options.NODE_URL;

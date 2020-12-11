@@ -17,13 +17,14 @@ import {
     BoxWithIcon,
     iconSmartMini,
 } from '@waves.exchange/react-uikit';
-import { TLong } from '@waves/signer';
-import { ISetScriptTransactionWithId } from '@waves/ts-types';
 import React, { FC, MouseEventHandler } from 'react';
 import { Confirmation } from '../../components/Confirmation';
 import { DataJson } from '../../components/DataJson/DataJson';
 import { Help } from '../../components/Help/Help';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
+import { SignerSetScriptTx } from '@waves/signer/src/types/index';
+import { IWithId, TSetScriptTransaction } from '@waves/ts-types';
+import { TransferType } from '../SignTransfer/SignTransferContainer';
 
 export interface IProps {
     userAddress: string;
@@ -31,7 +32,7 @@ export interface IProps {
     userBalance: string;
     userHasScript: boolean;
     fee: string;
-    tx: ISetScriptTransactionWithId<TLong>;
+    tx: TSetScriptTransaction & IWithId;
     accountScript: string | null;
     onCancel: MouseEventHandler<HTMLButtonElement>;
     onConfirm: MouseEventHandler<HTMLButtonElement>;

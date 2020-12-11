@@ -1,6 +1,6 @@
 import React, { FC, MouseEventHandler } from 'react';
 import { Confirmation } from '../../components/Confirmation';
-import { ITypedData } from '@waves/signer';
+import { TypedData } from '@waves/signer';
 import {
     Flex,
     Icon,
@@ -19,7 +19,7 @@ type SignTypedDataComponentProps = {
     userAddress: string;
     userName: string;
     userBalance: string;
-    data: Array<ITypedData>;
+    data: Array<TypedData>;
     onReject: MouseEventHandler<HTMLButtonElement>;
     onConfirm: MouseEventHandler<HTMLButtonElement>;
 };
@@ -78,7 +78,8 @@ export const SignTypedDataComponent: FC<SignTypedDataComponentProps> = ({
 
             <TabPanels mb="$30" px="$40" bg="main.$800">
                 <TabPanel>
-                    <DataEntry data={data} />
+                    // TODO
+                    <DataEntry data={data as any} />
                 </TabPanel>
                 <TabPanel>
                     <DataJson data={data} />

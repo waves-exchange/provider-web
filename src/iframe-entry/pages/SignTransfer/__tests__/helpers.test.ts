@@ -2,7 +2,7 @@ import * as helpers from '../helpers';
 import { WAVES, NAME_MAP } from '../../../constants';
 import * as math from '../../../utils/math';
 import { IMassTransferItem } from '@waves/ts-types/src';
-import { TLong } from '@waves/signer';
+import { TLong } from '@waves/ts-types';
 
 const massTransferTxType = NAME_MAP.massTransfer;
 const transferTxType = NAME_MAP.transfer;

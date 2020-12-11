@@ -17,13 +17,14 @@ import {
     Text,
     useBoundedTooltip,
 } from '@waves.exchange/react-uikit';
-import { TLong } from '@waves/signer';
-import { IIssueTransaction, IWithId } from '@waves/ts-types';
 import React, { ChangeEventHandler, FC, MouseEventHandler } from 'react';
 import { Confirmation } from '../../components/Confirmation';
 import { DataJson } from '../../components/DataJson/DataJson';
 import { Help } from '../../components/Help/Help';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
+import { SignerIssueTx } from '@waves/signer/src/types/index';
+import { IWithId, TIssueTransaction } from '@waves/ts-types';
+import { TransferType } from '../SignTransfer/SignTransferContainer';
 
 type Props = {
     fee: string;
@@ -41,7 +42,7 @@ type Props = {
     onReject: MouseEventHandler<HTMLButtonElement>;
     onConfirm: MouseEventHandler<HTMLButtonElement>;
     onTermsCheck: ChangeEventHandler<HTMLInputElement>;
-    tx: IIssueTransaction<TLong> & IWithId;
+    tx: TIssueTransaction & IWithId;
 };
 
 export const SignIssueComponent: FC<Props> = ({

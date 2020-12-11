@@ -59,8 +59,8 @@
     "@waves/bignumber": "0.0.1",
     "@waves/node-api-js": "^0.1.0",
     "@waves/signer": "^0.1.0",
-    "@waves/ts-types": "^0.3.2",
-    "@waves/waves-browser-bus": "^0.2.3",
+    "@waves/ts-types": "^0.2.0-test",
+    "@waves/waves-browser-bus": "^0.2.6",
     "@waves/waves-transactions": "^3.20.2",
     "emotion-theming": "^10.0.19",
     "ramda": "^0.26.1",
@@ -68,7 +68,7 @@
     "react-dom": "^16.12.0",
     "styled-system": "^5.1.4",
     "tslib": "^1.10.0",
-    "typed-ts-events": "^1.0.5"
+    "typed-ts-events": "^1.2.1"
   },
   "devDependencies": {
     "@types/jest": "^25.1.1",
@@ -92,7 +92,7 @@
     "prettier": "^1.19.1",
     "ts-jest": "^25.1.0",
     "ts-loader": "^6.2.1",
-    "typescript": "^3.7.2",
+    "typescript": "^3.9.7",
     "uri-js": "^4.2.2",
     "webpack": "^4.41.4",
     "webpack-cli": "^3.3.10"

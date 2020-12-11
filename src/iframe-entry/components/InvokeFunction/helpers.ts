@@ -1,6 +1,5 @@
 import { CSSObject } from '@styled-system/css';
-import { TInvokeScriptCallArgument } from '@waves/ts-types';
-import { TLong } from '@waves/signer';
+import { TInvokeScriptCallArgument, TLong } from '@waves/ts-types';
 import { pseudoElemStyles, COLOR_MAP } from './styles';
 
 export const getAttrStyles = (

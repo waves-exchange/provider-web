@@ -24,21 +24,8 @@
                 box-sizing: border-box;
             }
         </style>
-        <script src="../node_modules/@waves/signer/dist/signer.min.js"></script>
-        <script src="../dist/provider-web.min.js"></script>
+        <script src='./stand.js'></script>
         <script>
-            var url = location.href.includes('provider=exchange')
-                ? 'https://waves.exchange/signer'
-                : location.origin + '/iframe-entry';
-            var node = location.href.includes('mainnet')
-                ? 'https://nodes.wavesplatform.com'
-                : 'https://nodes-testnet.wavesnodes.com';
-
-            var provider = new providerWeb.ProviderWeb(url);
-            var waves = new signer.Signer({ NODE_URL: node });
-
-            waves.setProvider(provider);
-
             var getByElement = function(element, key, defaultValue) {
                 return element.dataset[key.toLowerCase()] || defaultValue;
             };

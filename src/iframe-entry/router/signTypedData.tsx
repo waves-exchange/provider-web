@@ -1,13 +1,13 @@
 import { IState } from '../interface';
-import { ITypedData } from '@waves/signer';
 import { IUserWithBalances } from '../../interface';
 import { customData, libs } from '@waves/waves-transactions';
 import renderPage from '../utils/renderPage';
 import React from 'react';
 import { SignTypedDataContainer } from '../pages/SignTypedData/SignTypedDataContainer';
+import { TypedData } from '@waves/signer';
 
 export default function(
-    data: Array<ITypedData>,
+    data: Array<TypedData>,
     state: IState<IUserWithBalances>
 ): Promise<string> {
     const { signature } = customData(
@@ -29,8 +29,9 @@ export default function(
                     }),
                 },
                 data,
+                // TODO Check as string
                 onConfirm: () => {
-                    resolve(signature);
+                    resolve(signature as string);
                 },
                 onCancel: () => {
                     reject(new Error('User rejection!'));

@@ -1,9 +1,9 @@
 import { Box, Flex, Text } from '@waves.exchange/react-uikit';
-import { IData } from '@waves/signer';
 import React, { FC } from 'react';
+import { TDataTransaction } from '@waves/ts-types';
 
 type DataEntryProps = {
-    data: IData['data'];
+    data: TDataTransaction['data'];
 };
 
 export const DataEntry: FC<DataEntryProps> = ({ data }) => (

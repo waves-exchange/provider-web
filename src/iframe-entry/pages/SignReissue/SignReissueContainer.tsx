@@ -1,12 +1,12 @@
-import { IReissueWithType } from '@waves/signer';
 import React, { FC } from 'react';
 import { ISignTxProps } from '../../../interface';
 import { WAVES } from '../../constants';
 import { useTxUser } from '../../hooks/useTxUser';
 import { getPrintableNumber } from '../../utils/math';
 import { SignReissueComponent } from './SignReissueComponent';
+import { TReissueTransaction } from '@waves/ts-types';
 
-export const SignReissueContainer: FC<ISignTxProps<IReissueWithType>> = ({
+export const SignReissueContainer: FC<ISignTxProps<TReissueTransaction>> = ({
     tx,
     meta,
     user,

@@ -11,12 +11,13 @@ import {
     Text,
     AddressLabel,
 } from '@waves.exchange/react-uikit';
-import { TLong } from '@waves/signer';
-import { ILeaseTransactionWithId } from '@waves/ts-types';
 import React, { FC, MouseEventHandler } from 'react';
 import { Confirmation } from '../../components/Confirmation';
 import { DataJson } from '../../components/DataJson/DataJson';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
+import { SignerLeaseTx } from '@waves/signer/src/types/index';
+import { IWithId, TLeaseTransaction } from '@waves/ts-types';
+import { TransferType } from '../SignTransfer/SignTransferContainer';
 
 type Props = {
     userAddress: string;
@@ -24,7 +25,7 @@ type Props = {
     userBalance: string;
     recipientAddress: string;
     recipientName: string;
-    tx: ILeaseTransactionWithId<TLong>;
+    tx: TLeaseTransaction & IWithId;
     amount: string;
     fee: string;
     onReject: MouseEventHandler<HTMLButtonElement>;

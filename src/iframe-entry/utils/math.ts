@@ -1,5 +1,5 @@
-import { TLong } from '@waves/signer';
 import BigNumber from '@waves/bignumber';
+import { TLong } from '@waves/ts-types';
 
 export const getPrintableNumber = (number: TLong, decimals: number): string => {
     return BigNumber.toBigNumber(number)

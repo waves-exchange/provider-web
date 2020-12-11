@@ -3,13 +3,13 @@ import {
     fetchScriptInfo,
 } from '@waves/node-api-js/es/api-node/addresses';
 import { fetchByAddress } from '@waves/node-api-js/es/api-node/alias';
-import { TLong } from '@waves/signer';
 import { libs } from '@waves/waves-transactions';
 import { IUser } from '../../interface';
 import { IPrivateSeedUserData } from '../interface';
 import { TCatchable } from '../utils/catchable';
 import { getUserId } from '../utils/getUserId';
 import { storage } from './storage';
+import { TLong } from '@waves/ts-types';
 
 export type StorageUser = IUser & {
     userType: 'keeper' | 'ledger' | 'seed' | 'privateKey';

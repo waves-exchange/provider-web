@@ -1,7 +1,7 @@
-import { TLong } from '@waves/signer';
 import { TAssetDetails } from '@waves/node-api-js/es/api-node/assets';
 import { fetchDataKey } from '@waves/node-api-js/es/api-node/addresses';
 import curry from 'ramda/es/curry';
+import { TLong } from '@waves/ts-types';
 
 const BETTER_TOKENS_MAP = {
     W: '3P6t5mKGwVDkyjFhtUqw4NnecyC3DRpLfkw',

@@ -1,12 +1,12 @@
-import { IAliasWithType } from '@waves/signer';
 import React, { FC } from 'react';
 import { ISignTxProps } from '../../../interface';
 import { WAVES } from '../../constants';
 import { useTxUser } from '../../hooks/useTxUser';
 import { getPrintableNumber } from '../../utils/math';
 import { SignAliasComponent } from './SignAliasComponent';
+import { TAliasTransaction } from '@waves/ts-types';
 
-export const SignAliasContainer: FC<ISignTxProps<IAliasWithType>> = ({
+export const SignAliasContainer: FC<ISignTxProps<TAliasTransaction>> = ({
     tx,
     user,
     networkByte,
