@@ -5,9 +5,9 @@ import {
     SignerTx,
     SignedTx,
 } from '@waves/signer';
-import { IWithId, TLong, TTransaction, TTransactionMap } from '@waves/ts-types';
 import { IMeta } from './iframe-entry/services/transactionsService';
 import { MouseEventHandler } from 'react';
+import { Long, Transaction, TransactionMap, WithId } from '@waves/ts-types';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type TBusHandlers = {
@@ -33,12 +33,12 @@ export interface IBusEvents {
     ready: void;
 }
 
-export interface ISignTxProps<T extends TTransaction> {
+export interface ISignTxProps<T extends Transaction> {
     networkByte: number;
     nodeUrl: string;
     user: Omit<IUserWithBalances, 'seed'> & { publicKey: string };
     meta: IMeta<T>;
-    tx: TTransactionMap<TLong>[T['type']] & IWithId;
+    tx: TransactionMap<Long>[T['type']] & WithId;
     onConfirm: MouseEventHandler;
     onCancel: MouseEventHandler;
 }
@@ -50,7 +50,7 @@ export interface IUser {
 
 export interface IUserWithBalances extends IUser {
     aliases: Array<string>;
-    balance: TLong;
+    balance: Long;
     hasScript: boolean;
 }
 

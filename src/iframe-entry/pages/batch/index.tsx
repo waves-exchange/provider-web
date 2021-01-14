@@ -2,7 +2,7 @@ import { AddressAvatar } from '@waves.exchange/react-uikit';
 import { ITransactionInfo } from '../../services/transactionsService';
 import React from 'react';
 import { SignerTx } from '@waves/signer';
-import { TTransaction } from '@waves/ts-types';
+import { Transaction } from '@waves/ts-types';
 
 export default function(props: IProps) {
     return (
@@ -39,7 +39,7 @@ export interface IProps {
         address: string;
         publicKey: string;
     };
-    list: Array<ITransactionInfo<TTransaction>>;
+    list: Array<ITransactionInfo<Transaction>>;
     onConfirm: () => void;
     onCancel: () => void;
 }

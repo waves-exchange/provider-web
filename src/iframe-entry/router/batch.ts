@@ -5,10 +5,10 @@ import { libs, signTx } from '@waves/waves-transactions';
 import { IUser } from '../../interface';
 import { ITransactionInfo } from '../services/transactionsService';
 import { SignerTx } from '@waves/signer';
-import { TTransaction } from '@waves/ts-types';
+import { Transaction } from '@waves/ts-types';
 
 export default function(
-    list: Array<ITransactionInfo<TTransaction>>,
+    list: Array<ITransactionInfo<Transaction>>,
     state: IState<IUser>
 ): Promise<Array<SignerTx>> {
     return new Promise((resolve, reject) => {

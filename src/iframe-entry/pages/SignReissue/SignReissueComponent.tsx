@@ -20,15 +20,13 @@ import { Confirmation } from '../../components/Confirmation';
 import { DataJson } from '../../components/DataJson/DataJson';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
 import { DetailsWithLogo } from '../../utils/loadLogoInfo';
-import { SignerReissueTx } from '@waves/signer/src/types/index';
-import { IWithId, TReissueTransaction } from '@waves/ts-types';
-import { TransferType } from '../SignTransfer/SignTransferContainer';
+import { ReissueTransaction, WithId } from '@waves/ts-types';
 
 type SignReissueComponentProps = {
     userAddress: string;
     userName: string;
     userBalance: string;
-    tx: TReissueTransaction & IWithId;
+    tx: ReissueTransaction & WithId;
     reissueAmount: string;
     reissueAsset: DetailsWithLogo;
     fee: string;

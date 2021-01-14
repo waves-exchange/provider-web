@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { Box, Flex, Text } from '@waves.exchange/react-uikit';
-import { IWithId, TLong, TTransaction } from '@waves/ts-types';
+import { WithId, Long, Transaction } from '@waves/ts-types';
 
 type TransactionDetailsProps = {
-    tx: TTransaction<TLong> & IWithId;
+    tx: Transaction<Long> & WithId;
 };
 
 export const TransactionDetails: FC<TransactionDetailsProps> = ({ tx }) => (

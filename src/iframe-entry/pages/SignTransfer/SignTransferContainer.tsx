@@ -6,12 +6,9 @@ import { getUserName } from '../../services/userService';
 import { useHandleFeeSelect } from '../../hooks/useHandleFeeSelect';
 import { getViewData, isTransferMeta } from './helpers';
 import { IMeta } from '../../services/transactionsService';
-import {
-    TMassTransferTransaction,
-    TTransferTransaction,
-} from '@waves/ts-types';
+import { MassTransferTransaction, TransferTransaction } from '@waves/ts-types';
 
-export type TransferType = TTransferTransaction | TMassTransferTransaction;
+export type TransferType = TransferTransaction | MassTransferTransaction;
 export type TransferMeta = IMeta<TransferType>;
 
 export const SignTransfer: FC<ISignTxProps<TransferType>> = ({

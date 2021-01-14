@@ -1,7 +1,7 @@
 import { TAssetDetails } from '@waves/node-api-js/es/api-node/assets';
 import { fetchDataKey } from '@waves/node-api-js/es/api-node/addresses';
 import curry from 'ramda/es/curry';
-import { TLong } from '@waves/ts-types';
+import { Long } from '@waves/ts-types';
 
 const BETTER_TOKENS_MAP = {
     W: '3P6t5mKGwVDkyjFhtUqw4NnecyC3DRpLfkw',
@@ -105,7 +105,7 @@ export const loadLogoInfo = curry(
     (
         base: string,
         networkByte: number,
-        data: Array<TAssetDetails<TLong>>
+        data: Array<TAssetDetails<Long>>
     ): Promise<Array<DetailsWithLogo>> =>
         Promise.all(
             data.map((asset) => {
@@ -127,6 +127,6 @@ export const loadLogoInfo = curry(
         )
 );
 
-export type DetailsWithLogo = TAssetDetails<TLong> & {
+export type DetailsWithLogo = TAssetDetails<Long> & {
     logo?: string;
 };

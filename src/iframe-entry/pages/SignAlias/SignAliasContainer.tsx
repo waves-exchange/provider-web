@@ -4,9 +4,9 @@ import { WAVES } from '../../constants';
 import { useTxUser } from '../../hooks/useTxUser';
 import { getPrintableNumber } from '../../utils/math';
 import { SignAliasComponent } from './SignAliasComponent';
-import { TAliasTransaction } from '@waves/ts-types';
+import { AliasTransaction } from '@waves/ts-types';
 
-export const SignAliasContainer: FC<ISignTxProps<TAliasTransaction>> = ({
+export const SignAliasContainer: FC<ISignTxProps<AliasTransaction>> = ({
     tx,
     user,
     networkByte,

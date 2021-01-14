@@ -4,9 +4,9 @@ import { useTxUser } from '../../hooks/useTxUser';
 import { SignIssueComponent } from './SignIssueComponent';
 import { getPrintableNumber } from '../../utils/math';
 import { WAVES } from '../../constants';
-import { TIssueTransaction } from '@waves/ts-types';
+import { IssueTransaction } from '@waves/ts-types';
 
-export const SignIssueContainer: FC<ISignTxProps<TIssueTransaction>> = ({
+export const SignIssueContainer: FC<ISignTxProps<IssueTransaction>> = ({
     tx,
     user,
     networkByte,

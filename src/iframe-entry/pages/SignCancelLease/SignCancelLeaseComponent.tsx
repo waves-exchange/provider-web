@@ -14,16 +14,14 @@ import React, { FC, MouseEventHandler } from 'react';
 import { Confirmation } from '../../components/Confirmation';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
 import { DataJson } from '../../components/DataJson/DataJson';
-import { SignerCancelLeaseTx } from '@waves/signer/src/types/index';
-import { IWithId, TCancelLeaseTransaction } from '@waves/ts-types';
-import { TransferType } from '../SignTransfer/SignTransferContainer';
+import { CancelLeaseTransaction, WithId } from '@waves/ts-types';
 
 type Props = {
     userAddress: string;
     userName: string;
     userBalance: string;
     amount: string;
-    tx: TCancelLeaseTransaction & IWithId;
+    tx: CancelLeaseTransaction & WithId;
     fee: string;
     onReject: MouseEventHandler<HTMLButtonElement>;
     onConfirm: MouseEventHandler<HTMLButtonElement>;

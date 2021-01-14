@@ -2,9 +2,9 @@ import * as helpers from '../helpers';
 import { WAVES } from '../../../constants';
 import { IMeta } from '../../../services/transactionsService';
 import { RecursivePartial } from '../../../../interface';
-import { TTransaction } from '@waves/ts-types';
+import { Transaction } from '@waves/ts-types';
 
-type PartialMeta = RecursivePartial<IMeta<TTransaction>>;
+type PartialMeta = RecursivePartial<IMeta<Transaction>>;
 
 const wavesFeeAssetId = null;
 const notWavesFeeAssetId = 'not_waves_fee_asset_id';

@@ -9,7 +9,7 @@ import { IPrivateSeedUserData } from '../interface';
 import { TCatchable } from '../utils/catchable';
 import { getUserId } from '../utils/getUserId';
 import { storage } from './storage';
-import { TLong } from '@waves/ts-types';
+import { Long } from '@waves/ts-types';
 
 export type StorageUser = IUser & {
     userType: 'keeper' | 'ledger' | 'seed' | 'privateKey';
@@ -133,7 +133,7 @@ export function fetchAliasses(
 export function fetchWavesBalance(
     base: string,
     address: string
-): Promise<TLong> {
+): Promise<Long> {
     return fetchBalance(base, address).then((info) => info.balance);
 }
 

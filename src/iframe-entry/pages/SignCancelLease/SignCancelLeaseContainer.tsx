@@ -4,10 +4,9 @@ import { WAVES } from '../../constants';
 import { useTxUser } from '../../hooks/useTxUser';
 import { getPrintableNumber } from '../../utils/math';
 import { SignCancelLeaseComponent } from './SignCancelLeaseComponent';
-import { SignerCancelLeaseTx } from '@waves/signer/src/types/index';
-import { TCancelLeaseTransaction } from '@waves/ts-types';
+import { CancelLeaseTransaction } from '@waves/ts-types';
 
-export const SignCancelLease: FC<ISignTxProps<TCancelLeaseTransaction>> = ({
+export const SignCancelLease: FC<ISignTxProps<CancelLeaseTransaction>> = ({
     networkByte,
     tx,
     meta,

@@ -4,9 +4,9 @@ import { WAVES } from '../../constants';
 import { useTxUser } from '../../hooks/useTxUser';
 import { getPrintableNumber } from '../../utils/math';
 import { SignReissueComponent } from './SignReissueComponent';
-import { TReissueTransaction } from '@waves/ts-types';
+import { ReissueTransaction } from '@waves/ts-types';
 
-export const SignReissueContainer: FC<ISignTxProps<TReissueTransaction>> = ({
+export const SignReissueContainer: FC<ISignTxProps<ReissueTransaction>> = ({
     tx,
     meta,
     user,

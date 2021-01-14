@@ -96,7 +96,7 @@ export default function(
 
                 const [info] = transactions;
 
-                return new Promise((resolve, reject) => {
+                return new Promise<any>((resolve, reject) => {
                     const props = {
                         ...info,
                         networkByte: state.networkByte,

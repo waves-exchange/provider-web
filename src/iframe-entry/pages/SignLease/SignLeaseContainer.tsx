@@ -6,9 +6,9 @@ import { cleanAddress } from '../../utils/cleanAlias';
 import { isAlias } from '../../utils/isAlias';
 import { getPrintableNumber } from '../../utils/math';
 import { SignLeaseComponent } from './SignLeaseComponent';
-import { TLeaseTransaction } from '@waves/ts-types';
+import { LeaseTransaction } from '@waves/ts-types';
 
-export const SignLease: FC<ISignTxProps<TLeaseTransaction>> = ({
+export const SignLease: FC<ISignTxProps<LeaseTransaction>> = ({
     networkByte,
     tx,
     meta,

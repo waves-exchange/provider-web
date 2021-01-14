@@ -1,5 +1,6 @@
 import {
     AddressAvatar,
+    AddressLabel,
     Flex,
     Icon,
     iconLeaseTransaction,
@@ -9,15 +10,12 @@ import {
     Tabs,
     TabsList,
     Text,
-    AddressLabel,
 } from '@waves.exchange/react-uikit';
 import React, { FC, MouseEventHandler } from 'react';
 import { Confirmation } from '../../components/Confirmation';
 import { DataJson } from '../../components/DataJson/DataJson';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
-import { SignerLeaseTx } from '@waves/signer/src/types/index';
-import { IWithId, TLeaseTransaction } from '@waves/ts-types';
-import { TransferType } from '../SignTransfer/SignTransferContainer';
+import { LeaseTransaction, WithId } from '@waves/ts-types';
 
 type Props = {
     userAddress: string;
@@ -25,7 +23,7 @@ type Props = {
     userBalance: string;
     recipientAddress: string;
     recipientName: string;
-    tx: TLeaseTransaction & IWithId;
+    tx: LeaseTransaction & WithId;
     amount: string;
     fee: string;
     onReject: MouseEventHandler<HTMLButtonElement>;

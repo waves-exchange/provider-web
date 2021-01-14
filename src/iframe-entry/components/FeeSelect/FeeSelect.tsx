@@ -19,22 +19,22 @@ import { assetPropFactory } from '../../utils/assetPropFactory';
 import { getCoins } from '../../utils/math';
 import { getFeeOptions } from './helpers';
 import {
-    TInvokeScriptTransaction,
-    TLong,
-    TTransferTransaction,
+    InvokeScriptTransaction,
+    Long,
+    TransferTransaction,
 } from '@waves/ts-types';
 
 export type FeeSelectHandler = (fee: string, feeAssetId: string | null) => void;
 
 export type FeeSelectTxMeta =
-    | IMeta<TInvokeScriptTransaction>
-    | IMeta<TTransferTransaction>;
+    | IMeta<InvokeScriptTransaction>
+    | IMeta<TransferTransaction>;
 
 type Props = {
     txMeta: FeeSelectTxMeta;
-    fee: TLong;
+    fee: Long;
     onFeeSelect: FeeSelectHandler;
-    availableWavesBalance: TLong;
+    availableWavesBalance: Long;
 };
 
 export const FeeSelect: FC<Props & BoxProps> = ({

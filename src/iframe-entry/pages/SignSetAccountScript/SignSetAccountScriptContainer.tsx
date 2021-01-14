@@ -4,9 +4,9 @@ import { WAVES } from '../../constants';
 import { getUserName } from '../../services/userService';
 import { getPrintableNumber } from '../../utils/math';
 import { SignSetAccountScriptComponent } from './SignSetAccountScriptComponent';
-import { TSetScriptTransaction } from '@waves/ts-types';
+import { SetScriptTransaction } from '@waves/ts-types';
 
-export const SignSetAccountScript: FC<ISignTxProps<TSetScriptTransaction>> = ({
+export const SignSetAccountScript: FC<ISignTxProps<SetScriptTransaction>> = ({
     networkByte,
     tx,
     user,

@@ -1,9 +1,12 @@
 import {
     AddressAvatar,
+    AddressLabel,
     Box,
+    BoxWithIcon,
     Flex,
     Icon,
     iconAliasTransaction,
+    iconSmartMini,
     Tab,
     TabPanel,
     TabPanels,
@@ -11,24 +14,20 @@ import {
     TabsList,
     Text,
     useBoundedTooltip,
-    AddressLabel,
-    BoxWithIcon,
-    iconSmartMini,
 } from '@waves.exchange/react-uikit';
 import React, { FC, MouseEventHandler } from 'react';
 import { Confirmation } from '../../components/Confirmation';
 import { DataJson } from '../../components/DataJson/DataJson';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
 import { Help } from '../../components/Help/Help';
-import { SignerAliasTx } from '@waves/signer/src/types/index';
-import { IWithId, TAliasTransaction } from '@waves/ts-types';
+import { AliasTransaction, WithId } from '@waves/ts-types';
 
 type SignAliasComponentProps = {
     userAddress: string;
     userName: string;
     userBalance: string;
     userHasScript: boolean;
-    tx: TAliasTransaction & IWithId;
+    tx: AliasTransaction & WithId;
     fee: string;
     onReject: MouseEventHandler<HTMLButtonElement>;
     onConfirm: MouseEventHandler<HTMLButtonElement>;

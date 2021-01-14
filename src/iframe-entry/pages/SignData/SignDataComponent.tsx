@@ -14,13 +14,13 @@ import { Confirmation } from '../../components/Confirmation';
 import { DataEntry } from '../../components/DataEntry/DataEntry';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
 import { DataJson } from '../../components/DataJson/DataJson';
-import { IWithId, TDataTransaction } from '@waves/ts-types';
+import { WithId, DataTransaction } from '@waves/ts-types';
 
 type SignDataComponentProps = {
     userAddress: string;
     userName: string;
     userBalance: string;
-    tx: TDataTransaction & IWithId;
+    tx: DataTransaction & WithId;
     fee: string;
     onReject: MouseEventHandler<HTMLButtonElement>;
     onConfirm: MouseEventHandler<HTMLButtonElement>;

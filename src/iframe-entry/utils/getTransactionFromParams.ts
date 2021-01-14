@@ -21,12 +21,12 @@ const fixParams = (networkByte: number, tx: SignerTx): SignerTx => {
     }
 };
 
-type GetTransactionFromParams = (
+type GeTransactionFromParams = (
     options: { networkByte: number; privateKey: string; timestamp: number },
     tx: SignerTx
 ) => SignerTx;
 
-export const getTransactionFromParams = curry<GetTransactionFromParams>(
+export const geTransactionFromParams = curry<GeTransactionFromParams>(
     ({ networkByte, privateKey, timestamp }, tx): SignerTx => {
         return makeTx({
             chainId: networkByte,

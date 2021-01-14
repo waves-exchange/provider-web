@@ -1,8 +1,14 @@
 import {
+    AddressAvatar,
+    AddressLabel,
+    Box,
+    BoxWithIcon,
     ExternalLink,
     Flex,
     Icon,
     iconSetAssetScript,
+    iconSmartMini,
+    LightCopy,
     Tab,
     TabPanel,
     TabPanels,
@@ -10,21 +16,13 @@ import {
     TabsList,
     Text,
     useBoundedTooltip,
-    LightCopy,
-    Box,
-    AddressLabel,
-    AddressAvatar,
-    BoxWithIcon,
-    iconSmartMini,
 } from '@waves.exchange/react-uikit';
 import React, { FC, MouseEventHandler } from 'react';
 import { Confirmation } from '../../components/Confirmation';
 import { DataJson } from '../../components/DataJson/DataJson';
 import { Help } from '../../components/Help/Help';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
-import { SignerSetScriptTx } from '@waves/signer/src/types/index';
-import { IWithId, TSetScriptTransaction } from '@waves/ts-types';
-import { TransferType } from '../SignTransfer/SignTransferContainer';
+import { SetScriptTransaction, WithId } from '@waves/ts-types';
 
 export interface IProps {
     userAddress: string;
@@ -32,7 +30,7 @@ export interface IProps {
     userBalance: string;
     userHasScript: boolean;
     fee: string;
-    tx: TSetScriptTransaction & IWithId;
+    tx: SetScriptTransaction & WithId;
     accountScript: string | null;
     onCancel: MouseEventHandler<HTMLButtonElement>;
     onConfirm: MouseEventHandler<HTMLButtonElement>;

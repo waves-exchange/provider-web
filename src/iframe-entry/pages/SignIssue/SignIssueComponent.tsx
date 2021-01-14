@@ -22,9 +22,7 @@ import { Confirmation } from '../../components/Confirmation';
 import { DataJson } from '../../components/DataJson/DataJson';
 import { Help } from '../../components/Help/Help';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
-import { SignerIssueTx } from '@waves/signer/src/types/index';
-import { IWithId, TIssueTransaction } from '@waves/ts-types';
-import { TransferType } from '../SignTransfer/SignTransferContainer';
+import { IssueTransaction, WithId } from '@waves/ts-types';
 
 type Props = {
     fee: string;
@@ -42,7 +40,7 @@ type Props = {
     onReject: MouseEventHandler<HTMLButtonElement>;
     onConfirm: MouseEventHandler<HTMLButtonElement>;
     onTermsCheck: ChangeEventHandler<HTMLInputElement>;
-    tx: TIssueTransaction & IWithId;
+    tx: IssueTransaction & WithId;
 };
 
 export const SignIssueComponent: FC<Props> = ({

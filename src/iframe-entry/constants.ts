@@ -1,5 +1,5 @@
 import BigNumber from '@waves/bignumber';
-import { TTransactionType } from '@waves/ts-types';
+import { TransactionType } from '@waves/ts-types';
 
 export const MAX_ALIAS_LENGTH = 30;
 
@@ -39,7 +39,7 @@ export const NAME_MAP = {
     updateAssetInfo: 17 as 17,
 };
 
-export const SPONSORED_TYPES: Array<TTransactionType> = [
+export const SPONSORED_TYPES: Array<TransactionType> = [
     NAME_MAP.transfer,
     NAME_MAP.invoke,
 ];

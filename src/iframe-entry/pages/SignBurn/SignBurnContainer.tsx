@@ -4,9 +4,9 @@ import { WAVES } from '../../constants';
 import { getPrintableNumber } from '../../utils/math';
 import { SignBurn as SignBurnComponent } from './SignBurnComponent';
 import { getUserName } from '../../services/userService';
-import { TBurnTransaction } from '@waves/ts-types';
+import { BurnTransaction } from '@waves/ts-types';
 
-export const SignBurnContainer: FC<ISignTxProps<TBurnTransaction>> = ({
+export const SignBurnContainer: FC<ISignTxProps<BurnTransaction>> = ({
     meta: txMeta,
     networkByte,
     tx,

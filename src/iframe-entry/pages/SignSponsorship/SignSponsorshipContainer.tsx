@@ -4,9 +4,9 @@ import { WAVES } from '../../constants';
 import { getUserName } from '../../services/userService';
 import { getPrintableNumber } from '../../utils/math';
 import { SignSponsorshipComponent } from './SignSponsorshipComponent';
-import { TSponsorshipTransaction } from '@waves/ts-types';
+import { SponsorshipTransaction } from '@waves/ts-types';
 
-export const SignSponsorship: FC<ISignTxProps<TSponsorshipTransaction>> = ({
+export const SignSponsorship: FC<ISignTxProps<SponsorshipTransaction>> = ({
     meta,
     networkByte,
     tx,

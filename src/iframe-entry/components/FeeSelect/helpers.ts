@@ -5,15 +5,15 @@ import { assetPropFactory } from '../../utils/assetPropFactory';
 import { WAVES } from '../../constants';
 import { getPrintableNumber } from '../../utils/math';
 import { DetailsWithLogo } from '../../utils/loadLogoInfo';
-import { TLong } from '@waves/ts-types';
+import { Long } from '@waves/ts-types';
 
-export const checkIsEnoughBalance = (balance: TLong, fee: TLong): boolean => {
+export const checkIsEnoughBalance = (balance: Long, fee: Long): boolean => {
     return BigNumber.toBigNumber(balance).gte(
         BigNumber.toBigNumber(fee).div(Math.pow(10, WAVES.decimals))
     );
 };
 
-const hasParamsFee = (fee: TLong | undefined): fee is TLong =>
+const hasParamsFee = (fee: Long | undefined): fee is Long =>
     typeof fee === 'string' || typeof fee === 'number';
 
 const isFeeAssetId = (
@@ -24,15 +24,15 @@ const isNonDefaultFeeAssetId = (
     feeAssetId: string | null | undefined
 ): feeAssetId is string => typeof feeAssetId === 'string';
 
-export const formatFee = (fee: TLong, decimals: number): string =>
+export const formatFee = (fee: Long, decimals: number): string =>
     getPrintableNumber(fee, decimals);
 
 type GetFeeOptions = (arg: {
-    txFee: TLong;
-    paramsFee: TLong | undefined;
+    txFee: Long;
+    paramsFee: Long | undefined;
     txMeta: FeeSelectTxMeta;
     paramsFeeAssetId: string | null | undefined;
-    availableWavesBalance: TLong;
+    availableWavesBalance: Long;
 }) => FeeOption[];
 
 export const getFeeOptions: GetFeeOptions = ({

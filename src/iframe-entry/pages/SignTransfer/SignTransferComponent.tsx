@@ -26,7 +26,7 @@ import { WAVES } from '../../constants';
 import { DataJson } from '../../components/DataJson/DataJson';
 import { TransferType } from './SignTransferContainer';
 import { IMeta } from '../../services/transactionsService';
-import { IWithId, TLong, TTransferTransaction } from '@waves/ts-types';
+import { WithId, Long, TransferTransaction } from '@waves/ts-types';
 
 type TransferListItem = {
     name: string;
@@ -36,11 +36,11 @@ type TransferListItem = {
 type Props = {
     userAddress: string;
     userName: string;
-    userBalance: TLong;
+    userBalance: Long;
     transferAmount: string;
     attachment: string;
     transferFee: string;
-    tx: TransferType & IWithId;
+    tx: TransferType & WithId;
     meta?: IMeta<TransferType>;
     onReject: MouseEventHandler<HTMLButtonElement>;
     onConfirm: MouseEventHandler<HTMLButtonElement>;
@@ -226,7 +226,7 @@ export const SignTransfer: FC<Props> = ({
                         {meta && !isMassTransfer && (
                             <FeeSelect
                                 mt="$20"
-                                txMeta={meta as IMeta<TTransferTransaction>}
+                                txMeta={meta as IMeta<TransferTransaction>}
                                 fee={tx.fee}
                                 onFeeSelect={handleFeeSelect}
                                 availableWavesBalance={userBalance}

@@ -1,10 +1,9 @@
 import { NAME_MAP } from '../constants';
 import { isAddress } from './isAddress';
-import { SignerTx } from '@waves/signer';
-import { IMassTransferItem } from '@waves/ts-types/src/index';
-import { TLong, TTransaction } from '@waves/ts-types';
+import { MassTransferItem } from '@waves/ts-types/src/index';
+import { Long, Transaction } from '@waves/ts-types';
 
-export const getTxAliases = (tx: TTransaction): Array<string> => {
+export const getTxAliases = (tx: Transaction): Array<string> => {
     switch (tx.type) {
         case NAME_MAP.invoke:
             return isAddress(tx.dApp) ? [] : [tx.dApp];
@@ -15,7 +14,7 @@ export const getTxAliases = (tx: TTransaction): Array<string> => {
             return tx.transfers.reduce<Array<string>>(
                 (
                     acc: Array<string>,
-                    transfer: IMassTransferItem<TLong>
+                    transfer: MassTransferItem<Long>
                 ): Array<string> => {
                     if (!isAddress(transfer.recipient)) {
                         acc.push(transfer.recipient);
