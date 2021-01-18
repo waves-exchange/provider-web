@@ -16,8 +16,7 @@ import {
     iconSmartMini,
     useBoundedTooltip,
 } from '@waves.exchange/react-uikit';
-import { ICall, TLong, IInvokeWithType } from '@waves/signer';
-import { IInvokeScriptTransaction, IWithId } from '@waves/ts-types';
+import { WithId, InvokeScriptTransaction, Long } from '@waves/ts-types';
 import React, { FC, MouseEventHandler } from 'react';
 import { Confirmation } from '../../components/Confirmation';
 import { InvokeFunction } from '../../components/InvokeFunction/InvokeFunction';
@@ -32,19 +31,20 @@ import {
 import { getPrintableNumber } from '../../utils/math';
 import { WAVES } from '../../constants';
 import { DataJson } from '../../components/DataJson/DataJson';
+import { InvokeScriptCall } from '@waves/ts-types';
 
 export interface IProps {
     userAddress: string;
     userName: string;
-    userBalance: TLong;
+    userBalance: Long;
     dAppAddress: string;
     dAppName: string;
     fee: string;
-    call?: ICall;
+    call?: InvokeScriptCall<Long>;
     chainId?: number;
     payment: Array<IPayment>;
-    tx: IInvokeScriptTransaction<TLong> & IWithId;
-    meta: IMeta<IInvokeWithType<TLong>>;
+    tx: InvokeScriptTransaction<Long> & WithId;
+    meta: IMeta<InvokeScriptTransaction>;
     onCancel: MouseEventHandler<HTMLButtonElement>;
     onConfirm: MouseEventHandler<HTMLButtonElement>;
     handleFeeSelect: FeeSelectHandler;

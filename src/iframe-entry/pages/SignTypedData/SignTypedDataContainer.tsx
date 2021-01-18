@@ -1,12 +1,12 @@
 import React, { FC, useCallback } from 'react';
 import { IUserWithBalances } from '../../../interface';
 import { useTxUser } from '../../hooks/useTxUser';
-import { ITypedData } from '@waves/signer';
+import { TypedData } from '@waves/signer';
 import { SignTypedDataComponent } from './SignTypedDataComponent';
 import { analytics } from '../../utils/analytics';
 
 interface ISignTypedDataProps {
-    data: Array<ITypedData>;
+    data: Array<TypedData>;
     user: IUserWithBalances & { publicKey: string };
     networkByte: number;
     onConfirm: () => void;

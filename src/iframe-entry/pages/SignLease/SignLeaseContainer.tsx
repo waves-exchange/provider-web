@@ -1,5 +1,3 @@
-import { TLong } from '@waves/signer';
-import { ILeaseTransactionWithId } from '@waves/ts-types';
 import React, { FC } from 'react';
 import { ISignTxProps } from '../../../interface';
 import { WAVES } from '../../constants';
@@ -8,8 +6,9 @@ import { cleanAddress } from '../../utils/cleanAlias';
 import { isAlias } from '../../utils/isAlias';
 import { getPrintableNumber } from '../../utils/math';
 import { SignLeaseComponent } from './SignLeaseComponent';
+import { LeaseTransaction } from '@waves/ts-types';
 
-export const SignLease: FC<ISignTxProps<ILeaseTransactionWithId<TLong>>> = ({
+export const SignLease: FC<ISignTxProps<LeaseTransaction>> = ({
     networkByte,
     tx,
     meta,

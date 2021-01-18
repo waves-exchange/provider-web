@@ -11,8 +11,8 @@ const getGeneralConfig = (minimize) => ({
                 use: {
                     loader: 'ts-loader',
                     options: {
-                        configFile: resolve('tsconfig.build.json')
-                    }
+                        configFile: resolve('tsconfig.build.json'),
+                    },
                 },
                 exclude: /node_modules/,
             },
@@ -28,17 +28,17 @@ const getGeneralConfig = (minimize) => ({
                     {
                         loader: 'less-loader', // compiles Less to CSS
                     },
-                ]
-            }
+                ],
+            },
         ],
     },
     resolve: {
         extensions: ['.tsx', '.ts', '.js'],
-        modules: ['node_modules']
+        modules: ['node_modules'],
     },
-    mode: minimize ? "production" : "development",
-    devtool: minimize ? undefined : "inline-source-map",
-})
+    mode: minimize ? 'production' : 'development',
+    devtool: minimize ? undefined : 'inline-source-map',
+});
 
 const buildIframeEntry = (minimize) => ({
     ...getGeneralConfig(minimize),
@@ -47,9 +47,9 @@ const buildIframeEntry = (minimize) => ({
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
             template: join(__dirname, 'src', 'index.html'),
-            filename: join(__dirname, 'iframe-entry', 'index.html')
+            filename: join(__dirname, 'iframe-entry', 'index.html'),
         }),
-        new webpack.NodeEnvironmentPlugin(['NODE_ENV'])
+        new webpack.NodeEnvironmentPlugin(['NODE_ENV']),
     ],
     optimization: {
         minimize,
@@ -61,16 +61,16 @@ const buildIframeEntry = (minimize) => ({
                     test: /[\\/]node_modules[\\/]/,
                     name: 'vendors',
                     chunks: 'all',
-                }
-            }
-        }
+                },
+            },
+        },
     },
     output: {
-        libraryTarget: "umd",
-        globalObject: "this",
+        libraryTarget: 'umd',
+        globalObject: 'this',
         filename: '[name].[contenthash].min.js',
         path: resolve(__dirname, 'iframe-entry/dist'),
-    }
+    },
 });
 
 const buildLibrary = (minimize) => ({
@@ -82,14 +82,28 @@ const buildLibrary = (minimize) => ({
     },
     output: {
         library: 'providerWeb',
-        libraryTarget: "umd",
-        globalObject: "this",
+        libraryTarget: 'umd',
+        globalObject: 'this',
         filename: 'provider-web.min.js',
         path: resolve(__dirname, 'dist'),
-    }
+    },
+});
+
+const buildStand = () => ({
+    ...getGeneralConfig(false),
+    entry: join(__dirname, 'stand/stand.ts'),
+    optimization: {
+        minimize: false,
+        usedExports: true,
+    },
+    output: {
+        filename: 'stand.js',
+        path: resolve(__dirname, 'stand'),
+    },
 });
 
 module.exports = [
     buildIframeEntry(true),
-    buildLibrary(true)
+    buildLibrary(true),
+    buildStand()
 ];

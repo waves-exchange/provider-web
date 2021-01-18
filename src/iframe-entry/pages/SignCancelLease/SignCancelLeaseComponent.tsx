@@ -10,19 +10,18 @@ import {
     TabsList,
     Text,
 } from '@waves.exchange/react-uikit';
-import { TLong } from '@waves/signer';
-import { ICancelLeaseTransactionWithId } from '@waves/ts-types';
 import React, { FC, MouseEventHandler } from 'react';
 import { Confirmation } from '../../components/Confirmation';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
 import { DataJson } from '../../components/DataJson/DataJson';
+import { CancelLeaseTransaction, WithId } from '@waves/ts-types';
 
 type Props = {
     userAddress: string;
     userName: string;
     userBalance: string;
     amount: string;
-    tx: ICancelLeaseTransactionWithId<TLong>;
+    tx: CancelLeaseTransaction & WithId;
     fee: string;
     onReject: MouseEventHandler<HTMLButtonElement>;
     onConfirm: MouseEventHandler<HTMLButtonElement>;

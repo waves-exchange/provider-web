@@ -15,19 +15,18 @@ import {
     Text,
     useBoundedTooltip,
 } from '@waves.exchange/react-uikit';
-import { TLong } from '@waves/signer';
-import { IReissueTransactionWithId } from '@waves/ts-types';
 import React, { FC, MouseEventHandler } from 'react';
 import { Confirmation } from '../../components/Confirmation';
 import { DataJson } from '../../components/DataJson/DataJson';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
 import { DetailsWithLogo } from '../../utils/loadLogoInfo';
+import { ReissueTransaction, WithId } from '@waves/ts-types';
 
 type SignReissueComponentProps = {
     userAddress: string;
     userName: string;
     userBalance: string;
-    tx: IReissueTransactionWithId<TLong>;
+    tx: ReissueTransaction & WithId;
     reissueAmount: string;
     reissueAsset: DetailsWithLogo;
     fee: string;

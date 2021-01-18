@@ -1,13 +1,13 @@
-import { TLong } from '@waves/signer';
 import { TAssetDetails } from '@waves/node-api-js/es/api-node/assets';
 import { WAVES } from '../constants';
 import { getPrintableNumber } from './math';
+import { Long } from '@waves/ts-types';
 
 export const toArray = <T>(data: T | Array<T>): Array<T> =>
     Array.isArray(data) ? data : [data];
 
 export function toFormat(
-    num: TLong,
+    num: Long,
     id: string | null,
     hash: Record<string, TAssetDetails>
 ): string {

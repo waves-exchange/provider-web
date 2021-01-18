@@ -10,7 +10,6 @@ import {
     AddressLabel,
     Box,
 } from '@waves.exchange/react-uikit';
-import { TLong, ITransferWithType } from '@waves/signer';
 import React, { FC, MouseEventHandler } from 'react';
 import { Confirmation } from '../../components/Confirmation';
 import {
@@ -25,8 +24,9 @@ import {
 import { getPrintableNumber } from '../../utils/math';
 import { WAVES } from '../../constants';
 import { DataJson } from '../../components/DataJson/DataJson';
-import { TransferTx } from './SignTransferContainer';
+import { TransferType } from './SignTransferContainer';
 import { IMeta } from '../../services/transactionsService';
+import { WithId, Long, TransferTransaction } from '@waves/ts-types';
 
 type TransferListItem = {
     name: string;
@@ -36,12 +36,12 @@ type TransferListItem = {
 type Props = {
     userAddress: string;
     userName: string;
-    userBalance: TLong;
+    userBalance: Long;
     transferAmount: string;
     attachment: string;
     transferFee: string;
-    tx: TransferTx;
-    meta?: IMeta<ITransferWithType>;
+    tx: TransferType & WithId;
+    meta?: IMeta<TransferType>;
     onReject: MouseEventHandler<HTMLButtonElement>;
     onConfirm: MouseEventHandler<HTMLButtonElement>;
     handleFeeSelect: FeeSelectHandler;
@@ -226,7 +226,7 @@ export const SignTransfer: FC<Props> = ({
                         {meta && !isMassTransfer && (
                             <FeeSelect
                                 mt="$20"
-                                txMeta={meta}
+                                txMeta={meta as IMeta<TransferTransaction>}
                                 fee={tx.fee}
                                 onFeeSelect={handleFeeSelect}
                                 availableWavesBalance={userBalance}

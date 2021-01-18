@@ -1,12 +1,12 @@
-import { IBurnWithType } from '@waves/signer';
 import React, { FC } from 'react';
 import { ISignTxProps } from '../../../interface';
 import { WAVES } from '../../constants';
 import { getPrintableNumber } from '../../utils/math';
 import { SignBurn as SignBurnComponent } from './SignBurnComponent';
 import { getUserName } from '../../services/userService';
+import { BurnTransaction } from '@waves/ts-types';
 
-export const SignBurnContainer: FC<ISignTxProps<IBurnWithType>> = ({
+export const SignBurnContainer: FC<ISignTxProps<BurnTransaction>> = ({
     meta: txMeta,
     networkByte,
     tx,
@@ -17,7 +17,7 @@ export const SignBurnContainer: FC<ISignTxProps<IBurnWithType>> = ({
     const burnAsset = tx.assetId === null ? WAVES : txMeta.assets[tx.assetId];
     const feeAsset = WAVES;
 
-    const burnAmount = getPrintableNumber(tx.quantity, burnAsset.decimals);
+    const burnAmount = getPrintableNumber(tx.amount, burnAsset.decimals);
 
     const fee = getPrintableNumber(tx.fee, feeAsset.decimals);
 

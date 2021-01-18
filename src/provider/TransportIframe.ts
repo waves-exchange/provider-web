@@ -46,7 +46,7 @@ export class TransportIframe extends Transport<HTMLIFrameElement> {
                 new Promise((resolve) => {
                     this._bus = new Bus(adapter, -1);
                     this._bus.once('ready', () => {
-                        resolve(this._bus);
+                        resolve(this._bus as TBus);
                     });
                 })
         );

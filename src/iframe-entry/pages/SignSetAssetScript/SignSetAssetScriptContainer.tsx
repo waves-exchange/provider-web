@@ -1,13 +1,13 @@
-import { ISetAssetScriptWithType } from '@waves/signer';
 import React, { FC } from 'react';
 import { ISignTxProps } from '../../../interface';
 import { WAVES } from '../../constants';
 import { getPrintableNumber } from '../../utils/math';
 import { SignSetAssetScript as SignSetAssetScriptComponent } from './SignSetAssetScriptComponent';
 import { getUserName } from '../../services/userService';
+import { SetAssetScriptTransaction } from '@waves/ts-types';
 
 export const SignSetAssetScriptContainer: FC<ISignTxProps<
-    ISetAssetScriptWithType
+    SetAssetScriptTransaction
 >> = ({ meta: txMeta, networkByte, tx, user, onConfirm, onCancel }) => {
     const asset = txMeta.assets[tx.assetId];
 

@@ -1,9 +1,9 @@
 import { Box, Flex, Text } from '@waves.exchange/react-uikit';
-import { IData } from '@waves/signer';
 import React, { FC } from 'react';
+import { DataTransaction } from '@waves/ts-types';
 
 type DataEntryProps = {
-    data: IData['data'];
+    data: DataTransaction['data'];
 };
 
 export const DataEntry: FC<DataEntryProps> = ({ data }) => (
@@ -56,7 +56,7 @@ export const DataEntry: FC<DataEntryProps> = ({ data }) => (
                             pr="$20"
                             verticalAlign="middle"
                         >
-                            {String(item.value)}
+                            {String((item as any).value || '')}
                         </Text>
                     </Box>
                     <Box width="15%">

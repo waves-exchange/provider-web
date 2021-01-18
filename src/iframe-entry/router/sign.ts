@@ -1,9 +1,3 @@
-import { IWithId, TTransactionWithProofs } from '@waves/ts-types';
-import {
-    TLong,
-    TRANSACTION_TYPE_MAP,
-    TTransactionParamWithType,
-} from '@waves/signer';
 import { libs, signTx } from '@waves/waves-transactions';
 import React, { ReactNode } from 'react';
 import { NAME_MAP } from '../constants';
@@ -35,6 +29,8 @@ import { SignAliasContainer } from '../pages/SignAlias/SignAliasContainer';
 import { SignReissueContainer } from '../pages/SignReissue/SignReissueContainer';
 import { SignSetAccountScript } from '../pages/SignSetAccountScript/SignSetAccountScriptContainer';
 import { analytics } from '../utils/analytics';
+import { TRANSACTION_TYPE_MAP } from '@waves/node-api-js/es/interface';
+import { SignedTx, SignerTx } from '@waves/signer';
 
 const getPageByType = (type: keyof TRANSACTION_TYPE_MAP): ReactNode => {
     switch (type) {
@@ -72,13 +68,14 @@ const getPageByType = (type: keyof TRANSACTION_TYPE_MAP): ReactNode => {
 };
 
 export default function(
-    list: Array<TTransactionParamWithType>,
+    list: Array<SignerTx>,
     state: IState<IUserWithBalances>
-): Promise<Array<TTransactionWithProofs<TLong> & IWithId>> {
+): Promise<Array<SignedTx<SignerTx>>> {
     return fetchNodeTime(state.nodeUrl)
         .then((nodeTime) => nodeTime.NTP)
         .catch(() => Date.now())
         .then((time) =>
+            // @ts-ignore // TODO
             prepareTransactions(state, list, time).then((transactions) => {
                 if (transactions.length !== 1) {
                     return batch(transactions, state);
@@ -99,7 +96,7 @@ export default function(
 
                 const [info] = transactions;
 
-                return new Promise((resolve, reject) => {
+                return new Promise<any>((resolve, reject) => {
                     const props = {
                         ...info,
                         networkByte: state.networkByte,
@@ -133,7 +130,7 @@ export default function(
 
                     renderPage(
                         React.createElement(
-                            getPageByType(info.tx.type) as any,
+                            getPageByType(info.tx.type as any) as any,
                             {
                                 key: info.tx.id,
                                 ...props,

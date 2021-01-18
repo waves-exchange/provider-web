@@ -7,7 +7,6 @@ import {
     Selected,
     Text,
 } from '@waves.exchange/react-uikit';
-import { TLong, ITransferWithType, IInvokeWithType } from '@waves/signer';
 import React, {
     FC,
     ReactElement,
@@ -19,16 +18,23 @@ import { IMeta } from '../../services/transactionsService';
 import { assetPropFactory } from '../../utils/assetPropFactory';
 import { getCoins } from '../../utils/math';
 import { getFeeOptions } from './helpers';
+import {
+    InvokeScriptTransaction,
+    Long,
+    TransferTransaction,
+} from '@waves/ts-types';
 
 export type FeeSelectHandler = (fee: string, feeAssetId: string | null) => void;
 
-export type FeeSelectTxMeta = IMeta<IInvokeWithType> | IMeta<ITransferWithType>;
+export type FeeSelectTxMeta =
+    | IMeta<InvokeScriptTransaction>
+    | IMeta<TransferTransaction>;
 
 type Props = {
     txMeta: FeeSelectTxMeta;
-    fee: TLong;
+    fee: Long;
     onFeeSelect: FeeSelectHandler;
-    availableWavesBalance: TLong;
+    availableWavesBalance: Long;
 };
 
 export const FeeSelect: FC<Props & BoxProps> = ({

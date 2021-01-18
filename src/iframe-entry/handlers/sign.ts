@@ -1,5 +1,4 @@
-import { TLong, TTransactionParamWithType } from '@waves/signer';
-import { IWithId, TTransactionWithProofs } from '@waves/ts-types';
+import { SignedTx, SignerTx } from '@waves/signer';
 import { IUser } from '../../interface';
 import { Queue } from '../../utils/Queue';
 import { IState } from '../interface';
@@ -9,10 +8,8 @@ import { loadUserData, preload, toQueue } from './helpers';
 export const getSignHandler = (
     queue: Queue,
     state: IState
-): ((
-    list: Array<TTransactionParamWithType>
-) => Promise<Array<TTransactionWithProofs<TLong> & IWithId>>) =>
-    toQueue(queue, (list: Array<TTransactionParamWithType>) => {
+): ((list: Array<SignerTx>) => Promise<Array<SignedTx<SignerTx>>>) =>
+    toQueue(queue, (list: Array<SignerTx>) => {
         preload();
 
         return loadUserData(state as IState<IUser>).then((state) =>

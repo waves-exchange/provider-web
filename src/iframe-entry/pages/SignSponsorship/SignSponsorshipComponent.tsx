@@ -14,8 +14,7 @@ import {
     Text,
     useBoundedTooltip,
 } from '@waves.exchange/react-uikit';
-import { TLong } from '@waves/signer';
-import { ISponsorshipTransaction, IWithId } from '@waves/ts-types';
+import { WithId, Long, SponsorshipTransaction } from '@waves/ts-types';
 import React, { FC, MouseEventHandler } from 'react';
 import { Confirmation } from '../../components/Confirmation';
 import { DataJson } from '../../components/DataJson/DataJson';
@@ -27,8 +26,8 @@ import { getPrintableNumber } from '../../utils/math';
 type Props = {
     userAddress: string;
     userName: string;
-    userBalance: TLong;
-    tx: ISponsorshipTransaction<TLong> & IWithId;
+    userBalance: Long;
+    tx: SponsorshipTransaction<Long> & WithId;
     fee: string;
     sponsorAsset: DetailsWithLogo;
     sponsorCharge: string;

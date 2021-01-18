@@ -1,10 +1,9 @@
 import { CSSObject } from '@styled-system/css';
-import { TInvokeScriptCallArgument } from '@waves/ts-types';
-import { TLong } from '@waves/signer';
+import { InvokeScriptCallArgument, Long } from '@waves/ts-types';
 import { pseudoElemStyles, COLOR_MAP } from './styles';
 
 export const getAttrStyles = (
-    attrType: TInvokeScriptCallArgument<TLong>['type'],
+    attrType: InvokeScriptCallArgument<Long>['type'],
     isLast: boolean
 ): CSSObject => ({
     variant: 'body2',
@@ -17,8 +16,8 @@ const formatText = (text: string | number): string =>
     String(text).length >= 5 ? `${String(text).slice(0, 4)}...` : String(text);
 
 export const getAttrContent = (
-    type: TInvokeScriptCallArgument<TLong>['type'],
-    value: TInvokeScriptCallArgument<TLong>['value']
+    type: InvokeScriptCallArgument<Long>['type'],
+    value: InvokeScriptCallArgument<Long>['value']
 ): string | null => {
     switch (type) {
         case 'integer':

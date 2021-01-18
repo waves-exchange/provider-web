@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
-import { TInvokeScriptCallArgument } from '@waves/ts-types';
-import { TLong } from '@waves/signer';
+import { InvokeScriptCallArgument, Long } from '@waves/ts-types';
 import { Text, Flex, TFlexProps } from '@waves.exchange/react-uikit';
 import { getAttrStyles, getAttrContent } from './helpers';
 import {
@@ -11,7 +10,7 @@ import {
 
 interface IProps {
     name: string;
-    args: Array<TInvokeScriptCallArgument<TLong>>;
+    args: Array<InvokeScriptCallArgument<Long>>;
 }
 export const InvokeFunction: FC<IProps & TFlexProps> = ({
     args,

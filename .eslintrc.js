@@ -159,6 +159,7 @@ module.exports = {
     'import/no-self-import': 'error',
 
     // typescript-eslint
+    '@typescript-eslint/ban-ts-ignore': 'off',
     '@typescript-eslint/await-thenable': 'error',
     '@typescript-eslint/consistent-type-definitions': 'off',
     '@typescript-eslint/interface-name-prefix': ['warn', 'always'],

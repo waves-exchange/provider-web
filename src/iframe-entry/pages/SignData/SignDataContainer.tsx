@@ -1,12 +1,12 @@
-import { IDataWithType } from '@waves/signer';
 import React, { FC } from 'react';
 import { WAVES } from '../../constants';
 import { ISignTxProps } from '../../../interface';
 import { SignDataComponent } from './SignDataComponent';
 import { useTxUser } from '../../hooks/useTxUser';
 import { getPrintableNumber } from '../../utils/math';
+import { DataTransaction } from '@waves/ts-types';
 
-export const SignDataContainer: FC<ISignTxProps<IDataWithType>> = ({
+export const SignDataContainer: FC<ISignTxProps<DataTransaction>> = ({
     tx,
     user,
     networkByte,

@@ -1,8 +1,7 @@
 import * as helpers from '../helpers';
 import { WAVES, NAME_MAP } from '../../../constants';
 import * as math from '../../../utils/math';
-import { IMassTransferItem } from '@waves/ts-types/src';
-import { TLong } from '@waves/signer';
+import { MassTransferItem, Long } from '@waves/ts-types';
 
 const massTransferTxType = NAME_MAP.massTransfer;
 const transferTxType = NAME_MAP.transfer;
@@ -23,11 +22,11 @@ const alias1Address = 'alias1_address';
 const aliases: helpers.MetaAliases = {
     [alias1]: alias1Address,
 };
-const massTransferItem1: IMassTransferItem<TLong> = {
+const massTransferItem1: MassTransferItem<Long> = {
     amount: 1,
     recipient: actualAddress,
 };
-const massTransferItem2: IMassTransferItem<TLong> = {
+const massTransferItem2: MassTransferItem<Long> = {
     amount: 2,
     recipient: alias1,
 };

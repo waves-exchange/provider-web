@@ -1,4 +1,3 @@
-import { ITransferWithType, TLong, IMassTransferWithType } from '@waves/signer';
 import React, { FC } from 'react';
 import { ISignTxProps } from '../../../interface';
 import { getIconType } from '../../components/IconTransfer/helpers';
@@ -6,16 +5,10 @@ import { SignTransfer as SignTransferComponent } from './SignTransferComponent';
 import { getUserName } from '../../services/userService';
 import { useHandleFeeSelect } from '../../hooks/useHandleFeeSelect';
 import { getViewData, isTransferMeta } from './helpers';
-import {
-    ITransferTransactionWithId,
-    IMassTransferTransactionWithId,
-} from '@waves/ts-types';
 import { IMeta } from '../../services/transactionsService';
+import { MassTransferTransaction, TransferTransaction } from '@waves/ts-types';
 
-export type TransferType = ITransferWithType | IMassTransferWithType;
-export type TransferTx =
-    | ITransferTransactionWithId<TLong>
-    | IMassTransferTransactionWithId<TLong>;
+export type TransferType = TransferTransaction | MassTransferTransaction;
 export type TransferMeta = IMeta<TransferType>;
 
 export const SignTransfer: FC<ISignTxProps<TransferType>> = ({

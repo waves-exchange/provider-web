@@ -31,8 +31,9 @@ export default function(
                         privateKey: state.user.privateKey,
                     }),
                 },
+                // TODO Check as string
                 onConfirm: () => {
-                    resolve(signature);
+                    resolve(signature as string);
                 },
                 onCancel: () => {
                     reject(new Error('User rejection!'));

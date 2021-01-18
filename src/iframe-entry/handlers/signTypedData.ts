@@ -3,13 +3,13 @@ import { Queue } from '../../utils/Queue';
 import { IState } from '../interface';
 import { loadUserData, preload, toQueue } from './helpers';
 import signTypedData from '../router/signTypedData';
-import { ITypedData } from '@waves/signer';
+import { TypedData } from '@waves/signer';
 
 export const getSignTypedDataHandler = (
     queue: Queue,
     state: IState
-): ((data: Array<ITypedData>) => Promise<string>) =>
-    toQueue(queue, (data: Array<ITypedData>) => {
+): ((data: Array<TypedData>) => Promise<string>) =>
+    toQueue(queue, (data: Array<TypedData>) => {
         preload();
 
         return loadUserData(state as IState<IUser>).then((state) =>

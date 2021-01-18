@@ -1,16 +1,9 @@
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { FeeSelectHandler } from '../components/FeeSelect/FeeSelect';
-import {
-    ITransferTransactionWithId,
-    IInvokeScriptTransactionWithId,
-    IMassTransferTransactionWithId,
-} from '@waves/ts-types';
-import { TLong } from '@waves/signer';
+import { InvokeScriptTransaction, WithId } from '@waves/ts-types';
+import { TransferType } from '../pages/SignTransfer/SignTransferContainer';
 
-type Tx =
-    | ITransferTransactionWithId<TLong>
-    | IInvokeScriptTransactionWithId<TLong>
-    | IMassTransferTransactionWithId<TLong>;
+type Tx = (TransferType | InvokeScriptTransaction) & WithId;
 
 export const useHandleFeeSelect = (tx: Tx): [FeeSelectHandler, string] => {
     const [txJSON, setTxJSON] = useState(JSON.stringify(tx, null, 2));

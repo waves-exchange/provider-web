@@ -9,19 +9,18 @@ import {
     TabPanels,
     TabPanel,
 } from '@waves.exchange/react-uikit';
-import { TLong } from '@waves/signer';
 import React, { FC, MouseEventHandler } from 'react';
 import { Confirmation } from '../../components/Confirmation';
 import { DataEntry } from '../../components/DataEntry/DataEntry';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
-import { IDataTransaction, IWithId } from '@waves/ts-types';
 import { DataJson } from '../../components/DataJson/DataJson';
+import { WithId, DataTransaction } from '@waves/ts-types';
 
 type SignDataComponentProps = {
     userAddress: string;
     userName: string;
     userBalance: string;
-    tx: IDataTransaction<TLong> & IWithId;
+    tx: DataTransaction & WithId;
     fee: string;
     onReject: MouseEventHandler<HTMLButtonElement>;
     onConfirm: MouseEventHandler<HTMLButtonElement>;

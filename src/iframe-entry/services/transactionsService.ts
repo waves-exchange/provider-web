@@ -7,12 +7,13 @@ import {
 import { NAME_MAP } from '@waves/node-api-js/es/constants';
 import availableSponsoredBalances from '@waves/node-api-js/es/tools/adresses/availableSponsoredBalances';
 import getAssetIdListByTx from '@waves/node-api-js/es/tools/adresses/getAssetIdListByTx';
-import { TLong, TTransactionParamWithType } from '@waves/signer';
 import {
-    ILeaseTransaction,
-    IWithApiMixin,
-    IWithId,
-    TTransactionMap,
+    WithApiMixin,
+    WithId,
+    Long,
+    Transaction,
+    TransactionMap,
+    TransactionType,
 } from '@waves/ts-types';
 import concat from 'ramda/es/concat';
 import flatten from 'ramda/es/flatten';
@@ -25,10 +26,12 @@ import { IUser } from '../../interface';
 import { SPONSORED_TYPES } from '../constants';
 import { IState } from '../interface';
 import { cleanAddress } from '../utils/cleanAlias';
-import { getTransactionFromParams } from '../utils/getTransactionFromParams';
+import { geTransactionFromParams } from '../utils/getTransactionFromParams';
 import { getTxAliases } from '../utils/getTxAliases';
 import { loadFeeByTransaction } from '../utils/loadFeeByTransaction';
 import { DetailsWithLogo, loadLogoInfo } from '../utils/loadLogoInfo';
+import { SignerTx } from '@waves/signer';
+import { SignerLeaseTx } from '@waves/signer';
 
 const loadAliases = (
     base: string,
@@ -49,24 +52,24 @@ const loadAliases = (
 
 export const prepareTransactions = (
     state: IState<IUser>,
-    txs: Array<TTransactionParamWithType>,
+    txs: Array<SignerTx>,
     timestamp: number
-): Promise<Array<ITransactionInfo<TTransactionParamWithType>>> => {
+): Promise<Array<ITransactionInfo<Transaction>>> => {
     const list = Array.isArray(txs) ? txs : [txs];
-    const transactions = list.map(
-        getTransactionFromParams({
+    const transactions: Array<Transaction> = list.map(
+        geTransactionFromParams({
             networkByte: state.networkByte,
             privateKey: state.user.privateKey,
             timestamp,
         })
-    );
-    const assetsIdList = getAssetIdListByTx(transactions);
-    const transactionsWithFee = Promise.all(
+    ) as any;
+    const assetsIdList = getAssetIdListByTx(transactions as any);
+    const transactionsWithFee = Promise.all<Transaction>(
         transactions.map((tx, index) =>
             list[index].fee
                 ? Promise.resolve(tx)
-                : loadFeeByTransaction(state.nodeUrl, tx)
-        )
+                : loadFeeByTransaction(state.nodeUrl, tx as any)
+        ) as any
     );
     const aliases = pipe(map(getTxAliases), flatten, uniq)(transactions);
     const fetchFeeList = transactionsWithFee.then((txs) =>
@@ -78,7 +81,7 @@ export const prepareTransactions = (
                     ? availableSponsoredBalances(
                           state.nodeUrl,
                           state.user.address,
-                          tx.fee
+                          tx.fee as Long
                       ).then((l) =>
                           l.map((x) => ({
                               feeAssetId: x.assetId,
@@ -110,7 +113,7 @@ export const prepareTransactions = (
         )
     );
 
-    const loadInfo = <T extends TTransactionParamWithType<TLong>['type']>(
+    const loadInfo = <T extends TransactionType>(
         nodeUrl: string
     ): Promise<Array<InfoMap[T]>> =>
         Promise.all(
@@ -136,19 +139,21 @@ export const prepareTransactions = (
                 params: list[index],
                 info: info[index],
             },
-            tx: { ...tx, fee: list[index].fee ?? tx.fee },
+            tx: { ...(tx as any), fee: list[index].fee ?? tx.fee },
         }))
-    );
+    ) as any; // TODO
 };
 
 type InfoMap = {
+    1: void;
+    2: void;
     [NAME_MAP.issue]: void;
     [NAME_MAP.transfer]: void;
     [NAME_MAP.reissue]: void;
     [NAME_MAP.burn]: void;
     [NAME_MAP.exchange]: void;
     [NAME_MAP.lease]: void;
-    [NAME_MAP.cancelLease]: ILeaseTransaction<TLong> & IWithApiMixin;
+    [NAME_MAP.cancelLease]: SignerLeaseTx & WithApiMixin;
     [NAME_MAP.alias]: void;
     [NAME_MAP.massTransfer]: void;
     [NAME_MAP.data]: void;
@@ -156,9 +161,10 @@ type InfoMap = {
     [NAME_MAP.sponsorship]: void;
     [NAME_MAP.setAssetScript]: void;
     [NAME_MAP.invoke]: void;
+    17: void;
 };
 
-export interface IMeta<T extends TTransactionParamWithType> {
+export interface IMeta<T extends Transaction> {
     feeList: Array<TFeeInfo>;
     aliases: Record<string, string>;
     assets: Record<string, DetailsWithLogo>;
@@ -166,7 +172,7 @@ export interface IMeta<T extends TTransactionParamWithType> {
     info: InfoMap[T['type']];
 }
 
-export interface ITransactionInfo<T extends TTransactionParamWithType> {
+export interface ITransactionInfo<T extends Transaction> {
     meta: IMeta<T>;
-    tx: TTransactionMap<TLong>[T['type']] & IWithId;
+    tx: TransactionMap[T['type']] & WithId;
 }

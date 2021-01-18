@@ -1,21 +1,27 @@
-import {
-    IConnectOptions,
-    IProvider,
-    ITypedData,
-    IUserData,
-    TLong,
-    TTransactionParamWithType,
-} from '@waves/signer';
-import { IWithId, TTransactionWithProofs } from '@waves/ts-types';
 import { config } from '@waves/waves-browser-bus';
 import { isSafari } from '../iframe-entry/utils/isSafari';
 import { ITransport } from './interface';
 import { TransportIframe } from './TransportIframe';
+import { EventEmitter } from 'typed-ts-events';
+import {
+    ConnectOptions,
+    Provider,
+    SignedTx,
+    SignerTx,
+    TypedData,
+    UserData,
+    AuthEvents,
+    Handler,
+} from '@waves/signer';
 
-export class ProviderWeb implements IProvider {
+// @ts-ignore
+export class ProviderWeb implements Provider {
+    public user: UserData | null = null;
     private readonly _transport: ITransport<HTMLIFrameElement>;
     private readonly _clientUrl: string;
-    private _userData: IUserData | undefined;
+    private readonly emitter: EventEmitter<AuthEvents> = new EventEmitter<
+        AuthEvents
+    >();
 
     constructor(clientUrl?: string, logs?: boolean) {
         this._clientUrl =
@@ -34,7 +40,34 @@ export class ProviderWeb implements IProvider {
         return String(Date.now() % (1000 * 60));
     }
 
-    public async connect(options: IConnectOptions): Promise<void> {
+    public on<EVENT extends keyof AuthEvents>(
+        event: EVENT,
+        handler: Handler<AuthEvents[EVENT]>
+    ): Provider {
+        this.emitter.on(event, handler);
+
+        return this;
+    }
+
+    public once<EVENT extends keyof AuthEvents>(
+        event: EVENT,
+        handler: Handler<AuthEvents[EVENT]>
+    ): Provider {
+        this.emitter.once(event, handler);
+
+        return this;
+    }
+
+    public off<EVENT extends keyof AuthEvents>(
+        event: EVENT,
+        handler: Handler<AuthEvents[EVENT]>
+    ): Provider {
+        this.emitter.once(event, handler);
+
+        return this;
+    }
+
+    public connect(options: ConnectOptions): Promise<void> {
         return Promise.resolve(
             this._transport.sendEvent((bus) =>
                 bus.dispatchEvent('connect', options)
@@ -43,14 +76,14 @@ export class ProviderWeb implements IProvider {
     }
 
     public logout(): Promise<void> {
-        this._userData = undefined;
+        this.user = null;
 
         return Promise.resolve(this._transport.dropConnection());
     }
 
-    public login(): Promise<IUserData> {
-        if (this._userData) {
-            return Promise.resolve(this._userData);
+    public login(): Promise<UserData> {
+        if (this.user) {
+            return Promise.resolve(this.user);
         }
 
         const iframe = this._transport.get();
@@ -69,7 +102,7 @@ export class ProviderWeb implements IProvider {
             bus
                 .request('login')
                 .then((userData) => {
-                    this._userData = userData;
+                    this.user = userData;
 
                     return userData;
                 })
@@ -87,7 +120,7 @@ export class ProviderWeb implements IProvider {
         );
     }
 
-    public signTypedData(data: Array<ITypedData>): Promise<string> {
+    public signTypedData(data: Array<TypedData>): Promise<string> {
         return this.login().then(() =>
             this._transport.dialog((bus) =>
                 bus.request('sign-typed-data', data)
@@ -95,11 +128,9 @@ export class ProviderWeb implements IProvider {
         );
     }
 
-    public sign(
-        list: Array<TTransactionParamWithType>
-    ): Promise<Array<TTransactionWithProofs<TLong> & IWithId>> {
+    public sign<T extends Array<SignerTx>>(toSign: T): Promise<SignedTx<T>> {
         return this.login().then(() =>
-            this._transport.dialog((bus) => bus.request('sign', list))
+            this._transport.dialog((bus) => bus.request('sign', toSign))
         );
     }
 }

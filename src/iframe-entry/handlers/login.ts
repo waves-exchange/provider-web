@@ -1,4 +1,4 @@
-import { IUserData } from '@waves/signer';
+import { UserData } from '@waves/signer';
 import { Bus, WindowAdapter, WindowProtocol } from '@waves/waves-browser-bus';
 import { libs } from '@waves/waves-transactions';
 import pipe from 'ramda/es/pipe';
@@ -13,14 +13,14 @@ import { TBus } from '../../provider/interface';
 export const getLoginHandler = (
     queue: Queue,
     state: IState
-): (() => Promise<IUserData>) =>
+): (() => Promise<UserData>) =>
     toQueue(queue, () => {
         preload();
 
         if (window.top !== window && isSafari()) {
             const loginAndClose = (
                 bus: TBus,
-                resolve: (userData: IUserData) => void,
+                resolve: (userData: UserData) => void,
                 reject: (err: Error) => void
             ): void => {
                 bus.dispatchEvent('connect', {

@@ -14,20 +14,19 @@ import {
     AssetLogoWithIcon,
     iconSmartMini,
 } from '@waves.exchange/react-uikit';
-import { TLong } from '@waves/signer';
-import { ISetAssetScriptTransactionWithId } from '@waves/ts-types';
 import React, { FC, MouseEventHandler } from 'react';
 import { Confirmation } from '../../components/Confirmation';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
 import { DataJson } from '../../components/DataJson/DataJson';
 import { Help } from '../../components/Help/Help';
+import { WithId, SetAssetScriptTransaction } from '@waves/ts-types';
 
 export interface IProps {
     userAddress: string;
     userName: string;
     userBalance: string;
     fee: string;
-    tx: ISetAssetScriptTransactionWithId<TLong>;
+    tx: SetAssetScriptTransaction & WithId;
     onCancel: MouseEventHandler<HTMLButtonElement>;
     onConfirm: MouseEventHandler<HTMLButtonElement>;
     assetId: string;

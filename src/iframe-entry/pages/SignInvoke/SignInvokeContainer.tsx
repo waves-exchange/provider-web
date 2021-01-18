@@ -1,4 +1,3 @@
-import { ICall, IInvokeWithType, IMoney, TLong } from '@waves/signer';
 import React, { FC } from 'react';
 import { ISignTxProps } from '../../../interface';
 import { WAVES } from '../../constants';
@@ -8,16 +7,22 @@ import { assetPropFactory } from '../../utils/assetPropFactory';
 import { useHandleFeeSelect } from '../../hooks/useHandleFeeSelect';
 import { getUserName } from '../../services/userService';
 import { getPrintableNumber } from '../../utils/math';
+import {
+    InvokeScriptCall,
+    InvokeScriptPayment,
+    InvokeScriptTransaction,
+    Long,
+} from '@waves/ts-types';
 
 export interface IPayment {
     assetId: string | null;
     name: string;
-    amount: TLong;
+    amount: Long;
     logo?: string;
     decimals: number;
 }
 
-export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
+export const SignInvoke: FC<ISignTxProps<InvokeScriptTransaction>> = ({
     meta,
     networkByte,
     tx,
@@ -31,7 +36,9 @@ export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
 
     const fee = getPrintableNumber(tx.fee, feeAsset.decimals);
 
-    const mapPayments = (payments: Array<IMoney>): Array<IPayment> =>
+    const mapPayments = (
+        payments: Array<InvokeScriptPayment>
+    ): Array<IPayment> =>
         payments.map(({ assetId, amount }) => ({
             assetId,
             name: getAssetProp(assetId, 'name'),
@@ -55,7 +62,7 @@ export const SignInvoke: FC<ISignTxProps<IInvokeWithType>> = ({
             dAppAddress={dAppAddress}
             dAppName={tx.dApp}
             fee={`${fee} ${getAssetProp(tx.feeAssetId, 'name')}`}
-            call={tx.call as ICall}
+            call={tx.call as InvokeScriptCall<Long>}
             chainId={tx.chainId}
             payment={mapPayments(tx.payment || [])}
             onCancel={onCancel}

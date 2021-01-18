@@ -1,29 +1,25 @@
 import {
-    IConnectOptions,
-    ITypedData,
-    IUserData,
-    TLong,
-    TTransactionParamWithType,
+    ConnectOptions,
+    TypedData,
+    UserData,
+    SignerTx,
+    SignedTx,
 } from '@waves/signer';
-import {
-    IWithId,
-    TTransactionMap,
-    TTransactionWithProofs,
-} from '@waves/ts-types';
 import { IMeta } from './iframe-entry/services/transactionsService';
 import { MouseEventHandler } from 'react';
+import { Long, Transaction, TransactionMap, WithId } from '@waves/ts-types';
 
 // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type TBusHandlers = {
-    login: (data?: void) => Promise<IUserData>;
+    login: (data?: void) => Promise<UserData>;
 
     'sign-custom-bytes': (data: string) => Promise<string>;
     'sign-message': (data: string | number) => Promise<string>;
-    'sign-typed-data': (data: Array<ITypedData>) => Promise<string>;
+    'sign-typed-data': (data: Array<TypedData>) => Promise<string>;
 
-    sign(
-        list: Array<TTransactionParamWithType>
-    ): Promise<Array<TTransactionWithProofs<TLong> & IWithId>>;
+    sign<T extends Array<SignerTx>>(
+        list: T
+    ): Promise<{ [Key in keyof T]: SignedTx<T[Key]> }>;
 };
 
 export interface IEncryptedUserData {
@@ -32,17 +28,17 @@ export interface IEncryptedUserData {
 }
 
 export interface IBusEvents {
-    connect: IConnectOptions;
+    connect: ConnectOptions;
     close: void;
     ready: void;
 }
 
-export interface ISignTxProps<T extends TTransactionParamWithType> {
+export interface ISignTxProps<T extends Transaction> {
     networkByte: number;
     nodeUrl: string;
     user: Omit<IUserWithBalances, 'seed'> & { publicKey: string };
     meta: IMeta<T>;
-    tx: TTransactionMap<TLong>[T['type']] & IWithId;
+    tx: TransactionMap<Long>[T['type']] & WithId;
     onConfirm: MouseEventHandler;
     onCancel: MouseEventHandler;
 }
@@ -54,7 +50,7 @@ export interface IUser {
 
 export interface IUserWithBalances extends IUser {
     aliases: Array<string>;
-    balance: TLong;
+    balance: Long;
     hasScript: boolean;
 }
 

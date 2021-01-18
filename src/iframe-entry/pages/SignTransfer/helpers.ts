@@ -1,12 +1,13 @@
 import { WAVES, NAME_MAP } from '../../constants';
-import { TransferTx, TransferMeta } from './SignTransferContainer';
+import { TransferMeta, TransferType } from './SignTransferContainer';
 import { DetailsWithLogo } from '../../utils/loadLogoInfo';
 import { getPrintableNumber } from '../../utils/math';
 import { isAlias } from '../../utils/isAlias';
-import { TLong, ITransferWithType, TRANSACTION_NAME_MAP } from '@waves/signer';
 import BigNumber from '@waves/bignumber';
 import { libs, IMassTransferItem } from '@waves/waves-transactions';
 import { IMeta } from '../../services/transactionsService';
+import { TRANSACTION_NAME_MAP } from '@waves/node-api-js/es/interface';
+import { Long, Transaction, TransferTransaction } from '@waves/ts-types';
 
 type TxType =
     | TRANSACTION_NAME_MAP['transfer']
@@ -62,11 +63,11 @@ export const getRecipientAddress: GetRecipientAddress = (
 
 type Recepient = { name: string; address: string };
 type RawTransferListItem = Recepient & {
-    amount: TLong;
+    amount: Long;
 };
 type GetRawTransferList = (
     aliases: MetaAliases,
-    massTransfers: IMassTransferItem<TLong>[]
+    massTransfers: IMassTransferItem<Long>[]
 ) => RawTransferListItem[];
 
 export const getRawTransfersList: GetRawTransferList = (
@@ -136,7 +137,7 @@ type TransferViewData = {
 
 type GetPrintableTxFee = (args: {
     txType: TxType;
-    txFee: TLong;
+    txFee: Long;
     assets: MetaAssets;
     txFeeAssetId?: string | null;
 }) => string;
@@ -155,9 +156,9 @@ export const getPrintableTxFee: GetPrintableTxFee = ({
 type GetTransferViewData = (args: {
     txRecipient: string;
     txAssetId?: string | null;
-    txFee: TLong;
+    txFee: Long;
     txFeeAssetId: string | null;
-    txAmount: TLong;
+    txAmount: Long;
     assets: Record<string, Asset>;
     aliases: Record<string, string>;
 }) => Omit<TransferViewData, 'attachment'>;
@@ -195,9 +196,9 @@ export const getTransferViewData: GetTransferViewData = ({
 };
 
 type GetMassTransferViewData = (args: {
-    txTransfers: IMassTransferItem<TLong>[];
+    txTransfers: IMassTransferItem<Long>[];
     txAssetId?: string | null;
-    txFee: TLong;
+    txFee: Long;
     assets: Record<string, Asset>;
     aliases: Record<string, string>;
 }) => Omit<TransferViewData, 'attachment'>;
@@ -227,7 +228,7 @@ export const getMassTransferViewData: GetMassTransferViewData = ({
     };
 };
 
-type GetViewData = (tx: TransferTx, meta: TransferMeta) => TransferViewData;
+type GetViewData = (tx: TransferType, meta: TransferMeta) => TransferViewData;
 
 export const getViewData: GetViewData = (tx, { aliases, assets }) => {
     const transferViewData =
@@ -253,7 +254,7 @@ export const getViewData: GetViewData = (tx, { aliases, assets }) => {
 
     try {
         attachment = libs.crypto.bytesToString(
-            libs.crypto.base58Decode(tx.attachment || '')
+            libs.crypto.base58Decode(tx?.attachment || '')
         );
     } catch (e) {
         // Do not have to do anything
@@ -266,5 +267,5 @@ export const getViewData: GetViewData = (tx, { aliases, assets }) => {
 };
 
 export const isTransferMeta = (
-    meta: TransferMeta
-): meta is IMeta<ITransferWithType> => meta.params.type === NAME_MAP.transfer;
+    meta: IMeta<Transaction>
+): meta is TransferMeta => meta.params.type === NAME_MAP.transfer;

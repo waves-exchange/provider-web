@@ -1,14 +1,14 @@
 import { cleanAddress } from '../../utils/cleanAlias';
 import { isAlias } from '../../utils/isAlias';
 import { IconTransferType } from './IconTransfer';
-import { TransferTx } from '../../pages/SignTransfer/SignTransferContainer';
+import { TransferType } from '../../pages/SignTransfer/SignTransferContainer';
 
 const getAlias = (address: string): string => {
     return isAlias(address) ? cleanAddress(address) : '';
 };
 
 type GetIcon = (
-    tx: TransferTx,
+    tx: TransferType,
     user: { address: string; publicKey: string },
     userAliases: string[]
 ) => IconTransferType;
