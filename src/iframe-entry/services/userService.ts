@@ -45,7 +45,10 @@ export function getUsers(
                     case 'seed':
                         acc.push({
                             userType: privateData.userType,
-                            address: libs.crypto.address(privateData.seed),
+                            address: libs.crypto.address(
+                                privateData.seed,
+                                networkByte
+                            ),
                             privateKey: libs.crypto.privateKey(
                                 privateData.seed
                             ),
@@ -55,7 +58,10 @@ export function getUsers(
                         acc.push({
                             userType: privateData.userType,
                             privateKey: privateData.privateKey,
-                            address: libs.crypto.address(privateData),
+                            address: libs.crypto.address(
+                                privateData,
+                                networkByte
+                            ),
                         });
                         break;
                     default:

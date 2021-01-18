@@ -1,6 +1,6 @@
 {
   "name": "@waves.exchange/provider-web",
-  "version": "0.2.3",
+  "version": "0.2.5",
   "main": "dist/provider-web.min.js",
   "types": "dist/provider/index.d.ts",
   "repository": {
@@ -19,7 +19,7 @@
     "prettier": "prettier --ignore-path .gitignore \"./src/**/*.+(ts|tsx)\"",
     "format": "npm run prettier -- --write",
     "check-format": "npm run prettier -- --list-different",
-    "start": "http-server ./ -p 8081",
+    "start": "http-server ./ -p 8081 --cors",
     "build": "npm run clean && webpack",
     "clean": "rm -rf ./dist && rm -rf ./iframe-entry/dist",
     "test": "jest",
