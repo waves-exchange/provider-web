@@ -57,7 +57,7 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
                 analytics.send({
                     name: 'Login_Page_Login_Click_Success',
                     params: {
-                        Accounts_Length: users.length, // eslint-disable-line @typescript-eslint/camelcase
+                        Accounts_Length: users.length,
                     },
                 });
 

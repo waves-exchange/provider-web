@@ -9,10 +9,9 @@ import {
 
 export type IconTransferType = 'send' | 'receive' | 'circular' | 'mass';
 
-export const IconTransfer: FC<{ type: IconTransferType } & Omit<
-    IconProps,
-    'icon'
->> = ({ type, ...rest }): ReactElement | null => {
+export const IconTransfer: FC<
+    { type: IconTransferType } & Omit<IconProps, 'icon'>
+> = ({ type, ...rest }): ReactElement | null => {
     switch (type) {
         case 'mass':
             return <Icon icon={iconMassTransfer} color="#FFAF00" {...rest} />;

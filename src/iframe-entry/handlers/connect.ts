@@ -35,8 +35,8 @@ export function getConnectHandler(
         analytics.send({
             name: 'Signer_Connect',
             params: {
-                Network_Byte: options.NETWORK_BYTE, // eslint-disable-line @typescript-eslint/camelcase
-                Node_Url: options.NODE_URL, // eslint-disable-line @typescript-eslint/camelcase
+                Network_Byte: options.NETWORK_BYTE,
+                Node_Url: options.NODE_URL,
             },
         });
     };

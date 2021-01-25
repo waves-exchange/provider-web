@@ -5,7 +5,7 @@ import renderPage from '../utils/renderPage';
 import { SignMessageContainer } from '../pages/SignMessage/SignMessageContainer';
 import React from 'react';
 
-export default function(
+export default function (
     data: string | number,
     state: IState<IUserWithBalances>
 ): Promise<string> {

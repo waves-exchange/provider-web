@@ -1,6 +1,3 @@
-import React, { FC, MouseEventHandler } from 'react';
-import { Confirmation } from '../../components/Confirmation';
-import { TypedData } from '@waves/signer';
 import {
     Flex,
     Icon,
@@ -12,6 +9,9 @@ import {
     TabsList,
     Text,
 } from '@waves.exchange/react-uikit';
+import { TypedData } from '@waves/signer';
+import React, { FC, MouseEventHandler } from 'react';
+import { Confirmation } from '../../components/Confirmation';
 import { DataEntry } from '../../components/DataEntry/DataEntry';
 import { DataJson } from '../../components/DataJson/DataJson';
 
@@ -78,7 +78,7 @@ export const SignTypedDataComponent: FC<SignTypedDataComponentProps> = ({
 
             <TabPanels mb="$30" px="$40" bg="main.$800">
                 <TabPanel>
-                    // TODO
+                    {/* // TODO */}
                     <DataEntry data={data as any} />
                 </TabPanel>
                 <TabPanel>

@@ -1,8 +1,24 @@
+import { fetchNodeTime } from '@waves/node-api-js/es/api-node/utils';
+import { TRANSACTION_TYPE_MAP } from '@waves/node-api-js/es/interface';
+import { SignedTx, SignerTx } from '@waves/signer';
 import { libs, signTx } from '@waves/waves-transactions';
+import omit from 'ramda/es/omit';
 import React, { ReactNode } from 'react';
+import { IUserWithBalances } from '../../interface';
 import { NAME_MAP } from '../constants';
-import { ISignTxProps, IUserWithBalances } from '../../interface';
 import { IState } from '../interface';
+import { SignAliasContainer } from '../pages/SignAlias/SignAliasContainer';
+import { SignBurnContainer } from '../pages/SignBurn/SignBurnContainer';
+import { SignCancelLease } from '../pages/SignCancelLease/SignCancelLeaseContainer';
+import { SignDataContainer } from '../pages/SignData/SignDataContainer';
+import { SignInvoke } from '../pages/SignInvoke/SignInvokeContainer';
+import { SignIssueContainer } from '../pages/SignIssue/SignIssueContainer';
+import { SignLease } from '../pages/SignLease/SignLeaseContainer';
+import { SignReissueContainer } from '../pages/SignReissue/SignReissueContainer';
+import { SignSetAccountScript } from '../pages/SignSetAccountScript/SignSetAccountScriptContainer';
+import { SignSetAssetScriptContainer } from '../pages/SignSetAssetScript/SignSetAssetScriptContainer';
+import { SignSponsorship } from '../pages/SignSponsorship/SignSponsorshipContainer';
+import { SignTransfer } from '../pages/SignTransfer/SignTransferContainer';
 // import exchangePage from '../pages/transactions/exchange';
 // import leasePage from '../pages/transactions/lease';
 // import cancelLeasePage from '../pages/transactions/cancelLease';
@@ -12,25 +28,9 @@ import { IState } from '../interface';
 // import sponsorshipPage from '../pages/transactions/sponsorship';
 // import setAssetScriptPage from '../pages/transactions/setAssetScript';
 import { prepareTransactions } from '../services/transactionsService';
+import { analytics } from '../utils/analytics';
 import renderPage from '../utils/renderPage';
 import batch from './batch';
-import omit from 'ramda/es/omit';
-import { fetchNodeTime } from '@waves/node-api-js/es/api-node/utils';
-import { SignTransfer } from '../pages/SignTransfer/SignTransferContainer';
-import { SignInvoke } from '../pages/SignInvoke/SignInvokeContainer';
-import { SignDataContainer } from '../pages/SignData/SignDataContainer';
-import { SignLease } from '../pages/SignLease/SignLeaseContainer';
-import { SignCancelLease } from '../pages/SignCancelLease/SignCancelLeaseContainer';
-import { SignIssueContainer } from '../pages/SignIssue/SignIssueContainer';
-import { SignBurnContainer } from '../pages/SignBurn/SignBurnContainer';
-import { SignSetAssetScriptContainer } from '../pages/SignSetAssetScript/SignSetAssetScriptContainer';
-import { SignSponsorship } from '../pages/SignSponsorship/SignSponsorshipContainer';
-import { SignAliasContainer } from '../pages/SignAlias/SignAliasContainer';
-import { SignReissueContainer } from '../pages/SignReissue/SignReissueContainer';
-import { SignSetAccountScript } from '../pages/SignSetAccountScript/SignSetAccountScriptContainer';
-import { analytics } from '../utils/analytics';
-import { TRANSACTION_TYPE_MAP } from '@waves/node-api-js/es/interface';
-import { SignedTx, SignerTx } from '@waves/signer';
 
 const getPageByType = (type: keyof TRANSACTION_TYPE_MAP): ReactNode => {
     switch (type) {
@@ -67,7 +67,7 @@ const getPageByType = (type: keyof TRANSACTION_TYPE_MAP): ReactNode => {
     }
 };
 
-export default function(
+export default function (
     list: Array<SignerTx>,
     state: IState<IUserWithBalances>
 ): Promise<Array<SignedTx<SignerTx>>> {
@@ -75,7 +75,6 @@ export default function(
         .then((nodeTime) => nodeTime.NTP)
         .catch(() => Date.now())
         .then((time) =>
-            // @ts-ignore // TODO
             prepareTransactions(state, list, time).then((transactions) => {
                 if (transactions.length !== 1) {
                     return batch(transactions, state);

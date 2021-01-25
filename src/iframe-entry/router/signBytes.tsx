@@ -1,7 +1,10 @@
 import { IState } from '../interface';
 import { IUser } from '../../interface';
 
-export default function(data: string, state: IState<IUser>): Promise<string> {
+export default function (
+    _data: string,
+    _state: IState<IUser>
+): Promise<string> {
     return Promise.reject('Unsupported method!');
     // const base64 = data.startsWith('base64:') ? data : `base64:${data}`;
     // const signature = customData(

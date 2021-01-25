@@ -9,7 +9,5 @@ export const getPrintableNumber = (number: Long, decimals: number): string => {
 };
 
 export const getCoins = (n: Long, decimals: number): string => {
-    return BigNumber.toBigNumber(n)
-        .mul(Math.pow(10, decimals))
-        .toFixed();
+    return BigNumber.toBigNumber(n).mul(Math.pow(10, decimals)).toFixed();
 };

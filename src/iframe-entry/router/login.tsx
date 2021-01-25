@@ -1,19 +1,19 @@
-import renderPage from '../utils/renderPage';
-import { libs } from '@waves/waves-transactions';
 import { UserData } from '@waves/signer';
-import {
-    hasMultiaccount,
-    saveTerms,
-    isTermsAccepted,
-} from '../services/userService';
+import { libs } from '@waves/waves-transactions';
+import React from 'react';
+import { IUser } from '../../interface';
+import { IState } from '../interface';
 import { CreateAccount } from '../pages/CreateAccount/CreateAccountContainer';
 import { Login } from '../pages/Login/LoginContainer';
-import { IUser } from '../../interface';
-import React from 'react';
-import { IState } from '../interface';
+import {
+    hasMultiaccount,
+    isTermsAccepted,
+    saveTerms,
+} from '../services/userService';
 import { analytics } from '../utils/analytics';
+import renderPage from '../utils/renderPage';
 
-export default function(state: IState): () => Promise<UserData> {
+export default function (state: IState): () => Promise<UserData> {
     return (): Promise<UserData> => {
         if (state.user != null) {
             return Promise.resolve({

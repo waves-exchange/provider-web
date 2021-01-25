@@ -145,7 +145,9 @@ export class TransportIframe extends Transport<HTMLIFrameElement> {
     private _applyStyle(styles: CSSProperties): void {
         Object.entries(styles).forEach(([name, value]) => {
             if (value != null) {
-                this._iframe!.style[name] = value;
+                if (this._iframe) {
+                    this._iframe.style[name] = value;
+                }
             }
         });
     }
@@ -169,8 +171,12 @@ export class TransportIframe extends Transport<HTMLIFrameElement> {
     private _listenFetchURLError(iframe: HTMLIFrameElement): void {
         fetch(this._url).catch(() => {
             iframe.addEventListener('load', () => {
+                if (!iframe.contentDocument) {
+                    return;
+                }
+
                 this._renderErrorPage(
-                    iframe!.contentDocument!.body,
+                    iframe.contentDocument.body,
                     this.dropConnection.bind(this),
                     'The request could not be processed. To resume your further work, disable the installed plugins.'
                 );

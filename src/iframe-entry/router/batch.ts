@@ -1,13 +1,13 @@
-import { IState } from '../interface';
-import renderPage from '../utils/renderPage';
-import batchPage from '../pages/batch';
-import { libs, signTx } from '@waves/waves-transactions';
-import { IUser } from '../../interface';
-import { ITransactionInfo } from '../services/transactionsService';
 import { SignerTx } from '@waves/signer';
 import { Transaction } from '@waves/ts-types';
+import { libs, signTx } from '@waves/waves-transactions';
+import { IUser } from '../../interface';
+import { IState } from '../interface';
+import batchPage from '../pages/batch';
+import { ITransactionInfo } from '../services/transactionsService';
+import renderPage from '../utils/renderPage';
 
-export default function(
+export default function (
     list: Array<ITransactionInfo<Transaction>>,
     state: IState<IUser>
 ): Promise<Array<SignerTx>> {

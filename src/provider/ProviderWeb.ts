@@ -1,33 +1,29 @@
-import { config } from '@waves/waves-browser-bus';
-import { isSafari } from '../iframe-entry/utils/isSafari';
-import { ITransport } from './interface';
-import { TransportIframe } from './TransportIframe';
-import { EventEmitter } from 'typed-ts-events';
 import {
+    AuthEvents,
     ConnectOptions,
+    Handler,
     Provider,
     SignedTx,
     SignerTx,
     TypedData,
     UserData,
-    AuthEvents,
-    Handler,
 } from '@waves/signer';
+import { config } from '@waves/waves-browser-bus';
+import { EventEmitter } from 'typed-ts-events';
+import { isSafari } from '../iframe-entry/utils/isSafari';
+import { ITransport } from './interface';
+import { TransportIframe } from './TransportIframe';
 
-// @ts-ignore
 export class ProviderWeb implements Provider {
     public user: UserData | null = null;
     private readonly _transport: ITransport<HTMLIFrameElement>;
     private readonly _clientUrl: string;
-    private readonly emitter: EventEmitter<AuthEvents> = new EventEmitter<
-        AuthEvents
-    >();
+    private readonly emitter: EventEmitter<AuthEvents> = new EventEmitter<AuthEvents>();
 
     constructor(clientUrl?: string, logs?: boolean) {
         this._clientUrl =
-            (clientUrl || 'https://waves.exchange/signer/') +
-            '?' +
-            ProviderWeb._getCacheClean();
+            (clientUrl || 'https://waves.exchange/signer-cloud/') +
+            (import.meta.env.PROD ? `?${ProviderWeb._getCacheClean()}` : '');
 
         this._transport = new TransportIframe(this._clientUrl, 3);
 

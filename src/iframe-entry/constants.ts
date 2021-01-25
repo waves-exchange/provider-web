@@ -14,29 +14,27 @@ export const WAVES = {
     reissuable: false,
     scripted: false,
     minSponsoredFee: null,
-    quantity: BigNumber.toBigNumber(100000000)
-        .mul(Math.pow(10, 8))
-        .toFixed(),
+    quantity: BigNumber.toBigNumber(100000000).mul(Math.pow(10, 8)).toFixed(),
     issuer: 'WAVES',
     minSponsoredAssetFee: null,
 };
 
 export const NAME_MAP = {
-    issue: 3 as 3,
-    transfer: 4 as 4,
-    reissue: 5 as 5,
-    burn: 6 as 6,
-    exchange: 7 as 7,
-    lease: 8 as 8,
-    cancelLease: 9 as 9,
-    alias: 10 as 10,
-    massTransfer: 11 as 11,
-    data: 12 as 12,
-    setScript: 13 as 13,
-    sponsorship: 14 as 14,
-    setAssetScript: 15 as 15,
-    invoke: 16 as 16,
-    updateAssetInfo: 17 as 17,
+    issue: 3 as const,
+    transfer: 4 as const,
+    reissue: 5 as const,
+    burn: 6 as const,
+    exchange: 7 as const,
+    lease: 8 as const,
+    cancelLease: 9 as const,
+    alias: 10 as const,
+    massTransfer: 11 as const,
+    data: 12 as const,
+    setScript: 13 as const,
+    sponsorship: 14 as const,
+    setAssetScript: 15 as const,
+    invoke: 16 as const,
+    updateAssetInfo: 17 as const,
 };
 
 export const SPONSORED_TYPES: Array<TransactionType> = [

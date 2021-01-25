@@ -1,10 +1,9 @@
 import { AddressAvatar } from '@waves.exchange/react-uikit';
-import { ITransactionInfo } from '../../services/transactionsService';
-import React from 'react';
-import { SignerTx } from '@waves/signer';
 import { Transaction } from '@waves/ts-types';
+import React from 'react';
+import { ITransactionInfo } from '../../services/transactionsService';
 
-export default function(props: IProps) {
+export default function (props: IProps): React.ReactElement {
     return (
         <div>
             <div onClick={props.onCancel} />
