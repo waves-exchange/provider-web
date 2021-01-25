@@ -1,12 +1,11 @@
-import React, { FC } from 'react';
-import { ISignTxProps } from '../../../interface';
-import { getIconType } from '../../components/IconTransfer/helpers';
-import { SignTransfer as SignTransferComponent } from './SignTransferComponent';
-import { getUserName } from '../../services/userService';
-import { useHandleFeeSelect } from '../../hooks/useHandleFeeSelect';
-import { getViewData, isTransferMeta } from './helpers';
-import { IMeta } from '../../services/transactionsService';
 import { MassTransferTransaction, TransferTransaction } from '@waves/ts-types';
+import React, { FC } from 'react';
+import { IMeta, ISignTxProps } from '../../../interface';
+import { getIconType } from '../../components/IconTransfer/helpers';
+import { useHandleFeeSelect } from '../../hooks/useHandleFeeSelect';
+import { getUserName } from '../../services/userService';
+import { getViewData, isTransferMeta } from './helpers';
+import { SignTransfer as SignTransferComponent } from './SignTransferComponent';
 
 export type TransferType = TransferTransaction | MassTransferTransaction;
 export type TransferMeta = IMeta<TransferType>;

@@ -1,9 +1,20 @@
-/* eslint-disable @typescript-eslint/no-use-before-define */
 import pipe from 'ramda/es/pipe';
 import tap from 'ramda/es/tap';
 import prop from 'ramda/es/prop';
 
-export class Queue {
+interface IQueueItem {
+    action: () => Promise<void>;
+    reject: (error: Error) => void;
+}
+
+export interface IQueue {
+    length: number;
+    push<T>(action: () => Promise<T>): Promise<T>;
+    canPush(): boolean;
+    clear(error?: Error | string): void;
+}
+
+export class Queue implements IQueue {
     public get length(): number {
         return this._actions.length + (this._active == null ? 0 : 1);
     }
@@ -25,8 +36,7 @@ export class Queue {
                 this._active = undefined;
                 const index = this._actions
                     .map(prop('action'))
-                    // eslint-disable-next-line no-use-before-define
-                    .indexOf(actionCallback);
+                    .indexOf(actionCallback); // eslint-disable-line @typescript-eslint/no-use-before-define
 
                 if (index !== -1) {
                     this._actions.splice(index, 1);

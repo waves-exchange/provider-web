@@ -16,11 +16,11 @@ import {
 } from '@waves.exchange/react-uikit';
 import { Long, SponsorshipTransaction, WithId } from '@waves/ts-types';
 import React, { FC, MouseEventHandler } from 'react';
+import { DetailsWithLogo } from '../../../interface';
 import { Confirmation } from '../../components/Confirmation';
 import { DataJson } from '../../components/DataJson/DataJson';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
 import { WAVES } from '../../constants';
-import { DetailsWithLogo } from '../../utils/loadLogoInfo';
 import { getPrintableNumber } from '../../utils/math';
 
 type Props = {

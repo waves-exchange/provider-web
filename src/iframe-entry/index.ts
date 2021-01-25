@@ -1,4 +1,4 @@
-import { Bus, config, WindowAdapter } from '@waves/waves-browser-bus';
+import { Bus, WindowAdapter } from '@waves/waves-browser-bus';
 import { IBusEvents, IUser, TBusHandlers } from '../interface';
 import { Queue } from '../utils/Queue';
 import { getConnectHandler } from './handlers/connect';
@@ -9,7 +9,6 @@ import { IState } from './interface';
 import { analytics } from './utils/analytics';
 import { isSafari } from './utils/isSafari';
 
-config.console.logLevel = config.console.LOG_LEVEL.VERBOSE;
 const queue = new Queue(3);
 
 analytics.init({

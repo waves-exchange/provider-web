@@ -2,10 +2,9 @@ import BigNumber from '@waves/bignumber';
 import { TRANSACTION_NAME_MAP } from '@waves/node-api-js/es/interface';
 import { Long, Transaction } from '@waves/ts-types';
 import { IMassTransferItem, libs } from '@waves/waves-transactions';
+import { DetailsWithLogo, IMeta } from '../../../interface';
 import { NAME_MAP, WAVES } from '../../constants';
-import { IMeta } from '../../services/transactionsService';
 import { isAlias } from '../../utils/isAlias';
-import { DetailsWithLogo } from '../../utils/loadLogoInfo';
 import { getPrintableNumber } from '../../utils/math';
 import { TransferMeta, TransferType } from './SignTransferContainer';
 

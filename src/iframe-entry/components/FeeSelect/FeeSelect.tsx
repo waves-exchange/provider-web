@@ -7,22 +7,22 @@ import {
     Selected,
     Text,
 } from '@waves.exchange/react-uikit';
-import React, {
-    FC,
-    ReactElement,
-    useCallback,
-    useState,
-    useEffect,
-} from 'react';
-import { IMeta } from '../../services/transactionsService';
-import { assetPropFactory } from '../../utils/assetPropFactory';
-import { getCoins } from '../../utils/math';
-import { getFeeOptions } from './helpers';
 import {
     InvokeScriptTransaction,
     Long,
     TransferTransaction,
 } from '@waves/ts-types';
+import React, {
+    FC,
+    ReactElement,
+    useCallback,
+    useEffect,
+    useState,
+} from 'react';
+import { IMeta } from '../../../interface';
+import { assetPropFactory } from '../../utils/assetPropFactory';
+import { getCoins } from '../../utils/math';
+import { getFeeOptions } from './helpers';
 
 export type FeeSelectHandler = (fee: string, feeAssetId: string | null) => void;
 

@@ -1,14 +1,14 @@
 import React from 'react';
-import renderPage from '../utils/renderPage';
-import Preload from '../pages/Preload';
-import { IState } from '../interface';
 import { IUser, IUserWithBalances } from '../../interface';
+import { IQueue } from '../../utils/Queue';
+import { IState } from '../interface';
+import Preload from '../pages/Preload';
 import {
-    fetchWavesBalance,
-    fetchAliasses,
     fetchAddressHasScript,
+    fetchAliasses,
+    fetchWavesBalance,
 } from '../services/userService';
-import { Queue } from '../../utils/Queue';
+import renderPage from '../utils/renderPage';
 
 export const preload = (): void => {
     renderPage(React.createElement(Preload));
@@ -32,7 +32,7 @@ export const loadUserData = (
     }));
 
 export const toQueue = <T extends (data?: any) => Promise<any>>(
-    queue: Queue,
+    queue: IQueue,
     handler: T
 ): ((data?: TParam<T>) => Promise<TReturn<T>>) => {
     return (data?: TParam<T>): Promise<TReturn<T>> => {

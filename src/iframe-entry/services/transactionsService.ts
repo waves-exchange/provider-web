@@ -7,14 +7,8 @@ import {
 import { NAME_MAP } from '@waves/node-api-js/es/constants';
 import availableSponsoredBalances from '@waves/node-api-js/es/tools/adresses/availableSponsoredBalances';
 import getAssetIdListByTx from '@waves/node-api-js/es/tools/adresses/getAssetIdListByTx';
-import {
-    WithApiMixin,
-    WithId,
-    Long,
-    Transaction,
-    TransactionMap,
-    TransactionType,
-} from '@waves/ts-types';
+import { SignerTx } from '@waves/signer';
+import { Long, Transaction, TransactionType } from '@waves/ts-types';
 import concat from 'ramda/es/concat';
 import flatten from 'ramda/es/flatten';
 import indexBy from 'ramda/es/indexBy';
@@ -22,16 +16,14 @@ import map from 'ramda/es/map';
 import pipe from 'ramda/es/pipe';
 import prop from 'ramda/es/prop';
 import uniq from 'ramda/es/uniq';
-import { IUser } from '../../interface';
+import { InfoMap, ITransactionInfo, IUser } from '../../interface';
 import { SPONSORED_TYPES } from '../constants';
 import { IState } from '../interface';
 import { cleanAddress } from '../utils/cleanAlias';
 import { geTransactionFromParams } from '../utils/getTransactionFromParams';
 import { getTxAliases } from '../utils/getTxAliases';
 import { loadFeeByTransaction } from '../utils/loadFeeByTransaction';
-import { DetailsWithLogo, loadLogoInfo } from '../utils/loadLogoInfo';
-import { SignerTx } from '@waves/signer';
-import { SignerLeaseTx } from '@waves/signer';
+import { loadLogoInfo } from '../utils/loadLogoInfo';
 
 const loadAliases = (
     base: string,
@@ -63,7 +55,7 @@ export const prepareTransactions = (
             timestamp,
         })
     ) as any;
-    const assetsIdList = getAssetIdListByTx(transactions as any);
+    const assetsIdList = getAssetIdListByTx(transactions);
     const transactionsWithFee = Promise.all<Transaction>(
         transactions.map((tx, index) =>
             list[index].fee
@@ -139,40 +131,7 @@ export const prepareTransactions = (
                 params: list[index],
                 info: info[index],
             },
-            tx: { ...(tx as any), fee: list[index].fee ?? tx.fee },
+            tx: { ...tx, fee: list[index].fee ?? tx.fee },
         }))
     ) as any; // TODO
 };
-
-type InfoMap = {
-    1: void;
-    2: void;
-    [NAME_MAP.issue]: void;
-    [NAME_MAP.transfer]: void;
-    [NAME_MAP.reissue]: void;
-    [NAME_MAP.burn]: void;
-    [NAME_MAP.exchange]: void;
-    [NAME_MAP.lease]: void;
-    [NAME_MAP.cancelLease]: SignerLeaseTx & WithApiMixin;
-    [NAME_MAP.alias]: void;
-    [NAME_MAP.massTransfer]: void;
-    [NAME_MAP.data]: void;
-    [NAME_MAP.setScript]: void;
-    [NAME_MAP.sponsorship]: void;
-    [NAME_MAP.setAssetScript]: void;
-    [NAME_MAP.invoke]: void;
-    17: void;
-};
-
-export interface IMeta<T extends Transaction> {
-    feeList: Array<TFeeInfo>;
-    aliases: Record<string, string>;
-    assets: Record<string, DetailsWithLogo>;
-    params: T;
-    info: InfoMap[T['type']];
-}
-
-export interface ITransactionInfo<T extends Transaction> {
-    meta: IMeta<T>;
-    tx: TransactionMap[T['type']] & WithId;
-}

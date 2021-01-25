@@ -1,8 +1,8 @@
-import { Queue } from '../utils/Queue';
+import { IQueue, Queue } from '../utils/Queue';
 import { TBus, ITransport } from './interface';
 
 export abstract class Transport<T> implements ITransport<T> {
-    private readonly _queue: Queue;
+    private readonly _queue: IQueue;
     private readonly _events: Array<TEventDispatcher<void>> = [];
     private readonly _toRunEvents: Array<TEventDispatcher<void>> = [];
 

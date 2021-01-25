@@ -1,7 +1,7 @@
 import { AddressAvatar } from '@waves.exchange/react-uikit';
 import { Transaction } from '@waves/ts-types';
 import React from 'react';
-import { ITransactionInfo } from '../../services/transactionsService';
+import { ITransactionInfo } from '../../../interface';
 
 export default function (props: IProps): React.ReactElement {
     return (

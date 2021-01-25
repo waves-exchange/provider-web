@@ -6,7 +6,6 @@ export function getConnectHandler(
     state: IState
 ): (options: ConnectOptions) => void {
     return (options): void => {
-        state.networkByte = options.NETWORK_BYTE;
         state.nodeUrl = options.NODE_URL;
         state.networkByte = options.NETWORK_BYTE;
 

@@ -2,16 +2,16 @@ import { UserData } from '@waves/signer';
 import { Bus, WindowAdapter, WindowProtocol } from '@waves/waves-browser-bus';
 import { libs } from '@waves/waves-transactions';
 import pipe from 'ramda/es/pipe';
-import { Queue } from '../../utils/Queue';
+import { TBus } from '../../provider/interface';
+import { IQueue } from '../../utils/Queue';
 import { IState } from '../interface';
 import login from '../router/login';
 import { analytics } from '../utils/analytics';
 import { isSafari } from '../utils/isSafari';
 import { preload, toQueue } from './helpers';
-import { TBus } from '../../provider/interface';
 
 export const getLoginHandler = (
-    queue: Queue,
+    queue: IQueue,
     state: IState
 ): (() => Promise<UserData>) =>
     toQueue(queue, () => {

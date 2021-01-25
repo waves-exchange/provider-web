@@ -1,8 +1,8 @@
-import { DetailsWithLogo } from './loadLogoInfo';
 import { TAssetDetails } from '@waves/node-api-js/es/api-node/assets';
-import { isNil, prop } from 'ramda';
-import { WAVES } from '../constants';
 import { Long } from '@waves/ts-types';
+import { isNil, prop } from 'ramda';
+import { DetailsWithLogo } from '../../interface';
+import { WAVES } from '../constants';
 
 type GetAssetProp = <P extends keyof DetailsWithLogo>(
     id: string | null,

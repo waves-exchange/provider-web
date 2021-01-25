@@ -177,7 +177,7 @@ export class TransportIframe extends Transport<HTMLIFrameElement> {
 
                 this._renderErrorPage(
                     iframe.contentDocument.body,
-                    this.dropConnection.bind(this),
+                    () => this.dropConnection(),
                     'The request could not be processed. To resume your further work, disable the installed plugins.'
                 );
                 this._showIframe();

@@ -1,4 +1,7 @@
 import {
+    AddressAvatar,
+    AddressLabel,
+    Box,
     Flex,
     Tab,
     TabPanel,
@@ -6,27 +9,24 @@ import {
     Tabs,
     TabsList,
     Text,
-    AddressAvatar,
-    AddressLabel,
-    Box,
 } from '@waves.exchange/react-uikit';
+import { Long, TransferTransaction, WithId } from '@waves/ts-types';
 import React, { FC, MouseEventHandler } from 'react';
+import { IMeta } from '../../../interface';
 import { Confirmation } from '../../components/Confirmation';
+import { DataJson } from '../../components/DataJson/DataJson';
+import {
+    FeeSelect,
+    FeeSelectHandler,
+} from '../../components/FeeSelect/FeeSelect';
 import {
     IconTransfer,
     IconTransferType,
 } from '../../components/IconTransfer/IconTransfer';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
-import {
-    FeeSelect,
-    FeeSelectHandler,
-} from '../../components/FeeSelect/FeeSelect';
-import { getPrintableNumber } from '../../utils/math';
 import { WAVES } from '../../constants';
-import { DataJson } from '../../components/DataJson/DataJson';
+import { getPrintableNumber } from '../../utils/math';
 import { TransferType } from './SignTransferContainer';
-import { IMeta } from '../../services/transactionsService';
-import { WithId, Long, TransferTransaction } from '@waves/ts-types';
 
 type TransferListItem = {
     name: string;

@@ -15,12 +15,12 @@ import {
     Text,
     useBoundedTooltip,
 } from '@waves.exchange/react-uikit';
+import { ReissueTransaction, WithId } from '@waves/ts-types';
 import React, { FC, MouseEventHandler } from 'react';
+import { DetailsWithLogo } from '../../../interface';
 import { Confirmation } from '../../components/Confirmation';
 import { DataJson } from '../../components/DataJson/DataJson';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
-import { DetailsWithLogo } from '../../utils/loadLogoInfo';
-import { ReissueTransaction, WithId } from '@waves/ts-types';
 import { WAVES } from '../../constants';
 
 type SignReissueComponentProps = {
