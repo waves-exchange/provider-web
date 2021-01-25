@@ -1,7 +1,7 @@
 import { TAssetDetails } from '@waves/node-api-js/es/api-node/assets';
 import { fetchDataKey } from '@waves/node-api-js/es/api-node/addresses';
 import curry from 'ramda/es/curry';
-import { Long } from '@waves/ts-types';
+import { DataTransactionEntryString, Long } from '@waves/ts-types';
 
 const BETTER_TOKENS_MAP = {
     W: '3P6t5mKGwVDkyjFhtUqw4NnecyC3DRpLfkw',
@@ -120,7 +120,10 @@ export const loadLogoInfo = curry(
 
                 return address != null
                     ? fetchDataKey(base, address, `logo_<${asset.assetId}>`)
-                          .then((entry) => ({ ...asset, logo: entry.value }))
+                          .then((entry) => ({
+                              ...asset,
+                              logo: (entry as DataTransactionEntryString).value,
+                          }))
                           .catch(() => asset)
                     : asset;
             })

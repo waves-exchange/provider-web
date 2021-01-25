@@ -90,7 +90,7 @@ export const getLoginHandler = (
                         libs.crypto.stringToBytes,
                         libs.crypto.blake2b,
                         libs.crypto.base64Encode
-                    )(user.address, undefined),
+                    )(user.address),
                 });
 
                 return user;

@@ -16,5 +16,5 @@ export const assetPropFactory = (
     property: P
 ): DetailsWithLogo[P] =>
     isNil(assetId)
-        ? prop<P, DetailsWithLogo>(property, WAVES)
+        ? prop<P, DetailsWithLogo>(property, WAVES as any)
         : prop<P, DetailsWithLogo>(property, assets[assetId]);

@@ -19,6 +19,7 @@ const RadioUser: FC<RadioButtonProps<IUser>> = ({
     children,
     checked,
     value: _value,
+    as: _as, // Types difference in react 16 vs 17 - added slot in ElementType
     ...rest
 }) => (
     <Button

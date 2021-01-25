@@ -14,7 +14,7 @@ import {
     Text,
     useBoundedTooltip,
 } from '@waves.exchange/react-uikit';
-import { WithId, Long, SponsorshipTransaction } from '@waves/ts-types';
+import { Long, SponsorshipTransaction, WithId } from '@waves/ts-types';
 import React, { FC, MouseEventHandler } from 'react';
 import { Confirmation } from '../../components/Confirmation';
 import { DataJson } from '../../components/DataJson/DataJson';
@@ -29,7 +29,7 @@ type Props = {
     userBalance: Long;
     tx: SponsorshipTransaction<Long> & WithId;
     fee: string;
-    sponsorAsset: DetailsWithLogo;
+    sponsorAsset: DetailsWithLogo | typeof WAVES;
     sponsorCharge: string;
     isSponsorshipEnable: boolean;
     onReject: MouseEventHandler<HTMLButtonElement>;
@@ -159,7 +159,11 @@ export const SignSponsorshipComponent: FC<Props> = ({
                                                 sponsorAsset.minSponsoredAssetFee
                                             ) > 0
                                         }
-                                        logo={sponsorAsset.logo}
+                                        logo={
+                                            'logo' in sponsorAsset
+                                                ? sponsorAsset.logo
+                                                : undefined
+                                        }
                                         size="30px"
                                         flexShrink={0}
                                         popperOptions={popperOptions}

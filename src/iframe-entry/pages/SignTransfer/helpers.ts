@@ -1,13 +1,13 @@
-import { WAVES, NAME_MAP } from '../../constants';
-import { TransferMeta, TransferType } from './SignTransferContainer';
+import BigNumber from '@waves/bignumber';
+import { TRANSACTION_NAME_MAP } from '@waves/node-api-js/es/interface';
+import { Long, Transaction } from '@waves/ts-types';
+import { IMassTransferItem, libs } from '@waves/waves-transactions';
+import { NAME_MAP, WAVES } from '../../constants';
+import { IMeta } from '../../services/transactionsService';
+import { isAlias } from '../../utils/isAlias';
 import { DetailsWithLogo } from '../../utils/loadLogoInfo';
 import { getPrintableNumber } from '../../utils/math';
-import { isAlias } from '../../utils/isAlias';
-import BigNumber from '@waves/bignumber';
-import { libs, IMassTransferItem } from '@waves/waves-transactions';
-import { IMeta } from '../../services/transactionsService';
-import { TRANSACTION_NAME_MAP } from '@waves/node-api-js/es/interface';
-import { Long, Transaction, TransferTransaction } from '@waves/ts-types';
+import { TransferMeta, TransferType } from './SignTransferContainer';
 
 type TxType =
     | TRANSACTION_NAME_MAP['transfer']
@@ -22,7 +22,9 @@ type GetAmountAsset = (
 ) => Asset;
 
 export const getAmountAsset: GetAmountAsset = (assetId, assets) =>
-    assetId === null || assetId === undefined ? WAVES : assets[assetId];
+    assetId === null || assetId === undefined
+        ? (WAVES as Asset)
+        : assets[assetId];
 
 type GetAssetName = (
     assetId: string | null | undefined,
@@ -48,7 +50,7 @@ export const getFeeAsset: GetFeeAsset = (txType, assets, txFeeAssetId) => {
         txFeeAssetId === null ||
         typeof txFeeAssetId === 'undefined'
     ) {
-        return WAVES;
+        return WAVES as Asset;
     }
 
     return assets[txFeeAssetId];

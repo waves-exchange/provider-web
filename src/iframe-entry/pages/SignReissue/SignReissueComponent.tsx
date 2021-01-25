@@ -21,6 +21,7 @@ import { DataJson } from '../../components/DataJson/DataJson';
 import { TransactionDetails } from '../../components/TransactionDetails/TransactionDetails';
 import { DetailsWithLogo } from '../../utils/loadLogoInfo';
 import { ReissueTransaction, WithId } from '@waves/ts-types';
+import { WAVES } from '../../constants';
 
 type SignReissueComponentProps = {
     userAddress: string;
@@ -28,7 +29,7 @@ type SignReissueComponentProps = {
     userBalance: string;
     tx: ReissueTransaction & WithId;
     reissueAmount: string;
-    reissueAsset: DetailsWithLogo;
+    reissueAsset: DetailsWithLogo | typeof WAVES;
     fee: string;
     onReject: MouseEventHandler<HTMLButtonElement>;
     onConfirm: MouseEventHandler<HTMLButtonElement>;

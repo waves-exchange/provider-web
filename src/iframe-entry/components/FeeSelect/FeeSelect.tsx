@@ -42,6 +42,7 @@ export const FeeSelect: FC<Props & BoxProps> = ({
     fee: txFee,
     onFeeSelect,
     availableWavesBalance,
+    as: _as, // Types difference in react 16 vs 17 - added slot in ElementType
     ...rest
 }) => {
     const txFeeAssetId = txMeta.params.feeAssetId;
