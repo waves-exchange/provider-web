@@ -1,6 +1,4 @@
 import { Bus, WindowAdapter } from '@waves/waves-browser-bus';
-import { CSSProperties } from 'react';
-import { renderErrorPage } from '../iframe-entry/utils/renderErrorPage';
 import { TBus } from './interface';
 import { Transport } from './Transport';
 
@@ -94,7 +92,7 @@ export class TransportIframe extends Transport<HTMLIFrameElement> {
     }
 
     private _showIframe(): void {
-        const shownStyles: CSSProperties = {
+        const shownStyles: Partial<CSSStyleDeclaration> = {
             width: '100%',
             height: '100%',
             left: '0',
@@ -103,7 +101,7 @@ export class TransportIframe extends Transport<HTMLIFrameElement> {
             position: 'fixed',
             display: 'block',
             opacity: '0',
-            zIndex: 99999999,
+            zIndex: '99999999',
         };
 
         this._applyStyle(shownStyles);
@@ -136,13 +134,13 @@ export class TransportIframe extends Transport<HTMLIFrameElement> {
                 top: '-100px',
                 position: 'absolute',
                 opacity: '0',
-                zIndex: 0,
+                zIndex: '0',
                 display: 'none',
             });
         }, 200);
     }
 
-    private _applyStyle(styles: CSSProperties): void {
+    private _applyStyle(styles: Partial<CSSStyleDeclaration>): void {
         Object.entries(styles).forEach(([name, value]) => {
             if (value != null) {
                 if (this._iframe) {
@@ -153,19 +151,89 @@ export class TransportIframe extends Transport<HTMLIFrameElement> {
     }
 
     private _renderErrorPage(
-        element: HTMLElement,
+        bodyElement: HTMLElement,
         onClose: () => void,
-        error: string
+        errorMessage: string
     ): void {
-        element.style.position = 'relative';
-        element.style.boxSizing = 'border-box';
-        element.style.width = '100%';
-        element.style.height = '100%';
-        element.style.display = 'flex';
-        element.style.justifyContent = 'center';
-        element.style.alignItems = 'center';
-        element.style.margin = '0px';
-        renderErrorPage(element, onClose, error);
+        if (bodyElement.parentElement) {
+            bodyElement.parentElement.style.height = '100%';
+        }
+
+        Object.assign(bodyElement.style, {
+            position: 'relative',
+            boxSizing: 'border-box',
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            margin: '0px',
+        } as Partial<CSSStyleDeclaration>);
+
+        const backdropElement = document.createElement('div');
+
+        Object.assign(backdropElement.style, {
+            position: 'fixed',
+            zIndex: '-1',
+            height: '100%',
+            width: '100%',
+            overflow: 'hidden',
+            backgroundColor: '#000',
+            opacity: '0.6',
+        } as Partial<CSSStyleDeclaration>);
+
+        const wrapperElement = document.createElement('div');
+
+        Object.assign(wrapperElement.style, {
+            position: 'fixed',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            flexDirection: 'column',
+            margin: '0',
+            backgroundColor: '#292F3C',
+            width: '520px',
+            borderRadius: '6px',
+            padding: '40px',
+            boxSizing: 'border-box',
+        } as Partial<CSSStyleDeclaration>);
+
+        const errorMessageElement = document.createElement('div');
+
+        errorMessageElement.textContent = errorMessage;
+
+        Object.assign(errorMessageElement.style, {
+            fontSize: '15px',
+            lineHeight: '20px',
+            color: '#fff',
+            marginBottom: '40px',
+            fontFamily: 'Roboto, sans-serif',
+        } as Partial<CSSStyleDeclaration>);
+
+        const buttonElement = document.createElement('button');
+
+        buttonElement.textContent = 'OK';
+        buttonElement.addEventListener('click', () => onClose());
+
+        Object.assign(buttonElement.style, {
+            width: '100%',
+            fontSize: '15px',
+            lineHeight: '48px',
+            padding: ' 0 40px',
+            color: '#fff',
+            backgroundColor: '#5A81EA',
+            outline: 'none',
+            border: 'none',
+            cursor: 'pointer',
+            fontFamily: 'Roboto, sans-serif',
+            borderRadius: '4px',
+        } as Partial<CSSStyleDeclaration>);
+
+        wrapperElement.appendChild(errorMessageElement);
+        wrapperElement.appendChild(buttonElement);
+
+        bodyElement.appendChild(backdropElement);
+        bodyElement.appendChild(wrapperElement);
     }
 
     private _listenFetchURLError(iframe: HTMLIFrameElement): void {
