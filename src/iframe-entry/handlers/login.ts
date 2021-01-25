@@ -7,7 +7,7 @@ import { IQueue } from '../../utils/Queue';
 import { IState } from '../interface';
 import login from '../router/login';
 import { analytics } from '../utils/analytics';
-import { isSafari } from '../utils/isSafari';
+import { isSafari } from '../../utils/isSafari';
 import { preload, toQueue } from './helpers';
 
 export const getLoginHandler = (

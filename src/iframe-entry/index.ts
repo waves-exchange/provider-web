@@ -7,7 +7,7 @@ import { getSignHandler } from './handlers/sign';
 import { getSignMessageHandler } from './handlers/signMessage';
 import { IState } from './interface';
 import { analytics } from './utils/analytics';
-import { isSafari } from './utils/isSafari';
+import { isSafari } from '../utils/isSafari';
 
 const queue = new Queue(3);
 

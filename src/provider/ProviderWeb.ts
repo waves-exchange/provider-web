@@ -10,7 +10,7 @@ import {
 } from '@waves/signer';
 import { config } from '@waves/waves-browser-bus';
 import { EventEmitter } from 'typed-ts-events';
-import { isSafari } from '../iframe-entry/utils/isSafari';
+import { isSafari } from '../utils/isSafari';
 import { ITransport } from './interface';
 import { TransportIframe } from './TransportIframe';
 
