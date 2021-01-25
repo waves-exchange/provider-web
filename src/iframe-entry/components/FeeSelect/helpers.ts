@@ -1,5 +1,5 @@
 import { FeeOption } from '@waves.exchange/react-uikit';
-import BigNumber from '@waves/bignumber';
+import { BigNumber } from '@waves/bignumber';
 import { Long } from '@waves/ts-types';
 import { DetailsWithLogo } from '../../../interface';
 import { WAVES } from '../../constants';

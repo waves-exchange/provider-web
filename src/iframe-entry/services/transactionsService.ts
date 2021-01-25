@@ -9,13 +9,7 @@ import availableSponsoredBalances from '@waves/node-api-js/es/tools/adresses/ava
 import getAssetIdListByTx from '@waves/node-api-js/es/tools/adresses/getAssetIdListByTx';
 import { SignerTx } from '@waves/signer';
 import { Long, Transaction, TransactionType } from '@waves/ts-types';
-import concat from 'ramda/es/concat';
-import flatten from 'ramda/es/flatten';
-import indexBy from 'ramda/es/indexBy';
-import map from 'ramda/es/map';
-import pipe from 'ramda/es/pipe';
-import prop from 'ramda/es/prop';
-import uniq from 'ramda/es/uniq';
+import { concat, flatten, indexBy, map, pipe, prop, uniq } from 'ramda';
 import { InfoMap, ITransactionInfo, IUser } from '../../interface';
 import { SPONSORED_TYPES } from '../constants';
 import { IState } from '../interface';

@@ -1,4 +1,4 @@
-import curry from 'ramda/es/curry';
+import { curry } from 'ramda';
 import { cleanAddress } from './cleanAlias';
 import { isAddress } from './isAddress';
 

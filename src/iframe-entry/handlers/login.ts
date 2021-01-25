@@ -1,7 +1,7 @@
 import { UserData } from '@waves/signer';
 import { Bus, WindowAdapter, WindowProtocol } from '@waves/waves-browser-bus';
 import { libs } from '@waves/waves-transactions';
-import pipe from 'ramda/es/pipe';
+import { pipe } from 'ramda';
 import { TBus } from '../../provider/interface';
 import { IQueue } from '../../utils/Queue';
 import { IState } from '../interface';

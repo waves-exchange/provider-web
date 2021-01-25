@@ -1,4 +1,4 @@
-import pipe from 'ramda/es/pipe';
+import { pipe } from 'ramda';
 import { libs } from '@waves/waves-transactions';
 
 export const getUserId = (networkByte: number, publicKey: string): string => {

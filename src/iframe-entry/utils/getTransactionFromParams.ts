@@ -1,7 +1,7 @@
 import { fixRecipient } from './fixRecipient';
 import { NAME_MAP } from '../constants';
 import { makeTx, libs } from '@waves/waves-transactions';
-import curry from 'ramda/es/curry';
+import { curry } from 'ramda';
 import { SignerTx } from '@waves/signer';
 
 const fixParams = (networkByte: number, tx: SignerTx): SignerTx => {

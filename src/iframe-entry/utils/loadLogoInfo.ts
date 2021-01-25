@@ -1,7 +1,7 @@
 import { fetchDataKey } from '@waves/node-api-js/es/api-node/addresses';
 import { TAssetDetails } from '@waves/node-api-js/es/api-node/assets';
 import { DataTransactionEntryString, Long } from '@waves/ts-types';
-import curry from 'ramda/es/curry';
+import { curry } from 'ramda';
 import { DetailsWithLogo } from '../../interface';
 
 const BETTER_TOKENS_MAP = {

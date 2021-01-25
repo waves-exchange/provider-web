@@ -1,6 +1,4 @@
-import pipe from 'ramda/es/pipe';
-import tap from 'ramda/es/tap';
-import prop from 'ramda/es/prop';
+import { pipe, tap, prop } from 'ramda';
 
 interface IQueueItem {
     action: () => Promise<void>;
