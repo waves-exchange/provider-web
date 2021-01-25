@@ -1,10 +1,8 @@
-const path = require('path');
-
 module.exports = {
     preset: 'ts-jest',
     globals: {
         'ts-jest': {
-            tsConfig: '<rootDir>/tsconfig.test.json',
+            tsconfig: '<rootDir>/tsconfig.test.json',
         },
     },
     // do not touch - will use later

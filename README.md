@@ -41,23 +41,23 @@ Add library initialization to your app.
 ​
    ```js
    import Signer from '@waves/signer';
-   import Provider from '@waves.exchange/provider-web';
-   
+   import { ProviderWeb } from '@waves.exchange/provider-web';
+
    const signer = new Signer({
      // Specify URL of the node on Testnet
      NODE_URL: 'https://nodes-testnet.wavesnodes.com'
    });
-   signer.setProvider(new Provider());
+   signer.setProvider(new ProviderWeb('https://testnet.waves.exchange/signer'));
    ```
 ​
 * For Mainnet:
 ​
    ```js
    import Signer from '@waves/signer';
-   import Provider from '@waves.exchange/provider-web';
-   
+   import { ProviderWeb } from '@waves.exchange/provider-web';
+
    const signer = new Signer();
-   signer.setProvider(new Provider());
+   signer.setProvider(new ProviderWeb());
    ```
 ​
 ### 3. Basic example
@@ -80,7 +80,7 @@ const [signedTransfer] = await signer
 ## Constructor
 ​
 ```js
-new Provider(clientOrigin: string, logs: boolean);
+new ProviderWeb(clientOrigin: string, logs: boolean);
 ```
 ​
 Creates an object that features user authentication and transaction signing.
@@ -89,13 +89,13 @@ You can use optional parameters for debugging.
 ​
 | Parameter | Default value | Description |
 | :--- | :--- | :--- |
-| clientOrigin | https://waves.exchange/signer | URL of the Provider instance. For debugging, you can launch the Provider instance on your server. |
+| clientOrigin | https://waves.exchange/signer | URL of the ProviderWeb instance. For debugging, you can launch the ProviderWeb instance on your server. |
 | logs | false | Logging level. If `true`, all events are logged |
 ​
 **Usage:**
 ​
 ```js
-var provider = new Provider(
+var provider = new ProviderWeb(
   'http://localhost:8081/iframe-entry',
   true
 );

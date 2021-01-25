@@ -1,0 +1,27 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "shell",
+      "label": "types watch",
+      "command": "./node_modules/.bin/tsc",
+      "args": [
+        "-w",
+        "-p",
+        "./tsconfig.json",
+        "--noEmit"
+      ],
+      "isBackground": true,
+      "problemMatcher": "$tsc-watch"
+    },
+    {
+      "type": "npm",
+      "script": "lint",
+      "problemMatcher": [
+        "$eslint-stylish"
+      ],
+      "label": "npm: lint",
+      "detail": "eslint --ext .ts,.tsx ./src",
+    }
+  ]
+}

@@ -1,22 +1,33 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es5",
-    "sourceMap": false,
-    "declaration": true,
-    "outDir": "./dist",
-    "strict": true,
-    "jsx": "react",
-    "moduleResolution": "node",
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "types": [
+      "vite/client"
+    ],
     "allowJs": false,
-    "importHelpers": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "strict": true,
     "forceConsistentCasingInFileNames": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "jsx": "react",
+    "moduleResolution": "Node",
+    "importHelpers": false,
     "noImplicitThis": true,
-    "skipDefaultLibCheck": true,
     "noImplicitAny": true,
-    "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": false,
-    "esModuleInterop": true
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "noEmit": true,
   },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+  ]
 }
