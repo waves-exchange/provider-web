@@ -11,7 +11,6 @@ import {
     iconLogo,
     InputPassword,
     Label,
-    PasswordComplexityIndicator,
     Text,
     Help,
 } from '@waves.exchange/react-uikit';
@@ -23,13 +22,18 @@ import React, {
 } from 'react';
 import { getEnvAwareUrl } from '../../utils/getEnvAwareUrl';
 
-interface IProps {
+export type CreateAccountFormErrors = {
+    passwordsDoNotMatch: string | null;
+    passwordMinLength: string | null;
+    passwordInsecure: string | null;
+};
+
+type CreateAccountComponentProps = {
     inputPasswordId: string;
     inputPasswordConfirmId: string;
     checkboxPrivacyId: string;
     checkboxTermsId: string;
-    error: boolean;
-    minPasswordLength: number;
+    errors: CreateAccountFormErrors;
     password: string;
     passwordConfirm: string;
     showTerms: boolean;
@@ -44,11 +48,10 @@ interface IProps {
     onSubmit: MouseEventHandler<HTMLButtonElement>;
     onPasswordInputBlur: FocusEventHandler<HTMLInputElement>;
     onExchangeLinkClick: MouseEventHandler;
-}
+};
 
-export const CreateAccountComponent: FC<IProps> = ({
-    error,
-    minPasswordLength,
+export const CreateAccountComponent: FC<CreateAccountComponentProps> = ({
+    errors,
     showTerms,
     isPrivacyAccepted,
     isTermsAccepted,
@@ -68,9 +71,6 @@ export const CreateAccountComponent: FC<IProps> = ({
     onPasswordInputBlur,
     onExchangeLinkClick,
 }) => {
-    const errorFontSize = '13px';
-    const errorLineHeight = '15px';
-
     return (
         <Box
             bg="main.$800"
@@ -137,18 +137,42 @@ export const CreateAccountComponent: FC<IProps> = ({
                 <InputPassword
                     id={inputPasswordId}
                     value={password}
+                    aria-invalid={Boolean(
+                        errors.passwordMinLength || errors.passwordInsecure
+                    )}
                     onChange={onPasswordChange}
                     onBlur={onPasswordInputBlur}
                 />
-                <PasswordComplexityIndicator
-                    mt="$5"
-                    password={password}
-                    minPasswordLength={minPasswordLength}
-                />
+
+                {errors.passwordMinLength && (
+                    <Text
+                        fontSize="12px"
+                        lineHeight="14px"
+                        color="danger.$300"
+                        textAlign="right"
+                        display="inline-block"
+                        width="100%"
+                    >
+                        {errors.passwordMinLength}
+                    </Text>
+                )}
+
+                {errors.passwordInsecure && (
+                    <Text
+                        fontSize="12px"
+                        lineHeight="14px"
+                        color="danger.$300"
+                        textAlign="right"
+                        display="inline-block"
+                        width="100%"
+                    >
+                        {errors.passwordInsecure}
+                    </Text>
+                )}
 
                 <Label
                     htmlFor={inputPasswordConfirmId}
-                    mt="$10"
+                    mt="16px"
                     pb="$5"
                     variant="body2"
                     color="standard.$0"
@@ -159,24 +183,23 @@ export const CreateAccountComponent: FC<IProps> = ({
                     mb="$10"
                     id={inputPasswordConfirmId}
                     value={passwordConfirm}
-                    aria-invalid={Boolean(error)}
+                    aria-invalid={Boolean(errors.passwordsDoNotMatch)}
                     onChange={onPasswordConfirmChange}
                     onBlur={onPasswordInputBlur}
                 />
-                <Text
-                    sx={{
-                        maxHeight: error ? errorLineHeight : '0px',
-                        overflow: 'hidden',
-                        transition: 'all 0.2s ease',
-                        transformOrigin: 'top',
-                        willChange: 'transform',
-                    }}
-                    fontSize={errorFontSize}
-                    lineHeight={errorLineHeight}
-                    color="danger.$300"
-                >
-                    Password doesn't match
-                </Text>
+
+                {errors.passwordsDoNotMatch && (
+                    <Text
+                        fontSize="12px"
+                        lineHeight="12px"
+                        color="danger.$300"
+                        textAlign="right"
+                        display="inline-block"
+                        width="100%"
+                    >
+                        {errors.passwordsDoNotMatch}
+                    </Text>
+                )}
 
                 {showTerms ? (
                     <>

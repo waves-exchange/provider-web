@@ -8,27 +8,33 @@ import React, {
 } from 'react';
 import { IUser } from '../../interface';
 import { addSeedUser } from '../../services/userService';
-import { CreateAccountComponent } from './CreateAccountComponent';
+import {
+    CreateAccountComponent,
+    CreateAccountFormErrors,
+} from './CreateAccountComponent';
 import { analytics } from '../../utils/analytics';
 
-interface IProps {
+type CreateAccountProps = {
     networkByte: number;
     isPrivacyAccepted: boolean;
     isTermsAccepted: boolean;
-    onConfirm: (user: IUser) => void;
-    onCancel: () => void;
-}
+    onConfirm(user: IUser): void;
+    onCancel(): void;
+};
 
-const MIN_PASSWORD_LENGTH = 8;
-
-export const CreateAccount: FC<IProps> = ({
+export const CreateAccount: FC<CreateAccountProps> = ({
     networkByte,
     onConfirm,
     onCancel,
     isPrivacyAccepted: isPrivacyAcceptedProp,
     isTermsAccepted: isTermsAcceptedProp,
 }) => {
-    const [error, setError] = useState<boolean>(false);
+    const MIN_PASSWORD_LENGTH = 8;
+    const [errors, setErrors] = useState<CreateAccountFormErrors>({
+        passwordMinLength: null,
+        passwordInsecure: null,
+        passwordsDoNotMatch: null,
+    });
     const [isPrivacyAccepted, setPrivacyAccepted] = useState<boolean>(
         isPrivacyAcceptedProp
     );
@@ -48,11 +54,18 @@ export const CreateAccount: FC<IProps> = ({
             switch (event.target.id) {
                 case inputPasswordId:
                     setPassword(event.target.value);
-                    setError(false);
+                    setErrors((prev) => ({
+                        ...prev,
+                        passwordMinLength: null,
+                        passwordInsecure: null,
+                    }));
                     break;
                 case inputPasswordConfirmId:
                     setPasswordConfirm(event.target.value);
-                    setError(false);
+                    setErrors((prev) => ({
+                        ...prev,
+                        passwordsDoNotMatch: null,
+                    }));
                     break;
                 case checkboxPrivacyId:
                     setPrivacyAccepted(!isPrivacyAccepted);
@@ -104,13 +117,29 @@ export const CreateAccount: FC<IProps> = ({
     const handlePasswordInputBlur = useCallback<
         FocusEventHandler<HTMLInputElement>
     >(() => {
-        if (
-            password.length > 0 &&
-            passwordConfirm.length > 0 &&
-            passwordConfirm !== password
-        ) {
-            setError(true);
-        }
+        const passwordMissedReqList: Array<string | boolean> = [
+            /[a-z]/.test(password) || 'lowercase letter',
+            /[A-Z]/.test(password) || 'uppercase letter',
+            /[0-9]/.test(password) || 'number',
+            /[$-/:-?{-~!^_`[\]@#]/.test(password) || 'special character',
+        ].filter((x) => typeof x === 'string');
+
+        setErrors((prev) => ({
+            ...prev,
+            passwordMinLength:
+                password.length < MIN_PASSWORD_LENGTH
+                    ? 'The password must be at least 8 characters long'
+                    : null,
+            passwordInsecure: passwordMissedReqList.length
+                ? `Easy, add a ${passwordMissedReqList.join(', ')}`
+                : null,
+            passwordsDoNotMatch:
+                password.length > 0 &&
+                passwordConfirm.length > 0 &&
+                passwordConfirm !== password
+                    ? 'Passwords do not match'
+                    : null,
+        }));
     }, [passwordConfirm, password]);
 
     const handleExchangeLinkClick = useCallback(() => {
@@ -145,8 +174,7 @@ export const CreateAccount: FC<IProps> = ({
             onPasswordInputBlur={handlePasswordInputBlur}
             isSubmitDisabled={!isSubmitEnabled}
             showTerms={!isPrivacyAcceptedProp && !isTermsAcceptedProp}
-            minPasswordLength={MIN_PASSWORD_LENGTH}
-            error={error}
+            errors={errors}
             onExchangeLinkClick={handleExchangeLinkClick}
         />
     );

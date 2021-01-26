@@ -13,15 +13,13 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged && npm test",
-      "post-commit": "git update-index --again"
+      "pre-commit": "lint-staged"
     }
   },
   "lint-staged": {
     "packages/**/*.ts?(x)": [
       "eslint --fix",
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   },
   "devDependencies": {
