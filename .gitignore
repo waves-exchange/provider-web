@@ -1,7 +1,5 @@
-dist
-node_modules
-.idea
-iframe-entry/index.html
 .DS_Store
-**/.DS_Store
-coverage
+.idea/
+node_modules/
+coverage/
+dist/

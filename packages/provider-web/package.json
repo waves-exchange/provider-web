@@ -1,0 +1,44 @@
+{
+  "name": "@waves.exchange/provider-web",
+  "version": "0.2.5",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "main": "dist/provider-web.cjs.js",
+  "module": "dist/provider-web.es.js",
+  "browser": "./dist/provider-web.es.js",
+  "unpkg": "dist/provider-web.min.js",
+  "types": "dist/types/provider/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/waves-exchange/provider-web.git"
+  },
+  "bugs": {
+    "url": "https://github.com/waves-exchange/provider-web/issues",
+    "email": "support@waves.exchange"
+  },
+  "homepage": "https://waves.exchange",
+  "scripts": {
+    "test": "jest",
+    "build": "vite build && vite build -c ./vite.config.min.ts && tsc -p ./tsconfig.types.json",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint --ext .ts,.tsx ./src",
+    "postversion": "npm publish",
+    "prepublishOnly": "npm run check-types && npm run test && npm run build"
+  },
+  "dependencies": {
+    "@waves/waves-browser-bus": "^0.2.6",
+    "tslib": "^2.1.0",
+    "typed-ts-events": "^1.2.1"
+  },
+  "peerDependencies": {
+    "@waves/signer": "^1.0"
+  },
+  "devDependencies": {
+    "@waves/signer": "^1.0.0-a6"
+  }
+}

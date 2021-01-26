@@ -1,40 +1,15 @@
 {
-  "name": "@waves.exchange/provider-web",
-  "version": "0.2.5",
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public"
+  "name": "provider-web",
+  "private": true,
+  "workspaces": [
+    "./packages/*"
+  ],
+  "engines": {
+    "npm": ">=7.0.0"
   },
-  "main": "dist/provider-web.cjs.js",
-  "module": "dist/provider-web.es.js",
-  "browser": "dist/provider-web.umd.js",
-  "types": "dist/types/provider/index.d.ts",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/waves-exchange/provider-web.git"
-  },
-  "bugs": {
-    "url": "https://github.com/waves-exchange/provider-web/issues",
-    "email": "support@waves.exchange"
-  },
-  "homepage": "https://waves.exchange",
   "scripts": {
-    "postversion": "npm publish",
-    "prepublishOnly": "npm run check:types && npm run test && npm run build",
-    "prettier": "prettier --ignore-path .gitignore \"./src/**/*.+(ts|tsx)\"",
-    "format": "npm run prettier -- --write",
-    "check:format": "npm run prettier -- --list-different",
-    "check:types": "tsc --noEmit",
-    "lint": "eslint --ext .ts,.tsx ./src",
     "dev": "vite",
-    "build:types": "tsc -p ./tsconfig.types.json",
-    "build:lib": "vite build --config ./vite.config.lib.build.ts",
-    "build:iframe": "vite build --config ./vite.config.iframe.build.ts",
-    "build": "npm run build:lib && npm run build:iframe && npm run build:types",
-    "test": "jest",
-    "test:c": "jest --coverage",
-    "test:d": "node --inspect-brk ./node_modules/jest/bin/jest.js --runInBand --watch",
-    "test:w": "jest --watch"
+    "lint": "eslint --ext .ts,.tsx ./packages/*/src"
   },
   "husky": {
     "hooks": {
@@ -42,47 +17,18 @@
       "post-commit": "git update-index --again"
     }
   },
-  "files": [
-    "dist"
-  ],
   "lint-staged": {
-    "src/**/*.ts?(x)": [
+    "packages/**/*.ts?(x)": [
       "eslint --fix",
       "prettier --write",
       "git add"
     ]
   },
-  "dependencies": {
-    "@emotion/core": "^10.0.22",
-    "@emotion/styled": "^10.0.23",
-    "@waves.exchange/react-uikit": "^0.5.21",
-    "@waves/bignumber": "^1.1.1",
-    "@waves/node-api-js": "^1.2.0",
-    "@waves/signer": "^1.0.0-a6",
-    "@waves/ts-types": "^1.0.2",
-    "@waves/waves-browser-bus": "^0.2.6",
-    "@waves/waves-transactions": "^4.1.8",
-    "amazon-cognito-identity-js": "^4.5.7",
-    "emotion-theming": "^10.0.19",
-    "ramda": "^0.26.1",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "styled-system": "^5.1.4",
-    "typed-ts-events": "^1.2.1"
-  },
   "devDependencies": {
-    "@popperjs/core": "^2.6.0",
-    "@styled-system/css": "^5.1.4",
-    "@styled-system/should-forward-prop": "^5.1.4",
     "@types/jest": "^26.0.20",
-    "@types/ramda": "^0.26.38",
-    "@types/react": "^17.0.0",
-    "@types/react-dom": "^17.0.0",
-    "@types/styled-system": "^5.1.4",
-    "@types/styled-system__css": "^5.0.4",
     "@typescript-eslint/eslint-plugin": "^4.14.0",
     "@typescript-eslint/parser": "^4.14.0",
-    "@vitejs/plugin-legacy": "^1.2.1",
+    "@vitejs/plugin-legacy": "^1.2.2",
     "@vitejs/plugin-react-refresh": "^1.1.2",
     "eslint": "^7.18.0",
     "eslint-config-prettier": "^7.2.0",
@@ -96,9 +42,7 @@
     "lint-staged": "^10.5.3",
     "prettier": "^2.2.1",
     "ts-jest": "^26.4.4",
-    "tslib": "^2.1.0",
     "typescript": "^4.1.3",
-    "uri-js": "^4.2.2",
-    "vite": "^2.0.0-beta.47"
+    "vite": "^2.0.0-beta.49"
   }
 }

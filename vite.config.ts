@@ -18,6 +18,10 @@ export default defineConfig({
             '@waves/node-api-js/es/tools/adresses/getAssetIdListByTx',
             '@waves/node-api-js/es/constants',
         ],
+        link: [
+            './packages/provider-web',
+            './packages/provider-web-ui',
+        ]
     },
     build: {
         commonjsOptions: {

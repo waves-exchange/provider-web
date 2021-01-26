@@ -15,19 +15,12 @@
     "outDir": "./dist",
     "jsx": "react",
     "moduleResolution": "Node",
-    "importHelpers": false,
+    "importHelpers": true,
     "noImplicitThis": true,
     "noImplicitAny": true,
     "suppressImplicitAnyIndexErrors": true,
     "isolatedModules": true,
     "resolveJsonModule": true,
     "noEmit": true,
-  },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "src/**/*.test.ts",
-    "src/**/*.test.tsx",
-  ]
+  }
 }

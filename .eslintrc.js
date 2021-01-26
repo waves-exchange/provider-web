@@ -1,12 +1,17 @@
 module.exports = {
+  root: true,
   env: {
     es6: true,
-    browser: true
+    browser: true,
   },
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: ['./tsconfig.json', './tsconfig.test.json'],
+    project: [
+        './packages/**/tsconfig.json',
+        './packages/**/tsconfig.test.json'
+    ],
     sourceType: 'module',
+    ecmaVersion: 2020,
     ecmaFeatures: {
       jsx: true
     },
