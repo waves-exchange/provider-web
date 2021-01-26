@@ -1,7 +1,7 @@
 import { SignerTx } from '@waves/signer';
 import { Transaction } from '@waves/ts-types';
 import { libs, signTx } from '@waves/waves-transactions';
-import { ITransactionInfo, IUser } from '../../interface';
+import { ITransactionInfo, IUser } from '../interface';
 import { IState } from '../interface';
 import batchPage from '../pages/batch';
 import renderPage from '../utils/renderPage';

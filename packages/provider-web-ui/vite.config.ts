@@ -5,7 +5,7 @@ import commonConfig from '../../vite.config';
 export default mergeConfig(
     commonConfig,
     defineConfig({
-        base: '/signer/',
+        base: './',
         plugins: [legacy()]
     })
 );

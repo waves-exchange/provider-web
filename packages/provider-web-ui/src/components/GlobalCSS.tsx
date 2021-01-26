@@ -1,5 +1,8 @@
 import React, { FC } from 'react';
 import { Global } from '@emotion/core';
+import Roboto from '../../fonts/roboto7.woff2';
+import RobotoLight from '../../fonts/roboto-light7.woff2';
+import RobotoMedium from '../../fonts/roboto-medium7.woff2';
 
 export const GlobalCSS: FC = () => {
     return (
@@ -11,7 +14,7 @@ export const GlobalCSS: FC = () => {
                         fontStyle: 'normal',
                         fontWeight: 300,
                         fontDisplay: 'swap',
-                        src: 'url(/fonts/roboto-light7.woff2) format("woff2")',
+                        src: `url(${RobotoLight}) format("woff2")`,
                     },
                 },
                 {
@@ -20,7 +23,7 @@ export const GlobalCSS: FC = () => {
                         fontStyle: 'normal',
                         fontWeight: 400,
                         fontDisplay: 'swap',
-                        src: 'url(/fonts/roboto7.woff2) format("woff2")',
+                        src: `url(${Roboto}) format("woff2")`,
                     },
                 },
                 {
@@ -29,7 +32,7 @@ export const GlobalCSS: FC = () => {
                         fontStyle: 'normal',
                         fontWeight: 700,
                         fontDisplay: 'swap',
-                        src: 'url(/fonts/roboto-medium7.woff2) format("woff2")',
+                        src: `url(${RobotoMedium}) format("woff2")`,
                     },
                 },
                 {
