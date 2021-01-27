@@ -1,12 +1,17 @@
 module.exports = {
+  root: true,
   env: {
     es6: true,
-    browser: true
+    browser: true,
   },
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: './tsconfig.base.json',
+    project: [
+        './packages/**/tsconfig.json',
+        './packages/**/tsconfig.test.json'
+    ],
     sourceType: 'module',
+    ecmaVersion: 2020,
     ecmaFeatures: {
       jsx: true
     },
@@ -111,7 +116,7 @@ module.exports = {
       },
     ],
     'no-unused-vars': 'off', // ts
-    'no-use-before-define': 'error',
+    'no-use-before-define': 'off', // ts
     'no-useless-computed-key': 'error',
     'no-useless-concat': 'error',
     'no-useless-escape': 'error',
@@ -159,10 +164,8 @@ module.exports = {
     'import/no-self-import': 'error',
 
     // typescript-eslint
-    '@typescript-eslint/ban-ts-ignore': 'off',
     '@typescript-eslint/await-thenable': 'error',
     '@typescript-eslint/consistent-type-definitions': 'off',
-    '@typescript-eslint/interface-name-prefix': ['warn', 'always'],
     '@typescript-eslint/member-delimiter-style': 'warn',
     '@typescript-eslint/member-ordering': 'warn',
     '@typescript-eslint/no-array-constructor': 'error',
@@ -173,6 +176,7 @@ module.exports = {
         allowSingleExtends: true
       }
     ],
+    '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-floating-promises': 'error',
     '@typescript-eslint/no-for-in-array': 'error',
     '@typescript-eslint/no-misused-new': 'error',
@@ -230,7 +234,7 @@ module.exports = {
   },
   overrides: [
     {
-      'files': ['*.test.ts'],
+      files: ['*.test.ts'],
       rules: {
         '@typescript-eslint/no-explicit-any': 'off'
       }

@@ -1,0 +1,39 @@
+{
+  "name": "@waves.exchange/provider-web-ui",
+  "private": true,
+  "version": "0.2.5",
+  "license": "MIT",
+  "scripts": {
+    "test": "jest",
+    "build": "vite build",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint --ext .ts,.tsx ./src"
+  },
+  "dependencies": {
+    "@emotion/core": "^10.0.22",
+    "@emotion/styled": "^10.0.23",
+    "@popperjs/core": "^2.6.0",
+    "@styled-system/css": "^5.1.4",
+    "@styled-system/should-forward-prop": "^5.1.4",
+    "@waves.exchange/react-uikit": "^0.5.21",
+    "@waves/bignumber": "^1.1.1",
+    "@waves/node-api-js": "^1.2.0",
+    "@waves/signer": "^1.0.0-a6",
+    "@waves/ts-types": "^1.0.2",
+    "@waves/waves-browser-bus": "0.2.5",
+    "@waves/waves-transactions": "^4.1.8",
+    "emotion-theming": "^10.0.19",
+    "ramda": "^0.26.1",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "styled-system": "^5.1.4",
+    "tslib": "^2.1.0"
+  },
+  "devDependencies": {
+    "@types/ramda": "^0.26.38",
+    "@types/react": "^17.0.0",
+    "@types/react-dom": "^17.0.0",
+    "@types/styled-system": "^5.1.4",
+    "@types/styled-system__css": "^5.0.4"
+  }
+}

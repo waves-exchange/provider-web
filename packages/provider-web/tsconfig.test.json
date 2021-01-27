@@ -1,0 +1,21 @@
+{
+  "extends": "./tsconfig.json",
+  "include": [
+    "src/**/*",
+  ],
+  "exclude": [],
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "types": [
+      "jest"
+    ]
+  }
+  // do not touch - will use later
+  // "compilerOptions": {
+  //   "baseUrl": ".",
+  //   "paths": {
+  //     "test-utils": ["../jest/test-utils.tsx"]
+  //   }
+  // }
+}

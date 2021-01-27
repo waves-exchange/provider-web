@@ -1,0 +1,22 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "typescript",
+      "label": "types",
+      "tsconfig": "tsconfig.json",
+      "problemMatcher": "$tsc-watch",
+      "runOptions": {
+        "instanceLimit": 1,
+      }
+    },
+    {
+      "type": "npm",
+      "script": "lint",
+      "problemMatcher": [
+        "$eslint-stylish"
+      ],
+      "label": "npm: lint"
+    }
+  ]
+}
