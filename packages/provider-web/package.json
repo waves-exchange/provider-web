@@ -1,6 +1,6 @@
 {
   "name": "@waves.exchange/provider-web",
-  "version": "0.2.5",
+  "version": "1.0.0",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -29,7 +29,7 @@
     "check-types": "tsc --noEmit",
     "lint": "eslint --ext .ts,.tsx ./src",
     "postversion": "npm publish",
-    "prepublishOnly": "npm run check-types && npm run test && npm run build"
+    "prepublishOnly": "npm run check-types && npm run build"
   },
   "dependencies": {
     "@waves/waves-browser-bus": "0.2.5",
