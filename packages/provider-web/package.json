@@ -9,7 +9,7 @@
   "module": "dist/provider-web.es.js",
   "browser": "./dist/provider-web.es.js",
   "unpkg": "dist/provider-web.min.js",
-  "types": "dist/types/provider/index.d.ts",
+  "types": "dist/types/index.d.ts",
   "files": [
     "dist"
   ],
