@@ -22,6 +22,7 @@
     "email": "support@waves.exchange"
   },
   "homepage": "https://waves.exchange",
+  "description": "ProviderWeb for Signer",
   "scripts": {
     "test": "jest",
     "build": "vite build && vite build -c ./vite.config.min.ts && tsc -p ./tsconfig.types.json",
@@ -31,7 +32,7 @@
     "prepublishOnly": "npm run check-types && npm run test && npm run build"
   },
   "dependencies": {
-    "@waves/waves-browser-bus": "^0.2.6",
+    "@waves/waves-browser-bus": "0.2.5",
     "tslib": "^2.1.0",
     "typed-ts-events": "^1.2.1"
   },
