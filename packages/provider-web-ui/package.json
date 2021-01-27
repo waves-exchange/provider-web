@@ -30,10 +30,10 @@
     "tslib": "^2.1.0"
   },
   "devDependencies": {
-    "@types/ramda": "^0.26.38",
+    "@types/ramda": "0.26.38",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
-    "@types/styled-system": "^5.1.4",
+    "@types/styled-system": "5.1.4",
     "@types/styled-system__css": "^5.0.4"
   }
 }
