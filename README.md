@@ -6,3 +6,5 @@ It can be installed via `npm i -g npm@7` and also it's built-in in node >=15 pac
 Use `npm run dev` for development. (port is 3000 by default).
 
 See packages/*/package.json `script` section for build, test, lint, etc.
+
+How to use https://github.com/waves-exchange/provider-web/blob/master/packages/provider-web/README.md
