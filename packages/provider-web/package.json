@@ -37,9 +37,9 @@
     "typed-ts-events": "^1.2.1"
   },
   "peerDependencies": {
-    "@waves/signer": "^1.0"
+    "@waves/signer": "1.x"
   },
   "devDependencies": {
-    "@waves/signer": "^1.0.0-a6"
+    "@waves/signer": "1.0.1"
   }
 }
