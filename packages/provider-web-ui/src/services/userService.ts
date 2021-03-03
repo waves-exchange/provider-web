@@ -43,7 +43,7 @@ export function getUsers(
 
                 switch (privateData.userType) {
                     case 'seed':
-                        const isEncoded = privateData.seed.includes('base58:');
+                        const isEncoded = privateData.seed.startsWith('base58:');
                         const seedBytes = isEncoded ?
                             libs.crypto.base58Decode(
                                 privateData.seed.replace('base58:', '')
@@ -56,7 +56,7 @@ export function getUsers(
                                 networkByte
                             ),
                             privateKey: libs.crypto.privateKey(
-                                privateData.seed
+                                seedBytes
                             ),
                         });
                         break;
