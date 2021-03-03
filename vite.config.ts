@@ -3,12 +3,8 @@ import reactRefresh from '@vitejs/plugin-react-refresh';
 
 export default defineConfig({
     plugins: [reactRefresh()],
-    alias: {
-        'node-fetch': '__browser-external',
-    },
     optimizeDeps: {
         include: [
-            'buffer',
             '@waves/node-api-js/es/api-node/addresses',
             '@waves/node-api-js/es/api-node/alias',
             '@waves/node-api-js/es/api-node/assets',
@@ -18,9 +14,8 @@ export default defineConfig({
             '@waves/node-api-js/es/tools/adresses/getAssetIdListByTx',
             '@waves/node-api-js/es/constants',
         ],
-        link: [
-            './packages/provider-web',
-            './packages/provider-web-ui',
+        exclude: [
+            'node-fetch'
         ]
     },
     build: {
