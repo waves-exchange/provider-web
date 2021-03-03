@@ -40,7 +40,7 @@ export default function (state: IState): () => Promise<UserData> {
                         isTermsAccepted={termsAccepted}
                         networkByte={state.networkByte}
                         onCancel={(): void => {
-                            reject('User rejection!');
+                            reject(new Error('User rejection!'));
                         }}
                         onConfirm={(user: IUser): void => {
                             state.user = user;
