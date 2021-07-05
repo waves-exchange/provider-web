@@ -48,10 +48,28 @@ export const LoginComponent: FC<IProps> = ({
 
     return (
         <Box bg="main.$800" width={520} borderRadius="$6" as="form">
-            <Flex height={65}>
+            <Flex
+                height={65}
+                p="20px 24px 20px 40px"
+                borderBottom="1px solid"
+                borderColor="#3a4050"
+                mb="32px"
+                position="relative"
+            >
+                <Text
+                    as="h2"
+                    fontSize="17px"
+                    lineHeight="24px"
+                    mb="24px"
+                    color="standard.$0"
+                    fontWeight={500}
+                    margin={0}
+                >
+                    {title}
+                </Text>
                 <IconButton
                     ml="auto"
-                    size={56}
+                    size={25}
                     color="basic.$700"
                     _hover={{ color: 'basic.$500' }}
                     onClick={onClose}
@@ -65,23 +83,23 @@ export const LoginComponent: FC<IProps> = ({
                 flexDirection="column"
                 justifyContent="center"
             >
-                {showNotification && (
-                    <Text
-                        fontSize="$13"
-                        lineHeight="$16"
-                        p={15}
-                        color="standard.$0"
-                        border="1px dashed"
-                        borderColor="main.$500"
-                        borderRadius="$4"
-                        my="$20"
-                        textAlign="left"
-                    >
-                        Don't worry! The dApp does not have access to your
-                        tokens, seed phrases or passwords. These are stored
-                        locally within your browser.
-                    </Text>
-                )}
+                {/*{showNotification && (*/}
+                {/*    <Text*/}
+                {/*        fontSize="$13"*/}
+                {/*        lineHeight="$16"*/}
+                {/*        p={15}*/}
+                {/*        color="standard.$0"*/}
+                {/*        border="1px dashed"*/}
+                {/*        borderColor="main.$500"*/}
+                {/*        borderRadius="$4"*/}
+                {/*        my="$20"*/}
+                {/*        textAlign="left"*/}
+                {/*    >*/}
+                {/*        Don't worry! The dApp does not have access to your*/}
+                {/*        tokens, seed phrases or passwords. These are stored*/}
+                {/*        locally within your browser.*/}
+                {/*    </Text>*/}
+                {/*)}*/}
 
                 {children ? (
                     children
@@ -103,22 +121,37 @@ export const LoginComponent: FC<IProps> = ({
                             autoFocus={true}
                             aria-invalid={Boolean(errorMessage)}
                         />
-                        <Text
-                            sx={{
-                                maxHeight: errorMessage
-                                    ? errorLineHeight
-                                    : '0px',
-                                overflow: 'hidden',
-                                transition: 'all 0.2s ease',
-                                transformOrigin: 'top',
-                                willChange: 'transform',
-                            }}
-                            fontSize={errorFontSize}
-                            lineHeight={errorLineHeight}
-                            color="danger.$300"
-                        >
-                            {errorMessage || <span>&nbsp;</span>}
-                        </Text>
+                        <Box>
+                            <Text
+                                sx={{
+                                    maxHeight: errorMessage
+                                        ? errorLineHeight
+                                        : '0px',
+                                    overflow: 'hidden',
+                                    transition: 'all 0.2s ease',
+                                    transformOrigin: 'top',
+                                    willChange: 'transform',
+                                }}
+                                fontSize={errorFontSize}
+                                lineHeight={errorLineHeight}
+                                color="danger.$300"
+                            >
+                                {errorMessage || <span>&nbsp;</span>}
+                            </Text>
+                            <ExternalLink
+                                display="block"
+                                textAlign="center"
+                                href={getEnvAwareUrl('/faq#25')}
+                                variant="body2"
+                                sx={{ float: 'right' }}
+                                fontSize="13px"
+                                lineHeight="16px"
+                                onClick={onForgotPasswordLinkClick}
+                            >
+                                Forgot your password?
+                            </ExternalLink>
+                        </Box>
+
                         <Button
                             type="submit"
                             variant="primary"
@@ -129,18 +162,18 @@ export const LoginComponent: FC<IProps> = ({
                         >
                             Log In
                         </Button>
-
-                        <ExternalLink
-                            display="block"
-                            textAlign="center"
-                            href={getEnvAwareUrl('/faq#25')}
-                            mt="$30"
-                            variant="body2"
-                            onClick={onForgotPasswordLinkClick}
-                        >
-                            Forgot your password?
-                        </ExternalLink>
                     </>
+                )}
+                {children ? null : (
+                    <Box pt="24px" textAlign="center" fontWeight={300}>
+                        <Text variant="footnote1" color="basic.$500">
+                            Waves.Exchange
+                        </Text>
+                        <Text variant="footnote1" color="basic.$700">
+                            {' '}
+                            provider is used.{' '}
+                        </Text>
+                    </Box>
                 )}
             </Flex>
         </Box>
