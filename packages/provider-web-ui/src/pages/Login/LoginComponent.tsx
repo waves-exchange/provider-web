@@ -65,17 +65,6 @@ export const LoginComponent: FC<IProps> = ({
                 flexDirection="column"
                 justifyContent="center"
             >
-                <Icon display="block" mx="auto" size={80} icon={iconLogo} />
-                <Heading
-                    level={2}
-                    textAlign="center"
-                    mt="$20"
-                    color="standard.$0"
-                    fontWeight={500}
-                >
-                    {title}
-                </Heading>
-
                 {showNotification && (
                     <Text
                         fontSize="$13"
