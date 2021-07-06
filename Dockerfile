@@ -3,6 +3,7 @@ COPY . /app/
 WORKDIR /app
 RUN npm ci
 WORKDIR /app/packages/provider-web-ui
+RUN npm ci
 RUN npm run build
 
 FROM nginx:1.17-alpine
