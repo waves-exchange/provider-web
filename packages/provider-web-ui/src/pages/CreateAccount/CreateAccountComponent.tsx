@@ -243,7 +243,7 @@ export const CreateAccountComponent: FC<CreateAccountComponentProps> = ({
                     onClick={onSubmit}
                     disabled={isSubmitDisabled}
                 >
-                    Sign Up
+                    Create Account
                 </Button>
                 <Text
                     variant="footnote1"
