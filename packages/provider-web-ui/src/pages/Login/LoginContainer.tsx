@@ -136,9 +136,7 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
 
     const hasMultipleUsers = users && users.length > 1;
     const isSubmitDisabled = !password || !password.length || !!errorMessage;
-    const title = hasMultipleUsers
-        ? 'Select Account'
-        : 'Log In with Waves.Exchange';
+    const title = hasMultipleUsers ? 'Select Account' : 'Log In';
 
     return (
         <LoginComponent

@@ -78,10 +78,28 @@ export const CreateAccountComponent: FC<CreateAccountComponentProps> = ({
             borderRadius="$6"
             boxShadow="0 0 30px rgba(0, 0, 0, 0.15)"
         >
-            <Flex height={65}>
+            <Flex
+                height={65}
+                p="20px 24px 20px 40px"
+                borderBottom="1px solid"
+                borderColor="#3a4050"
+                mb="32px"
+                position="relative"
+            >
+                <Text
+                    as="h2"
+                    fontSize="17px"
+                    lineHeight="24px"
+                    mb="24px"
+                    color="standard.$0"
+                    fontWeight={500}
+                    margin={0}
+                >
+                    Create account
+                </Text>
                 <IconButton
                     ml="auto"
-                    size={56}
+                    size={22}
                     color="basic.$700"
                     _hover={{ color: 'basic.$500' }}
                     onClick={onClose}
@@ -95,37 +113,6 @@ export const CreateAccountComponent: FC<CreateAccountComponentProps> = ({
                 flexDirection="column"
                 justifyContent="center"
             >
-                <Icon display="block" mx="auto" size={80} icon={iconLogo} />
-                <Heading
-                    level={2}
-                    textAlign="center"
-                    mt="$20"
-                    mb="$10"
-                    color="standard.$0"
-                    fontWeight={500}
-                >
-                    Log In with Waves.Exchange
-                </Heading>
-
-                <Flex justifyContent="center" alignItems="center" mb="$20">
-                    <Text
-                        variant="body1"
-                        textAlign="center"
-                        color="basic.$500"
-                        mr="6px"
-                    >
-                        Create account.
-                    </Text>
-                    <Help direction="bottom">
-                        <Box width="300px">
-                            <Text>
-                                The dApp won't have access to your password.
-                                This is stored locally within your browser.
-                            </Text>
-                        </Box>
-                    </Help>
-                </Flex>
-
                 <Label
                     htmlFor={inputPasswordId}
                     pb="$5"
@@ -256,23 +243,17 @@ export const CreateAccountComponent: FC<CreateAccountComponentProps> = ({
                     onClick={onSubmit}
                     disabled={isSubmitDisabled}
                 >
-                    Sign Up
+                    Create Account
                 </Button>
                 <Text
-                    variant="body2"
+                    variant="footnote1"
                     mt="$20"
                     textAlign="center"
-                    color="basic.$500"
+                    color="basic.$700"
                 >
                     If you had an account, visit{' '}
-                    <ExternalLink
-                        href={getEnvAwareUrl()}
-                        variant="body2"
-                        onClick={onExchangeLinkClick}
-                    >
-                        Waves.Exchange
-                    </ExternalLink>{' '}
-                    to restore it.
+                    <Text color="basic.$500">Waves.Exchange</Text> to restore
+                    it.
                 </Text>
             </Flex>
         </Box>

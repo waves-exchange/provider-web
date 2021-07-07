@@ -1,4 +1,4 @@
-import { Flex, Spinner } from '@waves.exchange/react-uikit';
+import { Flex, DotLoader } from '@waves.exchange/react-uikit';
 import React from 'react';
 
 export default function (): React.ReactElement {
@@ -12,7 +12,7 @@ export default function (): React.ReactElement {
             borderRadius="$6"
             height="584px"
         >
-            <Spinner />
+            <DotLoader />
         </Flex>
     );
 }
