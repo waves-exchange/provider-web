@@ -14,7 +14,7 @@ export function getConnectHandler(
                 state.networkByte === 87
                     ? '1b7892a92d0e56a667df25583600fff3'
                     : 'ca96b9de2a3dd00b62ec70f7ef6ffb3e',
-            libraryUrl: 'https://waves.exchange/amplitude.js', // TODO Still don't know how to use shared files like this
+            libraryUrl: 'https://waves.exchange/amplitude.js',
             initializeMethod: 'amplitudeInit',
             sendMethod: 'amplitudePushEvent',
             type: 'logic',
@@ -23,7 +23,7 @@ export function getConnectHandler(
         analytics.addApi({
             apiToken:
                 state.networkByte === 87 ? 'UA-154392329-1' : 'UA-154392329-2',
-            libraryUrl: 'https://waves.exchange/googleAnalytics.js', // TODO ???
+            libraryUrl: 'https://waves.exchange/googleAnalytics.js',
             initializeMethod: 'gaInit',
             sendMethod: 'gaPushEvent',
             type: 'ui',

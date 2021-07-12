@@ -12,7 +12,7 @@ const queue = new Queue(3);
 
 analytics.init({
     platform: 'web',
-    userType: 'unknown',
+    userType: 'provider-web',
     referrer: document.referrer,
 });
 
