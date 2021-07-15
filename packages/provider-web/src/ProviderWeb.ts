@@ -83,14 +83,6 @@ export class ProviderWeb implements Provider {
 
         const iframe = this._transport.get();
 
-        if (isSafari()) {
-            const win = iframe.contentWindow?.open(this._clientUrl);
-
-            if (!win) {
-                throw new Error('Window was blocked');
-            }
-        }
-
         iframe.src = this._clientUrl;
 
         return this._transport.dialog((bus) =>
