@@ -12,12 +12,14 @@ export default function (
     const bytes = libs.crypto.stringToBytes(String(data));
     const base64 = 'base64:' + libs.crypto.base64Encode(bytes);
 
-    const { signature } = customData(
+    const { signature, ...props } = customData(
         {
             binary: base64,
             version: 1,
         },
-        state.user.privateKey
+        {
+            privateKey: state.user.privateKey,
+        }
     );
 
     return new Promise((resolve, reject) => {

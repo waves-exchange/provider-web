@@ -2,6 +2,7 @@ import React, { useEffect, useMemo } from 'react';
 import { render } from 'react-dom';
 import { Signer } from '@waves/signer';
 import { ProviderWeb } from './packages/provider-web/src';
+import * as wt from '@waves/waves-transactions';
 
 const url = location.href.includes('provider=exchange')
     ? 'https://signer.exchange/signer'
@@ -11,9 +12,37 @@ const node = location.href.includes('mainnet')
     ? 'https://nodes.wavesplatform.com'
     : 'https://nodes-testnet.wavesnodes.com';
 
+
+const testSignMessage = async (signer: Signer, setValue) => {
+    const chain_code = location.href.includes('mainnet') ? "W" : "T";
+    const client_id = "waves.exchange";
+    const seconds = Math.round((Date.now() + 1000 * 60 * 60 * 24 * 7) / 1000);
+    const message = `${chain_code}:${client_id}:${seconds}`;
+
+    const { publicKey } = await signer.login();
+    const signature = await signer.signMessage(message);
+    const url = `https://api${chain_code === 'T' ? '-testnet' : ''}.waves.exchange/v1/oauth2/token`;
+    const data = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-type': 'application/x-www-form-urlencoded'
+        },
+        body: [
+            "grant_type=password",
+            "scope=general",
+            `username=${encodeURIComponent(publicKey)}`,
+            "password=" + encodeURIComponent(`${seconds}:${signature}`),
+            `client_id=${client_id}`
+        ].join('&')
+    }).then(result => result.json());
+    setValue(data.access_token);
+};
+
 function TestApp(): React.ReactElement {
     const provider = useMemo(() => new ProviderWeb(url, true), []);
     const signer = useMemo(() => new Signer({ NODE_URL: node }), []);
+
+    const [ token, setToken ] = React.useState('');
 
     useEffect(() => {
         signer.setProvider(provider);
@@ -274,6 +303,24 @@ function TestApp(): React.ReactElement {
                 >
                     Sign Lorem ipsum dolor sit amet...
                 </button>
+            </div>
+
+            <div>
+                <h2>Sign Message2</h2>
+                <div style={{
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    width: '200px',
+                    display: 'inline-block'
+                }}>Token: { token }</div>
+                <div>
+                <button
+                    onClick={() => testSignMessage(signer, setToken)}
+                >
+                    Get token
+                </button>
+                </div>
             </div>
 
             <div>
