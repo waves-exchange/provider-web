@@ -12,7 +12,7 @@ export default function (
     const bytes = libs.crypto.stringToBytes(String(data));
     const base64 = 'base64:' + libs.crypto.base64Encode(bytes);
 
-    const { signature, ...props } = customData(
+    const { signature } = customData(
         {
             binary: base64,
             version: 1,
