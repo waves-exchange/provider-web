@@ -1,5 +1,6 @@
 import { IQueue, Queue } from './Queue';
 import { TBus, ITransport } from './interface';
+import { createError } from './createError';
 
 export abstract class Transport<T> implements ITransport<T> {
     private readonly _queue: IQueue;
@@ -40,7 +41,7 @@ export abstract class Transport<T> implements ITransport<T> {
                     .catch((error) => {
                         this._runAfterShow();
 
-                        return Promise.reject(error);
+                        return Promise.reject(createError(error));
                     });
             } else {
                 return Promise.reject(new Error('Queue is full!'));
