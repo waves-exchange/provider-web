@@ -55,7 +55,7 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
 
             if (users) {
                 analytics.send({
-                    name: 'Login_Page_Login_Click_Success',
+                    name: 'Login_Page_SignIn_Success',
                     params: {
                         Accounts_Length: users.length,
                     },
