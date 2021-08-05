@@ -151,7 +151,8 @@ function TestApp(): React.ReactElement {
                         onClick={() => {
                             signer
                                 .transfer({
-                                    amount: 10000000,
+                                    amount: 100000,
+                                    assetId: '5Sh9KghfkZyhjwuodovDhB6PghDUGBHiAPZ4MkrPgKtX',
                                     recipient: 'merry',
                                     attachment: null,
                                 })
