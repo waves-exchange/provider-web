@@ -12,6 +12,7 @@ import { config } from '@waves/waves-browser-bus';
 import { EventEmitter } from 'typed-ts-events';
 import { ITransport } from './interface';
 import { TransportIframe, isSafari } from './TransportIframe';
+import { createError } from './createError';
 
 export class ProviderWeb implements Provider {
     public user: UserData | null = null;
@@ -104,7 +105,7 @@ export class ProviderWeb implements Provider {
                 .catch((err) => {
                     this._transport.dropConnection();
 
-                    return Promise.reject(err);
+                    return Promise.reject(createError(err));
                 })
         );
     }

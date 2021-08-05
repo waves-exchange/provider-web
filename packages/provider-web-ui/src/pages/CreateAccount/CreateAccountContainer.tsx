@@ -103,7 +103,7 @@ export const CreateAccount: FC<CreateAccountProps> = ({
             return void 0;
         }
 
-        analytics.send({ name: 'Create_Account_Page_Sign_In_Click' });
+        analytics.send({ name: 'Login_Page_SignUp_Success' });
 
         onConfirm({
             address: libs.crypto.address(
