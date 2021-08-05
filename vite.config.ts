@@ -3,6 +3,9 @@ import reactRefresh from '@vitejs/plugin-react-refresh';
 
 export default defineConfig({
     plugins: [reactRefresh()],
+    server: {
+        port: 3000
+    },
     optimizeDeps: {
         include: [
             '@waves/node-api-js/es/api-node/addresses',
