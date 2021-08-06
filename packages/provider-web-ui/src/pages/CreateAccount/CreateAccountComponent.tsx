@@ -1,26 +1,15 @@
 import {
     Box,
     Button,
-    Checkbox,
     ExternalLink,
     Flex,
-    Heading,
     Icon,
     IconButton,
     iconClose,
-    iconLogo,
-    InputPassword,
-    Label,
     Text,
-    Help,
+    PlateNote,
 } from '@waves.exchange/react-uikit';
-import React, {
-    ChangeEventHandler,
-    FC,
-    FocusEventHandler,
-    MouseEventHandler,
-} from 'react';
-import { getEnvAwareUrl } from '../../utils/getEnvAwareUrl';
+import React, { FC, MouseEventHandler, } from 'react';
 
 export type CreateAccountFormErrors = {
     passwordsDoNotMatch: string | null;
@@ -29,48 +18,10 @@ export type CreateAccountFormErrors = {
 };
 
 type CreateAccountComponentProps = {
-    inputPasswordId: string;
-    inputPasswordConfirmId: string;
-    checkboxPrivacyId: string;
-    checkboxTermsId: string;
-    errors: CreateAccountFormErrors;
-    password: string;
-    passwordConfirm: string;
-    showTerms: boolean;
-    isPrivacyAccepted: boolean;
-    isTermsAccepted: boolean;
-    isSubmitDisabled: boolean;
     onClose: MouseEventHandler<HTMLButtonElement>;
-    onPasswordChange: ChangeEventHandler<HTMLInputElement>;
-    onPasswordConfirmChange: ChangeEventHandler<HTMLInputElement>;
-    onPrivacyAcceptedChange: ChangeEventHandler<HTMLInputElement>;
-    onTermsAcceptedChange: ChangeEventHandler<HTMLInputElement>;
-    onSubmit: MouseEventHandler<HTMLButtonElement>;
-    onPasswordInputBlur: FocusEventHandler<HTMLInputElement>;
-    onExchangeLinkClick: MouseEventHandler;
 };
 
-export const CreateAccountComponent: FC<CreateAccountComponentProps> = ({
-    errors,
-    showTerms,
-    isPrivacyAccepted,
-    isTermsAccepted,
-    onPrivacyAcceptedChange,
-    onTermsAcceptedChange,
-    inputPasswordId,
-    inputPasswordConfirmId,
-    checkboxPrivacyId,
-    checkboxTermsId,
-    onClose,
-    onSubmit,
-    password,
-    passwordConfirm,
-    onPasswordChange,
-    onPasswordConfirmChange,
-    isSubmitDisabled,
-    onPasswordInputBlur,
-    onExchangeLinkClick,
-}) => {
+export const CreateAccountComponent: FC<CreateAccountComponentProps> = ({ onClose }) => {
     return (
         <Box
             bg="main.$800"
@@ -113,148 +64,27 @@ export const CreateAccountComponent: FC<CreateAccountComponentProps> = ({
                 flexDirection="column"
                 justifyContent="center"
             >
-                <Label
-                    htmlFor={inputPasswordId}
-                    pb="$5"
-                    variant="body2"
-                    color="standard.$0"
-                >
-                    Create Password
-                </Label>
-                <InputPassword
-                    id={inputPasswordId}
-                    value={password}
-                    aria-invalid={Boolean(
-                        errors.passwordMinLength || errors.passwordInsecure
-                    )}
-                    onChange={onPasswordChange}
-                    onBlur={onPasswordInputBlur}
-                />
-
-                {errors.passwordMinLength && (
-                    <Text
-                        fontSize="12px"
-                        lineHeight="14px"
-                        color="danger.$300"
-                        textAlign="right"
-                        display="inline-block"
+                <Box color="#c5d0de" fontSize="15px" lineHeight="20px" textAlign="center" mb="24px">
+                    You have not imported any seed accounts. Please go to the Waves.exchange
+                    <ExternalLink href="https://waves.exchange/sign-up/software"> Sign Up </ExternalLink>
+                    Sign Up page and create your account.
+                </Box>
+                <PlateNote type="warning" mb="24px">
+                    <Box color="warning.$500" fontSize="14px" lineHeight="20px" mb="8px">If I can't find my account</Box>
+                    <Box fontSize="13px" lineHeight="16px" color="basic.$300">
+                        This could happen if you cleared your browser cache or started using a new browser or new device. You need to create a password again on the registration page and import your existing account with your seed, private key or Keystore File.
+                    </Box>
+                </PlateNote>
+                <ExternalLink href="https://waves.exchange/sign-up/software">
+                    <Button
+                        variant="primary"
+                        variantSize="medium"
                         width="100%"
                     >
-                        {errors.passwordMinLength}
-                    </Text>
-                )}
+                        Create Account
+                    </Button>
+                </ExternalLink>
 
-                {errors.passwordInsecure && (
-                    <Text
-                        fontSize="12px"
-                        lineHeight="14px"
-                        color="danger.$300"
-                        textAlign="right"
-                        display="inline-block"
-                        width="100%"
-                    >
-                        {errors.passwordInsecure}
-                    </Text>
-                )}
-
-                <Label
-                    htmlFor={inputPasswordConfirmId}
-                    mt="16px"
-                    pb="$5"
-                    variant="body2"
-                    color="standard.$0"
-                >
-                    Confirm Password
-                </Label>
-                <InputPassword
-                    mb="$10"
-                    id={inputPasswordConfirmId}
-                    value={passwordConfirm}
-                    aria-invalid={Boolean(errors.passwordsDoNotMatch)}
-                    onChange={onPasswordConfirmChange}
-                    onBlur={onPasswordInputBlur}
-                />
-
-                {errors.passwordsDoNotMatch && (
-                    <Text
-                        fontSize="12px"
-                        lineHeight="12px"
-                        color="danger.$300"
-                        textAlign="right"
-                        display="inline-block"
-                        width="100%"
-                    >
-                        {errors.passwordsDoNotMatch}
-                    </Text>
-                )}
-
-                {showTerms ? (
-                    <>
-                        <Flex alignItems="center" mt="$20">
-                            <Checkbox
-                                color="standard.$0"
-                                id={checkboxPrivacyId}
-                                checked={isPrivacyAccepted}
-                                onChange={onPrivacyAcceptedChange}
-                            >
-                                <Text pl="$10" variant="body2">
-                                    I have read and agree with the&nbsp;
-                                </Text>
-                            </Checkbox>
-                            <ExternalLink
-                                href={getEnvAwareUrl(
-                                    '/files/Privacy_Policy_Waves.Exchange.pdf'
-                                )}
-                                variant="body2"
-                            >
-                                Privacy Policy
-                            </ExternalLink>
-                        </Flex>
-
-                        <Flex alignItems="center" mt="$20">
-                            <Checkbox
-                                color="standard.$0"
-                                id={checkboxTermsId}
-                                checked={isTermsAccepted}
-                                onChange={onTermsAcceptedChange}
-                            >
-                                <Text pl="$10" variant="body2">
-                                    I have read and agree with the&nbsp;
-                                </Text>
-                            </Checkbox>
-                            <ExternalLink
-                                href={getEnvAwareUrl(
-                                    '/files/Terms_Of_Use_Waves.Exchange.pdf'
-                                )}
-                                variant="body2"
-                                target="_blank"
-                            >
-                                Terms and Conditions
-                            </ExternalLink>
-                        </Flex>
-                    </>
-                ) : null}
-
-                <Button
-                    type="submit"
-                    variant="primary"
-                    variantSize="medium"
-                    mt="$30"
-                    onClick={onSubmit}
-                    disabled={isSubmitDisabled}
-                >
-                    Create Account
-                </Button>
-                <Text
-                    variant="footnote1"
-                    mt="$20"
-                    textAlign="center"
-                    color="basic.$700"
-                >
-                    If you had an account, visit{' '}
-                    <Text color="basic.$500">Waves.Exchange</Text> to restore
-                    it.
-                </Text>
             </Flex>
         </Box>
     );
