@@ -67,7 +67,7 @@ export const CreateAccountComponent: FC<CreateAccountComponentProps> = ({ onClos
                 <Box color="#c5d0de" fontSize="15px" lineHeight="20px" textAlign="center" mb="24px">
                     You have not imported any seed accounts. Please go to the Waves.exchange
                     <ExternalLink href="https://waves.exchange/sign-up/software"> Sign Up </ExternalLink>
-                    Sign Up page and create your account.
+                    page and create your account.
                 </Box>
                 <PlateNote type="warning" mb="24px">
                     <Box color="warning.$500" fontSize="14px" lineHeight="20px" mb="8px">If I can't find my account</Box>
