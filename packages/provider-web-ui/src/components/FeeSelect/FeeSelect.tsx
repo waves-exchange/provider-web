@@ -79,17 +79,21 @@ export const FeeSelect: FC<Props & BoxProps> = ({
         setSelectedFeeOption(feeOptions[0]);
     }, [feeOptions]);
 
-    const handleFeeSelect = useCallback(
-        (feeOption: FeeOption) => {
-            setSelectedFeeOption(feeOption);
-
-            const feeAssetId = feeOption.id;
+    useEffect(() => {
+        if (selectedFeeOption) {
+            const feeAssetId = selectedFeeOption.id;
             const fee = getCoins(
-                feeOption.value,
-                getAssetProp(feeOption.id, 'decimals')
+                selectedFeeOption.value,
+                getAssetProp(selectedFeeOption.id, 'decimals')
             );
 
             onFeeSelect(fee, feeAssetId);
+        }
+    }, [selectedFeeOption]);
+
+    const handleFeeSelect = useCallback(
+        (feeOption: FeeOption) => {
+            setSelectedFeeOption(feeOption);
         },
         [getAssetProp, onFeeSelect]
     );
