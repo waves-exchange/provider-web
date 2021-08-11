@@ -254,6 +254,10 @@ export class TransportIframe extends Transport<HTMLIFrameElement> {
     }
 }
 
+export function isBrave(): boolean {
+    return !!(navigator as any).brave?.isBrave;
+}
+
 export function isSafari(): boolean {
     const userAgent = navigator.userAgent.toLowerCase();
     const isSafariUA =

@@ -8,3 +8,7 @@ export function isSafari(): boolean {
 
     return iOS || isSafariUA;
 }
+
+export function isBrave(): boolean {
+    return !!(navigator as any).brave?.isBrave;
+}

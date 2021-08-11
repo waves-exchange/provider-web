@@ -5,7 +5,7 @@ import { getSignHandler } from './handlers/sign';
 import { getSignMessageHandler } from './handlers/signMessage';
 import { IBusEvents, IState, IUser, TBusHandlers } from './interface';
 import { analytics } from './utils/analytics';
-import { isSafari } from './utils/isSafari';
+import { isSafari, isBrave } from './utils/isSafari';
 import { Queue } from './utils/Queue';
 
 const queue = new Queue(3);
@@ -18,8 +18,8 @@ analytics.init({
 });
 
 const isLoginWindowInSafari =
-    window.top === window && window.opener && isSafari();
-const isIframeSafari = window.top !== window && isSafari();
+    window.top === window && window.opener && (isSafari() || isBrave());
+const isIframeSafari = window.top !== window && (isSafari() || isBrave());
 
 if (isLoginWindowInSafari) {
     const intervalId = setInterval(() => {
