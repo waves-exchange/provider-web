@@ -5,11 +5,7 @@ import { IUser } from '../interface';
 import { IState } from '../interface';
 import { CreateAccount } from '../pages/CreateAccount/CreateAccountContainer';
 import { Login } from '../pages/Login/LoginContainer';
-import {
-    hasMultiaccount,
-    isTermsAccepted,
-    saveTerms,
-} from '../services/userService';
+import { hasMultiaccount, saveTerms } from '../services/userService';
 import { analytics } from '../utils/analytics';
 import renderPage from '../utils/renderPage';
 
@@ -25,7 +21,6 @@ export default function (state: IState): () => Promise<UserData> {
         } else {
             const hasMultiacc = hasMultiaccount();
             const Page = hasMultiacc ? Login : CreateAccount;
-            const termsAccepted = isTermsAccepted();
 
             analytics.send({
                 name: hasMultiacc
@@ -36,8 +31,6 @@ export default function (state: IState): () => Promise<UserData> {
             return new Promise((resolve, reject) => {
                 renderPage(
                     <Page
-                        isPrivacyAccepted={termsAccepted}
-                        isTermsAccepted={termsAccepted}
                         networkByte={state.networkByte}
                         onCancel={(): void => {
                             reject(new Error('User rejection!'));
