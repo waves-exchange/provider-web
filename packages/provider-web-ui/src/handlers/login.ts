@@ -7,7 +7,7 @@ import { IQueue } from '../utils/Queue';
 import { IState } from '../interface';
 import login from '../router/login';
 import { analytics } from '../utils/analytics';
-import { isSafari } from '../utils/isSafari';
+import { isBrave, isSafari } from '../utils/isSafari';
 import { preload, toQueue } from './helpers';
 
 export const getLoginHandler = (
@@ -17,7 +17,7 @@ export const getLoginHandler = (
     toQueue(queue, () => {
         preload();
 
-        if (window.top !== window && isSafari()) {
+        if (window.top !== window && (isSafari() || isBrave())) {
             const loginAndClose = (
                 bus: TBus,
                 resolve: (userData: UserData) => void,

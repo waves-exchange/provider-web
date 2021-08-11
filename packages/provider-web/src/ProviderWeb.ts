@@ -11,7 +11,7 @@ import {
 import { config } from '@waves/waves-browser-bus';
 import { EventEmitter } from 'typed-ts-events';
 import { ITransport } from './interface';
-import { TransportIframe, isSafari } from './TransportIframe';
+import { TransportIframe, isSafari, isBrave } from './TransportIframe';
 import { createError } from './createError';
 
 export class ProviderWeb implements Provider {
@@ -84,7 +84,7 @@ export class ProviderWeb implements Provider {
 
         const iframe = this._transport.get();
 
-        if (isSafari()) {
+        if (isSafari() || isBrave()) {
             const win = iframe.contentWindow?.open(this._clientUrl);
 
             if (!win) {
