@@ -10,11 +10,18 @@ import { Queue } from './utils/Queue';
 
 const queue = new Queue(3);
 
+const referrerURL = new URL(document.referrer);
+const referrer = referrerURL.origin;
+const referrerPathname = referrerURL.pathname?.replace('/', '').length
+    ? referrerURL.pathname
+    : undefined;
+
 analytics.init({
     platform: 'web',
     userType: 'unknown',
     providerType: 'provider-web',
-    referrer: document.referrer,
+    referrer,
+    referrerPathname,
 });
 
 const isLoginWindowInSafari =
