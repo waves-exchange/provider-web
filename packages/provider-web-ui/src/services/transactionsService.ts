@@ -112,7 +112,7 @@ export const prepareTransactions = (
 
     return Promise.all([
         transactionsWithFee,
-        loadAssets.then(loadLogoInfo(state.nodeUrl, state.networkByte)),
+        loadAssets.then(loadLogoInfo(state.networkByte)),
         fetchFeeList,
         loadAliases(state.nodeUrl, aliases),
         loadInfo(state.nodeUrl),
