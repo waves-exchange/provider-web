@@ -8,7 +8,6 @@ import { Login } from '../pages/Login/LoginContainer';
 import { hasMultiaccount, saveTerms } from '../services/userService';
 import { analytics } from '../utils/analytics';
 import renderPage from '../utils/renderPage';
-import { isBrave, isSafari } from '../utils/isSafari';
 
 export default function (state: IState): () => Promise<UserData> {
     return (): Promise<UserData> => {
@@ -21,14 +20,16 @@ export default function (state: IState): () => Promise<UserData> {
             });
         } else {
             let isIncognito = false;
+            let hasMultiacc = false;
             try {
                 localStorage.setItem('___test_storage_key___', 'test');
                 localStorage.getItem('___test_storage_key___')
                 localStorage.removeItem('___test_storage_key___');
+                hasMultiacc = hasMultiaccount();
             } catch(e) {
                 isIncognito = true;
             }
-            const hasMultiacc = hasMultiaccount();
+            
             const Page = hasMultiacc ? Login : CreateAccount;
 
             analytics.send({
