@@ -21,15 +21,15 @@ export default function (state: IState): () => Promise<UserData> {
             });
         } else {
             let isIncognito = false;
-            if (!isSafari() && !isBrave()) {
-                try {
-                    localStorage.setItem('___test_storage_key___', 'test');
-                } catch(e) {
-                    isIncognito = true;
-                }
+            try {
+                localStorage.setItem('___test_storage_key___', 'test');
+                localStorage.getItem('___test_storage_key___')
+                localStorage.removeItem('___test_storage_key___');
+            } catch(e) {
+                isIncognito = true;
             }
             const hasMultiacc = hasMultiaccount();
-            const Page = hasMultiacc ? Login : CreateAccount;
+            const Page = !hasMultiacc ? Login : CreateAccount;
 
             analytics.send({
                 name: hasMultiacc
