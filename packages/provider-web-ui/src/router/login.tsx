@@ -29,7 +29,7 @@ export default function (state: IState): () => Promise<UserData> {
                 isIncognito = true;
             }
             const hasMultiacc = hasMultiaccount();
-            const Page = !hasMultiacc ? Login : CreateAccount;
+            const Page = hasMultiacc ? Login : CreateAccount;
 
             analytics.send({
                 name: hasMultiacc
