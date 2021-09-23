@@ -10,6 +10,7 @@ import {
     iconLogo,
     InputPassword,
     Label,
+    PlateNote,
     Text,
 } from '@waves.exchange/react-uikit';
 import React, { ChangeEventHandler, FC, MouseEventHandler } from 'react';
@@ -28,6 +29,7 @@ interface IProps {
     onPasswordChange: ChangeEventHandler<HTMLInputElement>;
     onLogin: MouseEventHandler<HTMLButtonElement>;
     onForgotPasswordLinkClick: MouseEventHandler;
+    isIncognito: boolean;
 }
 
 export const LoginComponent: FC<IProps> = ({
@@ -41,6 +43,7 @@ export const LoginComponent: FC<IProps> = ({
     errorMessage,
     onForgotPasswordLinkClick,
     isSubmitDisabled,
+    isIncognito,
     children,
 }) => {
     const errorFontSize = '13px';
@@ -104,65 +107,72 @@ export const LoginComponent: FC<IProps> = ({
                 {children ? (
                     children
                 ) : (
-                    <>
-                        <Label
-                            htmlFor={inputPasswordId}
-                            pb="$5"
-                            variant="body2"
-                            color="standard.$0"
-                        >
-                            Password
-                        </Label>
-                        <InputPassword
-                            mb="$10"
-                            id={inputPasswordId}
-                            value={password}
-                            onChange={onPasswordChange}
-                            autoFocus={true}
-                            aria-invalid={Boolean(errorMessage)}
-                        />
-                        <Box>
-                            <Text
-                                sx={{
-                                    maxHeight: errorMessage
-                                        ? errorLineHeight
-                                        : '0px',
-                                    overflow: 'hidden',
-                                    transition: 'all 0.2s ease',
-                                    transformOrigin: 'top',
-                                    willChange: 'transform',
-                                }}
-                                fontSize={errorFontSize}
-                                lineHeight={errorLineHeight}
-                                color="danger.$300"
-                            >
-                                {errorMessage || <span>&nbsp;</span>}
-                            </Text>
-                            <ExternalLink
-                                display="block"
-                                textAlign="center"
-                                href={getEnvAwareUrl('/faq#25')}
+                    !isIncognito ? (
+                        <>
+                            <Label
+                                htmlFor={inputPasswordId}
+                                pb="$5"
                                 variant="body2"
-                                sx={{ float: 'right' }}
-                                fontSize="13px"
-                                lineHeight="16px"
-                                onClick={onForgotPasswordLinkClick}
+                                color="standard.$0"
                             >
-                                Forgot your password?
-                            </ExternalLink>
-                        </Box>
+                                Password
+                            </Label>
+                            <InputPassword
+                                mb="$10"
+                                id={inputPasswordId}
+                                value={password}
+                                onChange={onPasswordChange}
+                                autoFocus={true}
+                                aria-invalid={Boolean(errorMessage)}
+                            />
+                            <Box>
+                                <Text
+                                    sx={{
+                                        maxHeight: errorMessage
+                                            ? errorLineHeight
+                                            : '0px',
+                                        overflow: 'hidden',
+                                        transition: 'all 0.2s ease',
+                                        transformOrigin: 'top',
+                                        willChange: 'transform',
+                                    }}
+                                    fontSize={errorFontSize}
+                                    lineHeight={errorLineHeight}
+                                    color="danger.$300"
+                                >
+                                    {errorMessage || <span>&nbsp;</span>}
+                                </Text>
+                                <ExternalLink
+                                    display="block"
+                                    textAlign="center"
+                                    href={getEnvAwareUrl('/faq#25')}
+                                    variant="body2"
+                                    sx={{ float: 'right' }}
+                                    fontSize="13px"
+                                    lineHeight="16px"
+                                    onClick={onForgotPasswordLinkClick}
+                                >
+                                    Forgot your password?
+                                </ExternalLink>
+                            </Box>
 
-                        <Button
-                            type="submit"
-                            variant="primary"
-                            variantSize="medium"
-                            mt="$20"
-                            onClick={onLogin}
-                            disabled={isSubmitDisabled}
-                        >
-                            Log In
-                        </Button>
-                    </>
+                            <Button
+                                type="submit"
+                                variant="primary"
+                                variantSize="medium"
+                                mt="$20"
+                                onClick={onLogin}
+                                disabled={isSubmitDisabled}
+                            >
+                                Log In
+                            </Button>
+                        </>
+                    ) : (
+                        <PlateNote type="error" color="standard.$0" fontSize="14px" lineHeight="20px">
+                            The authorization in the incognito mode is unavailable.
+                            Please, exit from the incognito mode and try again.
+                        </PlateNote>
+                    )
                 )}
                 {children ? null : (
                     <Box pt="24px" textAlign="center" fontWeight={300}>

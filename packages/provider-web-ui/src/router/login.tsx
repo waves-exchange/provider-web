@@ -19,7 +19,17 @@ export default function (state: IState): () => Promise<UserData> {
                 }),
             });
         } else {
-            const hasMultiacc = hasMultiaccount();
+            let isIncognito = false;
+            let hasMultiacc = false;
+            try {
+                localStorage.setItem('___test_storage_key___', 'test');
+                localStorage.getItem('___test_storage_key___')
+                localStorage.removeItem('___test_storage_key___');
+                hasMultiacc = hasMultiaccount();
+            } catch(e) {
+                isIncognito = true;
+            }
+            
             const Page = hasMultiacc ? Login : CreateAccount;
 
             analytics.send({
@@ -45,6 +55,7 @@ export default function (state: IState): () => Promise<UserData> {
                                 }),
                             });
                         }}
+                        isIncognito={isIncognito}
                     />
                 );
             });

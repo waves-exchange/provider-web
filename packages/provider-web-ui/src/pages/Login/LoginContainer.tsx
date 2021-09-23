@@ -16,9 +16,10 @@ interface IProps {
     networkByte: number;
     onConfirm: (user: IUser) => void;
     onCancel: () => void;
+    isIncognito: boolean;
 }
 
-export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
+export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel, isIncognito }) => {
     const [errorMessage, setErrorMessage] = useState<string>();
     const [currentUser, setCurrentUser] = useState<StorageUser>();
     const [users, setUsers] = useState<StorageUser[]>();
@@ -150,6 +151,7 @@ export const Login: FC<IProps> = ({ networkByte, onConfirm, onCancel }) => {
             onPasswordChange={handlePasswordChange}
             onForgotPasswordLinkClick={handleForgotPasswordLinkClick}
             isSubmitDisabled={isSubmitDisabled}
+            isIncognito={isIncognito}
         >
             {hasMultipleUsers ? (
                 <SelectAccountComponent
