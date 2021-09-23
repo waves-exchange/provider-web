@@ -4,9 +4,10 @@ import { analytics } from '../../utils/analytics';
 
 type CreateAccountProps = {
     onCancel(): void;
+    isIncognito: boolean;
 };
 
-export const CreateAccount: FC<CreateAccountProps> = ({ onCancel }) => {
+export const CreateAccount: FC<CreateAccountProps> = ({ onCancel, isIncognito }) => {
     const handleClose = useCallback<
         MouseEventHandler<HTMLButtonElement>
     >(() => {
@@ -16,6 +17,6 @@ export const CreateAccount: FC<CreateAccountProps> = ({ onCancel }) => {
     }, [onCancel]);
 
     return (
-        <CreateAccountComponent onClose={handleClose} />
+        <CreateAccountComponent onClose={handleClose} isIncognito={isIncognito} />
     );
 };
