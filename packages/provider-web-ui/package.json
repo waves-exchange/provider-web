@@ -17,7 +17,7 @@
     "@styled-system/should-forward-prop": "^5.1.4",
     "@waves.exchange/react-uikit": "^0.5.21",
     "@waves/bignumber": "^1.1.1",
-    "@waves/node-api-js": "^1.2.0",
+    "@waves/node-api-js": "^1.2.1",
     "@waves/signer": "^1.0.1",
     "@waves/ts-types": "^1.0.2",
     "@waves/waves-browser-bus": "0.2.5",
