@@ -145,7 +145,7 @@ function TestApp(): React.ReactElement {
             </div>
 
             <div>
-                <h2>Transfer 1 Waves to Merry</h2>
+                <h2>Transfer 0.1 Tether USD Waves to Merry</h2>
                 <div>
                     <button
                         onClick={() => {
@@ -171,7 +171,7 @@ function TestApp(): React.ReactElement {
                                     amount: 10000000,
                                     recipient: 'merry',
                                     feeAssetId:
-                                        'DWgwcZTMhSvnyYCoWLRUXXSH1RSkzThXLJhww9gwkqdn',
+                                        'WAVES',
                                     attachment: null,
                                 })
                                 .broadcast();
