@@ -44,8 +44,7 @@ type GetFeeAsset = (
 
 export const getFeeAsset: GetFeeAsset = (txType, assets, txFeeAssetId) => {
     if (
-        // Mass Transfer or feeAssetId === Waves
-        txType === 11 ||
+        txFeeAssetId === 'WAVES' ||
         txFeeAssetId === null ||
         typeof txFeeAssetId === 'undefined'
     ) {

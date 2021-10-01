@@ -11,7 +11,7 @@ import { SignerTx } from '@waves/signer';
 import { Long, Transaction, TransactionType } from '@waves/ts-types';
 import { concat, flatten, indexBy, map, pipe, prop, uniq } from 'ramda';
 import { InfoMap, ITransactionInfo, IUser } from '../interface';
-import { SPONSORED_TYPES } from '../constants';
+import { SPONSORED_TYPES, WAVES } from '../constants';
 import { IState } from '../interface';
 import { cleanAddress } from '../utils/cleanAlias';
 import { geTransactionFromParams } from '../utils/getTransactionFromParams';

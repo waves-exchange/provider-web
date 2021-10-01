@@ -17,6 +17,7 @@ export const WAVES = {
     quantity: BigNumber.toBigNumber(100000000).mul(Math.pow(10, 8)).toFixed(),
     issuer: 'WAVES',
     minSponsoredAssetFee: null,
+    logo: '',
 };
 
 export const NAME_MAP = {
