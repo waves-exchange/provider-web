@@ -20,6 +20,8 @@ const isFeeAssetId = (
     feeAssetId: string | null | undefined
 ): feeAssetId is string | null => typeof feeAssetId !== 'undefined';
 
+const isWaves = (feeId: string | null | undefined) => feeId === 'WAVES';
+
 const isNonDefaultFeeAssetId = (
     feeAssetId: string | null | undefined
 ): feeAssetId is string => typeof feeAssetId === 'string';
@@ -53,7 +55,10 @@ export const getFeeOptions: GetFeeOptions = ({
     let defaultFeeOption: FeeOption;
     let feeAsset: DetailsWithLogo;
 
-    if (isFeeAssetId(paramsFeeAssetId) || hasParamsFee(txParamsFee)) {
+    if (
+        !isWaves(paramsFeeAssetId) &&
+        (isFeeAssetId(paramsFeeAssetId) || hasParamsFee(txParamsFee))
+    ) {
         if (isNonDefaultFeeAssetId(paramsFeeAssetId)) {
             // case feeAssetId - some asset, but not Waves, fee is not provided
             feeAsset = txMeta.assets[paramsFeeAssetId];

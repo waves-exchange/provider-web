@@ -121,7 +121,7 @@ export const prepareTransactions = (
             meta: {
                 feeList: feeList[index],
                 aliases,
-                assets: indexBy(prop('assetId'), assets.concat(WAVES as any)),
+                assets: indexBy(prop('assetId'), assets),
                 params: list[index],
                 info: info[index],
             },
