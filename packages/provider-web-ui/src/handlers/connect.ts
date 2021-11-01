@@ -12,7 +12,7 @@ export function getConnectHandler(
         analytics.addApi({
             apiToken:
                 state.networkByte === 87
-                    ? '1b7892a92d0e56a667df25583600fff3'
+                    ? 'e3b3df0d53b4cae5b75350d898132934'
                     : 'ca96b9de2a3dd00b62ec70f7ef6ffb3e',
             libraryUrl: 'https://waves.exchange/amplitude.js',
             initializeMethod: 'amplitudeInit',
