@@ -13,6 +13,7 @@
 ## Overview
 ​
 ProviderWeb developed by Waves.Exchange implements a Signature Provider for [Signer](https://github.com/wavesplatform/signer) protocol library. Signer enables easy deploy dApps based on Waves blockchain. Users' encrypted private keys and SEED phrase are stored in waves.exchange domain of the local browser storage. Waves.Exchange and other apps do not have access to the local data as they are stored encrypted.
+
 ​
 > For now, signing is implemented for all types of transactions except exchange transactions.
 ​
