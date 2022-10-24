@@ -39,7 +39,9 @@ export class TransportIframe extends Transport<HTMLIFrameElement> {
             return Promise.resolve(this._bus);
         }
 
-        return WindowAdapter.createSimpleWindowAdapter(this._iframe).then(
+        return WindowAdapter.createSimpleWindowAdapter(this._iframe, {
+            origins: ['https://wx.network', 'https://testnet.wx.network'],
+        }).then(
             (adapter) =>
                 new Promise((resolve) => {
                     this._bus = new Bus(adapter, -1);
